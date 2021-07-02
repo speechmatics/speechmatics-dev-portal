@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 function Index({}) {
