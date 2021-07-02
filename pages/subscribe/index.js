@@ -67,6 +67,7 @@ function Index({}) {
             <label>
                 Hidden Token: <input id="host-token" disabled value={token}/>
                 <input id="reference" disabled value={'client1'} />
+                <input type="hidden" class="host-input" data-chargify="reference" value={'client1'}/>
             </label>
             <p>
                 <button type="submit">Submit Host Form</button>
