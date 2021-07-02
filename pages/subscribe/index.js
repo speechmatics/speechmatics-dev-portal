@@ -4,14 +4,19 @@ import React, { useState, useEffect, useRef } from 'react';
 
 function Index({}) {
     const chargifyForm = useRef();
-    const chargify = useRef(new window.Chargify());
+
+    let chargify = null;
+
+    if (typeof window !== 'undefined') {
+        chargify = useRef(new window.Chargify());
+    }
 
     const [token, setToken] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
     
-        chargify.current.token(
+        chargify?.current.token(
           chargifyForm.current,
     
           (token) => {
@@ -27,7 +32,8 @@ function Index({}) {
 
     useEffect(
     () => {
-        chargify.current.load({
+        
+        chargify?.current.load({
         // selector where the iframe will be included in the host's HTML (i.e. '#chargify-form')
         // optional if you have a `selector` on each and every field
         selector: '#chargify-form',
@@ -44,18 +50,18 @@ function Index({}) {
 
         return undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [chargify]);
 
     useEffect(
     () => {
-        chargify.current.load({type: paymentType});
+        chargify?.current.load({type: paymentType});
         setToken('');
 
         return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        chargify.current.unload();
+        chargify?.current.unload();
         };
-    }, [chargify]);
+    }, [chargify?.current]);
 
     return <div>
         <Head>
