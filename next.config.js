@@ -15,6 +15,8 @@ module.exports = {
       };
     });
 
+    paths['/subscribe'] = { page: '/subscribe' };
+
     return paths;
   },
 };
