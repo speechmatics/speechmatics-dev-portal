@@ -45,27 +45,27 @@ function Index({}) {
         type: 'card',
 
         // points to your Chargify site
-        serverHost: 'http://speechmatics-3.chargify.com/'
+        serverHost: 'https://speechmatics-3.chargify.com/'
         });
-
-        return undefined;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chargify]);
-
-    useEffect(
-    () => {
-        chargify?.current.load({type: paymentType});
-        setToken('');
 
         return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         chargify?.current.unload();
         };
-    }, [chargify?.current]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [chargify]);
+
+    // useEffect(
+    // () => {
+    //     chargify?.current.load({type: paymentType});
+    //     setToken('');
+
+        
+    // }, [chargify?.current]);
 
     return <div>
         <Head>
-            <script src="https://js.chargify.com/latest/chargify.js"></script>
+            <script src="https://js.chargify.com/latest/chargify.js" onLoad={() => console.log('chagrify loaded')}></script>
         </Head>
         <div>hello</div>
         <form onSubmit={handleSubmit} ref={chargifyForm}>
