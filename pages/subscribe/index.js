@@ -53,7 +53,7 @@ function Index({}) {
         chargify?.current.unload();
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chargify]);
+    }, []);
 
     // useEffect(
     // () => {
@@ -65,7 +65,7 @@ function Index({}) {
 
     return <div>
         <Head>
-            <script src="https://js.chargify.com/latest/chargify.js" onLoad={() => console.log('chagrify loaded')}></script>
+            <script src="https://js.chargify.com/latest/chargify.js"></script>
         </Head>
         <div>hello</div>
         <form onSubmit={handleSubmit} ref={chargifyForm}>
