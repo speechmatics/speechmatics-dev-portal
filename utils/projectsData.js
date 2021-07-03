@@ -20,6 +20,7 @@ const projects = [
     path: 'gatsbyjs/gatsby',
     slug: 'gatsbyjs-gatsby',
   },
+  { id: 'form', name:'Form', path: 'subscribe', slug: 'subscribe' },
 ];
 
 module.exports = { projects };
