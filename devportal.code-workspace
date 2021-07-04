@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"debug.internalConsoleOptions": "neverOpen",
+		"files.exclude": {
+			"**/.next": true,
+			"**/build": true,
+			"**/node_modules": true,
+			"**/out": true
+		}
+	}
+}
