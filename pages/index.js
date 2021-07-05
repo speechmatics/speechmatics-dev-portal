@@ -2,20 +2,21 @@ import Image from 'next/image';
 
 const Home = () => (
   <div className="home">
-    <Image src="/logo.svg" width="200px" height="100px" />
+    <Image src="/logo.svg" width="300px" height="100px" />
 
-    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+    <div className="landing_text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </div>
 
-    <div style={{ display: 'flex' }}>
-      <div className="shadow_box" style={{ width: '25em', height: '20em' }}>
+    <div className="landing_boxes">
+      <div className="shadow_box landing_box">
         <div>Speechmatics™</div>
-        <div>Freemium</div>
+        <div style={{ color: '#5BB4AE' }}>Freemium</div>
       </div>
-      <div className="shadow_box" style={{ width: '25em', height: '20em' }}>
+      <div className="shadow_box landing_box">
         <div>Speechmatics™</div>
-        <div>Enterprise</div>
+        <div style={{ color: '#004BAB' }}>Enterprise</div>
       </div>
-
     </div>
   </div>
 );

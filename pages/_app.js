@@ -7,7 +7,7 @@ export default function MyApp({ Component, pageProps }) {
     <div className="all_container">
       <div className="header"></div>
       <div className="content"><Component {...pageProps} /></div>
-      <div className="footer"></div>
+      <div className="footer">© Speechmatics 2021</div>
     </div>
   );
 }
