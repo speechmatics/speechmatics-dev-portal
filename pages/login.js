@@ -1,7 +1,7 @@
 
 
 const Login = () => (
-    <div className="home">
+    <div className="login_form">
 
     </div>
 );

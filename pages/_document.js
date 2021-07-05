@@ -12,7 +12,12 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
-          <Main />
+          <style jsx global>{`
+            #__next {
+              height: 100%;
+            }
+          `}</style>
+          <Main className="main_container" />
           <NextScript />
         </body>
       </Html>
