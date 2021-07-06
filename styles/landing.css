@@ -1,4 +1,12 @@
 
+.landing_container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .landing_box {
     width: 11em;
     height: 7em;
@@ -61,8 +69,3 @@
     color: #3E4D5B;
     font-size: 1.4em;
 }
-
-.blue_arrow path {
-    fill: #004BAB;
-}
-

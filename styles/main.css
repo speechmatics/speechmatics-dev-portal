@@ -49,6 +49,12 @@ h1 {
   flex: 1 1 auto;
 }
 
+body {
+  --main-teal: #5BB4AE;
+  --main-blue: #004BAB;
+  --main-navy: #001A3B;
+}
+
 .all_container > .footer {
   height: 50px;
   background-color: #001A3B;
@@ -64,13 +70,7 @@ h1 {
   width: 100%;
 }
 
-.home {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+
 
 .shadow_box {
   background: #FFFFFF;

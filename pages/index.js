@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 
 const Home = () => (
-  <div className="home" >
+  <div className="landing_container" >
     <Image src="/assets/logo.svg" width="300px" height="100px" />
 
     <div className="landing_text">
@@ -28,7 +28,7 @@ const Home = () => (
           <div style={{ color: '#004BAB' }}>Enterprise</div>
         </div>
         <div className='landing_arrow blue'>
-          <Image src='/assets/arrow_right.svg' width='150px' height='15px' className='blue_arrow' />
+          <Image src='/assets/arrow_right.svg' width='150px' height='15px' />
         </div>
       </div>
     </div>
