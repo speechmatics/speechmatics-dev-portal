@@ -32,9 +32,11 @@
     font-size: 1.5em;
     display: flex;
     margin-bottom: 12px;
-    padding: 8px 0px 5px 50px;
+    height: 40px;
+    padding: 0px 0px 0px 50px;
     cursor: pointer;
     background-clip: border-box;
+    align-items:center;
 }
 
 .menu_elem.selected {
