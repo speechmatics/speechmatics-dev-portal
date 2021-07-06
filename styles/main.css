@@ -80,37 +80,3 @@ h1 {
   border-radius: 25px;
 }
 
-.landing_box {
-  width: 18em;
-  height: 10em;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.landing_box div {
-  font-family: GibsonRegular;
-  font-size: 1.8em;
-  padding-left: 16%;
-  margin-bottom: 0.2em;
-}
-
-.landing_boxes {
-  width: auto;
-  display: flex;
-  margin-top: 3em;
-  padding-bottom: 10em;
-}
-
-.landing_boxes > div:not(:first-child) {
-  margin-left: 2em;
-}
-
-.landing_text {
-  width: 30em;
-  margin-top: 5em;
-  font-family: GibsonLight;
-  color: #3E4D5B;
-  font-size: 1.4em;
-}
