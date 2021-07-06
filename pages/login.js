@@ -1,9 +1,10 @@
-import Image from 'next/image';
+import { SpeechmaticsLogo } from '../components/Icons';
 
 
 const Login = () => (
     <div className="login_container">
-        <Image src="/assets/logo.svg" width="300px" height="100px" />
+        <SpeechmaticsLogo />
+
 
         <div className="login_text">
             Please use your credentials to log in.
