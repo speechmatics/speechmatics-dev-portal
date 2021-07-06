@@ -1,31 +1,41 @@
 import {
-    AccountIcon, GettingStartedIcon,
+    AccountIcon, GettingStartedIcon, SubscribeIcon, TranscribeIcon,
     RecentJobsIcon, UsageIcon, AccessTokenIcon
 } from '../components/Icons';
 
 const menuData = [
     {
-        path: '/getting-started',
+        path: '/getting-started/',
         title: 'Getting Started',
         icon: GettingStartedIcon
     },
     {
-        path: '/recent-jobs',
+        path: '/404/',
+        title: 'Subscription',
+        icon: SubscribeIcon
+    },
+    {
+        path: '/transcribe/',
+        title: 'Submit a file',
+        icon: TranscribeIcon
+    },
+    {
+        path: '/recent-jobs/',
         title: 'Recent Jobs',
         icon: RecentJobsIcon
     },
     {
-        path: '/account',
+        path: '/account/',
         title: 'Account',
         icon: AccountIcon
     },
     {
-        path: '/usage',
+        path: '/usage/',
         title: 'Usage',
         icon: UsageIcon
     },
     {
-        path: '/access-token',
+        path: '/access-token/',
         title: 'Access Token',
         icon: AccessTokenIcon
     },

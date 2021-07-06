@@ -1,21 +1,16 @@
-const data = require('./utils/projectsData');
 
 module.exports = {
   trailingSlash: true,
   exportPathMap: async function () {
-    const { projects } = data;
     const paths = {
       '/': { page: '/' },
+      '/login': { page: '/login' },
+      '/getting-started': { page: '/getting-started' },
+      '/recent-jobs': { page: '/recent-jobs' },
+      '/account': { page: '/account' },
+      '/usage': { page: '/usage' },
+      '/access-token': { page: '/access-token' },
     };
-
-    projects.forEach((project) => {
-      paths[`/project/${project.slug}`] = {
-        page: '/project/[path]',
-        query: { path: project.slug },
-      };
-    });
-
-    paths['/subscribe'] = { page: '/subscribe' };
 
     return paths;
   },

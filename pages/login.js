@@ -20,7 +20,7 @@ const Login = () => {
             <input type="text" placeholder='email' className="input login"></input>
             <input type="password" placeholder='password' className="input password"></input>
 
-            <button className='next_button' onClick={() => router.push('/getting-started')}>
+            <button className='next_button' onClick={() => router.push('/getting-started/')}>
                 Log in ➔
             </button>
         </div>

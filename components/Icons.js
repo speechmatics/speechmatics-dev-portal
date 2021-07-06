@@ -70,3 +70,21 @@ export function AccessTokenIcon({ w = 20, h = 16, color = "#2E3A59" }) {
     <path d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 2V14H18V2H2ZM16 12H10V10H16V12ZM5.414 12L4 10.586L6.293 8.293L4 6L5.414 4.586L9.121 8.293L5.415 12H5.414Z" fill={color} />
   </svg>
 }
+
+export function ExternalLink({ w = 16, h = 16, color = "#2E3A59" }) {
+  return <svg width={w} height={h} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.001 16H2.00098C0.896407 16 0.000976562 15.1046 0.000976562 14V3C0.000976562 1.89543 0.896407 1 2.00098 1H6.00098V3H2.00098V14H13.001V10H15.001V14C15.001 15.1046 14.1055 16 13.001 16ZM7.70098 9.707L6.29098 8.293L12.584 2H9.00098V0H16.001V7H14.001V3.415L7.70098 9.707Z" fill={color} />
+  </svg>
+}
+
+export function TranscribeIcon({ w = 20, h = 13, color = "#2E3A59" }) {
+  return <svg width={w} height={h} viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 12.411L10.3 9.711L11.714 8.295L13 9.583L18.008 4.583L19.419 6L13 12.41V12.411ZM9 10H0V8H9V10ZM13 6H0V4H13V6ZM13 2H0V0H13V2Z" fill={color} />
+  </svg>
+}
+
+export function SubscribeIcon({ w = 20, h = 20, color = "#2E3A59" }) {
+  return <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 8V14H18V8H2ZM2 2V4H18V2H2ZM11 12H4V10H11V12Z" fill={color} />
+  </svg>
+}
