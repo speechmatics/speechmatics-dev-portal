@@ -26,6 +26,13 @@ html {
   height: 100%;
 }
 
+
+body {
+  --main-teal: #5BB4AE;
+  --main-blue: #004BAB;
+  --main-navy: #001A3B;
+}
+
 body {
   background-color: #fbfbfb;
   font-family: 'PT Sans', sans-serif;
@@ -49,11 +56,6 @@ h1 {
   flex: 1 1 auto;
 }
 
-body {
-  --main-teal: #5BB4AE;
-  --main-blue: #004BAB;
-  --main-navy: #001A3B;
-}
 
 .all_container > .footer {
   height: 50px;
