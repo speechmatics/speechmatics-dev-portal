@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { LoginContext } from '../utils/login-context';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 
-export default function ({ children }) {
+export default function Dashboard({ children }) {
 
     const name = 'Michał';
 
