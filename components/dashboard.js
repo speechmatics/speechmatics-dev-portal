@@ -1,18 +1,22 @@
-import { SpeechmaticsLogo, ExternalLink, AccountIcon } from '../components/Icons';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import menuData from '../static_data/menu-data'
+import { useContext } from 'react';
+import { LoginContext } from '../utils/login-context';
+import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 
 export default function ({ children }) {
 
     const name = 'Michał';
 
     const router = useRouter();
+    const context = useContext(LoginContext);
+
 
     return <div className="dashboard_container">
         <div className="dashboard_sidenav">
             <SpeechmaticsLogo w={250} h={130} />
-            <div className='hi_name'>Hi, {name}!</div>
+            <div className='hi_name'>Hi, {context.data.name}!</div>
             <div className='nav_menu'>
                 {menuData.map((item) => <MenuElem item={item} key={item.path}
                     selected={router.asPath == item.path} />)}
@@ -27,8 +31,11 @@ export default function ({ children }) {
         <div className="dashboard_content">
             {children}
         </div>
-        <div style={{ marginRight: '1em', marginTop: '1em' }}>
+        <div className="dashboard_side_bar">
             <AccountIcon w={30} h={30} />
+            <Link href='/login/'>
+                <div style={{ cursor: 'pointer' }}><LogoutIcon w={30} h={30} /></div>
+            </Link>
         </div>
     </div >
 }

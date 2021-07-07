@@ -21,6 +21,16 @@
     flex-direction: column;
 }
 
+.dashboard_side_bar {
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+}
+
+.dashboard_side_bar > * {
+    margin-bottom: 1em;
+}
+
 h1 {
     padding: 0.5em 0;
 }
@@ -218,6 +228,10 @@ h1 {
     margin-bottom: 3em;
 }
 
-input[placeholder="title"] {
+.account_forms input[placeholder="title"] {
     width: 100px;
+}
+
+.account_forms input[placeholder="email"] {
+    width: 300px;
 }

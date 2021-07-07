@@ -93,7 +93,14 @@ export function DownloadIcon({ w = 14, h = 20, color = "#2E3A59" }) {
   return <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M14 20H0V18H14V20ZM7 16L1 10L2.41 8.59L6 12.17V0H8V12.17L11.59 8.59L13 10L7 16Z" fill={color} />
   </svg>
-
 }
+
+export function LogoutIcon({ w = 18, h = 18, color = "#2E3A59" }) {
+  return <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 18H7C5.89543 18 5 17.1046 5 16V12H7V16H16V2H7V6H5V2C5 0.89543 5.89543 0 7 0H16C17.1046 0 18 0.89543 18 2V16C18 17.1046 17.1046 18 16 18ZM9 13V10H0V8H9V5L14 9L9 13Z" fill={color} />
+  </svg>
+}
+
+
 
 

@@ -1,21 +1,26 @@
-
 import Dashboard from '../components/dashboard'
+import { LoginContext } from '../utils/login-context';
+import { useContext } from 'react';
+
 
 export default function Account({ }) {
+
+    const context = useContext(LoginContext);
 
     return <Dashboard>
         <h1>Account</h1>
         <div className='account_forms'>
             <section>
                 <div>
-                    <input type="text" placeholder="title"></input>
-                    <input type="text" placeholder="First name"></input>
+                    <input type="text" placeholder="title" value={context.data.title}></input>
+                    <input type="text" placeholder="First name" value={context.data.name}></input>
                     <input type="text" placeholder="Surname"></input>
                 </div>
                 <div>
-                    <input type="text" placeholder="email"></input>
-                    <input type="text" placeholder="phone number"></input>
+                    <input type="text" placeholder="email" value={`${context.data.email}@speechmatics.com`}></input>
+
                 </div>
+                <div><input type="text" placeholder="phone number"></input></div>
                 <div className="default_button">Apply changes</div>
             </section>
             <section>
