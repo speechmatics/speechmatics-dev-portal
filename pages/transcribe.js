@@ -1,7 +1,16 @@
 import Link from 'next/link';
-import Dashboard from '../components/dashboard'
+import Dashboard from '../components/dashboard';
+import { useRef } from 'react';
 
 export default function Transcribe({ }) {
+
+    const fileInputRef = useRef();
+
+    const onSelectFiles = (ev) => { };
+
+    const openFileDialog = () => {
+        fileInputRef.current?.click();
+    }
 
     return <Dashboard>
         <h1>Submit a file</h1>
@@ -13,8 +22,10 @@ export default function Transcribe({ }) {
         <div className='rouded_shadow_box active_subscriptions_status'>
             Drop a file here
         </div>
-        <Link href='/subscribe/'>
-            <div className='default_button'>or choose from the disk</div>
-        </Link>
+        <input type='file' ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={onSelectFiles}
+            accept='video/*,audio/*' />
+        <div className='default_button' onClick={openFileDialog}>or choose from the disk</div>
     </Dashboard>
 }

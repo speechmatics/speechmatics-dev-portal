@@ -7,11 +7,8 @@ import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../comp
 
 export default function Dashboard({ children }) {
 
-    const name = 'Michał';
-
     const router = useRouter();
     const context = useContext(LoginContext);
-
 
     return <div className="dashboard_container">
         <div className="dashboard_sidenav">
