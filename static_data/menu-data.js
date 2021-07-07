@@ -10,8 +10,8 @@ const menuData = [
         icon: GettingStartedIcon
     },
     {
-        path: '/404/',
-        title: 'Subscription',
+        path: '/subscriptions/',
+        title: 'Subscriptions',
         icon: SubscribeIcon
     },
     {

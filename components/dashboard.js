@@ -1,4 +1,4 @@
-import { SpeechmaticsLogo, ExternalLink } from '../components/Icons';
+import { SpeechmaticsLogo, ExternalLink, AccountIcon } from '../components/Icons';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import menuData from '../static_data/menu-data'
@@ -18,7 +18,7 @@ export default function ({ children }) {
                     selected={router.asPath == item.path} />)}
             </div>
             <a href='https://docs.speechmatics.com' target='_blank'>
-                <div className='open_docs'>
+                <div className='open_docs_button'>
                     <span>Open Documentation</span>
                     <ExternalLink color='white' />
                 </div>
@@ -27,7 +27,10 @@ export default function ({ children }) {
         <div className="dashboard_content">
             {children}
         </div>
-    </div>
+        <div style={{ marginRight: '1em', marginTop: '1em' }}>
+            <AccountIcon w={30} h={30} />
+        </div>
+    </div >
 }
 
 

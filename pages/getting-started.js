@@ -15,7 +15,7 @@ export default function GettingStarted({ }) {
 
 const StepItem = ({ item: { title, status, link } }) => (
     <Link href={link}>
-        <div className='step_item'>
+        <div className='rouded_shadow_box step_item'>
             <div>{title}</div>
             <div style={{ color: colorStatus[status] }}>{status}</div>
         </div>

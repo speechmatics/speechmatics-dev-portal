@@ -15,7 +15,14 @@
 
 .dashboard_content {
     margin-left: 2em;
+    margin-right: 3em;
     flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    padding: 0.5em 0;
 }
 
 .hi_name {
@@ -59,7 +66,7 @@
     background-color: #E3E3E3;
 }
 
-.open_docs {
+.open_docs_button {
     margin-top: 1em;
     background-color: var(--main-navy);
     border-radius: 15px;
@@ -69,11 +76,11 @@
     cursor: pointer;
 }
 
-.open_docs:hover {
+.open_docs_button:hover {
     background-color: var(--main-blue);
 }
 
-.open_docs > span {
+.open_docs_button > span {
     margin-right: 10px;
 }
 
@@ -84,9 +91,7 @@
     width: 100%;
 }
 
-.step_item {
-    display: flex;
-    justify-content: space-between;
+.rouded_shadow_box {
     font-family: GibsonLight;
     font-size: 1.5em;
     padding: 1em 2em;
@@ -96,9 +101,14 @@
     box-sizing: border-box;
     box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.06);
     border-radius: 25px;
-    width: 600px;
+}
+
+.step_item {
+    display: flex;
+    justify-content: space-between;
     cursor: pointer;
     transition: 0.3s all ease-in-out;
+    width: 600px;
 }
 
 .step_item:hover {
@@ -108,4 +118,106 @@
 
 .step_item > div:first-child {
     padding-right: 2em;
+}
+
+
+.active_subscriptions_status {
+    text-align: center;
+    width: 600px;
+}
+
+.default_button {
+    background-color: var(--main-navy);
+    border-radius: 15px;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.3em;
+    transition: 0.3s all ease-in-out;
+    width: max-content;
+}
+
+.default_button:hover {
+    background-color: var(--main-blue);
+    box-shadow: 0px 30px 30px rgba(0, 0, 0, 0.06);
+}
+
+.red {
+    background-color: firebrick;
+}
+
+.red:hover {
+    background-color: rgb(216, 56, 56);
+}
+
+.add_subscription_button {
+    margin-top: 1em;
+}
+
+
+.description_text {
+    font-family: GibsonLight;
+    font-size: 1.2em;
+    max-width: 600px;
+    padding-bottom: 1em;
+}
+
+.flex_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.job_item {
+    width: 950px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 0.5em;
+    padding-right: 1em;
+}
+
+.job_item > div {
+    width: 20%;
+    padding: 0em 1em;
+}
+
+.job_item > div:last-child {
+    text-align: right;
+}
+
+.job_item > div:nth-child(2) {
+    width: 22%
+}
+
+.account_forms {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard_container input {
+    background: #FFFFFF;
+    border: 1px solid #cacad0;
+    box-sizing: border-box;
+    border-radius: 15px;
+    height: 3em;
+    width: 15em;
+    padding: 0 1em;
+    font-size: 1em;
+    margin: 0.2em;
+}
+
+.account_forms .default_button {
+    align-self: flex-end;
+    margin-top: 0.5em;
+}
+
+.account_forms section {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin-bottom: 3em;
+}
+
+input[placeholder="title"] {
+    width: 100px;
 }

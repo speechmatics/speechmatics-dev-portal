@@ -2,12 +2,12 @@ import Head from 'next/head';
 import React, { useState, useEffect, useRef } from 'react';
 import Dashboard from '../components/dashboard'
 
-function Index({ }) {
+function Subscribe({ }) {
     const chargifyForm = useRef();
 
     let chargify = null;
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && 'Chargify' in window) {
         chargify = useRef(new window.Chargify());
     }
 
@@ -45,7 +45,7 @@ function Index({ }) {
                 type: 'card',
 
                 // points to your Chargify site
-                serverHost: 'https://speechmatics-3.chargify.com/'
+                serverHost: 'https://speechmatics-3.chargify.com'
             });
 
             return () => {
@@ -64,26 +64,50 @@ function Index({ }) {
     // }, [chargify?.current]);
 
     return <Dashboard>
+        <h1>Set up new subscription</h1>
+
         <div>
             <Head>
                 <script src="https://js.chargify.com/latest/chargify.js"></script>
             </Head>
-            <div>hello</div>
+            <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
             <form onSubmit={handleSubmit} ref={chargifyForm}>
                 <div id="chargify-form"></div>
 
                 <label>
-                    Hidden Token: <input id="host-token" disabled value={token} />
-                    <input id="reference" disabled value={'client1'} />
+                    <input id="host-token" disabled value={token} type='hidden' />
+                    <input id="reference" disabled value={'client1'} type='hidden' />
                     <input type="hidden" class="host-input" data-chargify="reference" value={'client1'} />
                 </label>
                 <p>
-                    <button type="submit">Submit Host Form</button>
+                    <button type="submit">Submit Form</button>
                 </p>
             </form>
+            <style jsx>{`
+button[type="submit"] {
+    border: 0;
+    width: 10em;
+    height: 2em;
+    padding: 0 1em;
+    border-radius: 15px;
+    background: var(--main-navy);
+    font-family: GibsonRegular;
+    font-size: 1.5em;
+    color: #fff;
+    text-transform: uppercase;
+    filter: drop-shadow(0px 9px 11px rgba(0, 0, 0, 0.12));
+    cursor: pointer;
+}
+
+button:active {
+    background: var(--main-blue);
+
+}
+
+                `}</style>
         </div>
     </Dashboard>
 }
 
 
-export default Index;
+export default Subscribe;
