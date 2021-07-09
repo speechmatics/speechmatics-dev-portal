@@ -1,6 +1,8 @@
 import Head from 'next/head';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard'
+import { LoginContext } from '../utils/login-context';
+
 
 function Subscribe({ }) {
     const chargifyForm = useRef();
@@ -10,6 +12,8 @@ function Subscribe({ }) {
     if (typeof window !== 'undefined' && 'Chargify' in window) {
         chargify = useRef(new window.Chargify());
     }
+
+    const { data } = useContext(LoginContext);
 
     const [token, setToken] = useState('');
 
@@ -39,7 +43,7 @@ function Subscribe({ }) {
                 type: 'card',
                 serverHost: 'https://speechmatics-3.chargify.com',
 
-                fields: chargifyFields('#F6F6F6', '#ffffff', '#333333')
+                fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data.name)
             });
 
             return () => {
@@ -127,7 +131,7 @@ section {
 export default Subscribe;
 
 
-const chargifyFields = (color1, color2, color3) => {
+const chargifyFields = (color1, color2, color3, name) => {
 
     const labelStyle = {
         padding: '2px 5px 3px 5px',
@@ -153,7 +157,7 @@ const chargifyFields = (color1, color2, color3) => {
         firstName: {
             selector: '#chargify_firstName',
             label: 'FIRST NAME',
-            placeholder: '',
+            placeholder: name,
             required: false,
             message: 'First name is not valid. Please update it.',
             maxlength: '30',

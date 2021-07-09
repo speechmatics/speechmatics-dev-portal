@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import menuData from '../static_data/menu-data'
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { LoginContext } from '../utils/login-context';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 
@@ -9,6 +9,10 @@ export default function Dashboard({ children }) {
 
     const router = useRouter();
     const context = useContext(LoginContext);
+
+    useEffect(() => {
+        if (context.data.name === undefined) router.push('/login')
+    }, [])
 
     return <div className="dashboard_container">
         <div className="dashboard_sidenav">
