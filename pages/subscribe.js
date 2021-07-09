@@ -34,213 +34,19 @@ function Subscribe({ }) {
         () => {
 
             chargify?.current.load({
-                // selector where the iframe will be included in the host's HTML (i.e. '#chargify-form')
-                // optional if you have a `selector` on each and every field
                 selector: '#chargify-form',
-
-                // (i.e. '1a2cdsdn3lkn54lnlkn')
                 publicKey: 'chjs_ycbc7hctjthpy6qbxxxgjtfd',
-
-                // form type (possible values: 'card' or 'bank')
                 type: 'card',
-
-                // points to your Chargify site
                 serverHost: 'https://speechmatics-3.chargify.com',
 
-                fields: {
-                    firstName: {
-                        selector: '#chargify1',
-                        label: 'FIRST NAME',
-                        placeholder: 'John',
-                        required: false,
-                        message: 'First name is not valid. Please update it.',
-                        maxlength: '30',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                placeholder: { color: 'green' }
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    lastName: {
-                        selector: '#chargify1',
-                        label: 'LAST NAME',
-                        placeholder: 'Doe',
-                        required: false,
-                        message: 'This field is not valid. Please update it.',
-                        maxlength: '30',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    number: {
-                        selector: '#chargify2',
-                        label: 'Number',
-                        placeholder: 'xxxx xxxx xxxx xxxx',
-                        message: 'This field is not valid. Please update it.',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    month: {
-                        selector: '#chargify2',
-                        label: 'Mon',
-                        placeholder: 'mm',
-                        message: 'This field is not valid. Please update it.',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    year: {
-                        selector: '#chargify2',
-                        label: 'Year',
-                        placeholder: 'yyyy',
-                        message: 'This field is not valid. Please update it.',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    cvv: {
-                        selector: '#chargify2',
-                        label: 'CVV code',
-                        placeholder: '123',
-                        required: false,
-                        message: 'This field is not valid. Please update it.',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    },
-                    address: {
-                        selector: '#chargify3',
-                        label: 'Address',
-                        placeholder: '1234 Hill St',
-                        required: false,
-                        message: 'This field is not valid. Please update it.',
-                        maxlength: '70',
-                        style: {
-                            field: {
-                                backgroundColor: '#ffdfdf',
-                                padding: '3px',
-                                borderRadius: '5px'
-                            },
-                            input: {
-                                backgroundColor: '#fdfde1',
-                                paddingTop: '2px',
-                                paddingBottom: '1px'
-                            },
-                            label: {
-                                paddingTop: '2px',
-                                paddingBottom: '1px',
-                                fontSize: '11px'
-                            },
-                            message: { paddingTop: '2px', paddingBottom: '1px' }
-                        }
-                    }
-                }
+                fields: chargifyFields('#F6F6F6', '#ffffff', '#333333')
             });
 
             return () => {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
                 chargify?.current.unload();
             };
-            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
-    // useEffect(
-    // () => {
-    //     chargify?.current.load({type: paymentType});
-    //     setToken('');
-
-
-    // }, [chargify?.current]);
 
     return <Dashboard>
         <h1>Set up new subscription</h1>
@@ -250,31 +56,42 @@ function Subscribe({ }) {
                 <script src="https://js.chargify.com/latest/chargify.js"></script>
             </Head>
             <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
-            <form onSubmit={handleSubmit} ref={chargifyForm}>
-                <div id="chargify-form"></div>
-                <div id="chargify1"></div>
-                <div id="chargify2"></div>
-                <div id="chargify3"></div>
-                <div id="chargify4"></div>
-                <div id="chargify5"></div>
-                <div id="chargify6"></div>
-                <div id="chargify7"></div>
-                <div id="chargify8"></div>
-                <div id="chargify9"></div>
-                <div id="chargify10"></div>
-                <div id="chargify11"></div>
-                <div id="chargify12"></div>
-                <div id="chargify13"></div>
-                <div id="chargify14"></div>
-                <label>
-                    <input id="host-token" disabled value={token} type='hidden' />
-                    <input id="reference" disabled value={'client1'} type='hidden' />
-                    <input type="hidden" className="host-input" data-chargify="reference" value={'client1'} />
-                </label>
-                <p>
-                    <button type="submit">Submit Form</button>
-                </p>
-            </form>
+            <div style={{ width: '700px' }}>
+                <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
+
+                    <section style={{ display: 'flex' }}>
+                        <div id="chargify_firstName"></div>
+                        <div id="chargify_lastname"></div>
+                    </section>
+
+                    <section style={{}}>
+                        <div id="chargify_ccnumber"></div>
+                        <div style={{ display: 'flex', width: '250px' }}>
+                            <div id="chargify_ccmonth" ></div>
+                            <div id="chargify_ccyear" ></div>
+                            <div id="chargify_cvv" ></div>
+                        </div>
+                    </section>
+
+                    <section style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <div id="chargify_address"></div>
+                        <div id="chargify_address2"></div>
+                        <div id="chargify_city"></div>
+                        <div id="chargify_state"></div>
+                        <div id="chargify_zip"></div>
+                        <div id="chargify_country"></div>
+                    </section>
+
+                    <label>
+                        <input id="host-token" disabled value={token} type='hidden' />
+                        <input id="reference" disabled value={'client1'} type='hidden' />
+                        <input type="hidden" className="host-input" data-chargify="reference" value={'client1'} />
+                    </label>
+                    <p>
+                        <button type="submit">Submit Form</button>
+                    </p>
+                </form>
+            </div>
             <style jsx>{`
 
 button[type="submit"] {
@@ -282,6 +99,7 @@ button[type="submit"] {
     width: 10em;
     height: 2em;
     padding: 0 1em;
+    margin: 1em 0;
     border-radius: 15px;
     background: var(--main-navy);
     font-family: GibsonRegular;
@@ -294,13 +112,158 @@ button[type="submit"] {
 
 button:active {
     background: var(--main-blue);
+}
 
+section {
+    margin-top: 1em;
 }
 
                 `}</style>
         </div>
-    </Dashboard>
+    </Dashboard >
 }
 
 
 export default Subscribe;
+
+
+const chargifyFields = (color1, color2, color3) => {
+
+    const labelStyle = {
+        padding: '2px 5px 3px 5px',
+        fontSize: '13px'
+    }
+
+    const defaultStyle = {
+        field: {
+            backgroundColor: color1,
+            padding: '3px',
+            borderRadius: '5px'
+        },
+        input: {
+            backgroundColor: color2,
+            paddingTop: '2px',
+            paddingBottom: '1px'
+        },
+        label: labelStyle,
+        message: { paddingTop: '2px', paddingBottom: '1px' }
+    }
+
+    return {
+        firstName: {
+            selector: '#chargify_firstName',
+            label: 'FIRST NAME',
+            placeholder: '',
+            required: false,
+            message: 'First name is not valid. Please update it.',
+            maxlength: '30',
+            style: {
+                field: {
+                    backgroundColor: color1,
+                    padding: '3px',
+                    borderRadius: '5px'
+                },
+                input: {
+                    backgroundColor: color2,
+                    paddingTop: '2px',
+                    paddingBottom: '1px',
+                    placeholder: { color: color3 }
+                },
+                label: labelStyle,
+                message: { paddingTop: '2px', paddingBottom: '1px' }
+            }
+        },
+        lastName: {
+            selector: '#chargify_lastname',
+            label: 'Last name',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '30',
+            style: defaultStyle
+        },
+        number: {
+            selector: '#chargify_ccnumber',
+            label: 'Credit card number',
+            placeholder: 'xxxx xxxx xxxx xxxx',
+            message: 'This field is not valid. Please update it.',
+            style: defaultStyle
+        },
+        month: {
+            selector: '#chargify_ccmonth',
+            label: 'Expiry Month',
+            placeholder: 'mm',
+            message: 'This field is not valid. Please update it.',
+            style: defaultStyle
+        },
+        year: {
+            selector: '#chargify_ccyear',
+            label: 'Expiry Year',
+            placeholder: 'yyyy',
+            message: 'This field is not valid. Please update it.',
+            style: defaultStyle
+        },
+        cvv: {
+            selector: '#chargify_cvv',
+            label: 'CVV code',
+            placeholder: 'XXX',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            style: defaultStyle
+        },
+        address: {
+            selector: '#chargify_address',
+            label: 'Address',
+            placeholder: '1234 Hill St',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+        address2: {
+            selector: '#chargify_address2',
+            label: 'Address line 2',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+        city: {
+            selector: '#chargify_city',
+            label: 'City',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+        state: {
+            selector: '#chargify_state',
+            label: 'State',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+        zip: {
+            selector: '#chargify_zip',
+            label: 'Post code / zip',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+        country: {
+            selector: '#chargify_country',
+            label: 'Country',
+            placeholder: '',
+            required: false,
+            message: 'This field is not valid. Please update it.',
+            maxlength: '70',
+            style: defaultStyle
+        },
+    }
+}
