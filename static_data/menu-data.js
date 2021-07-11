@@ -25,11 +25,6 @@ const menuData = [
         icon: RecentJobsIcon
     },
     {
-        path: '/account/',
-        title: 'Account',
-        icon: AccountIcon
-    },
-    {
         path: '/usage/',
         title: 'Usage',
         icon: UsageIcon
