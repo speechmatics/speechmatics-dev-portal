@@ -53,5 +53,10 @@ export default [
         pass: 'speechmatics21',
         title: 'Ms.'
     },
-]
-    ;
+    {
+        name: 'JustTest',
+        email: 'justtest',
+        pass: 'speechmatics21',
+        title: 'Mx.'
+    }
+];
