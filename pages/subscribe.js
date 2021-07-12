@@ -43,7 +43,7 @@ function Subscribe({ }) {
                 type: 'card',
                 serverHost: 'https://speechmatics-3.chargify.com',
 
-                fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data.name)
+                fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data?.name)
             });
 
             return () => {

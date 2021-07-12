@@ -79,6 +79,7 @@ h1 {
 
 .open_docs_button {
   margin-top      : 1em;
+  margin-bottom   : 2em;
   background-color: var(--main-navy);
   border-radius   : 15px;
   color           : white;
