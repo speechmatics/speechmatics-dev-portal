@@ -10,6 +10,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=PT+Sans:300,400,700,800"
             rel="stylesheet"
           />
+          <script src="https://js.chargify.com/latest/chargify.js"></script>
           <style jsx global>{`
             #__next {
               height: 100%;
