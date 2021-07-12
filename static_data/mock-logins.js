@@ -1,4 +1,4 @@
-const l = [
+export default [
     {
         name: 'Michal',
         email: 'michalp',
@@ -53,9 +53,5 @@ const l = [
         pass: 'speechmatics21',
         title: 'Ms.'
     },
-
-
-
 ]
-
-export default l;
+    ;

@@ -9,26 +9,25 @@ import { Tooltip, Link as ChakraLink } from '@chakra-ui/react';
 export default function Dashboard({ children }) {
 
   const router = useRouter();
-  const context = useContext(LoginContext);
+  const loginContext = useContext(LoginContext);
 
   useEffect(() => {
-    if (context.data.name === undefined) router.push('/login')
+    if (loginContext.data?.name === undefined) router.push('/login')
   }, [])
 
   return <div className="dashboard_container">
     <div className="dashboard_sidenav">
       <SpeechmaticsLogo w={250} h={130} />
-      <div className='hi_name'>Hi, {context.data.name}!</div>
+      <div className='hi_name'>Hi, {loginContext.data?.name}!</div>
       <div className='nav_menu'>
         {menuData.map((item) => <MenuElem item={item} key={item.path}
           selected={router.asPath == item.path} />)}
       </div>
-      <a href='https://docs.speechmatics.com' target='_blank'>
+      <Link href='/faq/'>
         <div className='open_docs_button'>
-          <span>Open Documentation</span>
-          <ExternalLink color='white' />
+          <span>See FAQs</span>
         </div>
-      </a>
+      </Link>
     </div>
     <div className="dashboard_content">
       {children}
@@ -51,6 +50,8 @@ export default function Dashboard({ children }) {
     </div>
   </div >
 }
+
+// onClick={loginContext.clear()}
 
 
 function MenuElem({ item, selected }) {

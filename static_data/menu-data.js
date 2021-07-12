@@ -1,5 +1,5 @@
 import {
-    AccountIcon, GettingStartedIcon, SubscribeIcon, TranscribeIcon,
+    DocumentationIcon, GettingStartedIcon, SubscribeIcon, TranscribeIcon,
     RecentJobsIcon, UsageIcon, AccessTokenIcon
 } from '../components/Icons';
 
@@ -10,9 +10,19 @@ const menuData = [
         icon: GettingStartedIcon
     },
     {
+        path: '/access-token/',
+        title: 'Access Token',
+        icon: AccessTokenIcon
+    },
+    {
         path: '/subscriptions/',
         title: 'Subscriptions',
         icon: SubscribeIcon
+    },
+    {
+        path: 'https://docs.speechmatics.com',
+        title: 'Documentation',
+        icon: DocumentationIcon
     },
     {
         path: '/transcribe/',
@@ -28,11 +38,6 @@ const menuData = [
         path: '/usage/',
         title: 'Usage',
         icon: UsageIcon
-    },
-    {
-        path: '/access-token/',
-        title: 'Access Token',
-        icon: AccessTokenIcon
     },
 ]
 

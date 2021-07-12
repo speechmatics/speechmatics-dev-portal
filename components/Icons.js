@@ -103,4 +103,12 @@ export function LogoutIcon({ w = 18, h = 18, color = "#2E3A59" }) {
 
 
 
+export function DocumentationIcon({ w = 18, h = 18, color = "#2E3A59" }) {
+  return <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 18H1C0.447715 18 0 17.5523 0 17V1C0 0.447715 0.447715 0 1 0H17C17.5523 0 18 0.447715 18 1V17C18 17.5523 17.5523 18 17 18ZM2 2V16H16V2H2ZM11 14H8V10H7V8H10V12H11V14ZM10 6H8V4H10V6Z" fill={color} />
+  </svg>
+
+}
+
+
 

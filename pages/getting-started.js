@@ -30,7 +30,7 @@ const stepsData = [
         link: '/account/'
     },
     {
-        title: 'Try transcription without code',
+        title: 'See it in action',
         status: 'done',
         link: '/transcribe/'
     },
@@ -45,7 +45,7 @@ const stepsData = [
         link: '/access-token/'
     },
     {
-        title: 'Integrate with Speechmatics™',
+        title: 'Get started with code',
         status: 'Need help?',
         link: 'https://docs.speechmatics.com'
     },

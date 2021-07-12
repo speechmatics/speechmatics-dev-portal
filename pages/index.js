@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { SpeechmaticsLogo, ArrowRight } from '../components/Icons';
 
-const Home = () => (
-  <div className="landing_container" >
+export default function Home() {
+  return <div className="landing_container" >
     <SpeechmaticsLogo />
 
     <div className="landing_text">
@@ -32,6 +32,5 @@ const Home = () => (
       </div>
     </div>
   </div >
-);
+};
 
-export default Home;

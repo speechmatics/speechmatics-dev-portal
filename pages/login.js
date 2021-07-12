@@ -1,16 +1,20 @@
 import { SpeechmaticsLogo } from '../components/Icons';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { LoginContext } from '../utils/login-context';
 
 import mockLogins from '../static_data/mock-logins'
 
-const Login = () => {
+export default function Login() {
 
     const router = useRouter();
 
-    const context = useContext(LoginContext);
+    const loginContext = useContext(LoginContext);
+
+    useEffect(() => {
+        loginContext.clear();
+    }, [])
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -20,7 +24,7 @@ const Login = () => {
         const found = mockLogins.find(el => (`${el.email}@speechmatics.com` == login && el.pass == password));
         if (found) {
             router.push('/getting-started/');
-            context.update(found);
+            loginContext.update(found);
         } else {
             setWrong(true);
         }
@@ -46,9 +50,8 @@ const Login = () => {
             </button>
         </div>
         <div className="login_text">
-            or <Link href=''>Create Account</Link>
+            or <Link href='/create-account/'>Create Account</Link>
         </div>
     </div>
 };
 
-export default Login;
