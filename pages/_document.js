@@ -10,13 +10,14 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=PT+Sans:300,400,700,800"
             rel="stylesheet"
           />
-        </Head>
-        <body>
           <style jsx global>{`
             #__next {
               height: 100%;
             }
           `}</style>
+        </Head>
+        <body>
+
           <Main className="main_container" />
           <NextScript />
         </body>
