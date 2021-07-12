@@ -5,19 +5,19 @@ import { useContext } from 'react';
 
 export default function Account({ }) {
 
-    const context = useContext(LoginContext);
+    const loginContext = useContext(LoginContext);
 
     return <Dashboard>
         <h1>Account</h1>
         <div className='account_forms'>
             <section>
                 <div>
-                    <input type="text" placeholder="title" value={context.data.title}></input>
-                    <input type="text" placeholder="First name" value={context.data.name}></input>
+                    <input type="text" placeholder="title" value={loginContext.data?.title}></input>
+                    <input type="text" placeholder="First name" value={loginContext.data?.name}></input>
                     <input type="text" placeholder="Surname"></input>
                 </div>
                 <div>
-                    <input type="text" placeholder="email" value={`${context.data.email}@speechmatics.com`}></input>
+                    <input type="text" placeholder="email" value={`${loginContext.data?.email}@speechmatics.com`}></input>
 
                 </div>
                 <div><input type="text" placeholder="phone number"></input></div>
