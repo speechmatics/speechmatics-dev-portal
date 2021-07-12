@@ -112,7 +112,7 @@ const faqData = [
     a: `Actions speak louder than words. We like our customers to try audio files representative of their use-case. This provides a true measurement of accuracy and what it means for you. Why not try transcribing a media file or live speech using our free demo and see for yourself?`
   }, {
     q: 'What data do you collect and store when your service is used? ',
-    a: `Users of our public cloud ASR can refer to our Terms & Conditions and Privacy Policy.
+    a: `Users of our public cloud ASR can refer to our <a href='https://www.speechmatics.com/terms-of-website/' target='_blank'>Terms & Conditions</a> and <a href='https://www.speechmatics.com/privacy-policy/' target='_blank'>Privacy Policy</a>.
     Speechmatics’ on-premises solutions do not collect or store any video/audio files or transcribed output, this gives you full control over your data.`
   }, {
     q: 'What’s the difference between batch and real time? ',
