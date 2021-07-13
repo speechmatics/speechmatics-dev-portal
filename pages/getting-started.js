@@ -25,12 +25,12 @@ const StepItem = ({ item: { title, status, link } }) => (
 
 const stepsData = [
     {
-        title: 'Create and verify Your account',
+        title: 'Create and verify your Account',
         status: 'done',
         link: '/account/'
     },
     {
-        title: 'See it in action',
+        title: 'See our transcription in action',
         status: 'done',
         link: '/transcribe/'
     },
@@ -47,7 +47,7 @@ const stepsData = [
     {
         title: 'Get started with code',
         status: 'Need help?',
-        link: 'https://docs.speechmatics.com'
+        link: 'https://deploy-preview-28--speechmatics-docs.netlify.app/test-page/'
     },
 ]
 
