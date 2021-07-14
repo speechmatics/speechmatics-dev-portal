@@ -94,19 +94,11 @@ const faqData = [
     * Use two channels if available.
     * Do not apply any transcoding prior to submitting to the Speechmatics ASR`
   }, {
-    q: 'Do you provide an on-premises solution? ',
-    a: `Our flexible approach to ASR allows you to deploy our on-premises solutions for batch and real-time use cases, providing peace of mind regarding data security and allows you to meet any data compliance requirements.
-    Check out the product sheets to see the various deployment options available.`
-  }, {
     q: 'What forms of diarisation do you support? ',
     a: `We support various forms of diarisation and speaker separation to suit different use-cases. These are:
     
     * Speaker diarisation detects and labels the gender (male and female) speakers in an audio/video file. Available in our batch ASR solutions
     * Channel diarisation allows a single audio file with multiple tracks to be submitted to the ASR with custom labels (eg. agent and customer). Available in our batch ASR solutions`
-  }, {
-    q: 'How can I improve the accuracy of the alignment output? ',
-    a: `Any words in the text that are not in the audio provided need to be removed or surrounded by <>, otherwise accuracy will be reduced and the alignment job may take significantly longer.
-    Alignment is only available on our SaaS.`
   }, {
     q: 'How accurate are you? ',
     a: `Actions speak louder than words. We like our customers to try audio files representative of their use-case. This provides a true measurement of accuracy and what it means for you. Why not try transcribing a media file or live speech using our free demo and see for yourself?`
@@ -114,13 +106,6 @@ const faqData = [
     q: 'What data do you collect and store when your service is used? ',
     a: `Users of our public cloud ASR can refer to our <a href='https://www.speechmatics.com/terms-of-website/' target='_blank'>Terms & Conditions</a> and <a href='https://www.speechmatics.com/privacy-policy/' target='_blank'>Privacy Policy</a>.
     Speechmatics’ on-premises solutions do not collect or store any video/audio files or transcribed output, this gives you full control over your data.`
-  }, {
-    q: 'What’s the difference between batch and real time? ',
-    a: `<span style='font-family: GibsonSemiBold'>Batch ASR</span> is a transcription of pre-recorded audio and video files. A transcript is provided once an entire audio file has been processed.
-    
-    <span style='font-family: GibsonSemiBold'>Real Time ASR</span> is a transcription provided in parallel to input audio being streamed through Speechmatics engine. Responses from the engine can be as fast as 1 second.
-    
-    The use of any of our solutions will depend on your use case. For example, for real-time captioning, you may want to consider the real time engine, whereas batch processing is more suited to transcribing an archive of data.`
   }, {
     q: 'How long does it take to transcribe a file? ',
     a: `The processing time taken to transcribe a media file compared to the length the file is referred to as the real time factor (RTF).
