@@ -11,12 +11,14 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
           <script src="https://js.chargify.com/latest/chargify.js"></script>
-          <style jsx global>{`
+
+        </Head>
+        <style jsx global>{`
             #__next {
               height: 100%;
             }
-          `}</style>
-        </Head>
+          `}
+        </style>
         <body>
 
           <Main className="main_container" />
