@@ -18,12 +18,6 @@ class MyDocument extends Document {
           <body>
             <Main className="main_container" />
             <NextScript />
-            <style jsx>{`
-            #__next {
-              height: 100%;
-            }
-          `}
-            </style>
           </body>
         </Html>
       </ChakraProvider>
