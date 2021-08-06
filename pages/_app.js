@@ -4,8 +4,6 @@ import '../styles/landing.css';
 import '../styles/login.css';
 import '../styles/dashboard.css';
 
-import { ChakraProvider } from "@chakra-ui/react"
-
 
 import { loginContextHandler, LoginContext } from '../utils/login-context';
 
@@ -13,13 +11,11 @@ import { loginContextHandler, LoginContext } from '../utils/login-context';
 export default function MyApp({ Component, pageProps }) {
   return (
     <LoginContext.Provider value={loginContextHandler}>
-      <ChakraProvider resetCSS={false}>
-        <div className="all_container">
-          <div className="header"></div>
-          <div className="content"><Component {...pageProps} /></div>
-          <div className="footer">© Speechmatics 2021</div>
-        </div>
-      </ChakraProvider>
+      <div className="all_container">
+        <div className="header"></div>
+        <div className="content"><Component {...pageProps} /></div>
+        <div className="footer">© Speechmatics 2021</div>
+      </div>
     </LoginContext.Provider>
   );
 }
