@@ -35,7 +35,7 @@ export default function Login() {
 
 
         <div className="login_text">
-            Please use your credentials to log in
+            Please use your credentials to log in, and hello updates!
         </div>
         <div className="login_form">
             <input type="text" placeholder='email' className="input login"
