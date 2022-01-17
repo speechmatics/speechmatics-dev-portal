@@ -4,7 +4,9 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
   auth: {
       clientId: "69c988f8-a944-44e2-9adf-53346bbee5f0",
-      authority: "https://login.windows-ppe.net/common",
+      authority: "https://login.microsoftonline.com/common/",
+      redirectUri: "http://localhost:3000/",
+      postLogoutRedirectUri: "http://localhost:3000/"
   },
   system: {	
       loggerOptions: {	

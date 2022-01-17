@@ -15,7 +15,7 @@ export default function Login() {
 
     useEffect(()=> {
         if (accounts.length > 0) setTimeout(() => router.push('/getting-started/'), 1500);
-    }, [instance])
+    }, [accounts, accounts?.length])
 
     const loginHandler = () => instance.loginPopup(loginRequest).catch( error => {
         console.log(error)

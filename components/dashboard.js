@@ -5,20 +5,21 @@ import { useContext, useEffect } from 'react';
 import { LoginContext } from '../utils/login-context';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 import { Tooltip, Link as ChakraLink } from '@chakra-ui/react';
+import { useMsal } from "@azure/msal-react";
+
 
 export default function Dashboard({ children }) {
 
   const router = useRouter();
-  const loginContext = useContext(LoginContext);
 
-  useEffect(() => {
-    if (loginContext.data?.name === undefined) router.push('/login')
-  }, [])
+  const { instance, accounts, inProgress } = useMsal();
+
+  if (accounts.length == 0) return <div>not logged in, go to <Link href='/login/'>login</Link></div>
 
   return <div className="dashboard_container">
     <div className="dashboard_sidenav">
       <SpeechmaticsLogo w={250} h={130} />
-      <div className='hi_name'>Hi, {loginContext.data?.name}!</div>
+      <div className='hi_name'>Hi, {"placeholder"}!</div>
       <div className='nav_menu'>
         {menuData.map((item) => <MenuElem item={item} key={item.path}
           selected={router.asPath == item.path} />)}
