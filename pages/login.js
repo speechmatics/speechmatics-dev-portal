@@ -17,6 +17,10 @@ export default function Login() {
         if (accounts.length > 0) setTimeout(() => router.push('/getting-started/'), 1500);
     }, [instance])
 
+    const loginHandler = () => instance.loginPopup(loginRequest).catch( error => {
+        console.log(error)
+    })
+
     const LoginSub = () => {
         if (accounts.length > 0) {
             return <div className="login_text">You're logged in, let me redirect you...</div> 
@@ -25,7 +29,7 @@ export default function Login() {
         } else {
             return (
                 <div className="login_form">
-                <button className='next_button' onClick={() => instance.loginPopup(loginRequest)}>
+                <button className='next_button' onClick={loginHandler}>
                     Log in / Sign up ➔
                 </button>
             </div>
