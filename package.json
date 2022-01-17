@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.21.0",
+    "@azure/msal-react": "^1.2.0",
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
