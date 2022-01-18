@@ -42,8 +42,7 @@ export default function Dashboard({ children }) {
 
   useEffect(() => {
     if (token) {
-      const resp = await callApiWithToken(token, 'https://testapp-mipo.azurewebsites.net/hello')
-      setResponse(resp);
+      callApiWithToken(token, 'https://testapp-mipo.azurewebsites.net/hello').then(setResponse)
     }
 
   }, [token])
