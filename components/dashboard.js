@@ -28,7 +28,7 @@ export default function Dashboard({ children }) {
     };
 
     msalInstance.acquireTokenSilent(request).then(tokenResponse => {
-      setToken(setToken)
+      setToken(tokenResponse)
     }).catch(async (error) => {
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
