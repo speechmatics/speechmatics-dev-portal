@@ -27,15 +27,15 @@ export default function Dashboard({ children }) {
       account
     };
 
-    msalInstance.acquireTokenSilent(request).then(tokenResponse => {
+    instance.acquireTokenSilent(request).then(tokenResponse => {
       setToken(tokenResponse)
     }).catch(async (error) => {
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
-        return msalInstance.acquireTokenPopup(request);
+        return instance.acquireTokenPopup(request);
       }
     }).catch(error => {
-      handleError(error);
+      console.error(error);
     });
 
   }, [instance]);
