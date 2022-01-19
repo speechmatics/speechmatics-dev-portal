@@ -43,7 +43,7 @@ export default function Dashboard({ children }) {
   useEffect(() => {
     if (token) {
       console.log({token});
-      callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello').then(setResponse)
+      callApiWithToken(token.accessToken, 'http://selfserv.zennzei2.p6.tiktalik.io:5000/hello').then(setResponse)
     }
 
   }, [token])
