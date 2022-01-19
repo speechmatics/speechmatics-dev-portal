@@ -23,7 +23,7 @@ export default function Dashboard({ children }) {
 
   useEffect(() => {
     const request = {
-      scopes: ["Mail.Read"],
+      scopes: ["openid", "User.Read"],
       account
     };
 
