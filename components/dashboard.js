@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
 import { useMsal } from "@azure/msal-react";
-
+import { InteractionRequiredAuthError } from "@azure/msal-common";
 
 
 export default function Dashboard({ children }) {
