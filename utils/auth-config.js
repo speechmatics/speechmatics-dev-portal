@@ -5,8 +5,8 @@ export const msalConfig = {
     auth: {
         clientId: "69c988f8-a944-44e2-9adf-53346bbee5f0",
         authority: "https://login.microsoftonline.com/common/",
-        redirectUri: "http://localhost:3000/",
-        postLogoutRedirectUri: "http://localhost:3000/"
+        redirectUri: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/",
+        postLogoutRedirectUri: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/"
     },
     system: {
         loggerOptions: {
