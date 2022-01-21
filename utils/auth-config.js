@@ -1,12 +1,40 @@
 import { LogLevel } from "@azure/msal-browser";
 
+
+export const b2cPolicies = {
+    names: {
+        signUpSignIn: "B2C_1_susi",
+        forgotPassword: "B2C_1_reset",
+        editProfile: "B2C_1_edit_profile"
+    },
+    authorities: {
+        signUpSignIn: {
+            authority: "https://testb2cmichalp.b2clogin.com/testb2cmichalp.onmicrosoft.com/B2C_1_susi",
+        },
+        forgotPassword: {
+            authority: "https://testb2cmichalp.b2clogin.com/testb2cmichalp.onmicrosoft.com/B2C_1_reset",
+        },
+        editProfile: {
+            authority: "https://testb2cmichalp.b2clogin.com/testb2cmichalp.onmicrosoft.com/B2C_1_edit_profile"
+        }
+    },
+    authorityDomain: "testb2cmichalp.b2clogin.com"
+}
+
+
 // Config object to be passed to Msal on creation
 export const msalConfig = {
     auth: {
-        clientId: "69c988f8-a944-44e2-9adf-53346bbee5f0",
-        authority: "https://login.microsoftonline.com/common/",
-        redirectUri: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/",
-        postLogoutRedirectUri: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/"
+        clientId: "cc0ee2fd-cf10-4d64-b87c-727e1a130502", // This is the ONLY mandatory field that you need to supply.
+        authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
+        knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
+        redirectUri: "http://localhost:3000/", // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
+        postLogoutRedirectUri: "http://localhost:3000/", // Indicates the page to navigate after logout.
+        navigateToLoginRequestUrl: false, // If "true", will navigate back to the original request location before processing the auth code response.
+    },
+    cache: {
+        cacheLocation: "sessionStorage", // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+        storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
     system: {
         loggerOptions: {
@@ -33,12 +61,23 @@ export const msalConfig = {
     }
 };
 
-// Add here scopes for id token to be used at MS Identity Platform endpoints.
-export const loginRequest = {
-    scopes: ["openid", "User.Read"]
-};
+/**
+ * Add here the endpoints and scopes when obtaining an access token for protected web APIs. For more information, see:
+ * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
+ */
+ export const protectedResources = {
+    apiHello: {
+        endpoint: "http://localhost:4010/hello",
+        scopes: ["https://testb2cmichalp.onmicrosoft.com/helloapi/demo.read"], // e.g. api://xxxxxx/access_as_user
+    },
+}
 
-// Add here the endpoints for MS Graph API services you would like to use.
-export const graphConfig = {
-    graphMeEndpoint: "https://graph.microsoft-ppe.com/v1.0/me"
+/**
+ * Scopes you add here will be prompted for user consent during sign-in.
+ * By default, MSAL.js will add OIDC scopes (openid, profile, email) to any login request.
+ * For more information about OIDC scopes, visit: 
+ * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+ */
+ export const loginRequest = {
+    scopes: [...protectedResources.apiHello.scopes]
 };

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import menuData from '../static_data/menu-data'
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../components/Icons';
 import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
 import { useMsal } from "@azure/msal-react";
@@ -40,7 +40,7 @@ export default function Dashboard({ children }) {
 
   }, [instance]);
 
-  useEffect(() => {
+  const callb = useCallback(() => {
     if (token) {
       console.log({token});
       callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello').then(setResponse)
@@ -62,6 +62,7 @@ export default function Dashboard({ children }) {
           <span>See FAQs</span>
         </div>
       </Link>
+      <Button onClick={callb}>test api</Button>
     </div>
     <div className="dashboard_content">
       {children}
