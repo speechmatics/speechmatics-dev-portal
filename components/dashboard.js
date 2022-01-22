@@ -43,7 +43,8 @@ export default function Dashboard({ children }) {
   const callb = useCallback(() => {
     if (token) {
       console.log({ token });
-      callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello').then(setResponse)
+      callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello')
+        .then(resp => (setResponse(resp), console.log(resp)))
     }
 
   }, [token])
