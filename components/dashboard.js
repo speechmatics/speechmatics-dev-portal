@@ -52,7 +52,7 @@ export default function Dashboard({ children }) {
   return <div className="dashboard_container">
     <div className="dashboard_sidenav">
       <SpeechmaticsLogo w={250} h={130} />
-      <div className='hi_name'>Hi, {account.name || account.username}!<br />{response}</div>
+      <div className='hi_name'>Hi, {account.name || account.username}!</div>
       <div className='nav_menu'>
         {menuData.map((item) => <MenuElem item={item} key={item.path}
           selected={router.asPath == item.path} />)}
@@ -63,6 +63,8 @@ export default function Dashboard({ children }) {
         </div>
       </Link>
       <Button onClick={callb}>test api</Button>
+      <div dangerouslySetInnerHTML={{ __html: response }} />;
+
       test: {process.env.TEST_IF_WORKS_ENV_VAR}
     </div>
     <div className="dashboard_content">
