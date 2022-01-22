@@ -40,6 +40,7 @@ export default function Login() {
     return <div className="login_container">
         <SpeechmaticsLogo />
         {process.env.TEST_IF_WORKS_ENV_VAR}
+        <br/>
         redir url test: {process.env.REDIRECT_URI}
 
         <LoginSub/>
