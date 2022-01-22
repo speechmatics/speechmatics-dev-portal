@@ -6,7 +6,7 @@ import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from '../comp
 import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
 import { useMsal } from "@azure/msal-react";
 import { InteractionRequiredAuthError } from "@azure/msal-common";
-
+import { protectedResources } from '../utils/auth-config'
 
 export default function Dashboard({ children }) {
 
@@ -23,7 +23,7 @@ export default function Dashboard({ children }) {
 
   useEffect(() => {
     const request = {
-      scopes: ["openid", "User.Read"],
+      scopes: [...protectedResources.apiHello.scopes],
       account
     };
 
@@ -42,7 +42,7 @@ export default function Dashboard({ children }) {
 
   const callb = useCallback(() => {
     if (token) {
-      console.log({token});
+      console.log({ token });
       callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello').then(setResponse)
     }
 
