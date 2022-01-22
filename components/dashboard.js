@@ -44,7 +44,7 @@ export default function Dashboard({ children }) {
     if (token) {
       console.log({ token });
       callApiWithToken(token.accessToken, 'https://testapp-mipo.azurewebsites.net/hello')
-        .then(resp => (setResponse(resp), console.log(resp)))
+        .then(resp => (setResponse(resp.name), console.log(JSON.stringify(resp))))
     }
 
   }, [token])
