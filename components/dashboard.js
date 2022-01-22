@@ -63,6 +63,7 @@ export default function Dashboard({ children }) {
         </div>
       </Link>
       <Button onClick={callb}>test api</Button>
+      test: {process.env.TEST_IF_WORKS_ENV_VAR}
     </div>
     <div className="dashboard_content">
       {children}
