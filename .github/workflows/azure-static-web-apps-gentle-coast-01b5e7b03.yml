@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      TEST_IF_WORKS_ENV_VAR: ${{ env.TEST_IF_WORKS_ENV_VAR }}
+      TEST_IF_WORKS_ENV_VAR: ${{ secrets.TEST_IF_WORKS_ENV_VAR }}
       REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
       POST_LOGOUT_REDIRECT_URI: ${{ secrets.POST_LOGOUT_REDIRECT_URI }}
     steps:
