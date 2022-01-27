@@ -84,7 +84,7 @@ export default function Dashboard({ children }) {
           </div>
         </Link>
         <Button onClick={callb}>test api</Button>
-        <div dangerouslySetInnerHTML={{ __html: response }} />; test:{" "}
+        <div dangerouslySetInnerHTML={{ __html: response }} />; test::{" "}
         {process.env.TEST_IF_WORKS_ENV_VAR}
       </div>
       <div className="dashboard_content">{children}</div>
