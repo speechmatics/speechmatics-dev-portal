@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      TEST_IF_WORKS_ENV_VAR: ${{ secret.TEST_IF_WORKS_ENV_VAR }}
+      TEST_IF_WORKS_ENV_VAR: ${{ secrets.TEST_IF_WORKS_ENV_VAR }}
       REDIRECT_URI: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/login/"
       POST_LOGOUT_REDIRECT_URI: "https://gentle-coast-01b5e7b03.1.azurestaticapps.net/login/"
     steps:
