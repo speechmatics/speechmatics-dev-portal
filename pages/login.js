@@ -13,37 +13,34 @@ export default function Login() {
 
     const { instance, accounts, inProgress } = useMsal();
 
-    useEffect(()=> {
-        if (accounts.length > 0) setTimeout(() => router.push('/getting-started/'), 1500);
+    useEffect(() => {
+        if (accounts.length > 0) router.push('/getting-started/');
     }, [accounts, accounts?.length])
 
-    const loginHandler = () => instance.loginPopup(loginRequest).catch( error => {
+    const loginHandler = () => instance.loginRedirect(loginRequest).catch(error => {
         console.log(error)
     })
 
     const LoginSub = () => {
         if (accounts.length > 0) {
-            return <div className="login_text">You're logged in, let me redirect you...</div> 
+            return <div className="login_text">You're logged in, let me redirect you...</div>
         } else if (inProgress === "login") {
             return <div className="login_text">Login is currently in progress!</div>
-        } else {
+        } else if (accounts.length == 0) {
             return (
                 <div className="login_form">
-                <button className='next_button' onClick={loginHandler}>
-                    Log in / Sign up ➔
-                </button>
-            </div>
+                    <button className='next_button' onClick={loginHandler}>
+                        Log in / Sign up ➔
+                    </button>
+                </div>
             );
         }
     }
 
     return <div className="login_container">
         <SpeechmaticsLogo />
-        {process.env.TEST_IF_WORKS_ENV_VAR}
-        <br/>
-        redir url test: {process.env.REDIRECT_URI}
 
-        <LoginSub/>
+        <LoginSub />
 
     </div>
 };
