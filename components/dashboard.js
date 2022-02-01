@@ -57,8 +57,17 @@ export default function Dashboard({ children }) {
       console.log({ token });
       callApiWithToken(
         token.accessToken,
-        "https://testapp-mipo.azurewebsites.net/hello"
+        process.env.TEST_API_CALL_ENDPOINT
       ).then(
+        (resp) => (setResponse(resp.name), console.log(JSON.stringify(resp)))
+      );
+    }
+  }, [token]);
+
+  const callb2 = useCallback(() => {
+    if (token) {
+      console.log({ token });
+      callApiWithToken(token.idToken, process.env.TEST_API_CALL_ENDPOINT).then(
         (resp) => (setResponse(resp.name), console.log(JSON.stringify(resp)))
       );
     }
@@ -83,7 +92,8 @@ export default function Dashboard({ children }) {
             <span>See Documentation</span>
           </div>
         </Link>
-        <Button onClick={callb}>test api</Button>
+        <Button onClick={callb}>test accesstoken</Button>
+        <Button onClick={callb2}>test idtoken</Button>
         <div dangerouslySetInnerHTML={{ __html: response }} />; test::{" "}
         {process.env.TEST_IF_WORKS_ENV_VAR}
       </div>
