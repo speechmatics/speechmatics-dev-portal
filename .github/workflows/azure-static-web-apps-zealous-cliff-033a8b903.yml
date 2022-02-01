@@ -14,6 +14,16 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      TEST_IF_WORKS_ENV_VAR: "im on zealus cliff"
+      REDIRECT_URI: "https://zealous-cliff-033a8b903.1.azurestaticapps.net/getting-started/"
+      POST_LOGOUT_REDIRECT_URI: "https://zealous-cliff-033a8b903.1.azurestaticapps.net/login/"
+      SIGNUP_SIGNIN_POLICY: "B2C_1_susi",
+      RESET_PASS_POLICY: "B2C_1_reset",
+      EDIT_PROFILE_POLICY: "B2C_1_edit_profile",
+      AUTHORITY_DOMAIN: "speechmaticsb2c.b2clogin.com",
+      POLICY_DOMAIN: "speechmaticsb2c.onmicrosoft.com",
+      AUTH_CLIEND_ID: "29c24af5-8a2a-4c03-a146-47f368f460e2"
     steps:
       - uses: actions/checkout@v2
         with:
