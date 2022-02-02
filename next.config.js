@@ -11,6 +11,7 @@ module.exports = {
     POLICY_DOMAIN: process.env.POLICY_DOMAIN,
     AUTH_CLIEND_ID: process.env.AUTH_CLIEND_ID,
     TEST_API_CALL_ENDPOINT: process.env.TEST_API_CALL_ENDPOINT,
+    ENDPOINT_API_URL: process.env.ENDPOINT_API_URL,
   },
   exportPathMap: async function () {
     const paths = {

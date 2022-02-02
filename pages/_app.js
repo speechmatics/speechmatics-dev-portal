@@ -1,18 +1,16 @@
-import '../styles/reset.css';
-import '../styles/main.css';
-import '../styles/landing.css';
-import '../styles/login.css';
-import '../styles/dashboard.css';
-import { useRouter } from 'next/router';
+import "../styles/reset.css";
+import "../styles/main.css";
+import "../styles/landing.css";
+import "../styles/login.css";
+import "../styles/dashboard.css";
+import { useRouter } from "next/router";
 import { MsalProvider } from "@azure/msal-react";
-import { CustomNavigationClient } from "../utils/NavigationClient";
+import { CustomNavigationClient } from "../utils/navigation-client";
 
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { msalConfig } from "../utils/auth-config";
 
-
 export const msalInstance = new PublicClientApplication(msalConfig);
-
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
@@ -29,7 +27,6 @@ msalInstance.addEventCallback((event) => {
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
-
   const router = useRouter();
   const navigationClient = new CustomNavigationClient(router);
   msalInstance.setNavigationClient(navigationClient);
@@ -38,11 +35,11 @@ export default function MyApp({ Component, pageProps }) {
     <MsalProvider instance={msalInstance}>
       <div className="all_container">
         <div className="header"></div>
-        <div className="content"><Component {...pageProps} /></div>
+        <div className="content">
+          <Component {...pageProps} />
+        </div>
         <div className="footer">© Speechmatics 2021</div>
       </div>
     </MsalProvider>
   );
 }
-
-

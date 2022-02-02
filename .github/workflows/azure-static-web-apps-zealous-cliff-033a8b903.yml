@@ -24,7 +24,8 @@ jobs:
       AUTHORITY_DOMAIN: "speechmaticsb2c.b2clogin.com"
       POLICY_DOMAIN: "speechmaticsb2c.onmicrosoft.com"
       AUTH_CLIEND_ID: "29c24af5-8a2a-4c03-a146-47f368f460e2"
-      TEST_API_CALL_ENDPOINT: "https://speechmatics-mp-dev-ingress-a.westeurope.cloudapp.azure.com/hello"
+      TEST_API_CALL_ENDPOINT: "https://self-service-chargify-poc.azurewebsites.net/hello"
+      ENDPOINT_API_URL: "https://self-service-chargify-poc.azurewebsites.net"
     steps:
       - uses: actions/checkout@v2
         with:
