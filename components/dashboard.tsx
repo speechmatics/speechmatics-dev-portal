@@ -82,13 +82,14 @@ export default function Dashboard({ children }) {
             />
           ))}
         </div>
-        <Link href="https://docs.speechmatics.com">
+        <a href="https://docs.speechmatics.com" target='_blank'>
           <div className="open_docs_button">
-            <span>
-              See Documentation <ExternalLink />
+            <span style={{ marginRight: '8px' }}>
+              See Documentation
             </span>
+            <ExternalLink color="#ffffff" />
           </div>
-        </Link>
+        </a>
         <TestApiBlock tokenPayload={tokenPayload} />
       </div>
       <div className="dashboard_content">{children}</div>
