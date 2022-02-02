@@ -16,8 +16,8 @@ jobs:
     name: Build and Deploy Job
     env:
       TEST_IF_WORKS_ENV_VAR: ${{ secrets.TEST_IF_WORKS_ENV_VAR }}
-      REDIRECT_URI: "https://speechmatics-selfserve-test.znn.app/getting-started/"
-      POST_LOGOUT_REDIRECT_URI: "https://speechmatics-selfserve-test.znn.app/login/"
+      REDIRECT_URI: "https://speechmatics-portal-test.znn.app/getting-started/"
+      POST_LOGOUT_REDIRECT_URI: "https://speechmatics-portal-test.znn.app/login/"
       SIGNUP_SIGNIN_POLICY: "B2C_1_susi"
       RESET_PASS_POLICY: "B2C_1_reset"
       EDIT_PROFILE_POLICY: "B2C_1_edit_profile"
