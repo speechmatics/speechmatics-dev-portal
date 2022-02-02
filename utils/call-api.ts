@@ -6,6 +6,10 @@ export const callGetAccounts = async (accessToken: string) => {
   return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, "GET");
 };
 
+export const callUsage = async (accessToken: string) => {
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/usage`, "GET");
+};
+
 export const call = async (
   accessToken: string,
   apiEndpoint: string,
