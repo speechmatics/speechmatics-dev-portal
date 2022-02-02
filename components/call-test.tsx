@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { callApiWithToken } from "../utils/call-api";
+import { call } from "../utils/call-api";
 
 export default ({ tokenPayload }) => {
   const [response, setResponse] = useState();
@@ -8,9 +8,10 @@ export default ({ tokenPayload }) => {
   const callb = useCallback(() => {
     if (tokenPayload) {
       console.log({ tokenPayload });
-      callApiWithToken(
+      call(
         tokenPayload.accessToken,
-        process.env.TEST_API_CALL_ENDPOINT
+        process.env.TEST_API_CALL_ENDPOINT,
+        'GET'
       ).then(
         (resp) => (setResponse(resp.name), console.log(JSON.stringify(resp)))
       );
@@ -20,9 +21,10 @@ export default ({ tokenPayload }) => {
   const callb2 = useCallback(() => {
     if (tokenPayload) {
       console.log({ tokenPayload });
-      callApiWithToken(
+      call(
         tokenPayload.idToken,
-        process.env.TEST_API_CALL_ENDPOINT
+        process.env.TEST_API_CALL_ENDPOINT,
+        'GET'
       ).then(
         (resp) => (setResponse(resp.name), console.log(JSON.stringify(resp)))
       );

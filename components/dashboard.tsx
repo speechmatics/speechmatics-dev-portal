@@ -10,26 +10,63 @@ import {
 } from "./Icons";
 import { Tooltip, Link as ChakraLink, Button } from "@chakra-ui/react";
 import { useMsal } from "@azure/msal-react";
-import { InteractionRequiredAuthError } from "@azure/msal-common";
 import TestApiBlock from "./call-test";
-import useB2CToken from "../utils/get-b2c-token-hook";
+import { useB2CToken } from "../utils/get-b2c-token-hook";
+import { callGetAccounts, callPostAccounts } from "../utils/call-api";
 
 export default function Dashboard({ children }) {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
 
-  if (accounts.length == 0) {
-    useEffect(() => {
+  useEffect(() => {
+    if (accounts.length == 0) {
       const st = setTimeout(() => router.push("/login/"), 1000);
       return () => clearTimeout(st);
-    }, []);
-    return <div>not logged in, redirecting...</div>;
-  }
+    }
+  }, []);
 
   const tokenPayload = useB2CToken(instance);
 
   const account = instance.getActiveAccount();
+
+  const [mpAccount, setMpAccount] = useState();
+  const [alreadySentRequest, setAlreadySentRequest] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log("calling GET /accounts to check the accounts", router.asPath);
+    let isActive = true;
+    if (!mpAccount && tokenPayload?.accessToken && !alreadySentRequest) {
+      setAlreadySentRequest(true);
+      callGetAccounts(tokenPayload.accessToken)
+        .then((jsonResp: any) => {
+          console.log("response from GET /accounts is", jsonResp);
+
+          if (jsonResp && Array.isArray(jsonResp) && jsonResp.length == 0) {
+            console.log(
+              "no account on management platform, sending a request to create with POST /accounts"
+            );
+
+            return callPostAccounts(tokenPayload.accessToken).then(
+              (jsonPostResp) => {
+                console.log("response from POST /accounts", jsonPostResp);
+                if (isActive) setMpAccount(jsonPostResp);
+              }
+            );
+          } else if (jsonResp && Array.isArray && jsonResp.length > 0) {
+            if (isActive) setMpAccount(jsonResp);
+          }
+        })
+        .catch(console.error);
+    }
+    return () => {
+      isActive = false;
+    };
+  }, [tokenPayload?.accessToken]);
+
+  if (accounts.length == 0) {
+    return <div>not logged in, redirecting...</div>;
+  }
 
   return (
     <div className="dashboard_container">

@@ -6,7 +6,7 @@ import {
 } from "@azure/msal-common";
 import { protectedResources } from "../utils/auth-config";
 
-export default function useB2CToken(msalInstance: IPublicClientApplication) {
+export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
 
   const [token, setToken] = useState<AuthenticationResult>();

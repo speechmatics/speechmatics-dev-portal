@@ -1,6 +1,15 @@
-export const callApiWithToken = async (
+export const callPostAccounts = async (accessToken: string) => {
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, "POST");
+};
+
+export const callGetAccounts = async (accessToken: string) => {
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, "GET");
+};
+
+export const call = async (
   accessToken: string,
-  apiEndpoint: string
+  apiEndpoint: string,
+  method: string
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${accessToken}`;
@@ -8,7 +17,7 @@ export const callApiWithToken = async (
   headers.append("Authorization", bearer);
 
   const options = {
-    method: "GET",
+    method: method,
     headers: headers,
   };
 
