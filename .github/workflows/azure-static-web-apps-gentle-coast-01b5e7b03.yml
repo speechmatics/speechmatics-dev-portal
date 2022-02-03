@@ -25,7 +25,7 @@ jobs:
       POLICY_DOMAIN: "testb2cmichalp.onmicrosoft.com"
       AUTH_CLIEND_ID: "cc0ee2fd-cf10-4d64-b87c-727e1a130502"
       TEST_API_CALL_ENDPOINT: "https://testapp-mipo.azurewebsites.net/hello"
-      ENDPOINT_API_URL: "https://self-service-chargify-poc.azurewebsites.net"
+      ENDPOINT_API_URL: "https://testapp-mipo.azurewebsites.net"
       DEFAULT_B2C_SCOPE: "https://testb2cmichalp.onmicrosoft.com/helloapi/demo.read"
     steps:
       - uses: actions/checkout@v2
