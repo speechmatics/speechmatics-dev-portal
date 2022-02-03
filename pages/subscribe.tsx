@@ -1,10 +1,15 @@
 import Head from 'next/head';
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import Dashboard from '../components/dashboard'
+import Dashboard from '../components/dashboard';
 import { LoginContext } from '../utils/login-context';
 
+declare global {
+  interface Window {
+    Chargify: any;
+  }
+}
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -33,125 +38,123 @@ function Subscribe({ }) {
         console.log('{host} token ERROR - err: ', error);
       }
     );
-  }
+  };
 
-  useEffect(
-    () => {
-      if (!chargifyLoaded && chargify && chargify.current) {
-        chargify.current.load({
-          selector: '#chargify-form',
-          publicKey: 'chjs_ycbc7hctjthpy6qbxxxgjtfd',
-          type: 'card',
-          serverHost: 'https://speechmatics-3.chargify.com',
-          fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data?.name)
-        });
-        setChargifyLoaded(true);
-      }
+  useEffect(() => {
+    if (!chargifyLoaded && chargify && chargify.current) {
+      chargify.current.load({
+        selector: '#chargify-form',
+        publicKey: 'chjs_ycbc7hctjthpy6qbxxxgjtfd',
+        type: 'card',
+        serverHost: 'https://speechmatics-3.chargify.com',
+        fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data?.name),
+      });
+      setChargifyLoaded(true);
+    }
 
-      return () => {
-        chargify?.current.unload();
-      };
-    }, [chargify, typeof window !== 'undefined' && 'Chargify' in window]);
+    return () => {
+      chargify?.current.unload();
+    };
+  }, [chargify, typeof window !== 'undefined' && 'Chargify' in window]);
 
+  return (
+    <Dashboard>
+      <h1>Set up new subscription</h1>
 
-  return <Dashboard>
-    <h1>Set up new subscription</h1>
+      <div>
+        <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
+        <div style={{ width: '700px' }}>
+          <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
+            <section style={{ display: 'flex' }}>
+              <div id="chargify_firstName"></div>
+              <div id="chargify_lastname"></div>
+            </section>
 
-    <div>
+            <section style={{}}>
+              <div id="chargify_ccnumber"></div>
+              <div style={{ display: 'flex', width: '250px' }}>
+                <div id="chargify_ccmonth"></div>
+                <div id="chargify_ccyear"></div>
+                <div id="chargify_cvv"></div>
+              </div>
+            </section>
 
-      <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
-      <div style={{ width: '700px' }}>
-        <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
+            <section style={{ display: 'flex', flexWrap: 'wrap' }}>
+              <div id="chargify_address"></div>
+              <div id="chargify_address2"></div>
+              <div id="chargify_city"></div>
+              <div id="chargify_state"></div>
+              <div id="chargify_zip"></div>
+              <div id="chargify_country"></div>
+            </section>
 
-          <section style={{ display: 'flex' }}>
-            <div id="chargify_firstName"></div>
-            <div id="chargify_lastname"></div>
-          </section>
+            <label>
+              <input id="host-token" disabled value={token} type="hidden" />
+              <input id="reference" disabled value={'client1'} type="hidden" />
+              <input
+                type="hidden"
+                className="host-input"
+                data-chargify="reference"
+                value={'client1'}
+              />
+            </label>
+            <p>
+              <button type="submit">Submit Form</button>
+            </p>
+          </form>
+        </div>
+        <style jsx>{`
+          button[type='submit'] {
+            border: 0;
+            width: 10em;
+            height: 2em;
+            padding: 0 1em;
+            margin: 1em 0;
+            border-radius: 15px;
+            background: var(--main-navy);
+            font-family: GibsonRegular;
+            font-size: 1.5em;
+            color: #fff;
+            text-transform: uppercase;
+            filter: drop-shadow(0px 9px 11px rgba(0, 0, 0, 0.12));
+            cursor: pointer;
+          }
 
-          <section style={{}}>
-            <div id="chargify_ccnumber"></div>
-            <div style={{ display: 'flex', width: '250px' }}>
-              <div id="chargify_ccmonth" ></div>
-              <div id="chargify_ccyear" ></div>
-              <div id="chargify_cvv" ></div>
-            </div>
-          </section>
+          button:active {
+            background: var(--main-blue);
+          }
 
-          <section style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <div id="chargify_address"></div>
-            <div id="chargify_address2"></div>
-            <div id="chargify_city"></div>
-            <div id="chargify_state"></div>
-            <div id="chargify_zip"></div>
-            <div id="chargify_country"></div>
-          </section>
-
-          <label>
-            <input id="host-token" disabled value={token} type='hidden' />
-            <input id="reference" disabled value={'client1'} type='hidden' />
-            <input type="hidden" className="host-input" data-chargify="reference" value={'client1'} />
-          </label>
-          <p>
-            <button type="submit">Submit Form</button>
-          </p>
-        </form>
+          section {
+            margin-top: 1em;
+          }
+        `}</style>
       </div>
-      <style jsx>{`
-
-button[type="submit"] {
-    border: 0;
-    width: 10em;
-    height: 2em;
-    padding: 0 1em;
-    margin: 1em 0;
-    border-radius: 15px;
-    background: var(--main-navy);
-    font-family: GibsonRegular;
-    font-size: 1.5em;
-    color: #fff;
-    text-transform: uppercase;
-    filter: drop-shadow(0px 9px 11px rgba(0, 0, 0, 0.12));
-    cursor: pointer;
+    </Dashboard>
+  );
 }
-
-button:active {
-    background: var(--main-blue);
-}
-
-section {
-    margin-top: 1em;
-}
-
-                `}</style>
-    </div>
-  </Dashboard >
-}
-
 
 export default Subscribe;
 
-
 const chargifyFields = (color1, color2, color3, name) => {
-
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '13px'
-  }
+    fontSize: '13px',
+  };
 
   const defaultStyle = {
     field: {
       backgroundColor: color1,
       padding: '3px',
-      borderRadius: '5px'
+      borderRadius: '5px',
     },
     input: {
       backgroundColor: color2,
       paddingTop: '2px',
-      paddingBottom: '1px'
+      paddingBottom: '1px',
     },
     label: labelStyle,
-    message: { paddingTop: '2px', paddingBottom: '1px' }
-  }
+    message: { paddingTop: '2px', paddingBottom: '1px' },
+  };
 
   return {
     firstName: {
@@ -165,17 +168,17 @@ const chargifyFields = (color1, color2, color3, name) => {
         field: {
           backgroundColor: color1,
           padding: '3px',
-          borderRadius: '5px'
+          borderRadius: '5px',
         },
         input: {
           backgroundColor: color2,
           paddingTop: '2px',
           paddingBottom: '1px',
-          placeholder: { color: color3 }
+          placeholder: { color: color3 },
         },
         label: labelStyle,
-        message: { paddingTop: '2px', paddingBottom: '1px' }
-      }
+        message: { paddingTop: '2px', paddingBottom: '1px' },
+      },
     },
     lastName: {
       selector: '#chargify_lastname',
@@ -184,28 +187,28 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '30',
-      style: defaultStyle
+      style: defaultStyle,
     },
     number: {
       selector: '#chargify_ccnumber',
       label: 'Credit card number',
       placeholder: 'xxxx xxxx xxxx xxxx',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle
+      style: defaultStyle,
     },
     month: {
       selector: '#chargify_ccmonth',
       label: 'Expiry Month',
       placeholder: 'mm',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle
+      style: defaultStyle,
     },
     year: {
       selector: '#chargify_ccyear',
       label: 'Expiry Year',
       placeholder: 'yyyy',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle
+      style: defaultStyle,
     },
     cvv: {
       selector: '#chargify_cvv',
@@ -213,7 +216,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       placeholder: 'XXX',
       required: false,
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle
+      style: defaultStyle,
     },
     address: {
       selector: '#chargify_address',
@@ -222,7 +225,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
     address2: {
       selector: '#chargify_address2',
@@ -231,7 +234,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
     city: {
       selector: '#chargify_city',
@@ -240,7 +243,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
     state: {
       selector: '#chargify_state',
@@ -249,7 +252,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
     zip: {
       selector: '#chargify_zip',
@@ -258,7 +261,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
     country: {
       selector: '#chargify_country',
@@ -267,7 +270,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle
+      style: defaultStyle,
     },
-  }
-}
+  };
+};

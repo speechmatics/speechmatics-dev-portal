@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { CSSProperties } from "react";
-import Dashboard from "../components/dashboard";
+import Link from 'next/link';
+import { CSSProperties } from 'react';
+import Dashboard from '../components/dashboard';
 
 export default function Usage() {
   return (
@@ -10,15 +10,12 @@ export default function Usage() {
       <h2>Billing Month: {sampleJson.currentUsage.billingMonth}</h2>
 
       <h3>{sampleJson.currentUsage.standardUsed} hours Standard</h3>
-      <h3>
-        You have {sampleJson.currentUsage.standardLeft} hours of free usage left
-        this month.
-      </h3>
+      <h3>You have {sampleJson.currentUsage.standardLeft} hours of free usage left this month.</h3>
       <br />
       <h3>{sampleJson.currentUsage.enhancedUsed} hours Enhanced</h3>
-      <h3 style={{ color: "#DA3A4A" }}>
-        You have used your allowance of 3 hours this month.{" "}
-        <Link href={"/subscribe"}>Setup up the payment.</Link>
+      <h3 style={{ color: '#DA3A4A' }}>
+        You have used your allowance of 3 hours this month.{' '}
+        <Link href={'/subscribe'}>Setup up the payment.</Link>
       </h3>
 
       <div style={{ height: 100 }} />
@@ -80,7 +77,7 @@ type DataMonth = {
 
 const sampleJson = {
   currentUsage: {
-    billingMonth: "01 February 2022 - 28 February 2022",
+    billingMonth: '01 February 2022 - 28 February 2022',
     totalUsed: 5.5,
     standardUsed: 1.3,
     standardLeft: 1.7,
@@ -140,56 +137,56 @@ const sampleJson = {
 };
 
 const months = [
-  "",
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  '',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 const styles = {
   elemContainer: {
     height: 300,
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-end",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   } as CSSProperties,
 
   columnContainer: {
     flex: 1,
     padding: 10,
-    display: "flex",
-    alignItems: "flex-end",
+    display: 'flex',
+    alignItems: 'flex-end',
   } as CSSProperties,
 
   column: {
     flex: 1,
-    color: "white",
+    color: 'white',
     fontSize: 12,
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     paddingTop: 10,
   } as CSSProperties,
 
   columnLabel: {
-    display: "flex",
-    color: "gray",
+    display: 'flex',
+    color: 'gray',
     fontSize: 10,
-    justifyContent: "space-between",
-    padding: "0px 20px 2px 20px",
+    justifyContent: 'space-between',
+    padding: '0px 20px 2px 20px',
   } as CSSProperties,
 
   columnYear: {
-    alignSelf: "center",
+    alignSelf: 'center',
     paddingTop: 5,
   } as CSSProperties,
 };

@@ -1,24 +1,20 @@
 export const callPostAccounts = async (accessToken: string) => {
-  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, "POST");
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'POST');
 };
 
 export const callGetAccounts = async (accessToken: string) => {
-  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, "GET");
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
 export const callUsage = async (accessToken: string) => {
-  return call(accessToken, `${process.env.ENDPOINT_API_URL}/usage`, "GET");
+  return call(accessToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET');
 };
 
-export const call = async (
-  accessToken: string,
-  apiEndpoint: string,
-  method: string
-) => {
+export const call = async (accessToken: string, apiEndpoint: string, method: string) => {
   const headers = new Headers();
   const bearer = `Bearer ${accessToken}`;
 
-  headers.append("Authorization", bearer);
+  headers.append('Authorization', bearer);
 
   const options = {
     method: method,

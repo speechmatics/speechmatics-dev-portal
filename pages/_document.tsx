@@ -1,7 +1,7 @@
 // /pages/_document.js
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { ChakraProvider } from "@chakra-ui/react"
+import { ChakraProvider } from '@chakra-ui/react';
 
 class MyDocument extends Document {
   render() {
@@ -16,12 +16,11 @@ class MyDocument extends Document {
             <script src="https://js.chargify.com/latest/chargify.js"></script>
           </Head>
           <body>
-            <Main className="main_container" />
+            <Main />
             <NextScript />
           </body>
         </Html>
       </ChakraProvider>
-
     );
   }
 }

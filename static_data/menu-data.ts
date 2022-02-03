@@ -6,32 +6,32 @@ import {
   RecentJobsIcon,
   UsageIcon,
   AccessTokenIcon,
-} from "../components/Icons";
+} from '../components/Icons';
 
 const menuData = [
   {
-    path: "/getting-started/",
-    title: "Getting Started",
+    path: '/getting-started/',
+    title: 'Getting Started',
     icon: GettingStartedIcon,
   },
   {
-    path: "/access-token/",
-    title: "Access Token",
+    path: '/access-token/',
+    title: 'Access Token',
     icon: AccessTokenIcon,
   },
   {
-    path: "/subscriptions/",
-    title: "Billing",
+    path: '/subscriptions/',
+    title: 'Billing',
     icon: SubscribeIcon,
   },
   {
-    path: "/usage/",
-    title: "Usage",
+    path: '/usage/',
+    title: 'Usage',
     icon: UsageIcon,
   },
   {
-    path: "/faq/",
-    title: "FAQ",
+    path: '/resources/',
+    title: 'Resources',
     icon: DocumentationIcon,
   },
 ];

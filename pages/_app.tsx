@@ -1,14 +1,14 @@
-import "../styles/reset.css";
-import "../styles/main.css";
-import "../styles/landing.css";
-import "../styles/login.css";
-import "../styles/dashboard.css";
-import { useRouter } from "next/router";
-import { MsalProvider } from "@azure/msal-react";
-import { CustomNavigationClient } from "../utils/navigation-client";
+import '../styles/reset.css';
+import '../styles/main.css';
+import '../styles/landing.css';
+import '../styles/login.css';
+import '../styles/dashboard.css';
+import { useRouter } from 'next/router';
+import { MsalProvider } from '@azure/msal-react';
+import { CustomNavigationClient } from '../utils/navigation-client';
 
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
-import { msalConfig } from "../utils/auth-config";
+import { PublicClientApplication, EventType } from '@azure/msal-browser';
+import { msalConfig } from '../utils/auth-config';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -19,8 +19,8 @@ if (accounts.length > 0) {
 }
 
 msalInstance.addEventCallback((event) => {
-  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
-    const account = event.payload.account;
+  if (event.eventType === EventType.LOGIN_SUCCESS && (event.payload as any).account) {
+    const account = (event.payload as any).account;
     msalInstance.setActiveAccount(account);
   }
 });

@@ -1,9 +1,12 @@
-import { NavigationClient } from "@azure/msal-browser";
+import { NavigationClient } from '@azure/msal-browser';
+import { NextRouter } from 'next/router';
 
 /**
  * This is an example for overriding the default function MSAL uses to navigate to other urls in your webpage
  */
 export class CustomNavigationClient extends NavigationClient {
+  router: NextRouter;
+
   constructor(router) {
     super();
     this.router = router;
@@ -16,7 +19,7 @@ export class CustomNavigationClient extends NavigationClient {
    * @param options
    */
   async navigateInternal(url, options) {
-    const relativePath = url.replace(window.location.origin, "");
+    const relativePath = url.replace(window.location.origin, '');
     if (options.noHistory) {
       this.router.replace(relativePath);
     } else {

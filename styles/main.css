@@ -41,6 +41,10 @@ body {
   height          : 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
 #__next {
   height: 100%;
 }
@@ -81,12 +85,6 @@ h3 {
   place-items     : center;
   font-family     : GibsonLight;
 }
-
-.main_container {
-  height: 100%;
-  width : 100%;
-}
-
 
 
 .shadow_box {

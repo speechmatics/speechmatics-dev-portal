@@ -1,18 +1,13 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import menuData from "../static_data/menu-data";
-import { useEffect, useState } from "react";
-import {
-  SpeechmaticsLogo,
-  ExternalLink,
-  AccountIcon,
-  LogoutIcon,
-} from "./Icons";
-import { Tooltip, Link as ChakraLink, Button } from "@chakra-ui/react";
-import { useMsal, useIsAuthenticated } from "@azure/msal-react";
-import TestApiBlock from "./call-test";
-import { useB2CToken } from "../utils/get-b2c-token-hook";
-import { callGetAccounts, callPostAccounts } from "../utils/call-api";
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import menuData from '../static_data/menu-data';
+import { useEffect, useState } from 'react';
+import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from './Icons';
+import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
+import { useMsal, useIsAuthenticated } from '@azure/msal-react';
+import TestApiBlock from './call-test';
+import { useB2CToken } from '../utils/get-b2c-token-hook';
+import { callGetAccounts, callPostAccounts } from '../utils/call-api';
 
 export default function Dashboard({ children }) {
   const router = useRouter();
@@ -22,7 +17,7 @@ export default function Dashboard({ children }) {
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length == 0) {
-      st = window.setTimeout(() => router.push("/login/"), 1000);
+      st = window.setTimeout(() => router.push('/login/'), 1000);
     }
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
@@ -35,25 +30,23 @@ export default function Dashboard({ children }) {
   const [alreadySentRequest, setAlreadySentRequest] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("calling GET /accounts to check the accounts", router.asPath);
+    console.log('calling GET /accounts to check the accounts', router.asPath);
     let isActive = true;
     if (!mpAccount && tokenPayload?.accessToken && !alreadySentRequest) {
       setAlreadySentRequest(true);
       callGetAccounts(tokenPayload.accessToken)
         .then((jsonResp: any) => {
-          console.log("response from GET /accounts is", jsonResp);
+          console.log('response from GET /accounts is', jsonResp);
 
           if (jsonResp && Array.isArray(jsonResp) && jsonResp.length == 0) {
             console.log(
-              "no account on management platform, sending a request to create with POST /accounts"
+              'no account on management platform, sending a request to create with POST /accounts'
             );
 
-            return callPostAccounts(tokenPayload.accessToken).then(
-              (jsonPostResp) => {
-                console.log("response from POST /accounts", jsonPostResp);
-                if (isActive) setMpAccount(jsonPostResp);
-              }
-            );
+            return callPostAccounts(tokenPayload.accessToken).then((jsonPostResp) => {
+              console.log('response from POST /accounts', jsonPostResp);
+              if (isActive) setMpAccount(jsonPostResp);
+            });
           } else if (jsonResp && Array.isArray && jsonResp.length > 0) {
             if (isActive) setMpAccount(jsonResp);
           }
@@ -76,21 +69,10 @@ export default function Dashboard({ children }) {
         <div className="hi_name">Hi, {account.name || account.username}!</div>
         <div className="nav_menu">
           {menuData.map((item) => (
-            <MenuElem
-              item={item}
-              key={item.path}
-              selected={router.asPath == item.path}
-            />
+            <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
           ))}
         </div>
-        <a href="https://docs.speechmatics.com" target='_blank'>
-          <div className="open_docs_button">
-            <span style={{ marginRight: '8px' }}>
-              See Documentation
-            </span>
-            <ExternalLink color="#ffffff" />
-          </div>
-        </a>
+
         <TestApiBlock tokenPayload={tokenPayload} />
       </div>
       <div className="dashboard_content">{children}</div>
@@ -98,17 +80,14 @@ export default function Dashboard({ children }) {
         <Link href="/account/" passHref>
           <ChakraLink>
             <Tooltip label="Account" placement="left">
-              <div style={{ cursor: "pointer" }}>
+              <div style={{ cursor: 'pointer' }}>
                 <AccountIcon w={30} h={30} />
               </div>
             </Tooltip>
           </ChakraLink>
         </Link>
         <Tooltip label="Log out" placement="left">
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={() => instance.logoutRedirect()}
-          >
+          <span style={{ cursor: 'pointer' }} onClick={() => instance.logoutRedirect()}>
             <LogoutIcon w={30} h={30} />
           </span>
         </Tooltip>
@@ -120,7 +99,7 @@ export default function Dashboard({ children }) {
 function MenuElem({ item, selected }) {
   return (
     <Link href={item.path}>
-      <div className={`menu_elem ${selected ? "selected" : ""}`}>
+      <div className={`menu_elem ${selected ? 'selected' : ''}`}>
         <div>{item.icon({})}</div>
         <div>{item.title}</div>
       </div>

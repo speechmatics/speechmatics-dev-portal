@@ -1,15 +1,14 @@
-import { LogLevel } from "@azure/msal-browser";
+import { LogLevel } from '@azure/msal-browser';
 
 export const b2cPolicies = {
   names: {
-    signUpSignIn: process.env.SIGNUP_SIGNIN_POLICY || "B2C_1_susi",
-    forgotPassword: process.env.RESET_PASS_POLICY || "B2C_1_reset",
-    editProfile: process.env.EDIT_PROFILE_POLICY || "B2C_1_edit_profile",
+    signUpSignIn: process.env.SIGNUP_SIGNIN_POLICY || 'B2C_1_susi',
+    forgotPassword: process.env.RESET_PASS_POLICY || 'B2C_1_reset',
+    editProfile: process.env.EDIT_PROFILE_POLICY || 'B2C_1_edit_profile',
   },
-
-  authorityDomain:
-    process.env.AUTHORITY_DOMAIN || "testb2cmichalp.b2clogin.com",
-  policyDomain: process.env.POLICY_DOMAIN || "testb2cmichalp.onmicrosoft.com",
+  authorities: {} as any,
+  authorityDomain: process.env.AUTHORITY_DOMAIN || 'testb2cmichalp.b2clogin.com',
+  policyDomain: process.env.POLICY_DOMAIN || 'testb2cmichalp.onmicrosoft.com',
 };
 
 b2cPolicies.authorities = {
@@ -27,17 +26,15 @@ b2cPolicies.authorities = {
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
-    clientId:
-      process.env.AUTH_CLIEND_ID || "cc0ee2fd-cf10-4d64-b87c-727e1a130502", // This is the ONLY mandatory field that you need to supply.
+    clientId: process.env.AUTH_CLIEND_ID || 'cc0ee2fd-cf10-4d64-b87c-727e1a130502', // This is the ONLY mandatory field that you need to supply.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
-    redirectUri: process.env.REDIRECT_URI || "http://localhost:3000/login/", // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
-    postLogoutRedirectUri:
-      process.env.POST_LOGOUT_REDIRECT_URI || "http://localhost:3000/", // Indicates the page to navigate after logout.
+    redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
+    postLogoutRedirectUri: process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/', // Indicates the page to navigate after logout.
     navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
   },
   cache: {
-    cacheLocation: "sessionStorage", // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+    cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
     storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {
