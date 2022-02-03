@@ -7,6 +7,8 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
 
+  console.log('useB2CToken', defaultB2CScope, account);
+
   useEffect(() => {
     const request = {
       scopes: [...defaultB2CScope],
@@ -19,6 +21,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
         setToken(tokenResponse);
       })
       .catch(async (error) => {
+        console.log('acquireTokenSilent error', error);
         if (error instanceof InteractionRequiredAuthError) {
           // fallback to interaction when silent call fails
           return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {

@@ -1,12 +1,15 @@
 export const callPostAccounts = async (accessToken: string) => {
+  console.log('callPostAccounts', `${process.env.ENDPOINT_API_URL}/accounts`);
   return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'POST');
 };
 
 export const callGetAccounts = async (accessToken: string) => {
+  console.log('callGetAccounts', `${process.env.ENDPOINT_API_URL}/accounts`);
   return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
 export const callUsage = async (accessToken: string) => {
+  console.log('callGetAcallUsageccounts', `${process.env.ENDPOINT_API_URL}/usage`);
   return call(accessToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET');
 };
 

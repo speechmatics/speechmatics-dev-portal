@@ -7,8 +7,8 @@ export const b2cPolicies = {
     editProfile: process.env.EDIT_PROFILE_POLICY || 'B2C_1_edit_profile',
   },
   authorities: {} as any,
-  authorityDomain: process.env.AUTHORITY_DOMAIN || 'testb2cmichalp.b2clogin.com',
-  policyDomain: process.env.POLICY_DOMAIN || 'testb2cmichalp.onmicrosoft.com',
+  authorityDomain: process.env.AUTHORITY_DOMAIN,
+  policyDomain: process.env.POLICY_DOMAIN,
 };
 
 b2cPolicies.authorities = {
@@ -26,7 +26,7 @@ b2cPolicies.authorities = {
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
-    clientId: process.env.AUTH_CLIEND_ID || 'cc0ee2fd-cf10-4d64-b87c-727e1a130502', // This is the ONLY mandatory field that you need to supply.
+    clientId: process.env.AUTH_CLIEND_ID, // This is the ONLY mandatory field that you need to supply.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
@@ -68,14 +68,6 @@ export const msalConfig = {
  * Add here the endpoints and scopes when obtaining an access token for protected web APIs. For more information, see:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
-const endpoint = process.env.ENDPOINT;
-
-export const protectedResources = {
-  apiHello: {
-    endpoint: `${endpoint}/hello`,
-    scopes: [`https://${b2cPolicies.policyDomain}/helloapi/demo.read`], // e.g. api://xxxxxx/access_as_user
-  },
-};
 
 export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
 
@@ -86,5 +78,5 @@ export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: [...protectedResources.apiHello.scopes],
+  scopes: [...defaultB2CScope],
 };

@@ -7,7 +7,6 @@ import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
-import { callGetAccounts, callPostAccounts } from '../utils/call-api';
 
 export default function Dashboard({ children }) {
   const router = useRouter();
@@ -25,38 +24,6 @@ export default function Dashboard({ children }) {
   const tokenPayload = useB2CToken(instance);
 
   const account = instance.getActiveAccount();
-
-  const [mpAccount, setMpAccount] = useState();
-  const [alreadySentRequest, setAlreadySentRequest] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log('calling GET /accounts to check the accounts', router.asPath);
-    let isActive = true;
-    if (tokenPayload?.idToken && !alreadySentRequest) {
-      setAlreadySentRequest(true);
-      callGetAccounts(tokenPayload.idToken)
-        .then((jsonResp: any) => {
-          console.log('response from GET /accounts is', jsonResp);
-
-          if (jsonResp && Array.isArray(jsonResp) && jsonResp.length == 0) {
-            console.log(
-              'no account on management platform, sending a request to create with POST /accounts'
-            );
-
-            return callPostAccounts(tokenPayload.idToken).then((jsonPostResp) => {
-              console.log('response from POST /accounts', jsonPostResp);
-              if (isActive) setMpAccount(jsonPostResp);
-            });
-          } else if (jsonResp && Array.isArray && jsonResp.length > 0) {
-            if (isActive) setMpAccount(jsonResp);
-          }
-        })
-        .catch(console.error);
-    }
-    return () => {
-      isActive = false;
-    };
-  }, [tokenPayload?.idToken]);
 
   if (accounts.length == 0) {
     return <div>not logged in, redirecting...</div>;
