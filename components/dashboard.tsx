@@ -32,9 +32,9 @@ export default function Dashboard({ children }) {
   useEffect(() => {
     console.log('calling GET /accounts to check the accounts', router.asPath);
     let isActive = true;
-    if (!mpAccount && tokenPayload?.accessToken && !alreadySentRequest) {
+    if (tokenPayload?.idToken && !alreadySentRequest) {
       setAlreadySentRequest(true);
-      callGetAccounts(tokenPayload.accessToken)
+      callGetAccounts(tokenPayload.idToken)
         .then((jsonResp: any) => {
           console.log('response from GET /accounts is', jsonResp);
 
@@ -43,7 +43,7 @@ export default function Dashboard({ children }) {
               'no account on management platform, sending a request to create with POST /accounts'
             );
 
-            return callPostAccounts(tokenPayload.accessToken).then((jsonPostResp) => {
+            return callPostAccounts(tokenPayload.idToken).then((jsonPostResp) => {
               console.log('response from POST /accounts', jsonPostResp);
               if (isActive) setMpAccount(jsonPostResp);
             });
@@ -56,7 +56,7 @@ export default function Dashboard({ children }) {
     return () => {
       isActive = false;
     };
-  }, [tokenPayload?.accessToken]);
+  }, [tokenPayload?.idToken]);
 
   if (accounts.length == 0) {
     return <div>not logged in, redirecting...</div>;
