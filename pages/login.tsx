@@ -32,7 +32,7 @@ export default function Login() {
             return <div className="login_text">You're logged in, let me redirect you...</div>
         } else if (inProgress === "login") {
             return <div className="login_text">Login is currently in progress!</div>
-        } else if (accounts.length == 0) {
+        } else if (inProgress === "none" && accounts.length == 0) {
             return (
                 <div className="login_form">
                     <button className='next_button' onClick={loginHandler}>
@@ -40,7 +40,7 @@ export default function Login() {
                     </button>
                 </div>
             );
-        }
+        } else return <></>
     }
 
     return <div className="login_container">
