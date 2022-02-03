@@ -9,7 +9,7 @@ import {
   LogoutIcon,
 } from "./Icons";
 import { Tooltip, Link as ChakraLink, Button } from "@chakra-ui/react";
-import { useMsal } from "@azure/msal-react";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import TestApiBlock from "./call-test";
 import { useB2CToken } from "../utils/get-b2c-token-hook";
 import { callGetAccounts, callPostAccounts } from "../utils/call-api";
@@ -21,10 +21,10 @@ export default function Dashboard({ children }) {
 
   useEffect(() => {
     let st: number;
-    if (!inProgress && accounts.length == 0) {
+    if (inProgress == 'none' && accounts.length == 0) {
       st = window.setTimeout(() => router.push("/login/"), 1000);
     }
-    return () => clearTimeout(st);
+    return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
   const tokenPayload = useB2CToken(instance);

@@ -1,5 +1,4 @@
 import { SpeechmaticsLogo } from '../components/Icons';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMsal } from "@azure/msal-react";
@@ -15,10 +14,12 @@ export default function Login() {
 
     useEffect(() => {
         let st: number;
-        if (!inProgress && accounts.length > 0)
-            window.setTimeout(() => router.push('/getting-started/'), 1000);
+        console.log({ inProgress, accounts, len: accounts?.length })
+        if (inProgress == 'none' && accounts.length > 0) {
+            st = window.setTimeout(() => router.push('/getting-started/'), 1000);
+        }
 
-        return () => clearTimeout(st);
+        return () => window.clearTimeout(st);
 
     }, [inProgress, accounts, accounts?.length])
 

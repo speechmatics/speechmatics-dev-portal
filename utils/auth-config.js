@@ -31,7 +31,7 @@ export const msalConfig = {
       process.env.AUTH_CLIEND_ID || "cc0ee2fd-cf10-4d64-b87c-727e1a130502", // This is the ONLY mandatory field that you need to supply.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
-    redirectUri: process.env.REDIRECT_URI || "http://localhost:3000/", // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
+    redirectUri: process.env.REDIRECT_URI || "http://localhost:3000/login/", // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
     postLogoutRedirectUri:
       process.env.POST_LOGOUT_REDIRECT_URI || "http://localhost:3000/", // Indicates the page to navigate after logout.
     navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
