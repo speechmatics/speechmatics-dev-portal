@@ -14,8 +14,13 @@ export default function Login() {
     const { instance, accounts, inProgress } = useMsal();
 
     useEffect(() => {
-        if (accounts.length > 0) router.push('/getting-started/');
-    }, [accounts, accounts?.length])
+        let st: number;
+        if (!inProgress && accounts.length > 0)
+            window.setTimeout(() => router.push('/getting-started/'), 1000);
+
+        return () => clearTimeout(st);
+
+    }, [inProgress, accounts, accounts?.length])
 
     const loginHandler = () => instance.loginRedirect(loginRequest).catch(error => {
         console.log(error)

@@ -20,11 +20,12 @@ export default function Dashboard({ children }) {
   const { instance, accounts, inProgress } = useMsal();
 
   useEffect(() => {
-    if (accounts.length == 0) {
-      const st = setTimeout(() => router.push("/login/"), 1000);
-      return () => clearTimeout(st);
+    let st: number;
+    if (!inProgress && accounts.length == 0) {
+      st = window.setTimeout(() => router.push("/login/"), 1000);
     }
-  }, []);
+    return () => clearTimeout(st);
+  }, [inProgress, accounts, accounts?.length]);
 
   const tokenPayload = useB2CToken(instance);
 
