@@ -80,6 +80,8 @@ export const protectedResources = {
   },
 };
 
+export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
+
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
  * By default, MSAL.js will add OIDC scopes (openid, profile, email) to any login request.

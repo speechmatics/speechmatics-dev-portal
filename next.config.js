@@ -12,6 +12,7 @@ module.exports = {
     AUTH_CLIEND_ID: process.env.AUTH_CLIEND_ID,
     TEST_API_CALL_ENDPOINT: process.env.TEST_API_CALL_ENDPOINT,
     ENDPOINT_API_URL: process.env.ENDPOINT_API_URL,
+    DEFAULT_B2C_SCOPE: process.env.DEFAULT_B2C_SCOPE,
   },
   exportPathMap: async function () {
     const paths = {

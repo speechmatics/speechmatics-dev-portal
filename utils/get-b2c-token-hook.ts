@@ -4,16 +4,15 @@ import {
   AuthenticationResult,
   InteractionRequiredAuthError,
 } from "@azure/msal-common";
-import { protectedResources } from "../utils/auth-config";
+import { defaultB2CScope } from "../utils/auth-config";
 
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
-
   const [token, setToken] = useState<AuthenticationResult>();
 
   useEffect(() => {
     const request = {
-      scopes: [...protectedResources.apiHello.scopes],
+      scopes: [...defaultB2CScope],
       account,
     };
 
@@ -25,7 +24,11 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       .catch(async (error) => {
         if (error instanceof InteractionRequiredAuthError) {
           // fallback to interaction when silent call fails
-          return msalInstance.acquireTokenPopup(request);
+          return msalInstance
+            .acquireTokenPopup(request)
+            .then((tokenResponse) => {
+              setToken(tokenResponse);
+            });
         }
       })
       .catch((error) => {
