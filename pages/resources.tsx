@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLink } from '../components/Icons';
 
-export default function Faq({}) {
+export default function Faq({ }) {
   return (
     <Dashboard>
       <h1>Resources</h1>
@@ -28,7 +28,8 @@ export default function Faq({}) {
           </div>
         </a>
       </HStack>
-      <h2>Frequently Asked Questions</h2>
+
+      {/*<h2>Frequently Asked Questions</h2>
 
       <Accordion width="600px">
         {faqData.map((item, i) => (
@@ -46,7 +47,7 @@ export default function Faq({}) {
             </AccordionPanel>
           </AccordionItem>
         ))}
-      </Accordion>
+        </Accordion> */}
     </Dashboard>
   );
 }

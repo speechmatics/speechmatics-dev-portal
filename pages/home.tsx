@@ -16,9 +16,9 @@ export default function Home({ }) {
 
 const StepItem = ({ item: { title, status, link } }) => (
   <Link href={link}>
-    <div className="rouded_shadow_box step_item">
+    <div className="rounded_shadow_box step_item">
       <div>{title}</div>
-      <div style={{ color: colorStatus[status] }}>{status}</div>
+      <div style={{ color: colorStatus[status] || "#aaa" }}>{status}</div>
     </div>
   </Link>
 );
@@ -30,24 +30,29 @@ const stepsData = [
     link: '/account/',
   },
   {
-    title: 'Set up payment method',
-    status: 'waiting',
+    title: 'Create an API key',
+    status: 'done',
     link: '/subscribe/',
   },
   {
-    title: 'Get Access Token',
+    title: 'Make an API request',
     status: 'waiting',
-    link: '/access-token/',
+    link: 'https://docs.speechmatics.com/en/cloud/howto/',
   },
   {
-    title: 'Get started with code',
-    status: 'Need help?',
-    link: 'https://deploy-preview-28--speechmatics-docs.netlify.app/test-page/',
+    title: 'Set up payment',
+    status: 'waiting',
+    link: '/usage/',
+  },
+  {
+    title: 'Review your usage',
+    status: '0.3h this month',
+    link: '/usage/',
   },
 ];
 
 const colorStatus = {
-  done: '#5BB4AE',
-  waiting: '#B49B5B',
+  'done': '#5BB4AE',
+  'waiting': '#B49B5B',
   'Need help?': '#5B8EB4',
 };
