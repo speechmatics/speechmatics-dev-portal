@@ -16,7 +16,13 @@ module.exports = {
   },
   exportPathMap: async function () {
     const paths = {
-      "/": { page: "/" }
+      '/': { page: '/' },
+      '/login': { page: '/login' },
+      '/home': { page: '/home' },
+      '/recent-jobs': { page: '/recent-jobs' },
+      '/account': { page: '/account' },
+      '/usage': { page: '/usage' },
+      '/access-token': { page: '/access-token' },
     };
 
     return paths;
