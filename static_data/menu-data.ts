@@ -10,8 +10,8 @@ import {
 
 const menuData = [
   {
-    path: '/getting-started/',
-    title: 'Getting Started',
+    path: '/home/',
+    title: 'Home',
     icon: GettingStartedIcon,
   },
   {

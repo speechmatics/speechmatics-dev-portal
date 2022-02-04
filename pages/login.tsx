@@ -13,7 +13,7 @@ export default function Login() {
     let st: number;
     console.log({ inProgress, accounts, len: accounts?.length });
     if (inProgress == 'none' && accounts.length > 0) {
-      st = window.setTimeout(() => router.push('/getting-started/'), 1000);
+      st = window.setTimeout(() => router.push('/home/'), 1000);
     }
 
     return () => window.clearTimeout(st);

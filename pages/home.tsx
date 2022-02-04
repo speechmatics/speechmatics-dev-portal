@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Dashboard from '../components/dashboard';
 
-export default function GettingStarted({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <h1>Getting Started!</h1>
