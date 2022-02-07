@@ -88,7 +88,7 @@ const GenerateTokenCompo = () => {
             Sending request for Your "{chosenTokenName}" token. Please do hold on for a second or
             two...
           </Box>
-          <Spinner height={20} />
+          <Spinner size="md" />
         </HStack>
       )}
       {genTokenStage == 'generated' && (
