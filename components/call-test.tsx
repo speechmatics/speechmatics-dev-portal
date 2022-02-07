@@ -59,8 +59,12 @@ export default ({ tokenPayload }) => {
 
   return (
     <VStack style={{ marginTop: 50 }}>
-      <Button onClick={callb}>test accesstoken on test endpoint</Button>
-      <Button onClick={callb3}>test /accounts with idtoken</Button>
+      <Button size="xs" variant="outline" onClick={callb}>
+        test accesstoken on test endpoint
+      </Button>
+      <Button size="xs" variant="outline" onClick={callb3}>
+        test /accounts with idtoken
+      </Button>
       <div dangerouslySetInnerHTML={{ __html: response }} />
       <div>test env var:: {process.env.TEST_IF_WORKS_ENV_VAR}</div>
     </VStack>

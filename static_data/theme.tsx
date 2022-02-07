@@ -3,8 +3,11 @@ import { extendTheme } from '@chakra-ui/react';
 const theme = extendTheme({
   components: {
     Button: {
-      baseStyle: {
-        backgroundColor: '#001A3B',
+      variants: {
+        solid: {
+          color: '#fff',
+          background: '#001A3B',
+        },
       },
     },
   },
