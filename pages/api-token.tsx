@@ -16,7 +16,7 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 export default function GetAccessToken({}) {
   return (
     <Dashboard>
-      <h1>Access Token</h1>
+      <h1>API Token</h1>
       <div className="token_form">
         <div className="description_text">
           You need an API Key (also known as an Authorization Token) to make calls to our REST API.
