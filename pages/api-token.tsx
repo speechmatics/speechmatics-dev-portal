@@ -8,6 +8,14 @@ import {
   Tooltip,
   VStack,
   Text,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import Dashboard from '../components/dashboard';
@@ -120,22 +128,45 @@ const GenerateTokenCompo = () => {
 };
 
 const PreviousTokens = () => {
-  const [tokens, setTokens] = useState([...testData.tokens]);
+  const [tokens, setTokens] = useState<Token[]>([...testData.tokens]);
+  const [tokenToRemove, setTokenToRemove] = useState<Token>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const removeOne = useCallback(
+  const aboutToRemoveOne = useCallback(
     (index: number) => {
-      testData.removeOne(index);
-      setTokens([...testData.tokens]);
+      setTokenToRemove(tokens[index]);
+      onOpen();
     },
     [tokens]
   );
 
+  const onRemoveConfirm = useCallback(() => {
+    testData.removeOne(tokenToRemove);
+    setTokens([...testData.tokens]);
+  }, [tokens]);
+
   return (
     <section>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>Remove the token "{tokenToRemove?.name}"?</ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onRemoveConfirm}>
+              Yes
+            </Button>
+            <Button variant="ghost">No</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <h2 style={{ marginTop: '70px' }}>Previous tokens:</h2>
       <VStack alignItems="stretch" marginRight="35%">
         {tokens.map((el, index) => (
           <HStack justifyContent="stretch" key={index}>
+            <Box flex="1">****************</Box>
             <Box flex="1">
               <Tooltip label="(token's name)" placement="right">
                 {el.name}
@@ -152,7 +183,7 @@ const PreviousTokens = () => {
                 aria-label="remove"
                 style={{ padding: 10, backgroundColor: '' }}
                 icon={<IoTrashBinOutline />}
-                onClick={() => removeOne(index)}
+                onClick={() => aboutToRemoveOne(index)}
               />
             </Tooltip>
           </HStack>
@@ -164,9 +195,15 @@ const PreviousTokens = () => {
 
 const generateToken = () => (Math.random() * 99999999999999999).toString(36).repeat(2);
 
+interface Token {
+  dateCreated: string;
+  dateLastUsed: string;
+  name: string;
+}
+
 const testData = {
-  removeOne(index: number) {
-    console.log('removeOne', index);
+  removeOne(tokenToRemove: Token) {
+    const index = this.tokens.indexOf(tokenToRemove);
     this.tokens.splice(index, 1);
     console.log(this.tokens.length);
   },
@@ -181,5 +218,5 @@ const testData = {
     { dateCreated: 'Last Friday', dateLastUsed: 'Last Saturday', name: 'Alpha key' },
     { dateCreated: 'Last Monday', dateLastUsed: 'Yesterday', name: 'Beta key' },
     { dateCreated: '03/03/2021', dateLastUsed: 'Saturday', name: 'Gamma key' },
-  ],
+  ] as Token[],
 };

@@ -6,9 +6,11 @@ import '../styles/dashboard.css';
 import { useRouter } from 'next/router';
 import { MsalProvider } from '@azure/msal-react';
 import { CustomNavigationClient } from '../utils/navigation-client';
+import { ChakraProvider } from '@chakra-ui/react';
 
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
+import theme from '../static_data/theme';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -32,14 +34,16 @@ export default function MyApp({ Component, pageProps }) {
   msalInstance.setNavigationClient(navigationClient);
 
   return (
-    <MsalProvider instance={msalInstance}>
-      <div className="all_container">
-        <div className="header"></div>
-        <div className="content">
-          <Component {...pageProps} />
+    <ChakraProvider resetCSS={true} theme={theme}>
+      <MsalProvider instance={msalInstance}>
+        <div className="all_container">
+          <div className="header"></div>
+          <div className="content">
+            <Component {...pageProps} />
+          </div>
+          <div className="footer"></div>
         </div>
-        <div className="footer"></div>
-      </div>
-    </MsalProvider>
+      </MsalProvider>
+    </ChakraProvider>
   );
 }
