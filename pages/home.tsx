@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Dashboard from '../components/dashboard';
 
-export default function Home({ }) {
+export default function Home({}) {
   return (
     <Dashboard>
       <h1>Getting Started!</h1>
@@ -18,7 +18,7 @@ const StepItem = ({ item: { title, status, link } }) => (
   <Link href={link}>
     <div className="rounded_shadow_box step_item">
       <div>{title}</div>
-      <div style={{ color: colorStatus[status] || "#aaa" }}>{status}</div>
+      <div style={{ color: colorStatus[status] || '#aaa' }}>{status}</div>
     </div>
   </Link>
 );
@@ -32,7 +32,7 @@ const stepsData = [
   {
     title: 'Create an API key',
     status: 'done',
-    link: '/subscribe/',
+    link: '/api-token/',
   },
   {
     title: 'Make an API request',
@@ -42,7 +42,7 @@ const stepsData = [
   {
     title: 'Set up payment',
     status: 'waiting',
-    link: '/usage/',
+    link: '/subscriptions/',
   },
   {
     title: 'Review your usage',
@@ -52,7 +52,7 @@ const stepsData = [
 ];
 
 const colorStatus = {
-  'done': '#5BB4AE',
-  'waiting': '#B49B5B',
+  done: '#5BB4AE',
+  waiting: '#B49B5B',
   'Need help?': '#5B8EB4',
 };
