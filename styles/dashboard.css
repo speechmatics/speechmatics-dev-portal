@@ -137,13 +137,16 @@ h1 {
 
 .default_button {
   background-color: var(--main-navy);
-  border-radius: 15px;
+  border-radius: 8px;
   color: white;
   padding: 10px 20px;
   cursor: pointer;
   font-size: 1.3em;
   transition: 0.3s all ease-in-out;
   width: max-content;
+  border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .default_button:hover {
@@ -207,7 +210,7 @@ h1 {
   background: #ffffff;
   border: 1px solid #cacad0;
   box-sizing: border-box;
-  border-radius: 15px;
+  border-radius: 8px;
   height: 3em;
   width: 15em;
   padding: 0 1em;

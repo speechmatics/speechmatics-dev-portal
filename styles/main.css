@@ -74,14 +74,15 @@ h3 {
   flex: 1 1 auto;
 }
 
-.all_container > .footer {
-  height: 10px;
-  background-color: #001a3b;
-  text-align: center;
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-family: GibsonLight;
+
+.all_container>.footer {
+  height          : 20px;
+  background-color: #001A3B;
+  text-align      : center;
+  color           : #fff;
+  display         : grid;
+  place-items     : center;
+  font-family     : GibsonLight;
 }
 
 .shadow_box {

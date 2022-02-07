@@ -22,7 +22,7 @@ module.exports = {
       '/recent-jobs': { page: '/recent-jobs' },
       '/account': { page: '/account' },
       '/usage': { page: '/usage' },
-      '/access-token': { page: '/access-token' },
+      '/api-token': { page: '/api-token' },
     };
 
     return paths;
