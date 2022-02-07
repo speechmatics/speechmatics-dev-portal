@@ -7,27 +7,29 @@ import {
   AccordionIcon,
   Box,
   HStack,
+  VStack,
+  Icon,
 } from '@chakra-ui/react';
-import { ExternalLink } from '../components/Icons';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-export default function Faq({ }) {
+export default function Faq({}) {
   return (
     <Dashboard>
       <h1>Resources</h1>
-      <HStack spacing="1em">
+      <VStack spacing="1em" alignItems="flex-start">
         <a href="https://docs.speechmatics.com" target="_blank">
           <div className="open_docs_button">
-            <span style={{ marginRight: '8px' }}>See Documentation</span>
-            <ExternalLink color="#ffffff" />
+            <span>See Documentation</span>
+            <ExternalLinkIcon color="#ffffff" marginLeft={2} marginBottom={1} />
           </div>
         </a>
         <a href="https://learning.speechmatics.com" target="_blank">
           <div className="open_docs_button">
-            <span style={{ marginRight: '8px' }}>Open Learning Management System</span>
-            <ExternalLink color="#ffffff" />
+            <span>Open Learning Management System</span>
+            <ExternalLinkIcon color="#ffffff" marginLeft={2} marginBottom={1} />
           </div>
         </a>
-      </HStack>
+      </VStack>
 
       {/*<h2>Frequently Asked Questions</h2>
 
