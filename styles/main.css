@@ -1,21 +1,21 @@
 @font-face {
-  font-family: "GibsonBold";
-  src        : url("/fonts/Gibson-Bold.otf");
+  font-family: 'GibsonBold';
+  src: url('/fonts/Gibson-Bold.otf');
 }
 
 @font-face {
-  font-family: "GibsonLight";
-  src        : url("/fonts/Gibson-Light.otf");
+  font-family: 'GibsonLight';
+  src: url('/fonts/Gibson-Light.otf');
 }
 
 @font-face {
-  font-family: "GibsonSemiBold";
-  src        : url("/fonts/Gibson-SemiBold.otf");
+  font-family: 'GibsonSemiBold';
+  src: url('/fonts/Gibson-SemiBold.otf');
 }
 
 @font-face {
-  font-family: "GibsonRegular";
-  src        : url("/fonts/Gibson-Regular.otf");
+  font-family: 'GibsonRegular';
+  src: url('/fonts/Gibson-Regular.otf');
 }
 
 * {
@@ -26,19 +26,18 @@ html {
   height: 100%;
 }
 
-
 body {
-  --main-teal: #5BB4AE;
-  --main-blue: #004BAB;
-  --main-navy: #001A3B;
-  --new-teal-dark: #2A827A;
-  --new-blue-light: #5398FC;
+  --main-teal: #5bb4ae;
+  --main-blue: #004bab;
+  --main-navy: #001a3b;
+  --new-teal-dark: #2a827a;
+  --new-blue-light: #5398fc;
 }
 
 body {
   background-color: #fbfbfb;
-  font-family     : GibsonRegular;
-  height          : 100%;
+  font-family: GibsonRegular;
+  height: 100%;
 }
 
 a {
@@ -50,47 +49,45 @@ a {
 }
 
 h1 {
-  font-size    : 36px;
+  font-size: 36px;
   margin-bottom: 45px;
-  margin-top   : 100px;
+  margin-top: 100px;
 }
 
 h2 {
-  font-size    : 24px;
+  font-size: 24px;
   margin-bottom: 25px;
 }
 
 h3 {
-  font-size    : 18px;
+  font-size: 18px;
 }
 
 .all_container {
-  height        : 100%;
-  width         : 100%;
-  display       : flex;
+  height: 100%;
+  width: 100%;
+  display: flex;
   flex-direction: column;
 }
 
-.all_container>.content {
+.all_container > .content {
   flex: 1 1 auto;
 }
 
-
-.all_container>.footer {
-  height          : 50px;
-  background-color: #001A3B;
-  text-align      : center;
-  color           : #fff;
-  display         : grid;
-  place-items     : center;
-  font-family     : GibsonLight;
+.all_container > .footer {
+  height: 10px;
+  background-color: #001a3b;
+  text-align: center;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: GibsonLight;
 }
 
-
 .shadow_box {
-  background   : #FFFFFF;
-  border       : 1px solid #EAEAEA;
-  box-sizing   : border-box;
-  box-shadow   : 0px 16px 16px rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  box-sizing: border-box;
+  box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.06);
   border-radius: 25px;
 }

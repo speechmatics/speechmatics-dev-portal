@@ -38,7 +38,7 @@ export default function MyApp({ Component, pageProps }) {
         <div className="content">
           <Component {...pageProps} />
         </div>
-        <div className="footer">© Speechmatics 2021</div>
+        <div className="footer"></div>
       </div>
     </MsalProvider>
   );
