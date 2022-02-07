@@ -1,15 +1,5 @@
 import Dashboard from '../components/dashboard';
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-  HStack,
-  VStack,
-  Icon,
-} from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 export default function Faq({}) {

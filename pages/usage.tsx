@@ -1,22 +1,36 @@
 import Link from 'next/link';
 import { CSSProperties } from 'react';
 import Dashboard from '../components/dashboard';
+import { Box, Text } from '@chakra-ui/react';
 
 export default function Usage() {
   return (
     <Dashboard>
       <h1>Usage</h1>
 
-      <h2>Billing Month: {sampleJson.currentUsage.billingMonth}</h2>
+      <Text fontSize="2xl">Billing Month: {sampleJson.currentUsage.billingMonth}</Text>
 
-      <h3>{sampleJson.currentUsage.standardUsed} hours Standard</h3>
-      <h3>You have {sampleJson.currentUsage.standardLeft} hours of free usage left this month.</h3>
+      <Box marginTop={10}>
+        <Text fontSize="xl">
+          <strong>{sampleJson.currentUsage.standardUsed}</strong> hours Standard
+        </Text>
+        <Text color="#999">
+          You have <strong>{sampleJson.currentUsage.standardLeft}</strong> hours of free usage left
+          this month.
+        </Text>
+      </Box>
       <br />
-      <h3>{sampleJson.currentUsage.enhancedUsed} hours Enhanced</h3>
-      <h3 style={{ color: '#DA3A4A' }}>
-        You have used your allowance of 3 hours this month.{' '}
-        <Link href={'/subscribe'}>Setup up the payment.</Link>
-      </h3>
+      <Text fontSize="xl">
+        <strong>{sampleJson.currentUsage.enhancedUsed}</strong> hours Enhanced
+      </Text>
+      <Text color="#DA3A4A">
+        You have used your allowance of <strong>3</strong> hours this month.{' '}
+        <Link href={'/subscribe'}>
+          <Text as="span" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+            Setup up the payment.
+          </Text>
+        </Link>
+      </Text>
 
       <div style={{ height: 100 }} />
 
