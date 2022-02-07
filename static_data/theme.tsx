@@ -7,6 +7,9 @@ const theme = extendTheme({
         solid: {
           color: '#fff',
           background: '#001A3B',
+          _hover: {
+            background: '#004bab',
+          },
         },
       },
     },
