@@ -11,8 +11,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
 import theme from '../static_data/theme';
+import { Head } from 'next/document';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
+
+console.log("msalInstance", msalConfig);
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();

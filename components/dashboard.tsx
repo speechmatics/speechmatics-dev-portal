@@ -3,10 +3,11 @@ import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useEffect, useState } from 'react';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from './Icons';
-import { Tooltip, Link as ChakraLink, Button } from '@chakra-ui/react';
+import { Tooltip, Link as ChakraLink, Button, Box } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
+import { Head } from 'next/document';
 
 export default function Dashboard({ children }) {
   const router = useRouter();
@@ -32,7 +33,9 @@ export default function Dashboard({ children }) {
   return (
     <div className="dashboard_container">
       <div className="dashboard_sidenav">
-        <SpeechmaticsLogo w={250} h={130} />
+        <Box marginTop='0.5em'>
+          <SpeechmaticsLogo w={230} h={120} />
+        </Box>
         <div className="hi_name">Hi, {account.name || account.username}!</div>
         <div className="nav_menu">
           {menuData.map((item) => (

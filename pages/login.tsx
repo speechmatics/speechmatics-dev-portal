@@ -11,7 +11,6 @@ export default function Login() {
 
   useEffect(() => {
     let st: number;
-    console.log({ inProgress, accounts, len: accounts?.length });
     if (inProgress == 'none' && accounts.length > 0) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
@@ -19,10 +18,11 @@ export default function Login() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-  const loginHandler = () =>
+  const loginHandler = () => {
     instance.loginRedirect(loginRequest).catch((error) => {
       console.log(error);
     });
+  }
 
   const LoginSub = () => {
     if (accounts.length > 0) {

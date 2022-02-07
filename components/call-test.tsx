@@ -11,7 +11,6 @@ export default ({ tokenPayload }) => {
   const callb = useCallback(() => {
     console.log('hello', tokenPayload);
     if (tokenPayload) {
-      console.log({ tokenPayload });
       call(tokenPayload.accessToken, process.env.TEST_API_CALL_ENDPOINT, 'GET').then(
         (resp) => (setResponse(resp?.name), console.log(JSON.stringify(resp)))
       );
@@ -20,7 +19,6 @@ export default ({ tokenPayload }) => {
 
   const callb2 = useCallback(() => {
     if (tokenPayload) {
-      console.log({ tokenPayload });
       call(tokenPayload.idToken, process.env.TEST_API_CALL_ENDPOINT, 'GET').then(
         (resp) => (setResponse(resp.name), console.log(JSON.stringify(resp)))
       );
