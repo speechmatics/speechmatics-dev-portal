@@ -21,7 +21,11 @@ export default function GetAccessToken({}) {
         <div className="description_text">
           You need an API Key (also known as an Authorization Token) to make calls to our REST API.
           See our{' '}
-          <a href="https://docs.speechmatics.com" style={{ textDecoration: 'underline' }}>
+          <a
+            target="_blank"
+            href="https://docs.speechmatics.com"
+            style={{ textDecoration: 'underline' }}
+          >
             documentation
           </a>{' '}
           to find out how to make API calls.
