@@ -17,11 +17,15 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { makeObservable, observable, computed, action } from 'mobx';
+import { observer } from 'mobx-react-lite';
+import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 
 export default function GetAccessToken({}) {
+  const store = useMemo(() => new TokenStore(), []);
+
   return (
     <Dashboard>
       <h1>API Token</h1>
@@ -39,33 +43,56 @@ export default function GetAccessToken({}) {
           to find out how to make API calls.
         </div>
 
-        <GenerateTokenCompo />
+        <GenerateTokenCompo tokensStore={store} />
 
-        <PreviousTokens />
+        <PreviousTokens tokensStore={store} />
       </div>
     </Dashboard>
   );
 }
 
-const GenerateTokenCompo = () => {
+type GenerateTokenCompoProps = {
+  tokensStore: TokenStore;
+};
+
+const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) => {
   const [genTokenStage, setGenTokenStage] = useState<
     'init' | 'inputName' | 'waiting' | 'generated'
   >('init');
 
   const [chosenTokenName, setChosenTokenName] = useState('');
+  const [generatedToken, setGeneratedToken] = useState('');
+  const [noNameError, setNoNameError] = useState(false);
 
-  const requestToken = useCallback(() => {
-    setGenTokenStage('waiting');
-    setTimeout(() => {
-      setGenTokenStage('generated');
-    }, 3000);
-  }, []);
+  const nameInputRef = useRef(null);
+
+  const requestToken = () => {
+    if (nameInputRef?.current?.value == '') {
+      setNoNameError(true);
+    } else {
+      setNoNameError(false);
+
+      setGenTokenStage('waiting');
+      setTimeout(() => {
+        setGeneratedToken(generateToken());
+        tokensStore.addOne(chosenTokenName);
+        setGenTokenStage('generated');
+      }, 3000);
+    }
+  };
 
   return (
     <section>
       {genTokenStage == 'init' && (
         <HStack>
-          <Button className="default_button" onClick={() => setGenTokenStage('inputName')}>
+          {tokensStore.tokens.length >= 5 && (
+            <Text>You already have 5 tokens, remove one before requesting new.</Text>
+          )}
+          <Button
+            className="default_button"
+            disabled={tokensStore.tokens.length >= 5}
+            onClick={() => setGenTokenStage('inputName')}
+          >
             Generate new token
           </Button>
         </HStack>
@@ -76,6 +103,8 @@ const GenerateTokenCompo = () => {
             type="text"
             placeholder="your token's name here"
             onChange={(ev) => setChosenTokenName(ev.target.value)}
+            style={{ border: noNameError ? '1px solid red' : '' }}
+            ref={nameInputRef}
           ></input>
           <Button className="default_button" onClick={() => requestToken()}>
             Ok
@@ -95,7 +124,7 @@ const GenerateTokenCompo = () => {
         <VStack alignItems="flex-start">
           <Box>All good! Your new token is:</Box>
           <Box fontSize={22} padding="20px 0px">
-            {generateToken()}
+            {generatedToken}
             <Tooltip label="copy" placement="right">
               <IconButton
                 className="default_button"
@@ -105,6 +134,9 @@ const GenerateTokenCompo = () => {
                 color="#bbb"
                 backgroundColor="#fff"
                 padding={5}
+                onClick={() => {
+                  navigator?.clipboard?.writeText(generatedToken);
+                }}
                 _hover={{ color: '#fff', backgroundColor: 'var(--main-navy)' }}
               />
             </Tooltip>
@@ -116,34 +148,30 @@ const GenerateTokenCompo = () => {
             </Text>
           </Box>
           <HStack>
-            <Box>Need another?</Box>
-            <Button className="default_button" onClick={() => setGenTokenStage('inputName')}>
-              Generate
+            <Button className="default_button" onClick={() => setGenTokenStage('init')}>
+              Great!
             </Button>
           </HStack>
         </VStack>
       )}
     </section>
   );
-};
+});
 
-const PreviousTokens = () => {
-  const [tokens, setTokens] = useState<Token[]>([...testData.tokens]);
+const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
   const [tokenToRemove, setTokenToRemove] = useState<Token>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const aboutToRemoveOne = useCallback(
-    (index: number) => {
-      setTokenToRemove(tokens[index]);
-      onOpen();
-    },
-    [tokens]
-  );
+  const aboutToRemoveOne = (el: Token) => {
+    console.log('aboutToRemoveOne', el);
+    setTokenToRemove(el);
+    onOpen();
+  };
 
-  const onRemoveConfirm = useCallback(() => {
-    testData.removeOne(tokenToRemove);
-    setTokens([...testData.tokens]);
-  }, [tokens]);
+  const onRemoveConfirm = () => {
+    tokensStore.removeOne(tokenToRemove);
+    onClose();
+  };
 
   return (
     <section>
@@ -157,14 +185,16 @@ const PreviousTokens = () => {
             <Button colorScheme="blue" mr={3} onClick={onRemoveConfirm}>
               Yes
             </Button>
-            <Button variant="ghost">No</Button>
+            <Button variant="ghost" onClick={onClose}>
+              No
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
       <h2 style={{ marginTop: '70px' }}>Previous tokens:</h2>
       <VStack alignItems="stretch" marginRight="35%">
-        {tokens.map((el, index) => (
+        {tokensStore.tokens.map((el, index) => (
           <HStack justifyContent="stretch" key={index}>
             <Box flex="1">****************</Box>
             <Box flex="1">
@@ -183,7 +213,7 @@ const PreviousTokens = () => {
                 aria-label="remove"
                 style={{ padding: 10, backgroundColor: '' }}
                 icon={<IoTrashBinOutline />}
-                onClick={() => aboutToRemoveOne(index)}
+                onClick={() => aboutToRemoveOne(el)}
               />
             </Tooltip>
           </HStack>
@@ -191,7 +221,7 @@ const PreviousTokens = () => {
       </VStack>
     </section>
   );
-};
+});
 
 const generateToken = () => (Math.random() * 99999999999999999).toString(36).repeat(2);
 
@@ -201,22 +231,30 @@ interface Token {
   name: string;
 }
 
-const testData = {
+class TokenStore {
+  tokens: Token[] = [
+    { dateCreated: 'Last Friday', dateLastUsed: 'Last Saturday', name: 'Alpha key' },
+    { dateCreated: 'Last Monday', dateLastUsed: 'Yesterday', name: 'Beta key' },
+    { dateCreated: '03/03/2021', dateLastUsed: 'Saturday', name: 'Gamma key' },
+  ];
+
+  constructor() {
+    makeObservable(this, {
+      removeOne: action,
+      addOne: action,
+      tokens: observable,
+    });
+  }
+
   removeOne(tokenToRemove: Token) {
-    const index = this.tokens.indexOf(tokenToRemove);
-    this.tokens.splice(index, 1);
-    console.log(this.tokens.length);
-  },
+    this.tokens = this.tokens.filter((token: Token) => token.name != tokenToRemove.name);
+  }
+
   addOne(name: string) {
     if (this.tokens.length >= 5) {
       console.log("can't test add");
       return;
     }
     this.tokens.push({ dateCreated: 'today', dateLastUsed: 'not used yet', name });
-  },
-  tokens: [
-    { dateCreated: 'Last Friday', dateLastUsed: 'Last Saturday', name: 'Alpha key' },
-    { dateCreated: 'Last Monday', dateLastUsed: 'Yesterday', name: 'Beta key' },
-    { dateCreated: '03/03/2021', dateLastUsed: 'Saturday', name: 'Gamma key' },
-  ] as Token[],
-};
+  }
+}
