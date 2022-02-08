@@ -19,10 +19,12 @@ module.exports = {
       '/': { page: '/' },
       '/login': { page: '/login' },
       '/home': { page: '/home' },
-      '/recent-jobs': { page: '/recent-jobs' },
-      '/account': { page: '/account' },
+      '/subscriptions': { page: '/subscriptions' },
+      '/subscribe': { page: '/subscribe' },
       '/usage': { page: '/usage' },
       '/api-token': { page: '/api-token' },
+      '/account': { page: '/account' },
+      '/recent-jobs': { page: '/recent-jobs' },
     };
 
     return paths;
