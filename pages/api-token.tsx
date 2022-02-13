@@ -23,7 +23,7 @@ import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
   const store = useMemo(() => new TokenStore(), []);
 
   return (

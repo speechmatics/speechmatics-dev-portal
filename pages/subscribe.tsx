@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
-import { LoginContext } from '../utils/login-context';
 
 declare global {
   interface Window {
@@ -9,7 +8,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -18,7 +17,6 @@ function Subscribe({}) {
     chargify = useRef(new window.Chargify());
   }
 
-  const { data } = useContext(LoginContext);
 
   const [token, setToken] = useState('');
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
@@ -47,7 +45,7 @@ function Subscribe({}) {
         publicKey: 'chjs_ycbc7hctjthpy6qbxxxgjtfd',
         type: 'card',
         serverHost: 'https://speechmatics-3.chargify.com',
-        fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', data?.name),
+        fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', ''),
       });
       setChargifyLoaded(true);
     }

@@ -1,9 +1,9 @@
 import Dashboard from '../components/dashboard';
-import { LoginContext } from '../utils/login-context';
+import AccountContext from '../utils/account-context';
 import { useContext } from 'react';
 
-export default function Account({}) {
-  const loginContext = useContext(LoginContext);
+export default function Account({ }) {
+  const accountContext = useContext(AccountContext);
 
   return (
     <Dashboard>
@@ -11,15 +11,15 @@ export default function Account({}) {
       <div className="account_forms">
         <section>
           <div>
-            <input type="text" placeholder="title" value={loginContext.data?.title}></input>
-            <input type="text" placeholder="First name" value={loginContext.data?.name}></input>
+            <input type="text" placeholder="title" value={''}></input>
+            <input type="text" placeholder="First name" value={''}></input>
             <input type="text" placeholder="Surname"></input>
           </div>
           <div>
             <input
               type="text"
               placeholder="email"
-              value={`${loginContext.data?.email}@speechmatics.com`}
+              value={``}
             ></input>
           </div>
           <div>
