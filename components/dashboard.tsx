@@ -1,33 +1,52 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import menuData from '../static_data/menu-data';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from './Icons';
 import { Tooltip, Link as ChakraLink, Button, Box } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
-import { Head } from 'next/document';
+import smAccountContext from '../utils/account-context';
+import { accountsFlow } from '../utils/call-api';
 
 export default function Dashboard({ children }) {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     let st: number;
-    if (inProgress == 'none' && accounts.length == 0) {
+    if (inProgress == 'none' && !isAuthenticated) {
       st = window.setTimeout(() => router.push('/login/'), 1000);
     }
     return () => window.clearTimeout(st);
-  }, [inProgress, accounts, accounts?.length]);
+  }, [isAuthenticated]);
 
+
+  const smAccountHandler = useContext(smAccountContext);
   const tokenPayload = useB2CToken(instance);
+
+  useEffect(() => {
+    if (!smAccountHandler.account && isAuthenticated) {
+      // accountsFlow(tokenPayload.idToken).then(account => {
+      //   smAccountHandler.account = account;
+      // })
+    }
+  }, []);
 
   const account = instance.getActiveAccount();
 
-  if (accounts.length == 0) {
-    return <div>not logged in, redirecting...</div>;
+  const logout = () => {
+    smAccountHandler.clear();
+    instance.logoutRedirect();
+  }
+
+  if (!isAuthenticated) {
+    return <div style={{ width: '100%', height: '100%', display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+      not logged in, redirecting...
+    </div>;
   }
 
   return (
@@ -57,7 +76,7 @@ export default function Dashboard({ children }) {
           </ChakraLink>
         </Link>
         <Tooltip label="Log out" placement="left">
-          <span style={{ cursor: 'pointer' }} onClick={() => instance.logoutRedirect()}>
+          <span style={{ cursor: 'pointer' }} onClick={() => logout()}>
             <LogoutIcon w={30} h={30} />
           </span>
         </Tooltip>
