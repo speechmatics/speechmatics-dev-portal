@@ -29,12 +29,14 @@ export default function Dashboard({ children }) {
   const tokenPayload = useB2CToken(instance);
 
   useEffect(() => {
-    console.log('effect accountFlow', accountStore.account, isAuthenticated)
+    console.log('effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.tokenPayload = tokenPayload;
-      accountsFlow(tokenPayload.idToken).then(resp => {
-        accountStore.assignServerState(resp)
-      });
+      accountsFlow(tokenPayload.idToken)
+        .then((resp) => {
+          accountStore.assignServerState(resp);
+        })
+        .catch(console.error);
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 

@@ -69,6 +69,8 @@ class AccountContext {
   }
 
   assignServerState(response: GetAccountsResponse) {
+    if (!response) throw new Error('attempt assigning empty response');
+
     this._account = response.accounts[0];
 
     console.log('assignServerState', this._account);
@@ -87,8 +89,7 @@ class TokenContext {
   }
 }
 
-
 export const accountStore = new AccountContext();
 export const tokenStore = new TokenContext();
 
-export default createContext({accountStore, tokenStore});
+export default createContext({ accountStore, tokenStore });

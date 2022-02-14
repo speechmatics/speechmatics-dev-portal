@@ -72,7 +72,7 @@ export async function accountsFlow(accessToken: string): Promise<any> {
         return jsonResp;
       }
 
-      throw new Error('unknown response from /accounts')
+      throw new Error(`unknown response from /accounts: ${jsonResp}`);
     })
     .catch(console.error);
 }
