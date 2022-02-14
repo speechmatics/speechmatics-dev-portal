@@ -28,12 +28,13 @@ export default function Dashboard({ children }) {
   const tokenPayload = useB2CToken(instance);
 
   useEffect(() => {
-    if (!smAccountHandler.account && isAuthenticated) {
-      // accountsFlow(tokenPayload.idToken).then(account => {
-      //   smAccountHandler.account = account;
-      // })
+    console.log('effect accountFlow', smAccountHandler.account, isAuthenticated)
+    if (!smAccountHandler.account && isAuthenticated && tokenPayload?.idToken) {
+      accountsFlow(tokenPayload.idToken).then(resp => {
+        smAccountHandler.assignServerState(resp)
+      })
     }
-  }, []);
+  }, [isAuthenticated, tokenPayload?.idToken]);
 
   const account = instance.getActiveAccount();
 

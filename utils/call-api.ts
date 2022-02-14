@@ -68,7 +68,7 @@ export async function accountsFlow(accessToken: string): Promise<any> {
           console.log('response from POST /accounts', jsonPostResp);
           return jsonPostResp;
         });
-      } else if (jsonResp && Array.isArray && jsonResp.length > 0) {
+      } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
         return jsonResp;
       }
     })
