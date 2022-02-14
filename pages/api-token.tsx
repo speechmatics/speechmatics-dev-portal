@@ -22,7 +22,7 @@ import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
-import accountContext from '../utils/account-context';
+import accountContext, { ApiKey } from '../utils/account-context';
 
 export default function GetAccessToken({}) {
   const store = useMemo(() => new TokenStore(), []);
@@ -75,7 +75,7 @@ const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) =
 
       setGenTokenStage('waiting');
       setTimeout(() => {
-        setGeneratedToken(generateToken());
+        setGeneratedToken('aaaccc');
         tokensStore.addOne(chosenTokenName);
         setGenTokenStage('generated');
       }, 3000);
@@ -160,21 +160,22 @@ const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) =
 });
 
 const PreviousTokens = observer(() => {
-  const [tokenToRemove, setTokenToRemove] = useState<Token>();
+  const [tokenIdToRemove, setIdTokenToRemove] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const accountStore = useContext(accountContext);
 
-  const tokens = accountStore.getApiKeys();
+  const apiKeys = accountStore.getApiKeys();
 
-  const aboutToRemoveOne = (el: Token) => {
-    console.log('aboutToRemoveOne', el);
-    // setTokenToRemove(el);
+  const aboutToRemoveOne = (el: ApiKey) => {
+    console.log('aboutToRemoveOne', el, el.apikey_id);
+    setIdTokenToRemove(el.apikey_id);
     onOpen();
   };
 
   const onRemoveConfirm = () => {
-    // tokensStore.removeOne(tokenToRemove);
+    console.log('aboutToRemoveOne', tokenIdToRemove);
+    accountStore.removeApiKey('', tokenIdToRemove);
     onClose();
   };
 
@@ -184,7 +185,7 @@ const PreviousTokens = observer(() => {
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>Remove the token "{tokenToRemove?.name}"?</ModalBody>
+          <ModalBody>Remove the token "{tokenIdToRemove}"?</ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onRemoveConfirm}>
@@ -198,18 +199,22 @@ const PreviousTokens = observer(() => {
       </Modal>
 
       <h2 style={{ marginTop: '70px' }}>Previous tokens:</h2>
-      <VStack alignItems="stretch" marginRight="35%">
-        {tokens?.map((el, index) => (
+      <VStack alignItems="stretch" marginRight="25%">
+        {apiKeys?.map((el: ApiKey, index) => (
           <HStack justifyContent="stretch" key={index}>
-            <Box flex="1">****************</Box>
+            <Box flex="1">
+              <Tooltip label={`(token's id ${el.apikey_id})`} placement="right">
+                {el.apikey_id.slice(0, 15)}
+              </Tooltip>
+            </Box>
             <Box flex="1">
               <Tooltip label="(token's name)" placement="right">
                 {el.name}
               </Tooltip>
             </Box>
-            <Box flex="1">
-              <Tooltip label="(date created)" placement="right">
-                {el.created_at}
+            <Box flex="1" noOfLines={1}>
+              <Tooltip label={`date created: ${new Date(el.created_at)}`} placement="right">
+                {new Date(el.created_at).toUTCString()}
               </Tooltip>
             </Box>
             <Tooltip label="remove" placement="left">
@@ -218,7 +223,7 @@ const PreviousTokens = observer(() => {
                 aria-label="remove"
                 style={{ padding: 10, backgroundColor: '' }}
                 icon={<IoTrashBinOutline />}
-                // onClick={() => aboutToRemoveOne(el)}
+                onClick={() => aboutToRemoveOne(el)}
               />
             </Tooltip>
           </HStack>
@@ -227,8 +232,6 @@ const PreviousTokens = observer(() => {
     </section>
   );
 });
-
-const generateToken = () => (Math.random() * 99999999999999999).toString(36).repeat(2);
 
 interface Token {
   dateCreated: string;

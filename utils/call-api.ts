@@ -9,11 +9,30 @@ export const callGetAccounts = async (idToken: string) => {
 };
 
 export const callUsage = async (idToken: string) => {
-  console.log('callGetAcallUsageccounts', `${process.env.ENDPOINT_API_URL}/usage`);
+  console.log('callUsage', `${process.env.ENDPOINT_API_URL}/usage`);
   return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET');
 };
 
-export const call = async (authToken: string, apiEndpoint: string, method: string) => {
+export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
+  console.log('callRemoveApiKey', `${process.env.ENDPOINT_API_URL}/apikey/${apiKeyId}`);
+  return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
+};
+
+export const callPostApiKey = async (idToken: string, name: string) => {
+  console.log('callPostApiKey', `${process.env.ENDPOINT_API_URL}/apikey`);
+  return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys`, 'POST', {
+    project_id: 0,
+    name,
+    client_ref: 'clientref',
+  });
+};
+
+export const call = async (
+  authToken: string,
+  apiEndpoint: string,
+  method: string,
+  body: any = null
+) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
 
@@ -22,6 +41,7 @@ export const call = async (authToken: string, apiEndpoint: string, method: strin
   const options = {
     method: method,
     headers: headers,
+    body,
   };
 
   return fetch(apiEndpoint, options)

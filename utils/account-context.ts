@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { makeObservable, observable, computed, action } from 'mobx';
-import { callGetAccounts } from './call-api';
+import { callGetAccounts, callRemoveApiKey } from './call-api';
 
 interface GetAccountsResponse {
   accounts: Account[];
@@ -23,7 +23,7 @@ interface Project {
   api_keys: ApiKey[];
 }
 
-interface ApiKey {
+export interface ApiKey {
   apikey_id: string;
   name: string;
   created_at: string;
@@ -37,6 +37,7 @@ class AccountContext {
     makeObservable(this, {
       clear: action,
       _account: observable,
+      assignServerState: action,
     });
   }
 
@@ -70,6 +71,10 @@ class AccountContext {
     this._account = response.accounts[0];
 
     console.log('assignServerState', this._account);
+  }
+
+  removeApiKey(idToken: string, apikeyId: string) {
+    callRemoveApiKey(idToken, apikeyId).then((res) => this.fetchServerState(idToken));
   }
 }
 
