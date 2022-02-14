@@ -1,6 +1,7 @@
 import { createContext } from 'react';
-import { makeObservable, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
 import { callGetAccounts, callRemoveApiKey } from './call-api';
+import { AuthenticationResult } from '@azure/msal-common';
 
 interface GetAccountsResponse {
   accounts: Account[];
@@ -78,6 +79,16 @@ class AccountContext {
   }
 }
 
-export const accountStore = new AccountContext();
+class TokenContext {
+  tokenPayload: AuthenticationResult = null;
 
-export default createContext(accountStore);
+  constructor() {
+    makeAutoObservable(this);
+  }
+}
+
+
+export const accountStore = new AccountContext();
+export const tokenStore = new TokenContext();
+
+export default createContext({accountStore, tokenStore});

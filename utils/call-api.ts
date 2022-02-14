@@ -71,6 +71,8 @@ export async function accountsFlow(accessToken: string): Promise<any> {
       } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
         return jsonResp;
       }
+
+      throw new Error('unknown response from /accounts')
     })
     .catch(console.error);
 }

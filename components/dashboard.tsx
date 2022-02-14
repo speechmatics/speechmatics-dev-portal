@@ -7,7 +7,7 @@ import { Tooltip, Link as ChakraLink, Button, Box } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
-import smAccountContext from '../utils/account-context';
+import accountContext from '../utils/account-context';
 import { accountsFlow } from '../utils/call-api';
 
 export default function Dashboard({ children }) {
@@ -24,22 +24,24 @@ export default function Dashboard({ children }) {
     return () => window.clearTimeout(st);
   }, [isAuthenticated]);
 
-  const smAccountHandler = useContext(smAccountContext);
+  const { accountStore, tokenStore } = useContext(accountContext);
+
   const tokenPayload = useB2CToken(instance);
 
   useEffect(() => {
-    console.log('effect accountFlow', smAccountHandler.account, isAuthenticated)
-    if (!smAccountHandler.account && isAuthenticated && tokenPayload?.idToken) {
+    console.log('effect accountFlow', accountStore.account, isAuthenticated)
+    if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
+      tokenStore.tokenPayload = tokenPayload;
       accountsFlow(tokenPayload.idToken).then(resp => {
-        smAccountHandler.assignServerState(resp)
-      })
+        accountStore.assignServerState(resp)
+      });
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
   const account = instance.getActiveAccount();
 
   const logout = () => {
-    smAccountHandler.clear();
+    accountStore.clear();
     instance.logoutRedirect();
   };
 

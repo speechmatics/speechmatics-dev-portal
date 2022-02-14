@@ -6,7 +6,7 @@ import { accountsFlow, call } from '../utils/call-api';
 export default ({ tokenPayload }) => {
   const [response, setResponse] = useState();
 
-  const accountStore = useContext(accountContext);
+  const { accountStore, tokenStore } = useContext(accountContext);
 
   const callb = useCallback(() => {
     console.log('hello', tokenPayload);

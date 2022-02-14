@@ -10,7 +10,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
 import theme from '../static_data/theme';
-import AccountContext, { accountStore } from '../utils/account-context';
+import AccountContext, { accountStore, tokenStore } from '../utils/account-context';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -36,7 +36,7 @@ export default function MyApp({ Component, pageProps }) {
   msalInstance.setNavigationClient(navigationClient);
 
   return (
-    <AccountContext.Provider value={accountStore}>
+    <AccountContext.Provider value={{ accountStore, tokenStore }}>
       <ChakraProvider resetCSS={true} theme={theme}>
         <MsalProvider instance={msalInstance}>
           <div className="all_container">

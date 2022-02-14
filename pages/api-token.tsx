@@ -23,9 +23,10 @@ import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'r
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-context';
+import { callPostApiKey } from '../utils/call-api';
 
-export default function GetAccessToken({}) {
-  const store = useMemo(() => new TokenStore(), []);
+export default function GetAccessToken({ }) {
+
 
   return (
     <Dashboard>
@@ -44,7 +45,7 @@ export default function GetAccessToken({}) {
           to find out how to make API calls.
         </div>
 
-        <GenerateTokenCompo tokensStore={store} />
+        <GenerateTokenCompo />
 
         <PreviousTokens />
       </div>
@@ -52,11 +53,9 @@ export default function GetAccessToken({}) {
   );
 }
 
-type GenerateTokenCompoProps = {
-  tokensStore: TokenStore;
-};
 
-const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) => {
+
+const GenerateTokenCompo = observer(() => {
   const [genTokenStage, setGenTokenStage] = useState<
     'init' | 'inputName' | 'waiting' | 'generated'
   >('init');
@@ -65,33 +64,37 @@ const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) =
   const [generatedToken, setGeneratedToken] = useState('');
   const [noNameError, setNoNameError] = useState(false);
 
+  const { accountStore, tokenStore } = useContext(accountContext);
+  const apiKeys = accountStore.getApiKeys();
+  const idToken = tokenStore.tokenPayload?.idToken;
+
   const nameInputRef = useRef(null);
 
-  const requestToken = () => {
+  const requestToken = useCallback(() => {
     if (nameInputRef?.current?.value == '') {
       setNoNameError(true);
     } else {
       setNoNameError(false);
 
       setGenTokenStage('waiting');
-      setTimeout(() => {
-        setGeneratedToken('aaaccc');
-        tokensStore.addOne(chosenTokenName);
+      callPostApiKey(idToken, chosenTokenName).then((resp) => {
+        setGeneratedToken(resp.apikey_id);
         setGenTokenStage('generated');
-      }, 3000);
+        accountStore.fetchServerState(idToken);
+      });
     }
-  };
+  }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
 
   return (
     <section>
       {genTokenStage == 'init' && (
         <HStack>
-          {tokensStore.tokens.length >= 5 && (
+          {apiKeys?.length >= 5 && (
             <Text>You already have 5 tokens, remove one before requesting new.</Text>
           )}
           <Button
             className="default_button"
-            disabled={tokensStore.tokens.length >= 5}
+            disabled={apiKeys?.length >= 5}
             onClick={() => setGenTokenStage('inputName')}
           >
             Generate new token
@@ -163,9 +166,9 @@ const PreviousTokens = observer(() => {
   const [tokenIdToRemove, setIdTokenToRemove] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const accountStore = useContext(accountContext);
-
+  const { accountStore, tokenStore } = useContext(accountContext);
   const apiKeys = accountStore.getApiKeys();
+  const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
     console.log('aboutToRemoveOne', el, el.apikey_id);
@@ -175,7 +178,7 @@ const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('aboutToRemoveOne', tokenIdToRemove);
-    accountStore.removeApiKey('', tokenIdToRemove);
+    accountStore.removeApiKey(idToken, tokenIdToRemove);
     onClose();
   };
 
