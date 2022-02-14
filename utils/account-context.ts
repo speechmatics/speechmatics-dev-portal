@@ -4,11 +4,10 @@ import { makeObservable, observable, computed, action } from 'mobx';
 interface Account {}
 
 class AccountContext {
-  _account: Account;
+  _account: Account = null;
 
   constructor() {
     makeObservable(this, {
-      account: action,
       clear: action,
       _account: observable,
     });

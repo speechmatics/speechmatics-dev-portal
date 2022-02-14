@@ -158,6 +158,8 @@ const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) =
   );
 });
 
+
+
 const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
   const [tokenToRemove, setTokenToRemove] = useState<Token>();
   const { isOpen, onOpen, onClose } = useDisclosure();
