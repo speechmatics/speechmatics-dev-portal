@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { makeObservable, observable, computed, action } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
@@ -25,9 +24,7 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-context';
 import { callPostApiKey } from '../utils/call-api';
 
-export default function GetAccessToken({ }) {
-
-
+export default function GetAccessToken({}) {
   return (
     <Dashboard>
       <h1>API Token</h1>
@@ -52,8 +49,6 @@ export default function GetAccessToken({ }) {
     </Dashboard>
   );
 }
-
-
 
 const GenerateTokenCompo = observer(() => {
   const [genTokenStage, setGenTokenStage] = useState<
@@ -235,37 +230,3 @@ const PreviousTokens = observer(() => {
     </section>
   );
 });
-
-interface Token {
-  dateCreated: string;
-  dateLastUsed: string;
-  name: string;
-}
-
-class TokenStore {
-  tokens: Token[] = [
-    { dateCreated: 'Last Friday', dateLastUsed: 'Last Saturday', name: 'Alpha key' },
-    { dateCreated: 'Last Monday', dateLastUsed: 'Yesterday', name: 'Beta key' },
-    { dateCreated: '03/03/2021', dateLastUsed: 'Saturday', name: 'Gamma key' },
-  ];
-
-  constructor() {
-    makeObservable(this, {
-      removeOne: action,
-      addOne: action,
-      tokens: observable,
-    });
-  }
-
-  removeOne(tokenToRemove: Token) {
-    this.tokens = this.tokens.filter((token: Token) => token.name != tokenToRemove.name);
-  }
-
-  addOne(name: string) {
-    if (this.tokens.length >= 5) {
-      console.log("can't test add");
-      return;
-    }
-    this.tokens.push({ dateCreated: 'today', dateLastUsed: 'not used yet', name });
-  }
-}
