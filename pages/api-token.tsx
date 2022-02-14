@@ -19,11 +19,12 @@ import {
 } from '@chakra-ui/react';
 import { makeObservable, observable, computed, action } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
+import accountContext from '../utils/account-context';
 
-export default function GetAccessToken({ }) {
+export default function GetAccessToken({}) {
   const store = useMemo(() => new TokenStore(), []);
 
   return (
@@ -45,7 +46,7 @@ export default function GetAccessToken({ }) {
 
         <GenerateTokenCompo tokensStore={store} />
 
-        <PreviousTokens tokensStore={store} />
+        <PreviousTokens />
       </div>
     </Dashboard>
   );
@@ -158,20 +159,22 @@ const GenerateTokenCompo = observer(({ tokensStore }: GenerateTokenCompoProps) =
   );
 });
 
-
-
-const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
+const PreviousTokens = observer(() => {
   const [tokenToRemove, setTokenToRemove] = useState<Token>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const accountStore = useContext(accountContext);
+
+  const tokens = accountStore.getApiKeys();
+
   const aboutToRemoveOne = (el: Token) => {
     console.log('aboutToRemoveOne', el);
-    setTokenToRemove(el);
+    // setTokenToRemove(el);
     onOpen();
   };
 
   const onRemoveConfirm = () => {
-    tokensStore.removeOne(tokenToRemove);
+    // tokensStore.removeOne(tokenToRemove);
     onClose();
   };
 
@@ -196,7 +199,7 @@ const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
 
       <h2 style={{ marginTop: '70px' }}>Previous tokens:</h2>
       <VStack alignItems="stretch" marginRight="35%">
-        {tokensStore.tokens.map((el, index) => (
+        {tokens?.map((el, index) => (
           <HStack justifyContent="stretch" key={index}>
             <Box flex="1">****************</Box>
             <Box flex="1">
@@ -206,7 +209,7 @@ const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
             </Box>
             <Box flex="1">
               <Tooltip label="(date created)" placement="right">
-                {el.dateCreated}
+                {el.created_at}
               </Tooltip>
             </Box>
             <Tooltip label="remove" placement="left">
@@ -215,7 +218,7 @@ const PreviousTokens = observer(({ tokensStore }: GenerateTokenCompoProps) => {
                 aria-label="remove"
                 style={{ padding: 10, backgroundColor: '' }}
                 icon={<IoTrashBinOutline />}
-                onClick={() => aboutToRemoveOne(el)}
+                // onClick={() => aboutToRemoveOne(el)}
               />
             </Tooltip>
           </HStack>

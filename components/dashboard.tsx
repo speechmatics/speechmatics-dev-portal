@@ -24,7 +24,6 @@ export default function Dashboard({ children }) {
     return () => window.clearTimeout(st);
   }, [isAuthenticated]);
 
-
   const smAccountHandler = useContext(smAccountContext);
   const tokenPayload = useB2CToken(instance);
 
@@ -41,18 +40,16 @@ export default function Dashboard({ children }) {
   const logout = () => {
     smAccountHandler.clear();
     instance.logoutRedirect();
-  }
+  };
 
   if (!isAuthenticated) {
-    return <div style={{ width: '100%', height: '100%', display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
-      not logged in, redirecting...
-    </div>;
+    return <NotLoggedin />;
   }
 
   return (
     <div className="dashboard_container">
       <div className="dashboard_sidenav">
-        <Box marginTop='0.5em'>
+        <Box marginTop="0.5em">
           <SpeechmaticsLogo w={230} h={120} />
         </Box>
         <div className="hi_name">Hi, {account.name || account.username}!</div>
@@ -93,5 +90,21 @@ function MenuElem({ item, selected }) {
         <div>{item.title}</div>
       </div>
     </Link>
+  );
+}
+
+function NotLoggedin() {
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignContent: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      not logged in, redirecting...
+    </div>
   );
 }

@@ -7,15 +7,14 @@ import { useRouter } from 'next/router';
 import { MsalProvider } from '@azure/msal-react';
 import { CustomNavigationClient } from '../utils/navigation-client';
 import { ChakraProvider } from '@chakra-ui/react';
-
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
 import theme from '../static_data/theme';
-import { Head } from 'next/document';
+import AccountContext, { accountStore } from '../utils/account-context';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
-console.log("msalInstance", msalConfig);
+console.log('msalInstance', msalConfig);
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
@@ -37,16 +36,18 @@ export default function MyApp({ Component, pageProps }) {
   msalInstance.setNavigationClient(navigationClient);
 
   return (
-    <ChakraProvider resetCSS={true} theme={theme}>
-      <MsalProvider instance={msalInstance}>
-        <div className="all_container">
-          <div className="header"></div>
-          <div className="content">
-            <Component {...pageProps} />
+    <AccountContext.Provider value={accountStore}>
+      <ChakraProvider resetCSS={true} theme={theme}>
+        <MsalProvider instance={msalInstance}>
+          <div className="all_container">
+            <div className="header"></div>
+            <div className="content">
+              <Component {...pageProps} />
+            </div>
+            <div className="footer"></div>
           </div>
-          <div className="footer"></div>
-        </div>
-      </MsalProvider>
-    </ChakraProvider>
+        </MsalProvider>
+      </ChakraProvider>
+    </AccountContext.Provider>
   );
 }
