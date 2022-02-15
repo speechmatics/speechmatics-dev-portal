@@ -8,7 +8,7 @@ export const callGetAccounts = async (idToken: string) => {
   return call(idToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
-export const callUsage = async (idToken: string) => {
+export const callUsage = async (idToken: string, contractId: number) => {
   console.log('callUsage', `${process.env.ENDPOINT_API_URL}/usage`);
   return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET', {
     contract_id: 0,
@@ -23,12 +23,17 @@ export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
   return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
 
-export const callPostApiKey = async (idToken: string, name: string) => {
-  console.log('callPostApiKey', `${process.env.ENDPOINT_API_URL}/apikey`);
+export const callPostApiKey = async (
+  idToken: string,
+  name: string,
+  projectId: number,
+  clientRef: string
+) => {
+  console.log('callPostApiKey', `${process.env.ENDPOINT_API_URL}/api_keys`);
   return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys`, 'POST', {
-    project_id: 0,
+    project_id: projectId,
     name,
-    client_ref: 'clientref',
+    client_ref: clientRef,
   });
 };
 
@@ -42,6 +47,8 @@ export const call = async (
   const bearer = `Bearer ${authToken}`;
 
   headers.append('Authorization', bearer);
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
 
   const options = {
     method: method,

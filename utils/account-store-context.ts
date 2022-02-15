@@ -60,6 +60,12 @@ class AccountContext {
       ?.projects.filter((proj) => !!proj)?.[0]?.api_keys;
   }
 
+  getProjectId(): number {
+    return this._account?.contracts
+      .filter((con) => !!con)?.[0]
+      ?.projects.filter((proj) => !!proj)?.[0].project_id;
+  }
+
   fetchServerState(idToken: string) {
     callGetAccounts(idToken)
       .then((jsonResp) => {

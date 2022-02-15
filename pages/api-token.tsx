@@ -52,7 +52,7 @@ export default function GetAccessToken({}) {
 
 const GenerateTokenCompo = observer(() => {
   const [genTokenStage, setGenTokenStage] = useState<
-    'init' | 'inputName' | 'waiting' | 'generated'
+    'init' | 'inputName' | 'waiting' | 'generated' | 'error'
   >('init');
 
   const [chosenTokenName, setChosenTokenName] = useState('');
@@ -73,11 +73,15 @@ const GenerateTokenCompo = observer(() => {
       setNoNameError(false);
 
       setGenTokenStage('waiting');
-      callPostApiKey(idToken, chosenTokenName).then((resp) => {
-        setGeneratedToken(resp.apikey_id);
-        setGenTokenStage('generated');
-        accountStore.fetchServerState(idToken);
-      });
+      callPostApiKey(idToken, chosenTokenName, accountStore.getProjectId(), '')
+        .then((resp) => {
+          setGeneratedToken(resp.apikey_id);
+          setGenTokenStage('generated');
+          accountStore.fetchServerState(idToken);
+        })
+        .catch((error) => {
+          setGenTokenStage('error');
+        });
     }
   }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
 
@@ -164,6 +168,18 @@ const GenerateTokenCompo = observer(() => {
             </Button>
           </HStack>
         </VStack>
+      )}
+      {genTokenStage == 'error' && (
+        <>
+          <Box>
+            <Text as="span" color="#D72F3F">
+              Something went bad.
+            </Text>
+          </Box>
+          <Button className="default_button" onClick={() => setGenTokenStage('init')}>
+            Start over!
+          </Button>
+        </>
       )}
     </section>
   );
