@@ -1,10 +1,6 @@
 import Dashboard from '../components/dashboard';
-import AccountContext from '../utils/account-context';
-import { useContext } from 'react';
 
-export default function Account({ }) {
-  const accountContext = useContext(AccountContext);
-
+export default function Account({}) {
   return (
     <Dashboard>
       <h1>Account</h1>
@@ -16,11 +12,7 @@ export default function Account({ }) {
             <input type="text" placeholder="Surname"></input>
           </div>
           <div>
-            <input
-              type="text"
-              placeholder="email"
-              value={``}
-            ></input>
+            <input type="text" placeholder="email" value={``}></input>
           </div>
           <div>
             <input type="text" placeholder="phone number"></input>

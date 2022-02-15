@@ -1,6 +1,6 @@
 import { Button, VStack } from '@chakra-ui/react';
 import { useCallback, useContext, useState } from 'react';
-import accountContext from '../utils/account-context';
+import accountContext from '../utils/account-store-context';
 import { accountsFlow, call } from '../utils/call-api';
 
 export default ({ tokenPayload }) => {
