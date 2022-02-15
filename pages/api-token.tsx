@@ -216,17 +216,17 @@ const PreviousTokens = observer(() => {
           <HStack justifyContent="stretch" key={index}>
             <Box flex="1">
               <Tooltip label={`(token's id ${el.apikey_id})`} placement="right">
-                {el.apikey_id.slice(0, 15)}
+                <Text>{el.apikey_id.slice(0, 15)}</Text>
               </Tooltip>
             </Box>
             <Box flex="1">
               <Tooltip label="(token's name)" placement="right">
-                {el.name}
+                <Text>{el.name}</Text>
               </Tooltip>
             </Box>
             <Box flex="1" noOfLines={1}>
               <Tooltip label={`date created: ${new Date(el.created_at)}`} placement="right">
-                {new Date(el.created_at).toUTCString()}
+                <Text>{new Date(el.created_at).toUTCString()}</Text>
               </Tooltip>
             </Box>
             <Tooltip label="remove" placement="left">
