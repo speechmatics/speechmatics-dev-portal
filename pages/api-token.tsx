@@ -21,8 +21,8 @@ import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
-import accountContext, { ApiKey } from '../utils/account-context';
-import { callPostApiKey } from '../utils/call-api';
+import accountContext, { ApiKey } from '../utils/account-store-context';
+import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 
 export default function GetAccessToken({}) {
   return (
@@ -170,7 +170,7 @@ const GenerateTokenCompo = observer(() => {
 });
 
 const PreviousTokens = observer(() => {
-  const [tokenIdToRemove, setIdTokenToRemove] = useState<string>();
+  const [apikeyIdToRemove, setApiKeyToRemove] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { accountStore, tokenStore } = useContext(accountContext);
@@ -179,13 +179,15 @@ const PreviousTokens = observer(() => {
 
   const aboutToRemoveOne = (el: ApiKey) => {
     console.log('aboutToRemoveOne', el, el.apikey_id);
-    setIdTokenToRemove(el.apikey_id);
+    setApiKeyToRemove(el.apikey_id);
     onOpen();
   };
 
   const onRemoveConfirm = () => {
-    console.log('aboutToRemoveOne', tokenIdToRemove);
-    accountStore.removeApiKey(idToken, tokenIdToRemove);
+    console.log('aboutToRemoveOne', apikeyIdToRemove);
+    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) =>
+      accountStore.fetchServerState(idToken)
+    );
     onClose();
   };
 
@@ -195,7 +197,7 @@ const PreviousTokens = observer(() => {
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>Remove the token "{tokenIdToRemove}"?</ModalBody>
+          <ModalBody>Remove the token "{apikeyIdToRemove}"?</ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onRemoveConfirm}>

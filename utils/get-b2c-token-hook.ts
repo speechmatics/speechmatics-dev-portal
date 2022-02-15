@@ -32,7 +32,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
         }
       })
       .catch((error) => {
-        console.error(error);
+        msalInstance.acquireTokenRedirect(request);
       });
   }, [msalInstance]);
 

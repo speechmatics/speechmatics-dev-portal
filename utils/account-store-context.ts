@@ -71,13 +71,9 @@ class AccountContext {
   assignServerState(response: GetAccountsResponse) {
     if (!response) throw new Error('attempt assigning empty response');
 
-    this._account = response.accounts[0];
+    this._account = response.accounts.filter((acc) => !!acc)[0];
 
     console.log('assignServerState', this._account);
-  }
-
-  removeApiKey(idToken: string, apikeyId: string) {
-    callRemoveApiKey(idToken, apikeyId).then((res) => this.fetchServerState(idToken));
   }
 }
 
