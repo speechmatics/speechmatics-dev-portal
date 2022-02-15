@@ -56,14 +56,15 @@ const GenerateTokenCompo = observer(() => {
   >('init');
 
   const [chosenTokenName, setChosenTokenName] = useState('');
-  const [generatedToken, setGeneratedToken] = useState('');
+  const [generatedApikey, setGeneratedToken] = useState('');
   const [noNameError, setNoNameError] = useState(false);
 
   const { accountStore, tokenStore } = useContext(accountContext);
   const apiKeys = accountStore.getApiKeys();
   const idToken = tokenStore.tokenPayload?.idToken;
 
-  const nameInputRef = useRef(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const generatedApikeyinputRef = useRef<HTMLInputElement>(null);
 
   const requestToken = useCallback(() => {
     if (nameInputRef?.current?.value == '') {
@@ -79,6 +80,10 @@ const GenerateTokenCompo = observer(() => {
       });
     }
   }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
+
+  const generatedApikeyonClick = useCallback(() => {
+    generatedApikeyinputRef.current.select();
+  }, []);
 
   return (
     <section>
@@ -123,7 +128,14 @@ const GenerateTokenCompo = observer(() => {
         <VStack alignItems="flex-start">
           <Box>All good! Your new token is:</Box>
           <Box fontSize={22} padding="20px 0px">
-            {generatedToken}
+            <input
+              id="apikeyValue"
+              type="text"
+              value={generatedApikey}
+              readOnly
+              onClick={generatedApikeyonClick}
+              ref={generatedApikeyinputRef}
+            />
             <Tooltip label="copy" placement="right">
               <IconButton
                 className="default_button"
@@ -134,7 +146,7 @@ const GenerateTokenCompo = observer(() => {
                 backgroundColor="#fff"
                 padding={5}
                 onClick={() => {
-                  navigator?.clipboard?.writeText(generatedToken);
+                  navigator?.clipboard?.writeText(generatedApikey);
                 }}
                 _hover={{ color: '#fff', backgroundColor: 'var(--main-navy)' }}
               />

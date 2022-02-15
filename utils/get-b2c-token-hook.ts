@@ -10,6 +10,8 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   console.log('useB2CToken', { idToken: token?.idToken, account });
 
   useEffect(() => {
+    console.log('acquiring B2CToken');
+
     const request = {
       scopes: [...defaultB2CScope],
       account,
