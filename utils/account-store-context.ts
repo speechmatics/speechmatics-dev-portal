@@ -54,10 +54,9 @@ class AccountContext {
     this.account = null;
   }
 
-  getApiKeys(contractId = 0, projectId = 0): ApiKey[] {
-    return this._account?.contracts
-      .find((con) => con.contract_id == contractId)
-      .projects.find((proj) => proj.project_id == projectId).api_keys;
+  getApiKeys(): ApiKey[] {
+    return this._account?.contracts.filter((con) => !!con)[0].projects.filter((proj) => !!proj)[0]
+      .api_keys;
   }
 
   fetchServerState(idToken: string) {
