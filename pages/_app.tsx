@@ -14,7 +14,7 @@ import AccountContext, { accountStore, tokenStore } from '../utils/account-store
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
-console.log('msalInstance', msalConfig);
+// console.log('msalInstance', msalConfig);
 
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();

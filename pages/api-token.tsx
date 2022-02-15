@@ -170,7 +170,7 @@ const GenerateTokenCompo = observer(() => {
 });
 
 const PreviousTokens = observer(() => {
-  const [apikeyIdToRemove, setApiKeyToRemove] = useState<string>();
+  const [[apikeyIdToRemove, apikeyName], setApiKeyToRemove] = useState<[string, string]>(['', '']);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { accountStore, tokenStore } = useContext(accountContext);
@@ -179,7 +179,7 @@ const PreviousTokens = observer(() => {
 
   const aboutToRemoveOne = (el: ApiKey) => {
     console.log('aboutToRemoveOne', el, el.apikey_id);
-    setApiKeyToRemove(el.apikey_id);
+    setApiKeyToRemove([el.apikey_id, el.name]);
     onOpen();
   };
 
@@ -197,7 +197,7 @@ const PreviousTokens = observer(() => {
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>Remove the token "{apikeyIdToRemove}"?</ModalBody>
+          <ModalBody>Remove the token "{apikeyName}"?</ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onRemoveConfirm}>
