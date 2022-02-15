@@ -55,8 +55,9 @@ class AccountContext {
   }
 
   getApiKeys(): ApiKey[] {
-    return this._account?.contracts.filter((con) => !!con)[0].projects.filter((proj) => !!proj)[0]
-      .api_keys;
+    return this._account?.contracts
+      .filter((con) => !!con)?.[0]
+      ?.projects.filter((proj) => !!proj)?.[0]?.api_keys;
   }
 
   fetchServerState(idToken: string) {
