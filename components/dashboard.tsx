@@ -7,7 +7,7 @@ import { Tooltip, Link as ChakraLink, Button, Box } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
-import accountContext from '../utils/account-context';
+import accountContext from '../utils/account-store-context';
 import { accountsFlow } from '../utils/call-api';
 
 export default function Dashboard({ children }) {

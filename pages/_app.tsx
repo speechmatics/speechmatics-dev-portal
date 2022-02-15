@@ -10,7 +10,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
 import theme from '../static_data/theme';
-import AccountContext, { accountStore, tokenStore } from '../utils/account-context';
+import AccountContext, { accountStore, tokenStore } from '../utils/account-store-context';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
