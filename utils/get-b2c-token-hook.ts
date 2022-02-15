@@ -7,7 +7,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
 
-  console.log('useB2CToken', { idToken: token.idToken, account });
+  console.log('useB2CToken', { idToken: token?.idToken, account });
 
   useEffect(() => {
     const request = {
