@@ -40,6 +40,12 @@ export default function Dashboard({ children }) {
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
+  const [showTestTools, setShowTestTools] = useState(false);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    setShowTestTools(event.ctrlKey);
+  };
+
   const account = instance.getActiveAccount();
 
   const logout = () => {
@@ -52,7 +58,7 @@ export default function Dashboard({ children }) {
   }
 
   return (
-    <div className="dashboard_container">
+    <div className="dashboard_container" onKeyDown={onKeyDown} tabIndex={0}>
       <div className="dashboard_sidenav">
         <Box marginTop="0.5em">
           <SpeechmaticsLogo w={230} h={120} />
@@ -64,7 +70,7 @@ export default function Dashboard({ children }) {
           ))}
         </div>
 
-        <TestApiBlock tokenPayload={tokenPayload} />
+        {showTestTools && <TestApiBlock tokenPayload={tokenPayload} />}
       </div>
       <div className="dashboard_content">{children}</div>
       <div className="dashboard_side_bar">
