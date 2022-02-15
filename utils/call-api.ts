@@ -10,7 +10,12 @@ export const callGetAccounts = async (idToken: string) => {
 
 export const callUsage = async (idToken: string) => {
   console.log('callUsage', `${process.env.ENDPOINT_API_URL}/usage`);
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET');
+  return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET', {
+    contract_id: 0,
+    project_id: 0,
+    grouping: 'daily',
+    sort_order: 'asc',
+  });
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
