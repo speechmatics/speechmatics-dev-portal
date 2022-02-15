@@ -26,7 +26,7 @@ b2cPolicies.authorities = {
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
-    clientId: process.env.AUTH_CLIEND_ID, // This is the ONLY mandatory field that you need to supply.
+    clientId: process.env.AUTH_CLIENT_ID, // This is the ONLY mandatory field that you need to supply.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
