@@ -32,7 +32,7 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     console.log('Dashboard effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
-      tokenStore.tokenPayload = tokenPayload;
+      tokenStore.setTokenPayload(tokenPayload);
       accountsFlow(tokenPayload.idToken)
         .then((resp) => {
           accountStore.assignServerState(resp);

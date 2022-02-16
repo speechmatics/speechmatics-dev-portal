@@ -75,6 +75,7 @@ const GenerateTokenCompo = observer(() => {
       setGenTokenStage('waiting');
       callPostApiKey(idToken, chosenTokenName, accountStore.getProjectId(), '')
         .then((resp) => {
+          console.log('callPostApiKey resp', resp);
           setGeneratedToken(resp.apikey_id);
           setGenTokenStage('generated');
           accountStore.fetchServerState(idToken);

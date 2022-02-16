@@ -95,7 +95,14 @@ class TokenContext {
   tokenPayload: AuthenticationResult = null;
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this, {
+      tokenPayload: observable,
+      setTokenPayload: action,
+    });
+  }
+
+  setTokenPayload(tokenPayload: AuthenticationResult) {
+    this.tokenPayload = tokenPayload;
   }
 }
 

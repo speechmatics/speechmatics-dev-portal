@@ -33,7 +33,6 @@ export const callPostApiKey = async (
   return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
     name,
-    client_ref: clientRef,
   });
 };
 
@@ -47,20 +46,19 @@ export const call = async (
   const bearer = `Bearer ${authToken}`;
 
   headers.append('Authorization', bearer);
-  headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
 
   const options = {
     method: method,
     headers: headers,
-    body: method.toLowerCase() == 'post' ? body : undefined,
+    body: method.toLowerCase() == 'post' ? JSON.stringify(body) : undefined,
   };
 
   if (method.toLowerCase() == 'get' && !!body) {
     apiEndpoint = `${apiEndpoint}?${getParams(body)}`;
   }
 
-  console.log('fetching', apiEndpoint);
+  console.log('fetching', apiEndpoint, options);
 
   return fetch(apiEndpoint, options)
     .then((response) => response.json())
