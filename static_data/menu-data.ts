@@ -2,8 +2,6 @@ import {
   DocumentationIcon,
   GettingStartedIcon,
   SubscribeIcon,
-  TranscribeIcon,
-  RecentJobsIcon,
   UsageIcon,
   AccessTokenIcon,
 } from '../components/Icons';

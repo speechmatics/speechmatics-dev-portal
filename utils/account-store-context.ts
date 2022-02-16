@@ -66,6 +66,14 @@ class AccountContext {
       ?.projects.filter((proj) => !!proj)?.[0].project_id;
   }
 
+  getContractId(): number {
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.contract_id;
+  }
+
+  getContractLimitHrs(): number {
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs;
+  }
+
   fetchServerState(idToken: string) {
     callGetAccounts(idToken)
       .then((jsonResp) => {

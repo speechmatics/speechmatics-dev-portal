@@ -8,11 +8,11 @@ export const callGetAccounts = async (idToken: string) => {
   return call(idToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
-export const callUsage = async (idToken: string, contractId: number) => {
-  console.log('callUsage', `${process.env.ENDPOINT_API_URL}/usage`);
+export const callGetUsage = async (idToken: string, contractId: number, projectId: number) => {
+  console.log('callGetUsage', `${process.env.ENDPOINT_API_URL}/usage`);
   return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET', {
-    contract_id: 0,
-    project_id: 0,
+    contract_id: contractId,
+    project_id: projectId,
     grouping: 'daily',
     sort_order: 'asc',
   });
@@ -53,13 +53,26 @@ export const call = async (
   const options = {
     method: method,
     headers: headers,
-    body,
+    body: method.toLowerCase() == 'post' ? body : undefined,
   };
+
+  if (method.toLowerCase() == 'get' && !!body) {
+    apiEndpoint = `${apiEndpoint}?${getParams(body)}`;
+  }
+
+  console.log('fetching', apiEndpoint);
 
   return fetch(apiEndpoint, options)
     .then((response) => response.json())
     .catch((error) => console.log(error));
 };
+
+function getParams(paramsObj: { [key: string]: string | number }) {
+  return Object.keys(paramsObj).reduce(
+    (prev, curr, i) => `${prev}${i != 0 ? '&' : ''}${curr}=${paramsObj[curr]}`,
+    ''
+  );
+}
 
 export async function accountsFlow(accessToken: string): Promise<any> {
   return callGetAccounts(accessToken)

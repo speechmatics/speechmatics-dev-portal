@@ -9,8 +9,9 @@ import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
 import { accountsFlow } from '../utils/call-api';
+import { observer } from 'mobx-react-lite';
 
-export default function Dashboard({ children }) {
+export default observer(function Dashboard({ children }) {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
@@ -29,7 +30,7 @@ export default function Dashboard({ children }) {
   const tokenPayload = useB2CToken(instance);
 
   useEffect(() => {
-    console.log('effect accountFlow', accountStore.account, isAuthenticated);
+    console.log('Dashboard effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.tokenPayload = tokenPayload;
       accountsFlow(tokenPayload.idToken)
@@ -91,7 +92,7 @@ export default function Dashboard({ children }) {
       </div>
     </div>
   );
-}
+});
 
 function MenuElem({ item, selected }) {
   return (
