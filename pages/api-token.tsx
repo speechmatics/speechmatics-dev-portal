@@ -172,9 +172,9 @@ const GenerateTokenCompo = observer(() => {
       )}
       {genTokenStage == 'error' && (
         <>
-          <Box>
+          <Box pb={3}>
             <Text as="span" color="#D72F3F">
-              Something went bad.
+              Sorry, something has gone wrong. We're on it! Please try again in a moment.
             </Text>
           </Box>
           <Button className="default_button" onClick={() => setGenTokenStage('init')}>

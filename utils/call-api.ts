@@ -61,7 +61,12 @@ export const call = async (
   console.log('fetching', apiEndpoint, options);
 
   return fetch(apiEndpoint, options)
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.status != 200 && response.status != 201) {
+        throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
+      }
+      return response.json();
+    })
     .catch((error) => console.log(error));
 };
 
