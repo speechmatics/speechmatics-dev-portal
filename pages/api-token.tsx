@@ -232,21 +232,21 @@ const PreviousTokens = observer(() => {
         {apiKeys?.map((el: ApiKey, index) => (
           <HStack justifyContent="stretch" key={index}>
             <Box flex="1">
-              <Tooltip label={`(token's id ${el.apikey_id})`} placement="right">
+              <Tooltip label={`(token's id ${el.apikey_id})`} placement="top">
                 <Text>{el.apikey_id.slice(0, 15)}</Text>
               </Tooltip>
             </Box>
             <Box flex="1">
-              <Tooltip label="(token's name)" placement="right">
+              <Tooltip label="(token's name)" placement="top">
                 <Text>{el.name}</Text>
               </Tooltip>
             </Box>
             <Box flex="1" noOfLines={1}>
-              <Tooltip label={`date created: ${new Date(el.created_at)}`} placement="right">
+              <Tooltip label={`date created: ${new Date(el.created_at)}`} placement="top">
                 <Text>{new Date(el.created_at).toUTCString()}</Text>
               </Tooltip>
             </Box>
-            <Tooltip label="remove" placement="left">
+            <Tooltip label="remove" placement="top">
               <IconButton
                 className="default_button"
                 aria-label="remove"
