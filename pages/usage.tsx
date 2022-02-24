@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { CSSProperties, useContext, useEffect, useState } from 'react';
 import Dashboard from '../components/dashboard';
-import { Box, Text, tokenToCSSVar } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Text, tokenToCSSVar } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
@@ -17,7 +17,7 @@ export default observer(function Usage() {
     if (idToken && accountStore.account) {
       callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
         .then((respJson) => {
-          if (isActive && !!respJson && 'data' in respJson) {
+          if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageJson({ ...respJson, currentUsage: prepCurrentUsage(respJson) });
           }
         })
@@ -34,82 +34,30 @@ export default observer(function Usage() {
     <Dashboard>
       <h1>Usage</h1>
 
-      <Text fontSize="2xl">Billing Month: {currentUsage?.billingMonth}</Text>
+      <Text fontSize="2xl">Usage this month: {currentUsage?.billingMonth}</Text>
 
-      <Box marginTop={10}>
-        <Text fontSize="xl">
-          <strong>{currentUsage?.usageStandard}</strong> hours Standard
+      <Grid templateColumns="repeat(4, 1fr)" gap={5}>
+        <GridItem>Model</GridItem>
+        <GridItem>Limit (hours / month)</GridItem>
+        <GridItem>Hours used</GridItem>
+        <GridItem>Requests made</GridItem>
+
+        <GridItem>Standard Model</GridItem>
+        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+        <GridItem>{currentUsage?.usageStandard} hours</GridItem>
+        <GridItem>0</GridItem>
+
+        <GridItem>Enhanced Model</GridItem>
+        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+        <GridItem>{currentUsage?.usageEnhanced} hours</GridItem>
+        <GridItem>0</GridItem>
+      </Grid>
+
+      <Link href={'/subscribe'}>
+        <Text as="span" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
+          Setup up the payment.
         </Text>
-        <Text color="#999">
-          You have <strong>{currentUsage?.leftStandard}</strong> hours of free usage left this
-          month.
-        </Text>
-      </Box>
-      <br />
-      <Text fontSize="xl">
-        <strong>{currentUsage?.usageEnhanced}</strong> hours Enhanced
-      </Text>
-      <Text color="#DA3A4A">
-        You have used your allowance of <strong>{currentUsage?.leftEnhanced}</strong> hours this
-        month.{' '}
-        <Link href={'/subscribe'}>
-          <Text as="span" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-            Setup up the payment.
-          </Text>
-        </Link>
-      </Text>
-
-      <div style={{ height: '300px' }} />
-
-      <div style={{ display: 'flex', width: '600px' }}>
-        {data?.map((usageUnit: UsageUnit, index: number) => {
-          const usageStandard = usageUnit.summary.find(
-            (s) => s.type == 'transcription' && s.operating_point == 'standard'
-          )?.duration_hrs;
-
-          const usageEnhanced = usageUnit.summary.find(
-            (s) => s.type == 'transcription' && s.operating_point == 'enhanced'
-          )?.duration_hrs;
-
-          return (
-            <div key={index} style={styles.elemContainer}>
-              <div
-                style={{
-                  height: accountStore.getContractLimitHrs() * 100,
-                  ...styles.columnContainer,
-                }}
-              >
-                <div
-                  style={{
-                    height: usageStandard * 100,
-                    backgroundColor: 'var(--new-teal-dark)',
-                    ...styles.column,
-                  }}
-                >
-                  {`${usageStandard}h`}
-                </div>
-                <div
-                  style={{
-                    height: usageEnhanced * 100,
-                    backgroundColor: 'var(--new-blue-light)',
-                    ...styles.column,
-                  }}
-                >
-                  {`${usageEnhanced}h`}
-                </div>
-              </div>
-              <div style={{ ...styles.columnLabel }}>
-                <div>stand.</div>
-                <div>enhan.</div>
-              </div>
-              <div style={{ ...styles.columnYear }}>
-                {usageUnit.since} - <br />
-                {usageUnit.until}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      </Link>
     </Dashboard>
   );
 });
@@ -128,9 +76,7 @@ const prepCurrentUsage = ({ data }: UsageRespJson) => {
   return {
     billingMonth: `${currentPeriod.since} - ${currentPeriod.until}`,
     usageStandard,
-    leftStandard: (((accountStore.getContractLimitHrs() - usageStandard) * 100) >> 0) / 100,
     usageEnhanced,
-    leftEnhanced: (((accountStore.getContractLimitHrs() - usageEnhanced) * 100) >> 0) / 100,
   };
 };
 
@@ -149,60 +95,4 @@ type UsageUnit = {
   until: string;
   total_hrs: number;
   summary: SummaryItem[];
-};
-
-const months = [
-  '',
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-
-const styles = {
-  elemContainer: {
-    height: 300,
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-  } as CSSProperties,
-
-  columnContainer: {
-    flex: 1,
-    padding: 10,
-    display: 'flex',
-    alignItems: 'flex-end',
-  } as CSSProperties,
-
-  column: {
-    flex: 1,
-    color: 'white',
-    fontSize: 12,
-    display: 'flex',
-    justifyContent: 'center',
-    paddingTop: 10,
-    width: 50,
-  } as CSSProperties,
-
-  columnLabel: {
-    display: 'flex',
-    color: 'gray',
-    fontSize: 10,
-    justifyContent: 'space-between',
-    padding: '0px 15px 2px 15px',
-  } as CSSProperties,
-
-  columnYear: {
-    alignSelf: 'center',
-    paddingTop: 5,
-  } as CSSProperties,
 };
