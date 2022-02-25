@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      REDIRECT_URI: 'hhttps://staging-portal.internal.speechmatics.com/login/'
+      REDIRECT_URI: 'https://staging-portal.internal.speechmatics.com/login/'
       POST_LOGOUT_REDIRECT_URI: 'https://staging-portal.internal.speechmatics.com/login/'
       SIGNUP_SIGNIN_POLICY: 'B2C_1_susi'
       RESET_PASS_POLICY: 'B2C_1_reset'
