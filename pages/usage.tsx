@@ -78,13 +78,13 @@ export default observer(function Usage() {
 });
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
-  const usageStandard = aggregate?.summary.find(
-    (s) => s.type == 'transcription' && s.operating_point == 'standard'
-  )?.duration_hrs;
+  const usageStandard =
+    aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
+      ?.duration_hrs || 0;
 
-  const usageEnhanced = aggregate?.summary.find(
-    (s) => s.type == 'transcription' && s.operating_point == 'enhanced'
-  )?.duration_hrs;
+  const usageEnhanced =
+    aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
+      ?.duration_hrs || 0;
 
   return {
     billingRange: `${aggregate?.since} - ${aggregate?.until}`,
