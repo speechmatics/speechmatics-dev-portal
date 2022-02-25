@@ -6,7 +6,7 @@ const errToast = (descr:string) => toast({
   description: descr,
   status: 'error',
   duration: 9000,
-  position: 'bottom',
+  position: 'bottom-right',
   isClosable: true,
 });
 
@@ -122,10 +122,9 @@ export async function accountsFlow(accessToken: string): Promise<any> {
         return jsonResp;
       }
 
-      errToast(`unknown response from /accounts: ${jsonResp}`)
       throw new Error(`unknown response from /accounts: ${jsonResp}`);
     })
     .catch(err => {
-      errToast(`unknown error from /accounts: ${err}`)
+      errToast(`unknown error while fetching account: ${err}`)
       console.error(err)});
 }
