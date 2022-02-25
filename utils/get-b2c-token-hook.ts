@@ -7,8 +7,6 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
 
-  console.log('useB2CToken', { idToken: token?.idToken, account });
-
   useEffect(() => {
     console.log('acquiring B2CToken');
 
@@ -21,6 +19,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       .acquireTokenSilent(request)
       .then((tokenResponse) => {
         setToken(tokenResponse);
+        console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
       })
       .catch(async (error) => {
         console.log('acquireTokenSilent error', error);
@@ -28,6 +27,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
           // fallback to interaction when silent call fails
           return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
             setToken(tokenResponse);
+            console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
           });
         }
       })
