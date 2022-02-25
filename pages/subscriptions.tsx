@@ -12,7 +12,7 @@ export default function Subscriptions({}) {
         You have no active subscriptions
       </div>
       <Link href="/subscribe/">
-        <div className="default_button">+ add subsciption</div>
+        <div className="default_button">+ add subscription</div>
       </Link>
     </Dashboard>
   );
