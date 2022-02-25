@@ -71,7 +71,7 @@ class AccountContext {
   }
 
   getContractLimitHrs(): number {
-    return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs;
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs || 0;
   }
 
   fetchServerState(idToken: string) {
