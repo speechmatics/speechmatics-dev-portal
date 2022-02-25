@@ -19,7 +19,7 @@ export const callGetUsage = async (idToken: string, contractId: number, projectI
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
-  console.log('callRemoveApiKey', `${process.env.ENDPOINT_API_URL}/apikey/${apiKeyId}`);
+  console.log('callRemoveApiKey', `${process.env.ENDPOINT_API_URL}/api_keys/${apiKeyId}`);
   return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
 

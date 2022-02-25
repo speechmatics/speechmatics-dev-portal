@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CSSProperties, useContext, useEffect, useState } from 'react';
+import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import Dashboard from '../components/dashboard';
 import { Box, Grid, GridItem, Text, tokenToCSSVar } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
@@ -18,7 +18,7 @@ export default observer(function Usage() {
       callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
-            setUsageJson({ ...respJson, currentUsage: prepCurrentUsage(respJson) });
+            setUsageJson({ ...respJson });
           }
         })
         .catch(console.error);
@@ -28,15 +28,17 @@ export default observer(function Usage() {
     };
   }, [idToken, accountStore.account]);
 
-  const { data, currentUsage } = usageJson;
+  const { aggregate, breakdown } = usageJson;
+
+  const currentUsage = prepCurrentUsage(aggregate);
 
   return (
     <Dashboard>
       <h1>Usage</h1>
 
-      <Text fontSize="2xl">Usage this month: {currentUsage?.billingMonth}</Text>
+      <Text fontSize="2xl">Usage this month: {currentUsage?.billingRange}</Text>
 
-      <Grid templateColumns="repeat(4, 1fr)" gap={5}>
+      <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop='2em'>
         <GridItem>Model</GridItem>
         <GridItem>Limit (hours / month)</GridItem>
         <GridItem>Hours used</GridItem>
@@ -53,34 +55,47 @@ export default observer(function Usage() {
         <GridItem>0</GridItem>
       </Grid>
 
-      <Link href={'/subscribe'}>
-        <Text as="span" style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-          Setup up the payment.
-        </Text>
-      </Link>
+      <Text fontSize="2xl" marginTop='3em'>Breakdown</Text>
+
+      <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop='2em'>
+        <GridItem>Day</GridItem>
+        <GridItem>Hours used</GridItem>
+
+        {breakdown.map((el: UsageUnit) => {
+          const usg = prepCurrentUsage(el);
+          return <React.Fragment>
+            <GridItem>{el.since}</GridItem>
+            <GridItem>{el.total_hrs}</GridItem>
+          </React.Fragment>
+        }
+        )}
+
+
+      </Grid>
+
+
     </Dashboard>
   );
 });
 
-const prepCurrentUsage = ({ data }: UsageRespJson) => {
-  const currentPeriod = data[0]; //todo find current period
+const prepCurrentUsage = (aggregate: UsageUnit) => {
 
-  const usageStandard = currentPeriod.summary.find(
+  const usageStandard = aggregate?.summary.find(
     (s) => s.type == 'transcription' && s.operating_point == 'standard'
   )?.duration_hrs;
 
-  const usageEnhanced = currentPeriod.summary.find(
+  const usageEnhanced = aggregate?.summary.find(
     (s) => s.type == 'transcription' && s.operating_point == 'enhanced'
   )?.duration_hrs;
 
   return {
-    billingMonth: `${currentPeriod.since} - ${currentPeriod.until}`,
+    billingRange: `${aggregate?.since} - ${aggregate?.until}`,
     usageStandard,
     usageEnhanced,
   };
 };
 
-type UsageRespJson = { data: UsageUnit[] };
+type UsageRespJson = { aggregate: UsageUnit, breakdown: UsageUnit[] };
 
 type SummaryItem = {
   mode: 'batch' | 'real-time';
