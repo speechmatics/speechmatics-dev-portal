@@ -38,7 +38,7 @@ export default observer(function Usage() {
 
       <Text fontSize="2xl">Usage this month: {currentUsage?.billingRange}</Text>
 
-      <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop='2em'>
+      <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop="2em">
         <GridItem>Model</GridItem>
         <GridItem>Limit (hours / month)</GridItem>
         <GridItem>Hours used</GridItem>
@@ -55,31 +55,29 @@ export default observer(function Usage() {
         <GridItem>0</GridItem>
       </Grid>
 
-      <Text fontSize="2xl" marginTop='3em'>Breakdown</Text>
+      <Text fontSize="2xl" marginTop="3em">
+        Breakdown
+      </Text>
 
-      <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop='2em'>
+      <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop="2em">
         <GridItem>Day</GridItem>
         <GridItem>Hours used</GridItem>
 
-        {breakdown.map((el: UsageUnit) => {
+        {breakdown?.map((el: UsageUnit) => {
           const usg = prepCurrentUsage(el);
-          return <React.Fragment>
-            <GridItem>{el.since}</GridItem>
-            <GridItem>{el.total_hrs}</GridItem>
-          </React.Fragment>
-        }
-        )}
-
-
+          return (
+            <React.Fragment>
+              <GridItem>{el.since}</GridItem>
+              <GridItem>{el.total_hrs}</GridItem>
+            </React.Fragment>
+          );
+        })}
       </Grid>
-
-
     </Dashboard>
   );
 });
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
-
   const usageStandard = aggregate?.summary.find(
     (s) => s.type == 'transcription' && s.operating_point == 'standard'
   )?.duration_hrs;
@@ -95,7 +93,7 @@ const prepCurrentUsage = (aggregate: UsageUnit) => {
   };
 };
 
-type UsageRespJson = { aggregate: UsageUnit, breakdown: UsageUnit[] };
+type UsageRespJson = { aggregate: UsageUnit; breakdown: UsageUnit[] };
 
 type SummaryItem = {
   mode: 'batch' | 'real-time';
