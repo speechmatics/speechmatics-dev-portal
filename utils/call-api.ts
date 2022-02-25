@@ -13,7 +13,7 @@ export const callGetUsage = async (idToken: string, contractId: number, projectI
   return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET', {
     contract_id: contractId,
     project_id: projectId,
-    grouping: 'daily',
+    grouping: 'day',
     sort_order: 'asc',
   });
 };

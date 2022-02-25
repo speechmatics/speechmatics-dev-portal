@@ -64,9 +64,9 @@ export default observer(function Usage() {
         <GridItem>Hours used</GridItem>
 
         {breakdown?.map((el: UsageUnit) => {
-          const usg = prepCurrentUsage(el);
+          // const usg = prepCurrentUsage(el);
           return (
-            <React.Fragment>
+            <React.Fragment key={el.since}>
               <GridItem>{el.since}</GridItem>
               <GridItem>{el.total_hrs}</GridItem>
             </React.Fragment>
