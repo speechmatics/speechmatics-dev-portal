@@ -24,13 +24,14 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
+  const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
       <h1>API Token</h1>
       <div className="token_form">
         <div className="description_text">
-          You need an API Key (also known as an Authorization Token) to make calls to our REST API.
+          You need an API Key (also known as an Authorization Token) to make calls to our REST API {accountStore.getRuntimeURL()}.
           See our{' '}
           <a
             target="_blank"

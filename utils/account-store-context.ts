@@ -16,6 +16,7 @@ interface Contract {
   contract_id: number;
   usage_limit_hrs: number;
   projects: Project[];
+  runtime_url: string;
 }
 
 interface Project {
@@ -68,6 +69,10 @@ class AccountContext {
 
   getContractId(): number {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.contract_id;
+  }
+
+  getRuntimeURL(): string {
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.runtime_url;
   }
 
   getContractLimitHrs(): number {
