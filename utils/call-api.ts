@@ -1,14 +1,15 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 
 const toast = createStandaloneToast();
-const errToast = (descr:string) => toast({
-  title: 'An error occurred.',
-  description: descr,
-  status: 'error',
-  duration: 9000,
-  position: 'bottom-right',
-  isClosable: true,
-});
+const errToast = (descr: string) =>
+  toast({
+    title: 'An error occurred.',
+    description: descr,
+    status: 'error',
+    duration: 9000,
+    position: 'bottom-right',
+    isClosable: true,
+  });
 
 export const callPostAccounts = async (accessToken: string) => {
   console.log('callPostAccounts', `${process.env.ENDPOINT_API_URL}/accounts`);
@@ -75,21 +76,15 @@ export const call = async (
   return fetch(apiEndpoint, options)
     .then((response) => {
       if (response.status != 200 && response.status != 201) {
-        toast({
-          title: 'An error occurred.',
-          description: `response from ${method} ${apiEndpoint} has status ${response.status}`,
-          status: 'error',
-          duration: 9000,
-          position: 'bottom',
-          isClosable: true,
-        });
+        errToast(`response from ${method} ${apiEndpoint} has status ${response.status}`);
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
       return response.json();
     })
     .catch((error) => {
       errToast(`details: ${error}`);
-      console.log(error)});
+      console.log(error);
+    });
 };
 
 function getParams(paramsObj: { [key: string]: string | number }) {
@@ -124,7 +119,8 @@ export async function accountsFlow(accessToken: string): Promise<any> {
 
       throw new Error(`unknown response from /accounts: ${jsonResp}`);
     })
-    .catch(err => {
-      errToast(`unknown error while fetching account: ${err}`)
-      console.error(err)});
+    .catch((err) => {
+      errToast(`unknown error while fetching account: ${err}`);
+      console.error(err);
+    });
 }
