@@ -36,7 +36,7 @@ export default observer(function Usage() {
     <Dashboard>
       <h1>Usage</h1>
 
-      <Text fontSize="2xl">Usage this month: {currentUsage?.billingRange}</Text>
+      <Text fontSize="2xl">Usage for the period: {currentUsage?.billingRange}</Text>
 
       <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop="2em">
         <GridItem>Model</GridItem>

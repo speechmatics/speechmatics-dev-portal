@@ -82,7 +82,11 @@ class AccountContext {
   fetchServerState(idToken: string) {
     callGetAccounts(idToken)
       .then((jsonResp) => {
-        this.assignServerState(jsonResp);
+        if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
+          this.assignServerState(jsonResp);
+        } else {
+          throw new Error(`callGetAccounts response malformed: ${jsonResp}`);
+        }
       })
       .catch((err) => console.error('fetchServerState', err));
   }
@@ -90,7 +94,7 @@ class AccountContext {
   assignServerState(response: GetAccountsResponse) {
     if (!response) throw new Error('attempt assigning empty response');
 
-    this._account = response.accounts.filter((acc) => !!acc)[0];
+    this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
     console.log('assignServerState', this._account);
   }
