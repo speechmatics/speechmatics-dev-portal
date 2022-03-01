@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -16,7 +16,6 @@ function Subscribe({ }) {
   if (typeof window !== 'undefined' && 'Chargify' in window) {
     chargify = useRef(new window.Chargify());
   }
-
 
   const [token, setToken] = useState('');
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
@@ -42,9 +41,9 @@ function Subscribe({ }) {
     if (!chargifyLoaded && chargify && chargify.current) {
       chargify.current.load({
         selector: '#chargify-form',
-        publicKey: 'chjs_ycbc7hctjthpy6qbxxxgjtfd',
+        publicKey: 'chjs_6nnmqcxmp4nrbnmf2spmwm63',
         type: 'card',
-        serverHost: 'https://speechmatics-3.chargify.com',
+        serverHost: 'https://speechmatics-dev.chargify.com',
         fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', ''),
       });
       setChargifyLoaded(true);
