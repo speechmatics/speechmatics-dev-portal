@@ -1,6 +1,13 @@
-import Head from 'next/head';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
+import accountContext from '../utils/account-store-context';
+import { callGetSecrChargify, callPostRequestTokenChargify, errToast, positiveToast } from '../utils/call-api';
+
+import { createStandaloneToast, Spinner } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+
+const toast = createStandaloneToast();
+
 
 declare global {
   interface Window {
@@ -8,7 +15,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -18,30 +25,30 @@ function Subscribe({}) {
   }
 
   const [token, setToken] = useState('');
+  const [displaySubmit, setDisplaySubmit] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
+  const [paymentToken, setPaymentToken] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const { accountStore, tokenStore } = useContext(accountContext);
+  const idToken = tokenStore.tokenPayload?.idToken;
 
-    chargify?.current.token(
-      chargifyForm.current,
+  const router = useRouter();
 
-      (token) => {
-        console.log('{host} token SUCCESS - token: ', token);
-        setToken(token);
-      },
-
-      (error) => {
-        console.log('{host} token ERROR - err: ', error);
-      }
-    );
-  };
 
   useEffect(() => {
-    if (!chargifyLoaded && chargify && chargify.current) {
+    if (idToken) {
+      callGetSecrChargify(idToken, accountStore.getContractId()).then(tokenResp => {
+        setPaymentToken(tokenResp.something);
+      })
+    }
+  }, [idToken])
+
+  useEffect(() => {
+    if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
       chargify.current.load({
         selector: '#chargify-form',
         publicKey: 'chjs_6nnmqcxmp4nrbnmf2spmwm63',
+        securityToken: paymentToken,
         type: 'card',
         serverHost: 'https://speechmatics-dev.chargify.com',
         fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', ''),
@@ -52,7 +59,33 @@ function Subscribe({}) {
     return () => {
       chargify?.current.unload();
     };
-  }, [chargify, typeof window !== 'undefined' && 'Chargify' in window]);
+  }, [paymentToken, chargify, typeof window !== 'undefined' && 'Chargify' in window]);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setDisplaySubmit(false);
+
+    chargify?.current.token(
+      chargifyForm.current,
+
+      (token: string) => {
+        console.log('{host} token SUCCESS - token: ', token);
+        setToken(token);
+
+        callPostRequestTokenChargify(idToken, token).then(() => {
+          positiveToast('I think. redirecting...')
+          window.setTimeout(() => router.push('/home/'), 1000);
+        });
+      },
+
+      (error: unknown) => {
+        console.log('{host} token ERROR - err: ', error);
+        errToast(`Chargify error ${error}`)
+      }
+    );
+  };
 
   return (
     <Dashboard>
@@ -96,7 +129,7 @@ function Subscribe({}) {
               />
             </label>
             <p>
-              <button type="submit">Submit Form</button>
+              <button type="submit" disabled={!displaySubmit}>{displaySubmit ? 'Submit Form' : <Spinner />}</button>
             </p>
           </form>
         </div>
