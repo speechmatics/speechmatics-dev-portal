@@ -78,7 +78,7 @@ export default observer(function Dashboard({ children }) {
         <ModalContent>
           <ModalHeader>Just one or two seconds more...</ModalHeader>
           <ModalBody textAlign={'center'}>
-            Setting Up the account for You! <Spinner ml={2} />
+            Setting up the account for You! <Spinner ml={2} />
           </ModalBody>
           <ModalFooter />
         </ModalContent>
