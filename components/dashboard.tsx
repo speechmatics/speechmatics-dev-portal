@@ -3,16 +3,27 @@ import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
 import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from './Icons';
-import { Tooltip, Link as ChakraLink, Button, Box } from '@chakra-ui/react';
+import { Tooltip, Link as ChakraLink, Button, Box, useDisclosure, Spinner } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
 import { accountsFlow } from '../utils/call-api';
 import { observer } from 'mobx-react-lite';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
 
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
+
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
   const { instance, accounts, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
@@ -32,10 +43,12 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     console.log('Dashboard effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
+      onModalOpen();
       tokenStore.setTokenPayload(tokenPayload);
       accountsFlow(tokenPayload.idToken)
         .then((resp) => {
           accountStore.assignServerState(resp);
+          onModalClose();
         })
         .catch(console.error);
     }
@@ -60,6 +73,16 @@ export default observer(function Dashboard({ children }) {
 
   return (
     <div className="dashboard_container" onKeyDown={onKeyDown} tabIndex={0}>
+      <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Just one or two seconds more...</ModalHeader>
+          <ModalBody textAlign={'center'}>
+            Setting Up the account for You! <Spinner ml={2} />
+          </ModalBody>
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
       <div className="dashboard_sidenav">
         <Box marginTop="0.5em">
           <SpeechmaticsLogo w={230} h={120} />
