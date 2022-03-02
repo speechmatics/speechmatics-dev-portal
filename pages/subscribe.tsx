@@ -38,7 +38,7 @@ function Subscribe({ }) {
   useEffect(() => {
     if (idToken) {
       callGetSecrChargify(idToken, accountStore.getContractId()).then(tokenResp => {
-        setPaymentToken(tokenResp.something);
+        setPaymentToken(tokenResp.payment_token);
       })
     }
   }, [idToken])
