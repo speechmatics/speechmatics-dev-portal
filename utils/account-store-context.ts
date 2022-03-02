@@ -82,7 +82,7 @@ class AccountContext {
   fetchServerState(idToken: string) {
     callGetAccounts(idToken)
       .then((jsonResp) => {
-        if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
+        if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
         } else {
           throw new Error(`callGetAccounts response malformed: ${jsonResp}`);
@@ -113,6 +113,15 @@ class TokenContext {
   setTokenPayload(tokenPayload: AuthenticationResult) {
     this.tokenPayload = tokenPayload;
   }
+}
+
+export function checkIfAccountResponseLegit(jsonResp: any) {
+  return (
+    jsonResp &&
+    'accounts' in jsonResp &&
+    Array.isArray(jsonResp.accounts) &&
+    jsonResp.accounts.length > 0
+  );
 }
 
 export const accountStore = new AccountContext();
