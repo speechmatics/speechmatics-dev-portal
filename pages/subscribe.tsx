@@ -25,7 +25,7 @@ function Subscribe({ }) {
   }
 
   const [token, setToken] = useState('');
-  const [displaySubmit, setDisplaySubmit] = useState(true);
+  const [submitButtonReady, setSubmitButtonReady] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
   const [paymentToken, setPaymentToken] = useState('');
 
@@ -65,7 +65,7 @@ function Subscribe({ }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setDisplaySubmit(false);
+    setSubmitButtonReady(false);
 
     chargify?.current.token(
       chargifyForm.current,
@@ -75,14 +75,15 @@ function Subscribe({ }) {
         setToken(token);
 
         callPostRequestTokenChargify(idToken, token).then(() => {
-          positiveToast('I think. redirecting...')
+          positiveToast('redirecting...')
           window.setTimeout(() => router.push('/home/'), 1000);
         });
       },
 
-      (error: unknown) => {
+      (error: any) => {
         console.log('{host} token ERROR - err: ', error);
-        errToast(`Chargify error ${error}`)
+        setSubmitButtonReady(false);
+        errToast(`${error.message}`)
       }
     );
   };
@@ -129,7 +130,7 @@ function Subscribe({ }) {
               />
             </label>
             <p>
-              <button type="submit" disabled={!displaySubmit}>{displaySubmit ? 'Submit Form' : <Spinner />}</button>
+              <button type="submit" disabled={!submitButtonReady}>{submitButtonReady ? 'Submit Form' : <Spinner />}</button>
             </p>
           </form>
         </div>
