@@ -82,7 +82,7 @@ function Subscribe({ }) {
 
       (error: any) => {
         console.log('{host} token ERROR - err: ', error);
-        setSubmitButtonReady(false);
+        setSubmitButtonReady(true);
         errToast(`${error.message}`)
       }
     );
