@@ -76,13 +76,17 @@ function Subscribe({}) {
         console.log('{host} token SUCCESS - token: ', charfigyToken);
         setToken(charfigyToken);
 
-        callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken).then(
-          async () => {
+        callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
+          .then(async () => {
             positiveToast('token SUCCESS redirecting...');
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/subscriptions/'), 1000);
-          }
-        );
+          })
+          .catch((error) => {
+            setSubmitButtonReady(true);
+            console.log('{host} token ERROR - err: ', error);
+            errToast(`raw: ${JSON.stringify(error)}`);
+          });
       },
 
       (error: any) => {
