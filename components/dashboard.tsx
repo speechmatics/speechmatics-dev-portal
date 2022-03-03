@@ -72,7 +72,7 @@ export default observer(function Dashboard({ children }) {
 
   const logout = () => {
     accountStore.clear();
-    instance.logoutRedirect();
+    instance.logoutRedirect({ account: account });
   };
 
   if (!isAuthenticated) {
