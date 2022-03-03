@@ -10,6 +10,7 @@ import {
 
 import { createStandaloneToast, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { observer } from 'mobx-react-lite';
 
 const toast = createStandaloneToast();
 
@@ -99,7 +100,11 @@ function Subscribe({}) {
 
   return (
     <Dashboard>
-      <h1>Set up new subscription</h1>
+      <h1>
+        {!!accountStore.getPaymentMethod()
+          ? 'Replace the existing payment method'
+          : 'Set up new subscription'}
+      </h1>
 
       <div>
         <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
@@ -175,7 +180,7 @@ function Subscribe({}) {
   );
 }
 
-export default Subscribe;
+export default observer(Subscribe);
 
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
