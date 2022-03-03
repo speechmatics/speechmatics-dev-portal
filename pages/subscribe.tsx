@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
-import { callGetSecrChargify, callPostRequestTokenChargify, errToast, positiveToast } from '../utils/call-api';
+import {
+  callGetSecrChargify,
+  callPostRequestTokenChargify,
+  errToast,
+  positiveToast,
+} from '../utils/call-api';
 
 import { createStandaloneToast, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 const toast = createStandaloneToast();
-
 
 declare global {
   interface Window {
@@ -15,7 +19,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -34,14 +38,13 @@ function Subscribe({ }) {
 
   const router = useRouter();
 
-
   useEffect(() => {
     if (idToken) {
-      callGetSecrChargify(idToken, accountStore.getContractId()).then(tokenResp => {
+      callGetSecrChargify(idToken, accountStore.getContractId()).then((tokenResp) => {
         setPaymentToken(tokenResp.payment_token);
-      })
+      });
     }
-  }, [idToken])
+  }, [idToken]);
 
   useEffect(() => {
     if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
@@ -61,7 +64,6 @@ function Subscribe({ }) {
     };
   }, [paymentToken, chargify, typeof window !== 'undefined' && 'Chargify' in window]);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -75,7 +77,7 @@ function Subscribe({ }) {
         setToken(token);
 
         callPostRequestTokenChargify(idToken, token).then(() => {
-          positiveToast('redirecting...')
+          positiveToast('redirecting...');
           window.setTimeout(() => router.push('/home/'), 1000);
         });
       },
@@ -83,7 +85,7 @@ function Subscribe({ }) {
       (error: any) => {
         console.log('{host} token ERROR - err: ', error);
         setSubmitButtonReady(true);
-        errToast(`${error.message}`)
+        errToast(`raw: ${JSON.stringify(error)}`);
       }
     );
   };
@@ -130,7 +132,9 @@ function Subscribe({ }) {
               />
             </label>
             <p>
-              <button type="submit" disabled={!submitButtonReady}>{submitButtonReady ? 'Submit Form' : <Spinner />}</button>
+              <button type="submit" disabled={!submitButtonReady}>
+                {submitButtonReady ? 'Submit Form' : <Spinner />}
+              </button>
             </p>
           </form>
         </div>
