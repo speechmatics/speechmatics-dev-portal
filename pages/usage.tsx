@@ -46,12 +46,16 @@ export default observer(function Usage() {
 
         <GridItem>Standard Model</GridItem>
         <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-standard">{currentUsage?.usageStandard} hours</GridItem>
+        <GridItem data-qa="usage-standard">
+          {Number(currentUsage?.usageStandard).toFixed(1)} hours
+        </GridItem>
         <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
         <GridItem>Enhanced Model</GridItem>
         <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-enhanced">{currentUsage?.usageEnhanced} hours</GridItem>
+        <GridItem data-qa="usage-enhanced">
+          {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
+        </GridItem>
         <GridItem data-qa="requests-enhanced">{currentUsage?.usageEnhanced}</GridItem>
       </Grid>
 
