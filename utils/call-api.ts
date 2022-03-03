@@ -102,7 +102,7 @@ export const call = async (
         apiEndpoint,
         options,
         'is:',
-        await response.clone().text(),
+        await response.clone().json(),
         response
       );
 

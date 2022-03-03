@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -43,6 +43,8 @@ function Subscribe({}) {
     if (idToken) {
       callGetSecrChargify(idToken, accountStore.getContractId()).then((tokenResp) => {
         setPaymentToken(tokenResp.payment_token);
+      }).catch((err) => {
+        errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`)
       });
     }
   }, [idToken]);
@@ -86,14 +88,14 @@ function Subscribe({}) {
           .catch((error) => {
             setSubmitButtonReady(true);
             console.log('{host} token ERROR - err: ', error);
-            errToast(`raw: ${JSON.stringify(error)}`);
+            errToast(`callPostRequestTokenChargify: ${JSON.stringify(error)}`);
           });
       },
 
       (error: any) => {
-        console.log('{host} token ERROR - err: ', error);
         setSubmitButtonReady(true);
-        errToast(`raw: ${JSON.stringify(error)}`);
+        console.log('{host} token ERROR - err: ', error);
+        errToast(`chargify.token: ${JSON.stringify(error)}`);
       }
     );
   };
