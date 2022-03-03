@@ -18,7 +18,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
@@ -40,12 +40,16 @@ export default observer(function Dashboard({ children }) {
 
   const tokenPayload = useB2CToken(instance);
 
+  const isSettingUpAccount = (val: boolean) => {
+    if (val) onModalOpen();
+    //else onModalClose();
+  };
+
   useEffect(() => {
     console.log('Dashboard effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
-      onModalOpen();
       tokenStore.setTokenPayload(tokenPayload);
-      accountsFlow(tokenPayload.idToken)
+      accountsFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
           onModalClose();

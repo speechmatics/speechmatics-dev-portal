@@ -11,8 +11,7 @@ export const errToast = (descr: string) =>
     position: 'bottom-right',
     isClosable: true,
   });
-  
-  
+
 export const positiveToast = (descr: string) =>
   toast({
     title: 'All fine.',
@@ -45,12 +44,18 @@ export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
 };
 
 export const callGetSecrChargify = async (idToken: string, projectId: number) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/contracts/${projectId}/payment_token`, 'GET');
-}
+  return call(
+    idToken,
+    `${process.env.ENDPOINT_API_URL}/contracts/${projectId}/payment_token`,
+    'GET'
+  );
+};
 
 export const callPostRequestTokenChargify = async (idToken: string, chargifyToken: string) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/contracts`, 'PUT', {contract_request_token: chargifyToken});
-}
+  return call(idToken, `${process.env.ENDPOINT_API_URL}/contracts`, 'PUT', {
+    contract_request_token: chargifyToken,
+  });
+};
 
 export const callPostApiKey = async (
   idToken: string,
@@ -109,7 +114,10 @@ function getParams(paramsObj: { [key: string]: string | number }) {
   );
 }
 
-export async function accountsFlow(accessToken: string): Promise<any> {
+export async function accountsFlow(
+  accessToken: string,
+  isSettingUpAccount: (val: boolean) => void
+): Promise<any> {
   return callGetAccounts(accessToken)
     .then(async (jsonResp: any) => {
       console.log('response from GET /accounts is', jsonResp);
@@ -123,9 +131,10 @@ export async function accountsFlow(accessToken: string): Promise<any> {
         console.log(
           'no account on management platform, sending a request to create with POST /accounts'
         );
-
+        isSettingUpAccount(true);
         return callPostAccounts(accessToken).then((jsonPostResp) => {
           console.log('response from POST /accounts', jsonPostResp);
+          isSettingUpAccount(false);
           return jsonPostResp;
         });
       } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
