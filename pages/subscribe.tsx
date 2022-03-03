@@ -80,7 +80,7 @@ function Subscribe({}) {
           async () => {
             positiveToast('token SUCCESS redirecting...');
             await accountStore.fetchServerState(idToken);
-            window.setTimeout(() => router.push('/home/'), 1000);
+            window.setTimeout(() => router.push('/subscriptions/'), 1000);
           }
         );
       },
