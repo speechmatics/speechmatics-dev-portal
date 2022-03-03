@@ -86,7 +86,7 @@ export const call = async (
   const options = {
     method: method,
     headers: headers,
-    body: method.toLowerCase() == 'post' ? JSON.stringify(body) : undefined,
+    body: method.toLowerCase() != 'get' ? JSON.stringify(body) : undefined,
   };
 
   if (method.toLowerCase() == 'get' && !!body) {
@@ -96,11 +96,21 @@ export const call = async (
   console.log('fetching', apiEndpoint, options);
 
   return fetch(apiEndpoint, options)
-    .then((response) => {
+    .then(async (response) => {
+      console.log(
+        `response from`,
+        apiEndpoint,
+        options,
+        'is:',
+        await response.clone().text(),
+        response
+      );
+
       if (response.status != 200 && response.status != 201) {
         errToast(`response from ${method} ${apiEndpoint} has status ${response.status}`);
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
+
       return response.json();
     })
     .catch((error) => {
@@ -122,8 +132,6 @@ export async function accountsFlow(
 ): Promise<any> {
   return callGetAccounts(accessToken)
     .then(async (jsonResp: any) => {
-      console.log('response from GET /accounts is', jsonResp);
-
       if (
         jsonResp &&
         jsonResp.accounts &&
@@ -135,7 +143,6 @@ export async function accountsFlow(
         );
         isSettingUpAccount(true);
         return callPostAccounts(accessToken).then((jsonPostResp) => {
-          console.log('response from POST /accounts', jsonPostResp);
           isSettingUpAccount(false);
           return jsonPostResp;
         });
