@@ -28,7 +28,7 @@ export default ({ tokenPayload }) => {
   const callb3 = useCallback(() => {
     console.log('calling GET /accounts to check the accounts');
     if (tokenPayload?.idToken) {
-      accountsFlow(tokenPayload.idToken);
+      accountsFlow(tokenPayload.idToken, (v) => {});
     }
   }, [tokenPayload?.idToken]);
 

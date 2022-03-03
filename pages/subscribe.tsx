@@ -72,12 +72,12 @@ function Subscribe({}) {
     chargify?.current.token(
       chargifyForm.current,
 
-      (token: string) => {
-        console.log('{host} token SUCCESS - token: ', token);
-        setToken(token);
+      (charfigyToken: string) => {
+        console.log('{host} token SUCCESS - token: ', charfigyToken);
+        setToken(charfigyToken);
 
-        callPostRequestTokenChargify(idToken, token).then(() => {
-          positiveToast('redirecting...');
+        callPostRequestTokenChargify(idToken, charfigyToken).then(() => {
+          positiveToast('token SUCCESS redirecting...');
           window.setTimeout(() => router.push('/home/'), 1000);
         });
       },

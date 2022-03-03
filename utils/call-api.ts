@@ -2,6 +2,8 @@ import { createStandaloneToast } from '@chakra-ui/react';
 
 const toast = createStandaloneToast();
 
+const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
+
 export const errToast = (descr: string) =>
   toast({
     title: 'An error occurred.',
@@ -23,15 +25,15 @@ export const positiveToast = (descr: string) =>
   });
 
 export const callPostAccounts = async (accessToken: string) => {
-  return call(accessToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'POST');
+  return call(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
 };
 
 export const callGetAccounts = async (idToken: string) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/accounts`, 'GET');
+  return call(idToken, `${ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
 export const callGetUsage = async (idToken: string, contractId: number, projectId: number) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/usage`, 'GET', {
+  return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {
     contract_id: contractId,
     project_id: projectId,
     grouping: 'day',
@@ -40,19 +42,15 @@ export const callGetUsage = async (idToken: string, contractId: number, projectI
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
+  return call(idToken, `${ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
 
 export const callGetSecrChargify = async (idToken: string, projectId: number) => {
-  return call(
-    idToken,
-    `${process.env.ENDPOINT_API_URL}/contracts/${projectId}/payment_token`,
-    'GET'
-  );
+  return call(idToken, `${ENDPOINT_API_URL}/contracts/${projectId}/payment_token`, 'GET');
 };
 
 export const callPostRequestTokenChargify = async (idToken: string, chargifyToken: string) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/contracts`, 'PUT', {
+  return call(idToken, `${ENDPOINT_API_URL}/contracts`, 'PUT', {
     contract_request_token: chargifyToken,
   });
 };
@@ -63,7 +61,7 @@ export const callPostApiKey = async (
   projectId: number,
   clientRef: string
 ) => {
-  return call(idToken, `${process.env.ENDPOINT_API_URL}/api_keys`, 'POST', {
+  return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
     name,
   });

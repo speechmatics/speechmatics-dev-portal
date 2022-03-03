@@ -15,7 +15,7 @@ export default function Subscriptions({}) {
         style={{ margin: '0px 0px 40px 0px' }}
       >
         {paymentMethod
-          ? `You have already a subscription with payment method (${paymentMethod})`
+          ? `You have already a subscription with payment method (${paymentMethod.card_type}, ${paymentMethod.masked_card_number})`
           : 'You have no active subscriptions'}
       </div>
       <Link href="/subscribe/">

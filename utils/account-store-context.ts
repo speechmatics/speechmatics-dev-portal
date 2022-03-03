@@ -17,7 +17,7 @@ interface Contract {
   usage_limit_hrs: number;
   projects: Project[];
   runtime_url: string;
-  payment_method: string | null;
+  payment_method: PaymentMethod | null;
 }
 
 interface Project {
@@ -31,6 +31,13 @@ export interface ApiKey {
   name: string;
   created_at: string;
   client_ref: string;
+}
+
+export interface PaymentMethod {
+  card_type: string;
+  masked_card_number: string;
+  expiration_month: number;
+  expiration_year: number;
 }
 
 class AccountContext {
@@ -80,7 +87,7 @@ class AccountContext {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs || 0;
   }
 
-  getPaymentMethod(): string | null {
+  getPaymentMethod(): PaymentMethod | null {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
   }
 

@@ -46,13 +46,13 @@ export default observer(function Usage() {
 
         <GridItem>Standard Model</GridItem>
         <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem>{currentUsage?.usageStandard} hours</GridItem>
-        <GridItem>0</GridItem>
+        <GridItem data-qa="usage-standard">{currentUsage?.usageStandard} hours</GridItem>
+        <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
         <GridItem>Enhanced Model</GridItem>
         <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem>{currentUsage?.usageEnhanced} hours</GridItem>
-        <GridItem>0</GridItem>
+        <GridItem data-qa="usage-enhanced">{currentUsage?.usageEnhanced} hours</GridItem>
+        <GridItem data-qa="requests-enhanced">{currentUsage?.usageEnhanced}</GridItem>
       </Grid>
 
       <Text fontSize="2xl" marginTop="3em">
@@ -78,18 +78,20 @@ export default observer(function Usage() {
 });
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
-  const usageStandard =
-    aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
-      ?.duration_hrs || 0;
-
-  const usageEnhanced =
-    aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
-      ?.duration_hrs || 0;
-
   return {
     billingRange: `${aggregate?.since} - ${aggregate?.until}`,
-    usageStandard,
-    usageEnhanced,
+    usageStandard:
+      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
+        ?.duration_hrs || 0,
+    usageEnhanced:
+      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
+        ?.duration_hrs || 0,
+    countStandard:
+      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
+        ?.count || 0,
+    countEnhanced:
+      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
+        ?.count || 0,
   };
 };
 
