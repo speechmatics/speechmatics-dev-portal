@@ -11,6 +11,7 @@ import { PublicClientApplication, EventType } from '@azure/msal-browser';
 import { msalConfig } from '../utils/auth-config';
 import theme from '../static_data/theme';
 import AccountContext, { accountStore, tokenStore } from '../utils/account-store-context';
+import Head from 'next/head';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -42,6 +43,9 @@ export default function MyApp({ Component, pageProps }) {
           <div className="all_container">
             <div className="header"></div>
             <div className="content">
+              <Head>
+                <title>Speechmatics Portal</title>
+              </Head>
               <Component {...pageProps} />
             </div>
             <div className="footer"></div>

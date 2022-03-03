@@ -34,15 +34,25 @@ export default observer(function Dashboard({ children }) {
 
   useEffect(() => {
     let st: number;
-    if (inProgress == 'none' && !isAuthenticated) {
-      st = window.setTimeout(() => router.push('/login/'), 1000);
+    console.log('dashboard eff redirect', { inProgress, isAuthenticated });
+    if (!isAuthenticated) {
+      st = window.setTimeout(() => router.push('/login/'), 2000);
     }
     return () => window.clearTimeout(st);
   }, [isAuthenticated]);
 
   const { accountStore, tokenStore } = useContext(accountContext);
 
-  const tokenPayload = useB2CToken(instance);
+  const { token: tokenPayload, error: b2cError } = useB2CToken(instance);
+
+  useEffect(() => {
+    let st: number;
+    console.log('dashboard eff redirect 2', { b2cError });
+    if (!!b2cError) {
+      st = window.setTimeout(() => router.push('/login/'), 2000);
+    }
+    return () => window.clearTimeout(st);
+  }, [b2cError]);
 
   const isSettingUpAccount = (val: boolean) => {
     if (val) onModalOpen();
@@ -142,6 +152,7 @@ function NotLoggedin() {
       style={{
         width: '100%',
         height: '100%',
+        paddingTop: '100px',
         display: 'flex',
         alignContent: 'center',
         justifyContent: 'center',

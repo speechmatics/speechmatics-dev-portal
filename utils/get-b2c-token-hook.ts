@@ -6,6 +6,7 @@ import { defaultB2CScope } from '../utils/auth-config';
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
+  const [error, setError] = useState<any>();
 
   useEffect(() => {
     console.log('acquiring B2CToken');
@@ -23,6 +24,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       })
       .catch(async (error) => {
         console.log('acquireTokenSilent error', error);
+        setError(error);
         if (error instanceof InteractionRequiredAuthError) {
           // fallback to interaction when silent call fails
           return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
@@ -36,5 +38,5 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       });
   }, [msalInstance]);
 
-  return token;
+  return { token, error };
 }
