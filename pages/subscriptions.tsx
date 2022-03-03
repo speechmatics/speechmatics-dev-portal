@@ -1,9 +1,10 @@
+import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
 
-export default function Subscriptions({}) {
+export default observer(function Subscriptions({}) {
   const { accountStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
 
@@ -25,4 +26,4 @@ export default function Subscriptions({}) {
       </Link>
     </Dashboard>
   );
-}
+});
