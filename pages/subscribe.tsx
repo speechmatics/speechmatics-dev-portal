@@ -77,8 +77,9 @@ function Subscribe({}) {
         setToken(charfigyToken);
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken).then(
-          () => {
+          async () => {
             positiveToast('token SUCCESS redirecting...');
+            await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/home/'), 1000);
           }
         );

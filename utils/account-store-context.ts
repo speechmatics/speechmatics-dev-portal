@@ -91,8 +91,8 @@ class AccountContext {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
   }
 
-  fetchServerState(idToken: string) {
-    callGetAccounts(idToken)
+  async fetchServerState(idToken: string) {
+    return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
