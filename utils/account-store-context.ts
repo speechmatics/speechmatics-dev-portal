@@ -17,6 +17,7 @@ interface Contract {
   usage_limit_hrs: number;
   projects: Project[];
   runtime_url: string;
+  payment_method: string | null;
 }
 
 interface Project {
@@ -77,6 +78,10 @@ class AccountContext {
 
   getContractLimitHrs(): number {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs || 0;
+  }
+
+  getPaymentMethod(): string | null {
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
   }
 
   fetchServerState(idToken: string) {

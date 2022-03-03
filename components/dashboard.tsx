@@ -23,7 +23,11 @@ import {
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
 
-  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure({ isOpen: false });
 
   const { instance, accounts, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
