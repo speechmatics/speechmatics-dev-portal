@@ -76,10 +76,12 @@ function Subscribe({}) {
         console.log('{host} token SUCCESS - token: ', charfigyToken);
         setToken(charfigyToken);
 
-        callPostRequestTokenChargify(idToken, charfigyToken).then(() => {
-          positiveToast('token SUCCESS redirecting...');
-          window.setTimeout(() => router.push('/home/'), 1000);
-        });
+        callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken).then(
+          () => {
+            positiveToast('token SUCCESS redirecting...');
+            window.setTimeout(() => router.push('/home/'), 1000);
+          }
+        );
       },
 
       (error: any) => {

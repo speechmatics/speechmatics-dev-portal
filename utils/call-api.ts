@@ -45,12 +45,16 @@ export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
 
-export const callGetSecrChargify = async (idToken: string, projectId: number) => {
-  return call(idToken, `${ENDPOINT_API_URL}/contracts/${projectId}/payment_token`, 'GET');
+export const callGetSecrChargify = async (idToken: string, contractId: number) => {
+  return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/payment_token`, 'GET');
 };
 
-export const callPostRequestTokenChargify = async (idToken: string, chargifyToken: string) => {
-  return call(idToken, `${ENDPOINT_API_URL}/contracts`, 'PUT', {
+export const callPostRequestTokenChargify = async (
+  idToken: string,
+  contractId: number,
+  chargifyToken: string
+) => {
+  return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}`, 'PUT', {
     contract_request_token: chargifyToken,
   });
 };
