@@ -56,7 +56,7 @@ export default observer(function Usage() {
         <GridItem data-qa="usage-enhanced">
           {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
         </GridItem>
-        <GridItem data-qa="requests-enhanced">{currentUsage?.usageEnhanced}</GridItem>
+        <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
       </Grid>
 
       <Text fontSize="2xl" marginTop="3em">
