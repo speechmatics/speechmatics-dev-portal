@@ -44,7 +44,7 @@ export default function MyApp({ Component, pageProps }) {
             <div className="header"></div>
             <div className="content">
               <Head>
-                <title>Speechmatics Portal</title>
+                <title>FB1 Speechmatics Portal</title>
               </Head>
               <Component {...pageProps} />
             </div>
