@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -41,11 +41,13 @@ function Subscribe({ }) {
 
   useEffect(() => {
     if (idToken) {
-      callGetSecrChargify(idToken, accountStore.getContractId()).then((tokenResp) => {
-        setPaymentToken(tokenResp.payment_token);
-      }).catch((err) => {
-        errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`)
-      });
+      callGetSecrChargify(idToken, accountStore.getContractId())
+        .then((tokenResp) => {
+          setPaymentToken(tokenResp.payment_token);
+        })
+        .catch((err) => {
+          errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`);
+        });
     }
   }, [idToken]);
 
@@ -58,6 +60,7 @@ function Subscribe({ }) {
         type: 'card',
         serverHost: 'https://speechmatics-dev.chargify.com',
         fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', ''),
+        addressDropdowns: true,
       });
       setChargifyLoaded(true);
     }
