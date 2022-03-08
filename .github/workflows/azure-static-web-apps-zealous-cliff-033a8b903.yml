@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      TEST_IF_WORKS_ENV_VAR: 'im on zealus cliff'
+      TEST_IF_WORKS_ENV_VAR: ${{ steps.builddeploy.outputs.static_web_app_url }}
       REDIRECT_URI: 'https://zealous-cliff-033a8b903.1.azurestaticapps.net/login/'
       POST_LOGOUT_REDIRECT_URI: 'https://zealous-cliff-033a8b903.1.azurestaticapps.net/login/'
       SIGNUP_SIGNIN_POLICY: 'B2C_1_susi'

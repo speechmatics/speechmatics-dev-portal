@@ -60,7 +60,6 @@ export default observer(function Dashboard({ children }) {
   };
 
   useEffect(() => {
-    console.log('Dashboard effect accountFlow', accountStore.account, isAuthenticated);
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
       accountsFlow(tokenPayload.idToken, isSettingUpAccount)
