@@ -8,7 +8,7 @@ import {
   positiveToast,
 } from '../utils/call-api';
 
-import { createStandaloneToast, Spinner } from '@chakra-ui/react';
+import { createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 
@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -40,14 +40,16 @@ function Subscribe({ }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (idToken) {
-      callGetSecrChargify(idToken, accountStore.getContractId()).then((tokenResp) => {
-        setPaymentToken(tokenResp.payment_token);
-      }).catch((err) => {
-        errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`)
-      });
+    if (idToken && !!accountStore.getContractId()) {
+      callGetSecrChargify(idToken, accountStore.getContractId())
+        .then((tokenResp) => {
+          setPaymentToken(tokenResp.payment_token);
+        })
+        .catch((err) => {
+          errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`);
+        });
     }
-  }, [idToken]);
+  }, [idToken, accountStore.getContractId()]);
 
   useEffect(() => {
     if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
@@ -57,7 +59,8 @@ function Subscribe({ }) {
         securityToken: paymentToken,
         type: 'card',
         serverHost: 'https://speechmatics-dev.chargify.com',
-        fields: chargifyFields('#F6F6F6', '#ffffff', '#333333', ''),
+        fields: chargifyFields('#ffffff', '#ffffff', '#333333', ''),
+        addressDropdowns: true,
       });
       setChargifyLoaded(true);
     }
@@ -109,24 +112,28 @@ function Subscribe({ }) {
       </h1>
 
       <div>
-        <div style={{ marginBottom: '1em' }}>Please fill up the form</div>
         <div style={{ width: '700px' }}>
           <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
-            <section style={{ display: 'flex' }}>
+            <Text fontSize={'1.5em'}>Your name</Text>
+            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <div id="chargify_firstName"></div>
               <div id="chargify_lastname"></div>
             </section>
 
-            <section style={{}}>
+            <Text fontSize={'1.5em'} marginTop={'2em'}>
+              Your card information
+            </Text>
+            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <div id="chargify_ccnumber"></div>
-              <div style={{ display: 'flex', width: '250px' }}>
-                <div id="chargify_ccmonth"></div>
-                <div id="chargify_ccyear"></div>
-                <div id="chargify_cvv"></div>
-              </div>
+              <div id="chargify_cvv"></div>
+              <div id="chargify_ccmonth"></div>
+              <div id="chargify_ccyear"></div>
             </section>
 
-            <section style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Text fontSize={'1.5em'} marginTop={'2em'}>
+              Your address
+            </Text>
+            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <div id="chargify_address"></div>
               <div id="chargify_address2"></div>
               <div id="chargify_city"></div>
@@ -208,9 +215,9 @@ const chargifyFields = (color1, color2, color3, name) => {
   return {
     firstName: {
       selector: '#chargify_firstName',
-      label: 'FIRST NAME',
+      label: 'First name',
       placeholder: name,
-      required: false,
+      required: true,
       message: 'First name is not valid. Please update it.',
       maxlength: '30',
       style: {
@@ -233,7 +240,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_lastname',
       label: 'Last name',
       placeholder: '',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '30',
       style: defaultStyle,
@@ -263,7 +270,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_cvv',
       label: 'CVV code',
       placeholder: 'XXX',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       style: defaultStyle,
     },
@@ -271,7 +278,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_address',
       label: 'Address',
       placeholder: '1234 Hill St',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
@@ -280,7 +287,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_address2',
       label: 'Address line 2',
       placeholder: '',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
@@ -289,7 +296,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_city',
       label: 'City',
       placeholder: '',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
@@ -307,7 +314,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_zip',
       label: 'Post code / zip',
       placeholder: '',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
@@ -316,7 +323,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_country',
       label: 'Country',
       placeholder: '',
-      required: false,
+      required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
