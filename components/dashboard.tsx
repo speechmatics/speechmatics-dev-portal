@@ -146,6 +146,15 @@ function MenuElem({ item, selected }) {
 }
 
 function NotLoggedin() {
+  const router = useRouter();
+
+  useEffect(() => {
+    let st: number;
+    st = window.setTimeout(() => router.push('/login/'), 2000);
+    window.clearTimeout(st);
+    return () => window.clearTimeout(st);
+  });
+
   return (
     <div
       style={{
@@ -157,7 +166,9 @@ function NotLoggedin() {
         justifyContent: 'center',
       }}
     >
-      not logged in, redirecting...
+      not logged in, attempting to redirect you automatically...
+      <br />
+      <br /> You can also use <Link href="/login/">the link</Link>.
     </div>
   );
 }
