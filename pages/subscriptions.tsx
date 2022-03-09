@@ -14,7 +14,10 @@ export default observer(function Subscriptions({}) {
   const [payments, setPayments] = useState(null);
 
   useEffect(() => {
-    if (idToken) callGetPayments(idToken).then(setPayments).catch(errToast);
+    if (idToken)
+      callGetPayments(idToken)
+        .then((resp) => setPayments(resp.payments))
+        .catch(errToast);
   }, [idToken]);
 
   return (
@@ -34,13 +37,15 @@ export default observer(function Subscriptions({}) {
         </div>
       </Link>
 
-      <Text fontSize={18}>Payments</Text>
+      <Text fontSize="1.5em" mt="2em">
+        Payments
+      </Text>
 
-      <Grid gridTemplateColumns="repeat(4, 1fr)">
-        <GridItem>Model</GridItem>
-        <GridItem>Hours used</GridItem>
-        <GridItem>Total cost</GridItem>
-        <GridItem>Payment status</GridItem>
+      <Grid gridTemplateColumns="repeat(4, 1fr)" rowGap={4} mt="1.5em">
+        <GridItem fontSize="1.3em">Model</GridItem>
+        <GridItem fontSize="1.3em">Hours used</GridItem>
+        <GridItem fontSize="1.3em">Total cost</GridItem>
+        <GridItem fontSize="1.3em">Payment status</GridItem>
         {payments?.map((el: PaymentItem, i: number) => (
           <>
             <GridItem>
