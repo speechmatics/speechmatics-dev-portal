@@ -216,7 +216,7 @@ const chargifyFields = (color1, color2, color3, name) => {
     firstName: {
       selector: '#chargify_firstName',
       label: 'First name',
-      placeholder: name,
+      placeholder: '',
       required: true,
       message: 'First name is not valid. Please update it.',
       maxlength: '30',
@@ -304,7 +304,7 @@ const chargifyFields = (color1, color2, color3, name) => {
     state: {
       selector: '#chargify_state',
       label: 'State',
-      placeholder: '',
+      placeholder: '(not selected)',
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
@@ -322,7 +322,7 @@ const chargifyFields = (color1, color2, color3, name) => {
     country: {
       selector: '#chargify_country',
       label: 'Country',
-      placeholder: '',
+      placeholder: '(not selected)',
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
