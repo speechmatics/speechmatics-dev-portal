@@ -51,7 +51,7 @@ export default observer(function Subscriptions({}) {
             <GridItem>
               {el.start_date} - {el.end_date}
             </GridItem>
-            <GridItem>{el.total_hrs}</GridItem>
+            <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
             <GridItem>{el.total_cost}</GridItem>
             <GridItem>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
           </>
