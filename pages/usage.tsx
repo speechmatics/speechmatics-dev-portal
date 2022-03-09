@@ -72,7 +72,7 @@ export default observer(function Usage() {
           return (
             <React.Fragment key={el.since}>
               <GridItem>{el.since}</GridItem>
-              <GridItem>{el.total_hrs}</GridItem>
+              <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
             </React.Fragment>
           );
         })}
