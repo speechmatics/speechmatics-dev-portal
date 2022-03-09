@@ -1,12 +1,21 @@
+import { Grid, GridItem, Text } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
+import { callGetPayments, errToast } from '../utils/call-api';
 
 export default observer(function Subscriptions({}) {
-  const { accountStore } = useContext(accountContext);
+  const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
+  const idToken = tokenStore?.tokenPayload?.idToken;
+
+  const [payments, setPayments] = useState(null);
+
+  useEffect(() => {
+    if (idToken) callGetPayments(idToken).then(setPayments).catch(errToast);
+  }, [idToken]);
 
   return (
     <Dashboard>
@@ -24,6 +33,35 @@ export default observer(function Subscriptions({}) {
           {paymentMethod ? 'replace payment method' : '+ add subscription'}{' '}
         </div>
       </Link>
+
+      <Text fontSize={18}>Payments</Text>
+
+      <Grid gridTemplateColumns="repeat(4, 1fr)">
+        <GridItem>Model</GridItem>
+        <GridItem>Hours used</GridItem>
+        <GridItem>Total cost</GridItem>
+        <GridItem>Payment status</GridItem>
+        {payments?.map((el: PaymentItem, i: number) => (
+          <>
+            <GridItem>
+              {el.start_date} - {el.end_date}
+            </GridItem>
+            <GridItem>{el.total_hrs}</GridItem>
+            <GridItem>{el.total_cost}</GridItem>
+            <GridItem>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
+          </>
+        ))}
+      </Grid>
     </Dashboard>
   );
 });
+
+interface PaymentItem {
+  start_date: string;
+  end_date: string;
+  total_hrs: string;
+  total_cost: string;
+  status: string;
+  billing_date: string;
+  url: string;
+}

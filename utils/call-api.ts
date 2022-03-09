@@ -4,10 +4,10 @@ const toast = createStandaloneToast();
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 
-export const errToast = (descr: string) =>
+export const errToast = (descr: string | any) =>
   toast({
     title: 'An error occurred.',
-    description: descr,
+    description: typeof descr === 'string' ? descr : JSON.stringify(descr),
     status: 'error',
     duration: 9000,
     position: 'bottom-right',
@@ -69,6 +69,10 @@ export const callPostApiKey = async (
     project_id: projectId,
     name,
   });
+};
+
+export const callGetPayments = async (idToken: string) => {
+  return call(idToken, `${ENDPOINT_API_URL}/payments`, 'GET');
 };
 
 export const call = async (
