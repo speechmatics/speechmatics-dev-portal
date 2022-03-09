@@ -220,21 +220,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'First name is not valid. Please update it.',
       maxlength: '30',
-      style: {
-        field: {
-          backgroundColor: color1,
-          padding: '3px',
-          borderRadius: '5px',
-        },
-        input: {
-          backgroundColor: color2,
-          paddingTop: '2px',
-          paddingBottom: '1px',
-          placeholder: { color: color3 },
-        },
-        label: labelStyle,
-        message: { paddingTop: '2px', paddingBottom: '1px' },
-      },
+      style: defaultStyle,
     },
     lastName: {
       selector: '#chargify_lastname',
