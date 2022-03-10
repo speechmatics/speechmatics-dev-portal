@@ -207,7 +207,6 @@ h1 {
   flex-direction: column;
 }
 
-
 .account_forms .default_button {
   align-self: flex-end;
   margin-top: 0.5em;
@@ -237,4 +236,13 @@ h1 {
 
 .faq_button_header > div {
   font-size: 18px;
+}
+
+.sm_grid {
+  border: 1px solid var(--chakra-colors-smNavy-400);
+}
+
+.grid_header {
+  font-family: 'Matter-Medium';
+  background-color: var(--chakra-colors-smNavy-300);
 }

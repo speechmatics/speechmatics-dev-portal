@@ -48,11 +48,11 @@ export default function ComponentsLibrary() {
 
         <Input variant="speechmatics" width="80%" />
 
-        <Grid gridTemplateColumns="repeat(4, 1fr)" alignSelf="stretch">
-          <GridItem>Start date</GridItem>
-          <GridItem>Total hours</GridItem>
-          <GridItem>Total cost</GridItem>
-          <GridItem>Status</GridItem>
+        <Grid gridTemplateColumns="repeat(4, 1fr)" alignSelf="stretch" className='sm_grid'>
+          <GridItem className="grid_header">Start date</GridItem>
+          <GridItem className="grid_header">Total hours</GridItem>
+          <GridItem className="grid_header">Total cost</GridItem>
+          <GridItem className="grid_header">Status</GridItem>
 
           {testData.map((el, i) => (
             <React.Fragment key={i}>
