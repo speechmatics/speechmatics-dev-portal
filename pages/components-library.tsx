@@ -1,6 +1,8 @@
 import {
   Button,
   Divider,
+  Grid,
+  GridItem,
   Input,
   Spacer,
   Tab,
@@ -45,6 +47,22 @@ export default function ComponentsLibrary() {
         </Button>
 
         <Input variant="speechmatics" width="80%" />
+
+        <Grid gridTemplateColumns="repeat(4, 1fr)" alignSelf="stretch">
+          <GridItem>Start date</GridItem>
+          <GridItem>Total hours</GridItem>
+          <GridItem>Total cost</GridItem>
+          <GridItem>Status</GridItem>
+
+          {testData.map((el, i) => (
+            <React.Fragment key={i}>
+              <GridItem>{el.start_date}</GridItem>
+              <GridItem>{el.total_hrs}</GridItem>
+              <GridItem>{el.total_cost}</GridItem>
+              <GridItem>{el.status}</GridItem>
+            </React.Fragment>
+          ))}
+        </Grid>
       </VStack>
     </Dashboard>
   );
@@ -61,3 +79,32 @@ const PageIntroduction = ({ children }) => (
     {children}
   </Text>
 );
+
+const testData = [
+  {
+    start_date: '2022-02-01',
+    end_date: '2022-02-28',
+    total_hrs: '10.5',
+    total_cost: '5.43',
+    status: 'paid',
+    billing_date: '2022-03-01',
+    url: 'https://www.chargifypay.com/invoice/inv_abcd1234?token=efgh5678',
+  },
+  {
+    start_date: '2022-03-01',
+    end_date: '2022-03-31',
+    total_hrs: '12.3',
+    total_cost: '10.27',
+    status: 'due',
+    billing_date: '2022-04-01',
+    url: 'https://www.chargifypay.com/invoice/inv_abcd4321?token=efgh8765',
+  },
+  {
+    start_date: '2022-04-01',
+    end_date: '2022-04-03',
+    total_hrs: '1.2',
+    total_cost: '0',
+    status: 'due',
+    billing_date: '2022-05-01',
+  },
+];

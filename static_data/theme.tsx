@@ -57,9 +57,12 @@ const theme = extendTheme({
             bg: 'smBlue.400',
           },
           _focus: {
-            border: null,
+            boxShadow: 'none',
           },
-        },
+          _active: {
+            bg: 'smBlue.300',
+          },
+        } as CSSObject,
       },
     },
     Input: {
