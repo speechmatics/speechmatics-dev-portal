@@ -1,29 +1,30 @@
-import { extendTheme } from '@chakra-ui/react';
+import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
   colors: {
     smGreen: {
+      300: '#A7D0CD',
+      400: '#4FA9A2',
       500: '#2A827A',
-      700: '#4FA9A2',
-      900: '#A7D0CD',
     },
     smBlue: {
+      100: '#E8F0F8',
+      300: '#BFD8FE',
+      400: '#5398FC',
       500: '#386DFB',
-      600: '#5398FC',
-      700: '#BFD8FE',
-      900: '#E8F0F8',
     },
     smNavy: {
+      100: '#F9FBFD', //dashboard background
+      200: '#F8FAFD',
+      300: '#AEB2B8',
+      400: '#5E6673',
       500: '#263243',
-      600: '#5E6673',
-      700: '#AEB2B8',
-      900: '#F9FBFD', //dashboard background
     },
     smBlack: {
+      200: '#D1D7D6',
+      300: '#78808B',
+      400: '#5A5D5F',
       500: '#000000',
-      700: '#5A5D5F',
-      800: '#78808B',
-      900: '#D1D7D6',
     },
     smRed: {
       500: '#D72F3F',
@@ -44,19 +45,16 @@ const theme = extendTheme({
   components: {
     Button: {
       variants: {
-        solid: {
-          color: '#fff',
-          background: '#001A3B',
-          _hover: {
-            background: '#004bab',
-          },
-        },
         speechmatics: {
-          color: '#fff',
-          background: 'red.500',
+          color: 'smWhite.500',
+          bg: 'smBlue.500',
           borderRadius: '2px',
+          mt: '1em',
+          py: '1.8em',
+          px: '2.5em',
+          fontSize: '0.9em',
           _hover: {
-            background: '#550000',
+            bg: 'smBlue.400',
           },
           _focus: {
             border: null,
@@ -67,22 +65,65 @@ const theme = extendTheme({
     Input: {
       variants: {
         speechmatics: {
-          bg: 'red.500'
-        }
-      }
-    },
-    Tabs: {
-      variants: {
-        speechmatics: {
-          background: '#ff0000',
-          fontSize: '10px',
+          ...baseTheme.components.Input.defaultProps,
+          field: {
+            py: '1.8em',
+            borderRadius: '2px',
+            border: '1px solid #cacad0',
+          },
         },
       },
     },
-    Tab: {
+
+    // input {
+    //   background: #ffffff;
+    //   border: 1px solid #cacad0;
+    //   border-color: #cacad0;
+    //   box-sizing: border-box;
+    //   border-radius: 2px;
+    //   height: 3em;
+    //   width: 15em;
+    //   padding: 0 1em;
+    //   font-size: 1em;
+    //   margin: 0.2em;
+    // }
+
+    // input:focus {
+    //   outline: none;
+    //   border: initial;
+    // }
+
+    Tabs: {
       variants: {
         speechmatics: {
-          background: '#ff0000',
+          tab: {
+            bg: 'smBlue.100',
+            borderLeft: '1px solid #D1D7D6',
+            borderBottom: '1px solid #D1D7D6',
+            fontSize: '0.8em',
+            py: '1.2em',
+            px: '2.2em',
+            fontFamily: 'Matter-Bold',
+            color: 'smBlack.200',
+            _selected: {
+              color: 'smBlue.400',
+              bg: 'white',
+              borderTop: '2px solid #5398FC',
+              borderLeft: '1px solid #D1D7D6',
+              borderRight: '1px solid #D1D7D6',
+              borderBottom: '0px',
+            },
+            _focus: {
+              boxShadow: 'none',
+            },
+          } as CSSObject,
+          tabpanel: {
+            bg: 'smWhite.500',
+          } as CSSObject,
+          tabpanels: {
+            border: '1px solid #D1D7D6',
+            boxShadow: '4px 4px 7px #5A5D5F15',
+          } as CSSObject,
         },
       },
     },

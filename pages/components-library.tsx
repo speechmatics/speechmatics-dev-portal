@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import React from 'react';
 import Dashboard from '../components/dashboard';
 
 export default function ComponentsLibrary() {
@@ -19,14 +20,14 @@ export default function ComponentsLibrary() {
       <PageHeader>Manage Access</PageHeader>
       <PageIntroduction>Review usage of the API</PageIntroduction>
       <Divider color="#999" mt="2em" />
-      <VStack gap={4} pt={10}>
-        <Tabs size="lg" variant="unstyled">
+      <VStack gap={4} pt={10} bg="smNavy.200">
+        <Tabs size="lg" variant="speechmatics">
           <TabList marginBottom="-1px">
-            <SmTab>One</SmTab>
-            <SmTab>Two</SmTab>
-            <SmTab>Three</SmTab>
+            <Tab>One</Tab>
+            <Tab>Two</Tab>
+            <Tab>Three</Tab>
           </TabList>
-          <TabPanels border="1px solid #D1D7D6" boxShadow="4px 4px 7px #5A5D5F15">
+          <TabPanels>
             <TabPanel>
               <p>one!</p>
             </TabPanel>
@@ -43,38 +44,11 @@ export default function ComponentsLibrary() {
           Hello
         </Button>
 
-        <Input variant="speechmatics" />
+        <Input variant="speechmatics" width="80%" />
       </VStack>
-      <Button variant="speechmatics" mt="1em" py="2em" px="3em" fontSize="0.9em" alignSelf="center">
-        Hello
-      </Button>
     </Dashboard>
   );
 }
-
-const SmTab = ({ children }) => (
-  <Tab
-    bg="smBlue.900"
-    borderLeft="0.5px solid #D1D7D6"
-    borderRight="0.5px solid #D1D7D6"
-    fontSize="0.9em"
-    py="1em"
-    px="2em"
-    fontFamily="Matter-Bold"
-    color="smBlack.800"
-    _selected={{
-      color: 'smBlue.600',
-      bg: 'white',
-      borderTop: '2px solid #5398FC',
-      borderLeft: '1px solid #D1D7D6',
-    }}
-    _focus={{
-      border: null,
-    }}
-  >
-    {children}
-  </Tab>
-);
 
 const PageHeader = ({ children }) => (
   <Text fontFamily="RMNeue-Bold" fontSize="2.2em" mt="2em">
