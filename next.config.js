@@ -13,6 +13,8 @@ module.exports = {
     TEST_API_CALL_ENDPOINT: process.env.TEST_API_CALL_ENDPOINT,
     ENDPOINT_API_URL: process.env.ENDPOINT_API_URL,
     DEFAULT_B2C_SCOPE: process.env.DEFAULT_B2C_SCOPE,
+    CHARGIFY_PUBLIC_KEY: process.env.CHARGIFY_PUBLIC_KEY,
+    CHARGIFY_SERVER_HOST: process.env.CHARGIFY_SERVER_HOST,
   },
   exportPathMap: async function () {
     const paths = {

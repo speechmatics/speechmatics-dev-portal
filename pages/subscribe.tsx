@@ -55,10 +55,10 @@ function Subscribe({}) {
     if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
       chargify.current.load({
         selector: '#chargify-form',
-        publicKey: 'chjs_6nnmqcxmp4nrbnmf2spmwm63',
+        publicKey: process.env.CHARGIFY_PUBLIC_KEY,
         securityToken: paymentToken,
         type: 'card',
-        serverHost: 'https://speechmatics-dev.chargify.com',
+        serverHost: process.env.CHARGIFY_SERVER_HOST,
         fields: chargifyFields('#ffffff', '#ffffff', '#333333', ''),
         addressDropdowns: true,
       });
