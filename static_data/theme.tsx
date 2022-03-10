@@ -58,6 +58,9 @@ const theme = extendTheme({
           _hover: {
             background: '#550000',
           },
+          _focus: {
+            border: null,
+          },
         },
       },
     },

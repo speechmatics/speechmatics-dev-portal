@@ -16,7 +16,6 @@ import Dashboard from '../components/dashboard';
 export default function ComponentsLibrary() {
   return (
     <Dashboard>
-
       <PageHeader>Manage Access</PageHeader>
       <PageIntroduction>Review usage of the API</PageIntroduction>
       <Divider color="#999" mt="2em" />
@@ -45,8 +44,10 @@ export default function ComponentsLibrary() {
         </Button>
 
         <Input variant="speechmatics" />
-
       </VStack>
+      <Button variant="speechmatics" mt="1em" py="2em" px="3em" fontSize="0.9em" alignSelf="center">
+        Hello
+      </Button>
     </Dashboard>
   );
 }
