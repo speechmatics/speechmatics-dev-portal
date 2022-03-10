@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'GibsonBold';
+  src: url('/fonts/Gibson-Bold.otf');
+}
+
+@font-face {
+  font-family: 'GibsonLight';
+  src: url('/fonts/Gibson-Light.otf');
+}
+
+@font-face {
+  font-family: 'GibsonSemiBold';
+  src: url('/fonts/Gibson-SemiBold.otf');
+}
+
+@font-face {
+  font-family: 'GibsonRegular';
+  src: url('/fonts/Gibson-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Matter-Bold';
+  src: url('/fonts/Matter-Bold.otf');
+}
+
+@font-face {
+  font-family: 'Matter-Heavy';
+  src: url('/fonts/Matter-Heavy.otf');
+}
+
+@font-face {
+  font-family: 'Matter-Light';
+  src: url('/fonts/Matter-Light.otf');
+}
+
+/* @font-face {
+  font-family: 'Matter-Medium';
+  src: url('/fonts/Matter-Medium.otf');
+} */
+
+@font-face {
+  font-family: 'Matter-Regular';
+  src: url('/fonts/Matter-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Matter-SemiBold';
+  src: url('/fonts/Matter-SemiBold.otf');
+}
+
+@font-face {
+  font-family: 'RMNeue-Bold';
+  src: url('/fonts/RMNeue-Bold.otf');
+}
+
+@font-face {
+  font-family: 'RMNeue-Light';
+  src: url('/fonts/RMNeue-Light.otf');
+}
+
+@font-face {
+  font-family: 'RMNeue-Regular';
+  src: url('/fonts/RMNeue-Regular.otf');
+}

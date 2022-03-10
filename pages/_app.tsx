@@ -1,8 +1,10 @@
 import '../styles/reset.css';
+import '../styles/fonts.css';
 import '../styles/main.css';
 import '../styles/landing.css';
 import '../styles/login.css';
 import '../styles/dashboard.css';
+import '../styles/components-styles.css';
 import { useRouter } from 'next/router';
 import { MsalProvider } from '@azure/msal-react';
 import { CustomNavigationClient } from '../utils/navigation-client';
