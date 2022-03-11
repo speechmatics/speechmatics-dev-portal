@@ -71,12 +71,6 @@ export default observer(function Dashboard({ children }) {
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
-  const [showTestTools, setShowTestTools] = useState(false);
-
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    setShowTestTools(event.ctrlKey);
-  };
-
   const account = instance.getActiveAccount();
 
   const logout = () => {
@@ -89,7 +83,7 @@ export default observer(function Dashboard({ children }) {
   }
 
   return (
-    <div className="dashboard_container" onKeyDown={onKeyDown} tabIndex={0}>
+    <div className="dashboard_container" tabIndex={0}>
       <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent>
@@ -109,8 +103,6 @@ export default observer(function Dashboard({ children }) {
             <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
           ))}
         </div>
-
-        {showTestTools && <TestApiBlock tokenPayload={tokenPayload} />}
       </div>
       <div className="dashboard_content">{children}</div>
       <div className="dashboard_side_bar">
