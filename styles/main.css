@@ -37,7 +37,7 @@ a {
 h1 {
   font-size: 36px !important;
   margin-bottom: 45px !important;
-  margin-top: 100px !important;
+  margin-top: 50px !important;
 }
 
 h2 {
@@ -58,6 +58,7 @@ h3 {
 
 .all_container > .content {
   flex: 1 1 auto;
+  display: flex;
 }
 
 

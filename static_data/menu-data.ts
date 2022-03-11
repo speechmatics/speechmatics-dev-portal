@@ -14,24 +14,24 @@ const menuData = [
   },
   {
     path: '/api-token/',
-    title: 'API Token',
+    title: 'Manage Access',
     icon: AccessTokenIcon,
   },
   {
-    path: '/subscriptions/',
-    title: 'Billing',
-    icon: SubscribeIcon,
-  },
-  {
     path: '/usage/',
-    title: 'Usage',
+    title: 'Track Usage',
     icon: UsageIcon,
   },
   {
-    path: '/resources/',
-    title: 'Resources',
-    icon: DocumentationIcon,
+    path: '/manage-billing/',
+    title: 'Manage Billing',
+    icon: SubscribeIcon,
   },
+  // {
+  //   path: '/resources/',
+  //   title: 'Resources',
+  //   icon: DocumentationIcon,
+  // },
 ];
 
 export default menuData;

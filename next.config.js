@@ -21,7 +21,7 @@ module.exports = {
       '/': { page: '/' },
       '/login': { page: '/login' },
       '/home': { page: '/home' },
-      '/subscriptions': { page: '/subscriptions' },
+      '/manage-billing': { page: '/manage-billing' },
       '/subscribe': { page: '/subscribe' },
       '/usage': { page: '/usage' },
       '/api-token': { page: '/api-token' },

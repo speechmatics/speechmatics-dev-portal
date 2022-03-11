@@ -2,8 +2,23 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
-import { SpeechmaticsLogo, ExternalLink, AccountIcon, LogoutIcon } from './Icons';
-import { Tooltip, Link as ChakraLink, Button, Box, useDisclosure, Spinner } from '@chakra-ui/react';
+import {
+  SpeechmaticsLogo,
+  ExternalLink,
+  AccountIcon,
+  LogoutIcon,
+  SpeechmaticsLogoHorizontalWhite,
+} from './Icons';
+import {
+  Tooltip,
+  Link as ChakraLink,
+  Box,
+  useDisclosure,
+  Spinner,
+  Text,
+  Divider,
+  HStack,
+} from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -19,6 +34,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
+import { SmPanel } from './common';
 
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
@@ -29,12 +45,11 @@ export default observer(function Dashboard({ children }) {
     onClose: onModalClose,
   } = useDisclosure({ isOpen: false });
 
-  const { instance, accounts, inProgress } = useMsal();
+  const { instance, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     let st: number;
-    console.log('dashboard eff redirect', { inProgress, isAuthenticated });
     if (!isAuthenticated) {
       st = window.setTimeout(() => router.push('/login/'), 2000);
     }
@@ -47,7 +62,6 @@ export default observer(function Dashboard({ children }) {
 
   useEffect(() => {
     let st: number;
-    console.log('dashboard eff redirect 2', { b2cError });
     if (!!b2cError) {
       st = window.setTimeout(() => router.push('/login/'), 2000);
     }
@@ -56,7 +70,6 @@ export default observer(function Dashboard({ children }) {
 
   const isSettingUpAccount = (val: boolean) => {
     if (val) onModalOpen();
-    //else onModalClose();
   };
 
   useEffect(() => {
@@ -83,53 +96,52 @@ export default observer(function Dashboard({ children }) {
   }
 
   return (
-    <div className="dashboard_container" tabIndex={0}>
-      <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Just one or two seconds more...</ModalHeader>
-          <ModalBody textAlign={'center'}>
-            Setting up the account for You! <Spinner ml={2} />
-          </ModalBody>
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
-      <div className="dashboard_sidenav">
-        <Box marginTop="0.5em">
-          <SpeechmaticsLogo w={230} h={120} />
-        </Box>
-        <div className="nav_menu">
-          {menuData.map((item) => (
-            <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
-          ))}
+    <div className="dashboard_container">
+      <UserCreationModal isModalOpen={isModalOpen} onModalClose={onModalClose} />
+      <HeaderBar logout={logout} accountEmail={account.username} />
+      <div className="dashboard_contents" tabIndex={0}>
+        <div className="dashboard_sidenav">
+          <Menu />
         </div>
-      </div>
-      <div className="dashboard_content">{children}</div>
-      <div className="dashboard_side_bar">
-        <Link href="/account/" passHref>
-          <ChakraLink>
-            <Tooltip label="Account" placement="left">
-              <div style={{ cursor: 'pointer' }}>
-                <AccountIcon w={30} h={30} />
-              </div>
-            </Tooltip>
-          </ChakraLink>
-        </Link>
-        <Tooltip label="Log out" placement="left">
-          <span style={{ cursor: 'pointer' }} onClick={() => logout()}>
-            <LogoutIcon w={30} h={30} />
-          </span>
-        </Tooltip>
+        <div className="dashboard_content">{children}</div>
       </div>
     </div>
   );
 });
 
+function HeaderBar({ logout, accountEmail }) {
+  return (
+    <Box className="header_bar">
+      <Box p="0.5em 0em 0.5em 2em">
+        <SpeechmaticsLogoHorizontalWhite w={200} h={50} />
+      </Box>
+      <Box>
+        <RightSidePanel logout={logout} accountEmail={accountEmail} />
+      </Box>
+    </Box>
+  );
+}
+
+function Menu() {
+  const router = useRouter();
+  return (
+    <div className="nav_menu">
+      {menuData.map((item) => (
+        <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
+      ))}
+    </div>
+  );
+}
+
 function MenuElem({ item, selected }) {
   return (
     <Link href={item.path}>
       <div className={`menu_elem ${selected ? 'selected' : ''}`}>
-        <div>{item.icon({})}</div>
+        <div>
+          {item.icon({
+            color: selected ? 'var(--chakra-colors-smBlue-500)' : 'var(--chakra-colors-smNavy-400)',
+          })}
+        </div>
         <div>{item.title}</div>
       </div>
     </Link>
@@ -155,11 +167,86 @@ function NotLoggedin() {
         display: 'flex',
         alignContent: 'center',
         justifyContent: 'center',
+        flex: '1 1 auto',
+        backgroundColor: 'var(--chakra-colors-smNavy-200)',
       }}
     >
-      not logged in, attempting to redirect you automatically...
-      <br />
-      <br /> You can also use <Link href="/login/">the link</Link>.
+      <SmPanel>
+        <Box p="2em">You're not logged in, attempting to redirect you automatically...</Box>
+        <Box p="2em">
+          You can also use{' '}
+          <Link href="/login/">
+            <a>the link</a>
+          </Link>
+          .
+        </Box>
+      </SmPanel>
     </div>
+  );
+}
+
+function UserCreationModal({ isModalOpen, onModalClose }) {
+  return (
+    <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Just one or two seconds more...</ModalHeader>
+        <ModalBody textAlign={'center'}>
+          Setting up the account for You! <Spinner ml={2} />
+        </ModalBody>
+        <ModalFooter />
+      </ModalContent>
+    </Modal>
+  );
+}
+
+function RightSidePanel({ logout, accountEmail }) {
+  return (
+    <Box className="dashboard_side_bar">
+      <HStack>
+        <Link href="https://docs.speechmatics.com">
+          <a target="_blank">
+            <Text
+              color="#DFE0E3"
+              pr="1em"
+              mt="-3px"
+              fontFamily="RMNeue-Regular"
+              _hover={{ color: '#F8FAFD' }}
+            >
+              Documentation
+            </Text>
+          </a>
+        </Link>
+
+        <Divider orientation="vertical" color="#5E6673" pr="1.5em" height="295%" />
+      </HStack>
+      <Link href="/account/" passHref>
+        <ChakraLink>
+          <Tooltip label="Account" placement="bottom">
+            <div style={{ cursor: 'pointer', display: 'flex' }}>
+              <Text
+                color="#DFE0E3"
+                mr="1em"
+                mt="-3px"
+                fontFamily="RMNeue-Regular"
+                _hover={{ color: '#F8FAFD' }}
+              >
+                {accountEmail}
+              </Text>
+              <AccountIcon w={20} h={20} color="#DFE0E3" />
+            </div>
+          </Tooltip>
+        </ChakraLink>
+      </Link>
+      <Tooltip label="Log out" placement="bottom">
+        <span
+          style={{ cursor: 'pointer', marginLeft: '1em' }}
+          data-qa="logout"
+          onClick={() => logout()}
+        >
+          <LogoutIcon w={20} h={20} color="#DFE0E3" />
+        </span>
+      </Tooltip>
+    </Box>
   );
 }

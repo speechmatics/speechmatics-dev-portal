@@ -50,7 +50,7 @@ export default function MyApp({ Component, pageProps }) {
               </Head>
               <Component {...pageProps} />
             </div>
-            <div className="footer"></div>
+            {/* <div className="footer"></div> */}
           </div>
         </MsalProvider>
       </ChakraProvider>
