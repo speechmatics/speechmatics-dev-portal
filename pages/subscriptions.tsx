@@ -56,6 +56,7 @@ export default observer(function Subscriptions({}) {
           <GridItem className="grid_header">Payment status</GridItem>
           {payments?.map((el: PaymentItem, i: number) => (
             <>
+              <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
               <GridItem>
                 {el.start_date} - {el.end_date}
               </GridItem>

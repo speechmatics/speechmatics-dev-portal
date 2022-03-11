@@ -57,7 +57,9 @@ export default observer(function Usage() {
             {Number(currentUsage?.usageStandard).toFixed(1)} hours
           </GridItem>
           <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
-
+          <GridItem className="grid_row_divider">
+            <hr />
+          </GridItem>
           <GridItem>Enhanced Model</GridItem>
           <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
           <GridItem data-qa="usage-enhanced">
