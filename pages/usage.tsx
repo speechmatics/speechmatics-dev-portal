@@ -5,6 +5,7 @@ import { Box, Grid, GridItem, Text, tokenToCSSVar } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
+import { SmPanel } from '../components/common';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<any>({});
@@ -36,47 +37,59 @@ export default observer(function Usage() {
     <Dashboard>
       <h1>Usage</h1>
 
-      <Text fontSize="2xl">Usage for the period: {currentUsage?.billingRange}</Text>
+      <SmPanel width="800px">
+        <Text fontSize="2xl">Usage for the period: {currentUsage?.billingRange}</Text>
 
-      <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop="2em">
-        <GridItem>Model</GridItem>
-        <GridItem>Limit (hours / month)</GridItem>
-        <GridItem>Hours used</GridItem>
-        <GridItem>Requests made</GridItem>
+        <Grid
+          templateColumns="repeat(4, 1fr)"
+          marginTop="2em"
+          className="sm_grid"
+          alignSelf="stretch"
+        >
+          <GridItem className="grid_header">Model</GridItem>
+          <GridItem className="grid_header">Limit (hours / month)</GridItem>
+          <GridItem className="grid_header">Hours used</GridItem>
+          <GridItem className="grid_header">Requests made</GridItem>
 
-        <GridItem>Standard Model</GridItem>
-        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-standard">
-          {Number(currentUsage?.usageStandard).toFixed(1)} hours
-        </GridItem>
-        <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+          <GridItem>Standard Model</GridItem>
+          <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+          <GridItem data-qa="usage-standard">
+            {Number(currentUsage?.usageStandard).toFixed(1)} hours
+          </GridItem>
+          <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
-        <GridItem>Enhanced Model</GridItem>
-        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-enhanced">
-          {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
-        </GridItem>
-        <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
-      </Grid>
+          <GridItem>Enhanced Model</GridItem>
+          <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+          <GridItem data-qa="usage-enhanced">
+            {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
+          </GridItem>
+          <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
+        </Grid>
+      </SmPanel>
 
-      <Text fontSize="2xl" marginTop="3em">
-        Breakdown
-      </Text>
+      <SmPanel width="800px" mt="2em">
+        <Text fontSize="2xl">Breakdown</Text>
 
-      <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop="2em">
-        <GridItem>Day</GridItem>
-        <GridItem>Hours used</GridItem>
+        <Grid
+          templateColumns="repeat(2, 1fr)"
+          marginTop="2em"
+          className="sm_grid"
+          alignSelf="stretch"
+        >
+          <GridItem className="grid_header">Day</GridItem>
+          <GridItem className="grid_header">Hours used</GridItem>
 
-        {breakdown?.map((el: UsageUnit) => {
-          // const usg = prepCurrentUsage(el);
-          return (
-            <React.Fragment key={el.since}>
-              <GridItem>{el.since}</GridItem>
-              <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
-            </React.Fragment>
-          );
-        })}
-      </Grid>
+          {breakdown?.map((el: UsageUnit) => {
+            // const usg = prepCurrentUsage(el);
+            return (
+              <React.Fragment key={el.since}>
+                <GridItem>{el.since}</GridItem>
+                <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
+              </React.Fragment>
+            );
+          })}
+        </Grid>
+      </SmPanel>
     </Dashboard>
   );
 });

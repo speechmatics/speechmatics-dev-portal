@@ -16,6 +16,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Input,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
@@ -23,30 +26,22 @@ import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
+import React from 'react';
 
-export default function GetAccessToken({ }) {
+export default function GetAccessToken({}) {
   const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
       <h1>API Token</h1>
-      <div className="token_form">
+      <div className="sm_panel" style={{ width: '800px' }}>
         <div className="description_text">
-          You need an API Key (also known as an Authorization Token) to make calls to our REST API {accountStore.getRuntimeURL()}.
-          See our{' '}
-          <a
-            target="_blank"
-            href="https://docs.speechmatics.com"
-            style={{ textDecoration: 'underline' }}
-          >
-            documentation
-          </a>{' '}
-          to find out how to make API calls.
+          You need an API Key (also known as an Authorization Token) to make calls to our REST API:
+          <br /> {accountStore.getRuntimeURL()}.
         </div>
 
         <GenerateTokenCompo />
-
-        <PreviousTokens />
       </div>
+      <PreviousTokens />
     </Dashboard>
   );
 }
@@ -99,7 +94,7 @@ const GenerateTokenCompo = observer(() => {
             <Text>You already have 5 tokens, remove one before requesting new.</Text>
           )}
           <Button
-            className="default_button"
+            variant="speechmatics"
             disabled={apiKeys?.length >= 5}
             onClick={() => setGenTokenStage('inputName')}
           >
@@ -109,14 +104,16 @@ const GenerateTokenCompo = observer(() => {
       )}
       {genTokenStage == 'inputName' && (
         <HStack>
-          <input
+          <Input
+            variant="speechmatics"
+            width={500}
             type="text"
             placeholder="your token's name here"
             onChange={(ev) => setChosenTokenName(ev.target.value)}
             style={{ border: noNameError ? '1px solid red' : '' }}
             ref={nameInputRef}
-          ></input>
-          <Button className="default_button" onClick={() => requestToken()}>
+          ></Input>
+          <Button variant="speechmatics" onClick={() => requestToken()}>
             Ok
           </Button>
         </HStack>
@@ -134,7 +131,9 @@ const GenerateTokenCompo = observer(() => {
         <VStack alignItems="flex-start">
           <Box>All good! Your new token is:</Box>
           <Box fontSize={22} padding="20px 0px">
-            <input
+            <Input
+              variant="speechmatics"
+              width={500}
               id="apikeyValue"
               type="text"
               value={generatedApikey}
@@ -165,7 +164,7 @@ const GenerateTokenCompo = observer(() => {
             </Text>
           </Box>
           <HStack>
-            <Button className="default_button" onClick={() => setGenTokenStage('init')}>
+            <Button variant="speechmatics" onClick={() => setGenTokenStage('init')}>
               Great!
             </Button>
           </HStack>
@@ -210,7 +209,7 @@ const PreviousTokens = observer(() => {
   };
 
   return (
-    <section>
+    <section className="sm_panel" style={{ marginTop: '2em', width: '800px' }}>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -228,37 +227,30 @@ const PreviousTokens = observer(() => {
         </ModalContent>
       </Modal>
 
-      <h2 style={{ marginTop: '70px' }}>Previous tokens:</h2>
-      <VStack alignItems="stretch" marginRight="25%">
-        {apiKeys?.map((el: ApiKey, index) => (
-          <HStack justifyContent="stretch" key={index}>
-            <Box flex="1">
-              <Tooltip label={`(token's id ${el.apikey_id})`} placement="top">
-                <Text>{el.apikey_id.slice(0, 15)}</Text>
-              </Tooltip>
-            </Box>
-            <Box flex="1">
-              <Tooltip label="(token's name)" placement="top">
-                <Text>{el.name}</Text>
-              </Tooltip>
-            </Box>
-            <Box flex="1" noOfLines={1}>
-              <Tooltip label={`date created: ${new Date(el.created_at)}`} placement="top">
-                <Text>{new Date(el.created_at).toUTCString()}</Text>
-              </Tooltip>
-            </Box>
-            <Tooltip label="remove" placement="top">
+      <h2>Current API Keys</h2>
+
+      <Grid gridTemplateColumns="repeat(3, 1fr)" className="sm_grid">
+        <GridItem className="grid_header">API key name</GridItem>
+        <GridItem className="grid_header">Created</GridItem>
+        <GridItem className="grid_header"></GridItem>
+
+        {apiKeys?.map((el, i) => (
+          <React.Fragment key={i}>
+            <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+            <GridItem>{el.name}</GridItem>
+            <GridItem>{new Date(el.created_at).toDateString()}</GridItem>
+            <GridItem display="flex" justifyContent="flex-end" style={{ padding: '0.4em' }}>
               <IconButton
-                className="default_button"
+                size="sm"
+                variant="ghost"
                 aria-label="remove"
-                style={{ padding: 10, backgroundColor: '' }}
                 icon={<IoTrashBinOutline />}
                 onClick={() => aboutToRemoveOne(el)}
               />
-            </Tooltip>
-          </HStack>
+            </GridItem>
+          </React.Fragment>
         ))}
-      </VStack>
+      </Grid>
     </section>
   );
 });

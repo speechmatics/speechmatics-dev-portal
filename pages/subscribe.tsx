@@ -8,7 +8,7 @@ import {
   positiveToast,
 } from '../utils/call-api';
 
-import { createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
+import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 
@@ -153,33 +153,13 @@ function Subscribe({}) {
               />
             </label>
             <p>
-              <button type="submit" disabled={!submitButtonReady}>
+              <Button variant="speechmatics" type="submit" disabled={!submitButtonReady}>
                 {submitButtonReady ? 'Submit Form' : <Spinner />}
-              </button>
+              </Button>
             </p>
           </form>
         </div>
         <style jsx>{`
-          button[type='submit'] {
-            border: 0;
-            width: 10em;
-            height: 2em;
-            padding: 0 1em;
-            margin: 1em 0;
-            border-radius: 15px;
-            background: var(--main-navy);
-            font-family: GibsonRegular;
-            font-size: 1.5em;
-            color: #fff;
-            text-transform: uppercase;
-            filter: drop-shadow(0px 9px 11px rgba(0, 0, 0, 0.12));
-            cursor: pointer;
-          }
-
-          button:active {
-            background: var(--main-blue);
-          }
-
           section {
             margin-top: 1em;
           }

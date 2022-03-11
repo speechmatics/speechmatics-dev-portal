@@ -16,6 +16,8 @@ const theme = extendTheme({
     smNavy: {
       100: '#F9FBFD', //dashboard background
       200: '#F8FAFD',
+      250: '#F4F6F9',
+      270: '#DFE0E3',
       300: '#AEB2B8',
       400: '#5E6673',
       500: '#263243',

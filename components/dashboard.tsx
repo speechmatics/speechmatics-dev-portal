@@ -104,7 +104,6 @@ export default observer(function Dashboard({ children }) {
         <Box marginTop="0.5em">
           <SpeechmaticsLogo w={230} h={120} />
         </Box>
-        <div className="hi_name">Hi, {account.name || account.username}!</div>
         <div className="nav_menu">
           {menuData.map((item) => (
             <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />

@@ -14,6 +14,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import { PageHeader, PageIntroduction, SmPanel } from '../components/common';
 import Dashboard from '../components/dashboard';
 
 export default function ComponentsLibrary() {
@@ -46,39 +47,32 @@ export default function ComponentsLibrary() {
           Hello
         </Button>
 
-        <Input variant="speechmatics" width="80%" />
+        <Input variant="speechmatics" width="80%" placeholder="hello" />
 
-        <Grid gridTemplateColumns="repeat(4, 1fr)" alignSelf="stretch" className='sm_grid'>
-          <GridItem className="grid_header">Start date</GridItem>
-          <GridItem className="grid_header">Total hours</GridItem>
-          <GridItem className="grid_header">Total cost</GridItem>
-          <GridItem className="grid_header">Status</GridItem>
+        <SmPanel>
+          <Text>hello</Text>
 
-          {testData.map((el, i) => (
-            <React.Fragment key={i}>
-              <GridItem>{el.start_date}</GridItem>
-              <GridItem>{el.total_hrs}</GridItem>
-              <GridItem>{el.total_cost}</GridItem>
-              <GridItem>{el.status}</GridItem>
-            </React.Fragment>
-          ))}
-        </Grid>
+          <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid">
+            <GridItem className="grid_header">Start date</GridItem>
+            <GridItem className="grid_header">Total hours</GridItem>
+            <GridItem className="grid_header">Total cost</GridItem>
+            <GridItem className="grid_header">Status</GridItem>
+
+            {testData.map((el, i) => (
+              <React.Fragment key={i}>
+                <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+                <GridItem>{el.start_date}</GridItem>
+                <GridItem>{el.total_hrs}</GridItem>
+                <GridItem>{el.total_cost}</GridItem>
+                <GridItem>{el.status}</GridItem>
+              </React.Fragment>
+            ))}
+          </Grid>
+        </SmPanel>
       </VStack>
     </Dashboard>
   );
 }
-
-const PageHeader = ({ children }) => (
-  <Text fontFamily="RMNeue-Bold" fontSize="2.2em" mt="2em">
-    {children}
-  </Text>
-);
-
-const PageIntroduction = ({ children }) => (
-  <Text fontFamily="RMNeue-Light" fontSize="1.1em" mt="0.5em">
-    {children}
-  </Text>
-);
 
 const testData = [
   {
