@@ -86,8 +86,7 @@ export default observer(function Usage() {
             </Grid>
           </TabPanel>
           <TabPanel>
-            <Text fontSize="2xl">Breakdown</Text>
-
+            <HeaderLabel>Usage metrics</HeaderLabel>
             <Grid
               templateColumns="repeat(2, 1fr)"
               marginTop="2em"

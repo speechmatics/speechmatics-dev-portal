@@ -30,6 +30,6 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     <PageIntroduction>
       {introduction}
     </PageIntroduction>
-    <Divider style={{ marginTop: '2em', width: '800px', marginBottom: '3em' }} />
+    <hr style={{ marginTop: '2em', width: '800px', marginBottom: '3em', borderColor: 'var(--chakra-colors-smNavy-270)' }} />
   </>
 }
