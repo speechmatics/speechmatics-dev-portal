@@ -52,7 +52,6 @@ h1 {
   font-family: RMNeue-Bold;
 }
 
-
 .nav_menu {
   margin-top: 5em;
   display: flex;
@@ -72,7 +71,6 @@ h1 {
   background-clip: border-box;
   align-items: center;
   color: var(--chakra-colors-smNavy-400);
-
 }
 
 .menu_elem.selected {
@@ -89,39 +87,6 @@ h1 {
   background-color: var(--chakra-colors-smNavy-100);
 }
 
-.open_docs_button {
-  margin-top: 1em;
-  margin-bottom: 2em;
-  background-color: var(--main-navy);
-  border-radius: 8px;
-  color: white;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.open_docs_button:hover {
-  background-color: var(--main-blue);
-}
-
-/* .open_docs_button > span {
-    margin-right: 10px;
-} */
-
-
-
-
-.active_subscriptions_status {
-  text-align: center;
-  width: 600px;
-}
-
-
-.add_subscription_button {
-  margin-top: 1em;
-}
-
 .description_text {
   font-family: RMNeue-Light;
   font-size: 1.2em;
@@ -132,54 +97,6 @@ h1 {
 .flex_column {
   display: flex;
   flex-direction: column;
-}
-
-.job_item {
-  width: 950px;
-  font-size: 1.2em;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-left: 0.5em;
-  padding-right: 1em;
-}
-
-.job_item > div {
-  width: 18.75%;
-  padding: 0em 1em;
-}
-
-.job_item > div:last-child {
-  text-align: right;
-}
-
-.job_item > div:nth-child(2) {
-  width: 25%;
-}
-
-.account_forms {
-  display: flex;
-  flex-direction: column;
-}
-
-.account_forms .default_button {
-  align-self: flex-end;
-  margin-top: 0.5em;
-}
-
-.account_forms section {
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  margin-bottom: 3em;
-}
-
-.account_forms input[placeholder='title'] {
-  width: 100px;
-}
-
-.account_forms input[placeholder='email'] {
-  width: 300px;
 }
 
 .sm_grid {
@@ -194,7 +111,7 @@ h1 {
 }
 
 .sm_grid div {
-  padding:  0.8em 1em 0.8em 1em;
+  padding: 0.8em 1em 0.8em 1em;
   font-family: 'RMNeue-Light';
 }
 
@@ -207,6 +124,6 @@ h1 {
   background-color: var(--chakra-colors-smWhite-500);
   border: 1px solid var(--chakra-colors-smBlack-200);
   border-radius: 2px;
-  box-shadow: 4px 4px 7px #5A5D5F15;
+  box-shadow: 4px 4px 7px #5a5d5f15;
   padding: 1.5em;
 }

@@ -109,7 +109,7 @@ const theme = extendTheme({
             py: '1.2em',
             px: '2.2em',
             fontFamily: 'Matter-Bold',
-            color: 'smBlack.200',
+            color: 'smBlack.300',
             _selected: {
               color: 'smBlue.400',
               bg: 'white',
