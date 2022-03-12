@@ -35,6 +35,13 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { SmPanel } from './common';
+import { motion } from 'framer-motion';
+
+const variants = {
+  hidden: { opacity: 0, x: -40, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
+  exit: { opacity: 0, x: 0, y: -100 },
+};
 
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
@@ -103,7 +110,18 @@ export default observer(function Dashboard({ children }) {
         <div className="dashboard_sidenav">
           <Menu />
         </div>
-        <div className="dashboard_content">{children}</div>
+        <div className="dashboard_content">
+          <motion.main
+            variants={variants} // Pass the variant object into Framer Motion
+            initial="hidden" // Set the initial state to variants.hidden
+            animate="enter" // Animated state to variants.enter
+            exit="exit" // Exit state (used later) to variants.exit
+            transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
+            className=""
+          >
+            {children}
+          </motion.main>
+        </div>
       </div>
     </div>
   );

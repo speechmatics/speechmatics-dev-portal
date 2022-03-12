@@ -43,7 +43,7 @@ export default function MyApp({ Component, pageProps }) {
       <ChakraProvider resetCSS={true} theme={theme}>
         <MsalProvider instance={msalInstance}>
           <div className="all_container">
-            <div className="header"></div>
+
             <div className="content">
               <Head>
                 <title>Speechmatics Portal</title>
@@ -57,3 +57,4 @@ export default function MyApp({ Component, pageProps }) {
     </AccountContext.Provider>
   );
 }
+
