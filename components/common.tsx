@@ -13,7 +13,7 @@ export const PageHeader = ({ children }) => (
 );
 
 export const PageIntroduction = ({ children }) => (
-  <Text fontFamily="RMNeue-Regular" fontSize="1.1em" mt="0.5em" color="smNavy.400">
+  <Text fontFamily="RMNeue-Regular" fontSize="1.1em" color="smNavy.400">
     {children}
   </Text>
 );

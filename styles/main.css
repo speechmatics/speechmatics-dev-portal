@@ -28,6 +28,7 @@ button {
 
 a {
   text-decoration: none;
+  color: var(--chakra-colors-smBlue-500);
 }
 
 #__next {
