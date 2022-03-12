@@ -27,12 +27,14 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
+import { PageHeader } from '../components/common';
 
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
   const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
-      <h1>API Token</h1>
+      <PageHeader headerLabel='Manage Access'
+        introduction='Get started with using our platform with api key.' />
       <div className="sm_panel" style={{ width: '800px' }}>
         <div className="description_text">
           You need an API Key (also known as an Authorization Token) to make calls to our REST API:

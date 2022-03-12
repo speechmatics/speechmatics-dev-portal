@@ -20,7 +20,8 @@ import Dashboard from '../components/dashboard';
 export default function ComponentsLibrary() {
   return (
     <Dashboard>
-      <PageHeader>Manage Access</PageHeader>
+      <PageHeader headerLabel='Manage Access'
+        introduction='Get started with using our platform in a few simple steps.' />
       <PageIntroduction>Review usage of the API</PageIntroduction>
       <Divider color="#999" mt="2em" />
       <VStack gap={4} pt={10} bg="smNavy.200">

@@ -1,17 +1,14 @@
-import { VStack, Text } from '@chakra-ui/react';
+import { VStack, Text, Divider } from '@chakra-ui/react';
 import Link from 'next/link';
 import { PageHeader, PageIntroduction } from '../components/common';
 import Dashboard from '../components/dashboard';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
-      <PageHeader>Getting Started!</PageHeader>
-      <PageIntroduction>
-        Get started with using our platform in a few simple steps.
-      </PageIntroduction>
-      <hr style={{ marginTop: '2em', width: '800px' }} />
-      <VStack alignItems="flex-start" mt="3em">
+      <PageHeader headerLabel='Getting Started'
+        introduction='Get started with using our platform in a few simple steps.' />
+      <VStack alignItems="flex-start">
         <Panel>
           <Text fontFamily="RMNeue-Bold" color="smGreen.500">
             STEP 1

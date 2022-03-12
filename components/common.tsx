@@ -1,4 +1,4 @@
-import { Text, VStack } from '@chakra-ui/react';
+import { Divider, Text, VStack } from '@chakra-ui/react';
 
 export const SmPanel = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
@@ -6,7 +6,7 @@ export const SmPanel = ({ children, ...props }) => (
   </VStack>
 );
 
-export const PageHeader = ({ children }) => (
+export const PageHeaderLabel = ({ children }) => (
   <Text fontFamily="RMNeue-Bold" fontSize="2.2em" mt="2em">
     {children}
   </Text>
@@ -17,3 +17,13 @@ export const PageIntroduction = ({ children }) => (
     {children}
   </Text>
 );
+
+
+export const PageHeader = ({ headerLabel, introduction }) => {
+  return <><PageHeaderLabel>{headerLabel}</PageHeaderLabel>
+    <PageIntroduction>
+      {introduction}
+    </PageIntroduction>
+    <Divider style={{ marginTop: '2em', width: '800px', marginBottom: '3em' }} />
+  </>
+}

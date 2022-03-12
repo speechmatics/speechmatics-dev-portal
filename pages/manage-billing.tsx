@@ -13,12 +13,12 @@ import {
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import { SmPanel } from '../components/common';
+import { PageHeader, SmPanel } from '../components/common';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -34,8 +34,8 @@ export default observer(function ManageBilling({}) {
 
   return (
     <Dashboard>
-      <h1>Active subscriptions</h1>
-
+      <PageHeader headerLabel='Manage billing'
+        introduction='Get started with using our platform your billing.' />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Limits</Tab>

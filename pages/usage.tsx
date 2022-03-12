@@ -16,7 +16,7 @@ import {
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
-import { SmPanel } from '../components/common';
+import { PageHeader, SmPanel } from '../components/common';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<any>({});
@@ -46,8 +46,8 @@ export default observer(function Usage() {
 
   return (
     <Dashboard>
-      <h1>Usage</h1>
-
+      <PageHeader headerLabel='Track usage'
+        introduction='Get started with using our platform and track usage.' />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Summary</Tab>
