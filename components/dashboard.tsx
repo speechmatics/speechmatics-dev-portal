@@ -3,8 +3,6 @@ import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
 import {
-  SpeechmaticsLogo,
-  ExternalLink,
   AccountIcon,
   LogoutIcon,
   SpeechmaticsLogoHorizontalWhite,
@@ -20,7 +18,6 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
-import TestApiBlock from './call-test';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
 import { accountsFlow } from '../utils/call-api';

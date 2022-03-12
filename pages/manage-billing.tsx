@@ -13,7 +13,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import { PageHeader, SmPanel } from '../components/common';
+import { HeaderLabel, PageHeader, SmPanel } from '../components/common';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
@@ -44,7 +44,7 @@ export default observer(function ManageBilling({ }) {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <p>Limits!</p>
+            <HeaderLabel>Limits</HeaderLabel>
           </TabPanel>
           <TabPanel>
             <div
@@ -62,8 +62,7 @@ export default observer(function ManageBilling({ }) {
             </Link>
           </TabPanel>
           <TabPanel>
-            <Text fontSize="1.5em">Payments</Text>
-
+            <HeaderLabel>Payments</HeaderLabel>
             <Grid
               gridTemplateColumns="repeat(4, 1fr)"
               className="sm_grid"

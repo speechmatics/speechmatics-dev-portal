@@ -12,7 +12,6 @@ import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 
-const toast = createStandaloneToast();
 
 declare global {
   interface Window {
@@ -20,7 +19,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;

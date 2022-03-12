@@ -27,7 +27,7 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
-import { PageHeader } from '../components/common';
+import { HeaderLabel, PageHeader } from '../components/common';
 
 export default function GetAccessToken({ }) {
   const { accountStore } = useContext(accountContext);
@@ -229,7 +229,7 @@ const PreviousTokens = observer(() => {
         </ModalContent>
       </Modal>
 
-      <h2>Current API Keys</h2>
+      <HeaderLabel>Current API Keys</HeaderLabel>
 
       <Grid gridTemplateColumns="repeat(3, 1fr)" className="sm_grid">
         <GridItem className="grid_header">API key name</GridItem>

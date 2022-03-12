@@ -18,6 +18,12 @@ export const PageIntroduction = ({ children }) => (
   </Text>
 );
 
+export const HeaderLabel = ({ children }) => (
+  <Text fontFamily="RMNeue-Bold" fontSize="1.5em">
+    {children}
+  </Text>
+);
+
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return <><PageHeaderLabel>{headerLabel}</PageHeaderLabel>

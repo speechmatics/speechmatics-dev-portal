@@ -16,7 +16,7 @@ import {
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
-import { PageHeader, SmPanel } from '../components/common';
+import { HeaderLabel, PageHeader, SmPanel } from '../components/common';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<any>({});
@@ -55,7 +55,7 @@ export default observer(function Usage() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Text fontSize="2xl">Usage for the period: {currentUsage?.billingRange}</Text>
+            <HeaderLabel>Usage for the period: {currentUsage?.billingRange}</HeaderLabel>
 
             <Grid
               templateColumns="repeat(4, 1fr)"
