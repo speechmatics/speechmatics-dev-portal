@@ -27,31 +27,36 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
-import { HeaderLabel, PageHeader } from '../components/common';
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
 
-export default function GetAccessToken({ }) {
+//accountStore.getRuntimeURL()
+
+export default function GetAccessToken({}) {
   const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
-      <PageHeader headerLabel='Manage Access'
-        introduction='Get started with using our platform with api key.' />
-      <div className="sm_panel" style={{ width: '800px' }}>
-        <div className="description_text">
-          You need an API Key (also known as an Authorization Token) to make calls to our REST API:
-          <br /> {accountStore.getRuntimeURL()}.
-        </div>
+      <PageHeader
+        headerLabel="Manage Access"
+        introduction="Get started with using our platform with api key."
+      />
+      <SmPanel width="800px">
+        <HeaderLabel>Generate an API Key</HeaderLabel>
+        <DescriptionLabel>
+          You need an API Key (also known as an Authorization Token) to make calls to our REST API.
+        </DescriptionLabel>
 
         <GenerateTokenCompo />
-      </div>
+      </SmPanel>
+
       <PreviousTokens />
     </Dashboard>
   );
 }
 
 const GenerateTokenCompo = observer(() => {
-  const [genTokenStage, setGenTokenStage] = useState<
-    'init' | 'inputName' | 'waiting' | 'generated' | 'error'
-  >('init');
+  const [genTokenStage, setGenTokenStage] = useState<'init' | 'waiting' | 'generated' | 'error'>(
+    'init'
+  );
 
   const [chosenTokenName, setChosenTokenName] = useState('');
   const [generatedApikey, setGeneratedToken] = useState('');
@@ -91,32 +96,22 @@ const GenerateTokenCompo = observer(() => {
   return (
     <section>
       {genTokenStage == 'init' && (
-        <HStack>
+        <HStack mt="1em">
           {apiKeys?.length >= 5 && (
             <Text>You already have 5 tokens, remove one before requesting new.</Text>
           )}
-          <Button
-            variant="speechmatics"
-            disabled={apiKeys?.length >= 5}
-            onClick={() => setGenTokenStage('inputName')}
-          >
-            Generate new token
-          </Button>
-        </HStack>
-      )}
-      {genTokenStage == 'inputName' && (
-        <HStack>
           <Input
             variant="speechmatics"
-            width={500}
+            width="550px"
             type="text"
             placeholder="your token's name here"
             onChange={(ev) => setChosenTokenName(ev.target.value)}
             style={{ border: noNameError ? '1px solid red' : '' }}
             ref={nameInputRef}
+            p="1.55em 1em"
           ></Input>
           <Button variant="speechmatics" onClick={() => requestToken()}>
-            Ok
+            Generate API Key
           </Button>
         </HStack>
       )}
@@ -230,6 +225,9 @@ const PreviousTokens = observer(() => {
       </Modal>
 
       <HeaderLabel>Current API Keys</HeaderLabel>
+      <DescriptionLabel>
+        You have used {apiKeys?.length}/5 of your available API keys.
+      </DescriptionLabel>
 
       <Grid gridTemplateColumns="repeat(3, 1fr)" className="sm_grid">
         <GridItem className="grid_header">API key name</GridItem>
