@@ -1,19 +1,4 @@
 @font-face {
-  font-family: 'GibsonBold';
-  src: url('/fonts/Gibson-Bold.otf');
-}
-
-@font-face {
-  font-family: 'GibsonLight';
-  src: url('/fonts/Gibson-Light.otf');
-}
-
-@font-face {
-  font-family: 'GibsonSemiBold';
-  src: url('/fonts/Gibson-SemiBold.otf');
-}
-
-@font-face {
   font-family: 'GibsonRegular';
   src: url('/fonts/Gibson-Regular.otf');
 }
