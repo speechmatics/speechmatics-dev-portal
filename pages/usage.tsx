@@ -117,7 +117,7 @@ export default observer(function Usage() {
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
   return {
-    billingRange: `${aggregate?.since} - ${aggregate?.until}`,
+    billingRange: `${aggregate?.since || ''} - ${aggregate?.until || ''}`,
     usageStandard:
       aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
         ?.duration_hrs || 0,
