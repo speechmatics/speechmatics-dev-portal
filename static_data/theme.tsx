@@ -65,6 +65,24 @@ const theme = extendTheme({
             bg: 'smBlue.300',
           },
         } as CSSObject,
+        speechmaticsWhite: {
+          color: 'smNavy.500',
+          bg: 'smWhite.500',
+          borderRadius: '2px',
+          mt: '1em',
+          py: '1.8em',
+          px: '2.5em',
+          fontSize: '0.9em',
+          _hover: {
+            bg: 'smBlue.100',
+          },
+          _focus: {
+            boxShadow: 'none',
+          },
+          _active: {
+            bg: 'smBlue.300',
+          },
+        } as CSSObject,
       },
     },
     Input: {

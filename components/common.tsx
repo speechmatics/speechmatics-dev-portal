@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { lioshi as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export const SmPanel = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
@@ -102,9 +102,9 @@ export const CodeHighlight = ({ code }) => {
         alignSelf="flex-start"
         fontSize="0.8em"
         aria-label="copy"
-        color="#bbb"
+        color="smNavy.500"
         backgroundColor="#fff"
-        size="xs"
+        size="sm"
         borderRadius="2px"
         onClick={() => {
           navigator?.clipboard?.writeText(code);
@@ -113,7 +113,7 @@ export const CodeHighlight = ({ code }) => {
       >
         COPY
       </Button>
-      <SyntaxHighlighter language="bash" style={codeTheme} className="code_block">
+      <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
         {code}
       </SyntaxHighlighter>
     </Box>
