@@ -80,24 +80,6 @@ const theme = extendTheme({
       },
     },
 
-    // input {
-    //   background: #ffffff;
-    //   border: 1px solid #cacad0;
-    //   border-color: #cacad0;
-    //   box-sizing: border-box;
-    //   border-radius: 2px;
-    //   height: 3em;
-    //   width: 15em;
-    //   padding: 0 1em;
-    //   font-size: 1em;
-    //   margin: 0.2em;
-    // }
-
-    // input:focus {
-    //   outline: none;
-    //   border: initial;
-    // }
-
     Tabs: {
       variants: {
         speechmatics: {

@@ -27,7 +27,13 @@ import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import {
+  CodeExamples,
+  DescriptionLabel,
+  HeaderLabel,
+  PageHeader,
+  SmPanel,
+} from '../components/common';
 
 //accountStore.getRuntimeURL()
 
@@ -160,6 +166,7 @@ const GenerateTokenCompo = observer(() => {
               You will see this token only once.
             </Text>
           </Box>
+          <CodeExamples />
           <HStack>
             <Button variant="speechmatics" onClick={() => setGenTokenStage('init')}>
               Great!

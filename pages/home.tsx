@@ -1,17 +1,27 @@
-import { VStack, Text, Divider, Tabs, Tab, TabList, TabPanel, TabPanels, Code } from '@chakra-ui/react';
+import {
+  VStack,
+  Text,
+  Divider,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Code,
+} from '@chakra-ui/react';
 import Link from 'next/link';
-import { PageHeader, PageIntroduction } from '../components/common';
+import { CodeExamples, PageHeader, PageIntroduction, SimplePanel } from '../components/common';
 import Dashboard from '../components/dashboard';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
-export default function Home({ }) {
+export default function Home({}) {
   return (
     <Dashboard>
-      <PageHeader headerLabel='Getting Started'
-        introduction='Get started with using our platform in a few simple steps.' />
+      <PageHeader
+        headerLabel="Getting Started"
+        introduction="Get started with using our platform in a few simple steps."
+      />
       <VStack alignItems="flex-start">
-        <Panel>
+        <SimplePanel>
           <Text fontFamily="RMNeue-Bold" color="smGreen.500">
             STEP 1
           </Text>
@@ -29,10 +39,10 @@ export default function Home({ }) {
             </Link>{' '}
             to make transcripion requests.
           </Text>
-        </Panel>
+        </SimplePanel>
       </VStack>
       <VStack alignItems="flex-start" mt="3em">
-        <Panel>
+        <SimplePanel>
           <Text fontFamily="RMNeue-Bold" color="smGreen.500">
             STEP 2
           </Text>
@@ -52,48 +62,10 @@ export default function Home({ }) {
             Copy the following curl command and replace the API key with your own.
             <br />
             Run the command to generate a transcript.
-
-            <Tabs size="lg" variant="speechmatics" mt='1em'>
-              <TabList marginBottom="-1px">
-                <Tab>Windows</Tab>
-                <Tab>Mac</Tab>
-                <Tab>Linux</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel width="750px">
-                  <SyntaxHighlighter language="curl" style={docco}>
-                    {`curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
-                  </SyntaxHighlighter>
-                </TabPanel>
-                <TabPanel width="750px">
-                  <SyntaxHighlighter language="curl" style={docco}>
-                    {`(mac example) curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
-                  </SyntaxHighlighter>
-                </TabPanel>
-                <TabPanel width="750px">
-                  <SyntaxHighlighter language="curl" style={docco}>
-                    {`(linux example) curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
-                  </SyntaxHighlighter>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+            <CodeExamples />
           </Text>
-        </Panel>
+        </SimplePanel>
       </VStack>
     </Dashboard>
   );
 }
-
-const Panel = ({ children }) => (
-  <VStack
-    width="800px"
-    p="1em 1em 1.5em 1.5em"
-    alignItems="flex-start"
-    backgroundColor="smWhite.500"
-    border="1px solid"
-    borderColor="smBlack.200"
-    borderRadius="3px"
-  >
-    {children}
-  </VStack>
-);

@@ -127,3 +127,7 @@ h1 {
   box-shadow: 4px 4px 7px #5a5d5f15;
   padding: 1.5em;
 }
+
+pre.code_block>code {
+  padding-right: 60px;
+}

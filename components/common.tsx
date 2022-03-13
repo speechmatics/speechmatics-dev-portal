@@ -1,4 +1,21 @@
-import { Divider, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Divider,
+  HStack,
+  IconButton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  Tooltip,
+  VStack,
+} from '@chakra-ui/react';
+import { IoCopyOutline } from 'react-icons/io5';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { lioshi as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export const SmPanel = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
@@ -46,3 +63,73 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </>
   );
 };
+export const CodeExamples = ({}) => {
+  return (
+    <Tabs size="lg" variant="speechmatics" mt="1em">
+      <TabList marginBottom="-1px">
+        <Tab>Windows</Tab>
+        <Tab>Mac</Tab>
+        <Tab>Linux</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel width="750px">
+          <CodeHighlight
+            code={`curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+          />
+        </TabPanel>
+        <TabPanel width="750px">
+          <CodeHighlight
+            code={`/* mac */ curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+          />
+        </TabPanel>
+        <TabPanel width="750px">
+          <CodeHighlight
+            code={`/* linux */ curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+          />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
+};
+
+export const CodeHighlight = ({ code }) => {
+  return (
+    <Box position="relative">
+      <Button
+        top="6px"
+        right="6px"
+        position="absolute"
+        alignSelf="flex-start"
+        fontSize="0.8em"
+        aria-label="copy"
+        color="#bbb"
+        backgroundColor="#fff"
+        size="xs"
+        borderRadius="2px"
+        onClick={() => {
+          navigator?.clipboard?.writeText(code);
+        }}
+        _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
+      >
+        COPY
+      </Button>
+      <SyntaxHighlighter language="bash" style={codeTheme} className="code_block">
+        {code}
+      </SyntaxHighlighter>
+    </Box>
+  );
+};
+
+export const SimplePanel = ({ children }) => (
+  <VStack
+    width="800px"
+    p="1em 1em 1.5em 1.5em"
+    alignItems="flex-start"
+    backgroundColor="smWhite.500"
+    border="1px solid"
+    borderColor="smBlack.200"
+    borderRadius="3px"
+  >
+    {children}
+  </VStack>
+);
