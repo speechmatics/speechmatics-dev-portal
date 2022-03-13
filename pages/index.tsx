@@ -13,7 +13,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="landing_container">
+    <div className="login_container">
       <SpeechmaticsLogo />
     </div>
   );

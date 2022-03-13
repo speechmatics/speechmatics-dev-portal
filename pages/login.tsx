@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
+import { Button } from '@chakra-ui/react';
 
 export default function Login() {
   const router = useRouter();
@@ -32,9 +33,9 @@ export default function Login() {
     } else if (inProgress === 'none' && accounts.length == 0) {
       return (
         <div className="login_form">
-          <button className="next_button" onClick={loginHandler}>
+          <Button variant='speechmatics' onClick={loginHandler}>
             Log in / Sign up ➔
-          </button>
+          </Button>
         </div>
       );
     } else return <></>;
