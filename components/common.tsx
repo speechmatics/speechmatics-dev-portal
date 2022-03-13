@@ -17,7 +17,7 @@ import { useContext } from 'react';
 import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import accountStoreContext from '../utils/account-store-context';
+import accountContext from '../utils/account-store-context';
 
 export const SmPanel = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
@@ -67,7 +67,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
 };
 export const CodeExamples = ({ }) => {
 
-  const { accountStore } = useContext(accountStoreContext);
+  const { accountStore } = useContext(accountContext);
 
   return (
     <Tabs size="lg" variant="speechmatics" mt="1em">
