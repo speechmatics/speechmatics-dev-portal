@@ -74,7 +74,7 @@ export default function Home({}) {
         width="800px"
         bg="smGreen.500"
         height="100px"
-        mt="2em"
+        mt="3em"
         justifyContent="space-between"
         padding="2.5em 1.5em"
       >

@@ -105,7 +105,7 @@ const theme = extendTheme({
             bg: 'smBlue.100',
             borderLeft: '1px solid #D1D7D6',
             borderBottom: '1px solid #D1D7D6',
-            fontSize: '0.8em',
+            fontSize: '0.9em',
             py: '1.2em',
             px: '2.2em',
             fontFamily: 'Matter-Bold',
