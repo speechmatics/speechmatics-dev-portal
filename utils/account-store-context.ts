@@ -14,10 +14,15 @@ interface Account {
 
 interface Contract {
   contract_id: number;
-  usage_limit_hrs: number;
+  usage_limits: UsageLimit[];
   projects: Project[];
   runtime_url: string;
   payment_method: PaymentMethod | null;
+}
+
+interface UsageLimit {
+  name: string;
+  value: number;
 }
 
 interface Project {
@@ -83,12 +88,14 @@ class AccountContext {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.runtime_url;
   }
 
-  getContractLimitHrs(): number {
-    return this._account?.contracts.filter((con) => !!con)?.[0]?.usage_limit_hrs || 0;
-  }
-
   getPaymentMethod(): PaymentMethod | null {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
+  }
+
+  getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
+    return this._account?.contracts
+      .filter((con) => !!con)?.[0]
+      ?.usage_limits?.find((el) => el.name == type)?.value;
   }
 
   async fetchServerState(idToken: string) {

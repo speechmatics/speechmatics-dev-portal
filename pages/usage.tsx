@@ -46,8 +46,10 @@ export default observer(function Usage() {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel='Track usage'
-        introduction='Get started with using our platform and track usage.' />
+      <PageHeader
+        headerLabel="Track usage"
+        introduction="Get started with using our platform and track usage."
+      />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Summary</Tab>
@@ -69,7 +71,7 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Requests made</GridItem>
 
               <GridItem>Standard Model</GridItem>
-              <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+              <GridItem>{accountStore.getUsageLimit('standard')} hours</GridItem>
               <GridItem data-qa="usage-standard">
                 {Number(currentUsage?.usageStandard).toFixed(1)} hours
               </GridItem>
@@ -78,7 +80,7 @@ export default observer(function Usage() {
                 <hr />
               </GridItem>
               <GridItem>Enhanced Model</GridItem>
-              <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+              <GridItem>{accountStore.getUsageLimit('enhanced')} hours</GridItem>
               <GridItem data-qa="usage-enhanced">
                 {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
               </GridItem>

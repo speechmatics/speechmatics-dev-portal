@@ -3,12 +3,14 @@ import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 const theme = extendTheme({
   colors: {
     smGreen: {
+      150: '#EAF3F2',
       300: '#A7D0CD',
       400: '#4FA9A2',
       500: '#2A827A',
     },
     smBlue: {
       100: '#E8F0F8',
+      150: '#EAF3FF',
       300: '#BFD8FE',
       400: '#5398FC',
       500: '#386DFB',

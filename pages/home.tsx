@@ -85,7 +85,7 @@ export default function Home({}) {
           <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
             Track your usage
           </Text>
-          <Text fontFamily="Matter-Medium" fontSize="1em" color="smWhite.500">
+          <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
             Usage is measured in minutes of audio processed
           </Text>
         </VStack>
