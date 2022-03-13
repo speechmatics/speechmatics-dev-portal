@@ -1,7 +1,9 @@
-import { VStack, Text, Divider } from '@chakra-ui/react';
+import { VStack, Text, Divider, Tabs, Tab, TabList, TabPanel, TabPanels, Code } from '@chakra-ui/react';
 import Link from 'next/link';
 import { PageHeader, PageIntroduction } from '../components/common';
 import Dashboard from '../components/dashboard';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export default function Home({ }) {
   return (
@@ -50,6 +52,31 @@ export default function Home({ }) {
             Copy the following curl command and replace the API key with your own.
             <br />
             Run the command to generate a transcript.
+
+            <Tabs size="lg" variant="speechmatics" mt='1em'>
+              <TabList marginBottom="-1px">
+                <Tab>Windows</Tab>
+                <Tab>Mac</Tab>
+                <Tab>Linux</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel width="750px">
+                  <SyntaxHighlighter language="curl" style={docco}>
+                    {`curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+                  </SyntaxHighlighter>
+                </TabPanel>
+                <TabPanel width="750px">
+                  <SyntaxHighlighter language="curl" style={docco}>
+                    {`(mac example) curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+                  </SyntaxHighlighter>
+                </TabPanel>
+                <TabPanel width="750px">
+                  <SyntaxHighlighter language="curl" style={docco}>
+                    {`(linux example) curl -L -X POST https://asr.api.speechmatics.com/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+                  </SyntaxHighlighter>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Text>
         </Panel>
       </VStack>
