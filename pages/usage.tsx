@@ -19,18 +19,21 @@ import { observer } from 'mobx-react-lite';
 import { HeaderLabel, PageHeader, SmPanel } from '../components/common';
 
 export default observer(function Usage() {
-  const [usageJson, setUsageJson] = useState<any>({});
+  const [usageJson, setUsageJson] = useState<UsageRespJson>({});
   const { accountStore, tokenStore } = useContext(accountContext);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
   const idToken = tokenStore.tokenPayload?.idToken;
 
   useEffect(() => {
     let isActive = true;
     console.log(`Usage useEff`, !!idToken, !!accountStore.account);
     if (idToken && accountStore.account) {
+      setIsLoading(true);
       callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageJson({ ...respJson });
+            setIsLoading(false);
           }
         })
         .catch(console.error);
@@ -98,7 +101,7 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Day</GridItem>
               <GridItem className="grid_header">Hours used</GridItem>
 
-              {breakdown?.map((el: UsageUnit) => {
+              {breakdown?.reverse().map((el: UsageUnit) => {
                 // const usg = prepCurrentUsage(el);
                 return (
                   <React.Fragment key={el.since}>
@@ -133,7 +136,7 @@ const prepCurrentUsage = (aggregate: UsageUnit) => {
   };
 };
 
-type UsageRespJson = { aggregate: UsageUnit; breakdown: UsageUnit[] };
+type UsageRespJson = { aggregate?: UsageUnit; breakdown?: UsageUnit[] };
 
 type SummaryItem = {
   mode: 'batch' | 'real-time';
