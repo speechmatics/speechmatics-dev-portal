@@ -60,7 +60,11 @@ export default observer(function Usage() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <HeaderLabel>Usage for the period: {currentUsage?.billingRange}</HeaderLabel>
+            <HeaderLabel>
+              {currentUsage?.since.startsWith('1970-01-01')
+                ? `Usage until ${currentUsage?.until}`
+                : `Usage for the period: ${currentUsage?.billingRange}`}
+            </HeaderLabel>
 
             <Grid
               templateColumns="repeat(4, 1fr)"
@@ -121,6 +125,8 @@ export default observer(function Usage() {
 const prepCurrentUsage = (aggregate: UsageUnit) => {
   return {
     billingRange: `${aggregate?.since || ''} - ${aggregate?.until || ''}`,
+    since: aggregate?.since,
+    until: aggregate?.until,
     usageStandard:
       aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
         ?.duration_hrs || 0,
