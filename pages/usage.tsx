@@ -61,7 +61,7 @@ export default observer(function Usage() {
         <TabPanels>
           <TabPanel>
             <HeaderLabel>
-              {currentUsage?.since.startsWith('1970-01-01')
+              {currentUsage?.since?.startsWith('1970-01-01')
                 ? `Usage until ${currentUsage?.until}`
                 : `Usage for the period: ${currentUsage?.billingRange}`}
             </HeaderLabel>
