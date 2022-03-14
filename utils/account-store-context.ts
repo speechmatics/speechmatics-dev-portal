@@ -70,30 +70,26 @@ class AccountContext {
 
   getApiKeys(): ApiKey[] {
     return this._account?.contracts
-      .filter((con) => !!con)
-      ?.at(0)
-      ?.projects.filter((proj) => !!proj)
-      ?.at(0)?.api_keys;
+      .filter((con) => !!con)?.[0]
+      ?.projects.filter((proj) => !!proj)?.[0]?.api_keys;
   }
 
   getProjectId(): number {
     return this._account?.contracts
-      .filter((con) => !!con)
-      ?.at(0)
-      ?.projects.filter((proj) => !!proj)
-      ?.at(0).project_id;
+      .filter((con) => !!con)?.[0]
+      ?.projects.filter((proj) => !!proj)?.[0].project_id;
   }
 
   getContractId(): number {
-    return this._account?.contracts.filter((con) => !!con)?.at(0)?.contract_id;
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.contract_id;
   }
 
   getRuntimeURL(): string {
-    return this._account?.contracts.filter((con) => !!con)?.at(0)?.runtime_url;
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.runtime_url;
   }
 
   getPaymentMethod(): PaymentMethod | null {
-    return this._account?.contracts.filter((con) => !!con)?.at(0)?.payment_method;
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
   }
 
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
@@ -104,8 +100,7 @@ class AccountContext {
 
     return (
       (this._account?.contracts
-        .filter((con) => !!con)
-        ?.at(0)
+        .filter((con) => !!con)?.[0]
         ?.usage_limits?.find((el) => el.name == dict[type])?.value || 0) / 3600
     );
   }
@@ -125,7 +120,7 @@ class AccountContext {
   assignServerState(response: GetAccountsResponse) {
     if (!response) throw new Error('attempt assigning empty response');
 
-    this._account = response.accounts?.filter((acc) => !!acc)?.at(0);
+    this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
     console.log('assignServerState', this._account);
   }
