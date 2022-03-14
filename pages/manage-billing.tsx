@@ -130,14 +130,14 @@ export default observer(function ManageBilling({}) {
               <GridItem className="grid_header">Hours used</GridItem>
               <GridItem className="grid_header">Total cost</GridItem>
               <GridItem className="grid_header">Payment status</GridItem>
-              {payments?.map((el: PaymentItem, i: number) => (
+              {payments?.reverse().map((el: PaymentItem, i: number) => (
                 <>
                   <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
                   <GridItem>
                     {el.start_date} - {el.end_date}
                   </GridItem>
-                  <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
-                  <GridItem>{el.total_cost}</GridItem>
+                  <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
+                  <GridItem>${el.total_cost}</GridItem>
                   <GridItem>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
                 </>
               ))}

@@ -32,7 +32,10 @@ export default observer(function Usage() {
       callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
-            setUsageJson({ ...respJson });
+            setUsageJson({
+              aggregate: respJson.aggregate,
+              breakdown: respJson.breakdown.reverse(),
+            });
             setIsLoading(false);
           }
         })
@@ -72,7 +75,7 @@ export default observer(function Usage() {
               className="sm_grid"
               alignSelf="stretch"
             >
-              <GridItem className="grid_header">Model</GridItem>
+              <GridItem className="grid_header">Month</GridItem>
               <GridItem className="grid_header">Limit (hours / month)</GridItem>
               <GridItem className="grid_header">Hours used</GridItem>
               <GridItem className="grid_header">Requests made</GridItem>
@@ -80,7 +83,7 @@ export default observer(function Usage() {
               <GridItem>Standard Model</GridItem>
               <GridItem>{accountStore.getUsageLimit('standard')} hours</GridItem>
               <GridItem data-qa="usage-standard">
-                {Number(currentUsage?.usageStandard).toFixed(1)} hours
+                {Number(currentUsage?.usageStandard).toFixed(2)} hours
               </GridItem>
               <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
               <GridItem className="grid_row_divider">
@@ -89,7 +92,7 @@ export default observer(function Usage() {
               <GridItem>Enhanced Model</GridItem>
               <GridItem>{accountStore.getUsageLimit('enhanced')} hours</GridItem>
               <GridItem data-qa="usage-enhanced">
-                {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
+                {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
               </GridItem>
               <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
             </Grid>
@@ -105,12 +108,11 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Day</GridItem>
               <GridItem className="grid_header">Hours used</GridItem>
 
-              {breakdown?.reverse().map((el: UsageUnit) => {
-                // const usg = prepCurrentUsage(el);
+              {breakdown?.map((el: UsageUnit) => {
                 return (
                   <React.Fragment key={el.since}>
                     <GridItem>{el.since}</GridItem>
-                    <GridItem>{Number(el.total_hrs).toFixed(1)} hours</GridItem>
+                    <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
                   </React.Fragment>
                 );
               })}

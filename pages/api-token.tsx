@@ -41,10 +41,7 @@ export default function GetAccessToken({}) {
   const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
-      <PageHeader
-        headerLabel="Manage Access"
-        introduction="Get started with using our platform with api key."
-      />
+      <PageHeader headerLabel="Manage Access" introduction="Manage API keys" />
       <SmPanel width="800px">
         <HeaderLabel>Generate an API Key</HeaderLabel>
         <DescriptionLabel>

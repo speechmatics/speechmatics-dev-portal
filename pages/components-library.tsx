@@ -20,8 +20,10 @@ import Dashboard from '../components/dashboard';
 export default function ComponentsLibrary() {
   return (
     <Dashboard>
-      <PageHeader headerLabel='Manage Access'
-        introduction='Get started with using our platform in a few simple steps.' />
+      <PageHeader
+        headerLabel="Manage Access"
+        introduction="Get started with using our platform in a few simple steps."
+      />
       <PageIntroduction>Review usage of the API</PageIntroduction>
       <Divider color="#999" mt="2em" />
       <VStack gap={4} pt={10} bg="smNavy.200">
@@ -64,7 +66,7 @@ export default function ComponentsLibrary() {
                 <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
                 <GridItem>{el.start_date}</GridItem>
                 <GridItem>{el.total_hrs}</GridItem>
-                <GridItem>{el.total_cost}</GridItem>
+                <GridItem>${el.total_cost}</GridItem>
                 <GridItem>{el.status}</GridItem>
               </React.Fragment>
             ))}
