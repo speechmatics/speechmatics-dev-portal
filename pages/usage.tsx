@@ -75,7 +75,7 @@ export default observer(function Usage() {
               className="sm_grid"
               alignSelf="stretch"
             >
-              <GridItem className="grid_header">Month</GridItem>
+              <GridItem className="grid_header">Model</GridItem>
               <GridItem className="grid_header">Limit (hours / month)</GridItem>
               <GridItem className="grid_header">Hours used</GridItem>
               <GridItem className="grid_header">Requests made</GridItem>

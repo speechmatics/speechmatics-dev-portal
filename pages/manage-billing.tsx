@@ -126,7 +126,7 @@ export default observer(function ManageBilling({}) {
               mt="1.5em"
               alignSelf="stretch"
             >
-              <GridItem className="grid_header">Model</GridItem>
+              <GridItem className="grid_header">Month</GridItem>
               <GridItem className="grid_header">Hours used</GridItem>
               <GridItem className="grid_header">Total cost</GridItem>
               <GridItem className="grid_header">Payment status</GridItem>
