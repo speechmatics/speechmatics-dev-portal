@@ -14,6 +14,19 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      REDIRECT_URI: 'https://portal.speechmatics.com/login/'
+      POST_LOGOUT_REDIRECT_URI: 'https://portal.speechmatics.com/login/'
+      SIGNUP_SIGNIN_POLICY: 'B2C_1_susi'
+      RESET_PASS_POLICY: 'B2C_1_reset'
+      EDIT_PROFILE_POLICY: 'B2C_1_edit_profile'
+      AUTHORITY_DOMAIN: 'identity.speechmatics.com'
+      POLICY_DOMAIN: 'identity.speechmatics.com'
+      AUTH_CLIENT_ID: '21d50769-1b5b-414d-be58-cc27ea9dc1fa'
+      ENDPOINT_API_URL: 'https://mp.speechmatics.com/v1'
+      DEFAULT_B2C_SCOPE: 'https://identity.speechmatics.com/21d50769-1b5b-414d-be58-cc27ea9dc1fa/User.Read'
+      CHARGIFY_PUBLIC_KEY: 'chjs_wg5zstr67hwfkdzzxg9m8ckc'
+      CHARGIFY_SERVER_HOST: 'https://speechmatics-production.chargify.com/'  
     steps:
       - uses: actions/checkout@v2
         with:
