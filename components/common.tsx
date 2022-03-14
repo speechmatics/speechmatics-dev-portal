@@ -13,6 +13,7 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -65,7 +66,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </>
   );
 };
-export const CodeExamples = ({ }) => {
+export const CodeExamples = observer(({ }) => {
 
   const { accountStore } = useContext(accountContext);
 
@@ -95,7 +96,7 @@ export const CodeExamples = ({ }) => {
       </TabPanels>
     </Tabs>
   );
-};
+});
 
 export const CodeHighlight = ({ code }) => {
   return (
