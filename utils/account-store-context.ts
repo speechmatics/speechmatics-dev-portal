@@ -93,9 +93,16 @@ class AccountContext {
   }
 
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
-    return this._account?.contracts
-      .filter((con) => !!con)?.[0]
-      ?.usage_limits?.find((el) => el.name == type)?.value;
+    const dict = {
+      standard: 'LIM_DUR_CUR_MON_STANDARD_SEC',
+      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
+    };
+
+    return (
+      (this._account?.contracts
+        .filter((con) => !!con)?.[0]
+        ?.usage_limits?.find((el) => el.name == dict[type])?.value || 0) / 3600
+    );
   }
 
   async fetchServerState(idToken: string) {
