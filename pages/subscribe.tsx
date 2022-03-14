@@ -11,7 +11,7 @@ import {
 import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
-
+import { HeaderLabel, SmPanel } from '../components/common';
 
 declare global {
   interface Window {
@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -113,33 +113,35 @@ function Subscribe({ }) {
       <div>
         <div style={{ width: '700px' }}>
           <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
-            <Text fontSize={'1.5em'}>Your name</Text>
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div id="chargify_firstName"></div>
-              <div id="chargify_lastname"></div>
-            </section>
+            <SmPanel>
+              <HeaderLabel>Your name</HeaderLabel>
+              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <div id="chargify_firstName"></div>
+                <div id="chargify_lastname"></div>
+              </section>
+            </SmPanel>
 
-            <Text fontSize={'1.5em'} marginTop={'2em'}>
-              Your card information
-            </Text>
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div id="chargify_ccnumber"></div>
-              <div id="chargify_cvv"></div>
-              <div id="chargify_ccmonth"></div>
-              <div id="chargify_ccyear"></div>
-            </section>
+            <SmPanel marginTop="2em">
+              <HeaderLabel>Your card information</HeaderLabel>
+              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <div id="chargify_ccnumber"></div>
+                <div id="chargify_cvv"></div>
+                <div id="chargify_ccmonth"></div>
+                <div id="chargify_ccyear"></div>
+              </section>
+            </SmPanel>
 
-            <Text fontSize={'1.5em'} marginTop={'2em'}>
-              Your address
-            </Text>
-            <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div id="chargify_address"></div>
-              <div id="chargify_address2"></div>
-              <div id="chargify_city"></div>
-              <div id="chargify_state"></div>
-              <div id="chargify_zip"></div>
-              <div id="chargify_country"></div>
-            </section>
+            <SmPanel marginTop="2em">
+              <HeaderLabel>Your address</HeaderLabel>
+              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                <div id="chargify_address"></div>
+                <div id="chargify_address2"></div>
+                <div id="chargify_city"></div>
+                <div id="chargify_state"></div>
+                <div id="chargify_zip"></div>
+                <div id="chargify_country"></div>
+              </section>
+            </SmPanel>
 
             <label>
               <input id="host-token" disabled value={token} type="hidden" />
@@ -152,7 +154,12 @@ function Subscribe({ }) {
               />
             </label>
             <p>
-              <Button variant="speechmatics" type="submit" disabled={!submitButtonReady}>
+              <Button
+                variant="speechmatics"
+                type="submit"
+                disabled={!submitButtonReady}
+                marginTop="2em"
+              >
                 {submitButtonReady ? 'Submit Form' : <Spinner />}
               </Button>
             </p>
