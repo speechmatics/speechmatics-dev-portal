@@ -40,7 +40,7 @@ export default function Home({}) {
                 </Text>
               </a>
             </Link>{' '}
-            to make transcripion requests.
+            to make transcription requests.
           </Text>
         </SimplePanel>
       </VStack>

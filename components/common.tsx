@@ -38,8 +38,8 @@ export const PageIntroduction = ({ children }) => (
   </Text>
 );
 
-export const HeaderLabel = ({ children }) => (
-  <Text fontFamily="Matter-Bold" fontSize="1.4em" mb="0.3em">
+export const HeaderLabel = ({ children, ...props }) => (
+  <Text fontFamily="Matter-Bold" fontSize="1.4em" mb="0.3em" {...props}>
     {children}
   </Text>
 );
@@ -66,8 +66,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </>
   );
 };
-export const CodeExamples = observer(({ }) => {
-
+export const CodeExamples = observer(({}) => {
   const { accountStore } = useContext(accountContext);
 
   return (
@@ -80,7 +79,9 @@ export const CodeExamples = observer(({ }) => {
       <TabPanels>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${
+              accountStore.getRuntimeURL() || '$HOST'
+            }/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
