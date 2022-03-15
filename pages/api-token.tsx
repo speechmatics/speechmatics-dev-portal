@@ -100,22 +100,25 @@ const GenerateTokenCompo = observer(() => {
     <section>
       {genTokenStage == 'init' && (
         <HStack mt="1em">
-          {apiKeys?.length >= 5 && (
+          {apiKeys?.length >= 5 ? (
             <Text>You already have 5 tokens, remove one before requesting new.</Text>
+          ) : (
+            <>
+              <Input
+                variant="speechmatics"
+                width="550px"
+                type="text"
+                placeholder="your token's name here"
+                onChange={(ev) => setChosenTokenName(ev.target.value)}
+                style={{ border: noNameError ? '1px solid red' : '' }}
+                ref={nameInputRef}
+                p="1.55em 1em"
+              ></Input>
+              <Button variant="speechmatics" onClick={() => requestToken()}>
+                Generate API Key
+              </Button>
+            </>
           )}
-          <Input
-            variant="speechmatics"
-            width="550px"
-            type="text"
-            placeholder="your token's name here"
-            onChange={(ev) => setChosenTokenName(ev.target.value)}
-            style={{ border: noNameError ? '1px solid red' : '' }}
-            ref={nameInputRef}
-            p="1.55em 1em"
-          ></Input>
-          <Button variant="speechmatics" onClick={() => requestToken()}>
-            Generate API Key
-          </Button>
         </HStack>
       )}
       {genTokenStage == 'waiting' && (
