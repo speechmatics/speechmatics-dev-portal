@@ -66,7 +66,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </>
   );
 };
-export const CodeExamples = observer(({}) => {
+export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
@@ -81,17 +81,23 @@ export const CodeExamples = observer(({}) => {
           <CodeHighlight
             code={`curl -L -X POST ${
               accountStore.getRuntimeURL() || '$HOST'
-            }/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            }/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer NDFjOTE3NGEtOWVm" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
       </TabPanels>

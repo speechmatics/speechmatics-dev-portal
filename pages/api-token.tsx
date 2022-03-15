@@ -163,7 +163,7 @@ const GenerateTokenCompo = observer(() => {
               You will see this token only once.
             </Text>
           </Box>
-          <CodeExamples />
+          <CodeExamples token={generatedApikey} />
           <HStack>
             <Button variant="speechmatics" onClick={() => setGenTokenStage('init')}>
               Great!
