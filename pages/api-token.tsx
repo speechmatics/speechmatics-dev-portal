@@ -195,7 +195,10 @@ const PreviousTokens = observer(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { accountStore, tokenStore } = useContext(accountContext);
-  const apiKeys = accountStore.getApiKeys();
+  const apiKeys = accountStore
+    .getApiKeys()
+    ?.slice()
+    .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime());
   const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
@@ -242,7 +245,7 @@ const PreviousTokens = observer(() => {
         <GridItem className="grid_header"></GridItem>
 
         {apiKeys?.map((el, i) => (
-          <React.Fragment key={i}>
+          <React.Fragment key={`${el.name}${el.created_at}`}>
             <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
             <GridItem>{el.name}</GridItem>
             <GridItem>{new Date(el.created_at).toDateString()}</GridItem>
