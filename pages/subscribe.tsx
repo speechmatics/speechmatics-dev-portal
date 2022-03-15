@@ -85,7 +85,7 @@ function Subscribe({}) {
           .then(async () => {
             positiveToast('token SUCCESS redirecting...');
             await accountStore.fetchServerState(idToken);
-            window.setTimeout(() => router.push('/subscriptions/'), 1000);
+            window.setTimeout(() => router.push('/manage-billing/'), 1000);
           })
           .catch((error) => {
             setSubmitButtonReady(true);
