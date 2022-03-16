@@ -36,7 +36,7 @@ export default function SignUp() {
           .catch((error) => {
             console.log(error);
           }),
-      1000
+      3000
     );
 
     return () => window.clearTimeout(st);
