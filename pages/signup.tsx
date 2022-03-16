@@ -45,7 +45,7 @@ export default function SignUp() {
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-
+      <Text>{window.location.hash}</Text>
       <Text textAlign="center">Just one more step and you're set! redirecting...</Text>
     </div>
   );
