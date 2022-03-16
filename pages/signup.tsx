@@ -26,9 +26,16 @@ export default function Login() {
     let st: number;
     st = window.setTimeout(
       () =>
-        instance.loginRedirect({ ...loginRequest, extraQueryParameters }).catch((error) => {
-          console.log(error);
-        }),
+        instance
+          .loginRedirect({
+            ...loginRequest,
+            extraQueryParameters,
+            authority:
+              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION',
+          })
+          .catch((error) => {
+            console.log(error);
+          }),
       1000
     );
 
