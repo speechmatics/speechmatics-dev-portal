@@ -19,12 +19,10 @@ export default function Login() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log(`urlParams ${urlParams.get('hint')}`);
-
-  const extraQueryParameters = { id_token_hint: urlParams.get('hint') };
-
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log(`urlParams ${urlParams.get('hint')}`);
+    const extraQueryParameters = { id_token_hint: urlParams.get('hint') };
     let st: number;
     st = window.setTimeout(
       () =>
