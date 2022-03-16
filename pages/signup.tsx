@@ -21,7 +21,7 @@ export default function SignUp() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(`urlParams ${urlParams.get('hint')}`);
+    console.log(`urlParams ${urlParams.get('hint')} ${window.location}`);
     const extraQueryParameters = { id_token_hint: urlParams.get('hint') };
     let st: number;
     st = window.setTimeout(
