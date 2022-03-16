@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -168,7 +168,7 @@ function Subscribe({}) {
             margin: 1em 0;
             border-radius: 15px;
             background: var(--main-navy);
-            font-family: GibsonRegular;
+            font-family: "RM Neue";
             font-size: 1.5em;
             color: #fff;
             text-transform: uppercase;

@@ -31,7 +31,7 @@ export default function Login() {
       return <div className="login_text">Login is currently in progress!</div>;
     } else if (inProgress === 'none' && accounts.length == 0) {
       return (
-        <div className="login_form">
+        <div className="login_form py-8">
           <button className="next_button" onClick={loginHandler}>
             Log in / Sign up ➔
           </button>

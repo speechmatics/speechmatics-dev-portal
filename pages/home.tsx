@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import Dashboard from '../components/dashboard';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <h1>Getting Started!</h1>
+      <h2>Here is an example of a Subtitle</h2>
+      <div className='divide_line'></div>
       <div className="steps_container">
         {stepsData.map((item, i) => (
           <StepItem item={item} key={i} />

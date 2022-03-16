@@ -14,7 +14,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: GibsonRegular;
     font-size: 1.7rem;
     cursor: pointer;
     position: relative;
@@ -65,7 +64,7 @@
 .landing_text {
     width: 30em;
     margin-top: 5em;
-    font-family: GibsonLight;
+    /*font-family: GibsonLight;*/
     color: #3E4D5B;
     font-size: 1.4em;
 }

@@ -1,11 +1,87 @@
 import Dashboard from '../components/dashboard';
 import { VStack } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import Image from 'next/image'
 
-export default function Faq({}) {
+export default function Faq({ }) {
   return (
     <Dashboard>
       <h1>Resources</h1>
+      <h2>Explore our comprehensive API documentation</h2>
+      <div className='divide_line'></div>
+
+      <div className='learn_wrapper'>
+        <div className='learn'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Introduction</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Configuring the job request  with a longer title</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Configuring</h3>
+          <p>Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <h3>Configuring the job request</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+      </div>
+
       <VStack spacing="1em" alignItems="flex-start">
         <a href="https://docs.speechmatics.com" target="_blank">
           <div className="open_docs_button">

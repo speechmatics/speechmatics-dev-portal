@@ -1,30 +1,40 @@
+.header {
+  @apply bg-speech-navy text-white p-5 fixed z-50 inset-x-0 top-0 flex justify-between;
+}
+
 .dashboard_container {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
+  @apply h-full flex flex-row bg-speech-light-blue; 
 }
 
 .dashboard_sidenav {
-  background-color: #f7f7f7;
-  width: 330px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply items-center justify-start flex flex-col shrink-0 bg-white w-[320px] border-r border-speech-navy border-solid border-opacity-20;
 }
 
 .dashboard_content {
-  margin-left: 3em;
-  margin-right: 3em;
-  padding-bottom: 3em;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-row flex-1 justify-center mt-28 pb-12;
+}
+
+.dashboard_content_wrapper {
+  @apply flex flex-col flex-1 max-w-screen-lg mx-16;
+}
+
+.dashboard_content_wrapper h1 {
+  @apply font-bold text-speech-navy text-4xl mb-4;
+}
+
+.dashboard_content_wrapper h2 {
+  @apply font-normal text-speech-font text-xl mb-4;
+}
+
+.dashboard_content_wrapper .divide_line {
+  @apply h-px bg-speech-navy bg-opacity-20 mb-10;
 }
 
 .dashboard_side_bar {
   display: flex;
   flex-direction: column;
   margin: 1em;
+  @apply flex flex-col m-4;
 }
 
 .dashboard_side_bar > * {
@@ -32,47 +42,35 @@
 }
 
 h1 {
-  padding: 0.5em 0;
-  font-family: GibsonRegular;
-}
-
-.hi_name {
-  font-family: GibsonLight;
-  font-size: 1.2em;
+  @apply p-0 m-0;
 }
 
 .nav_menu {
-  margin-top: 3em;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 100%;
+  @apply flex flex-col w-full items-stretch pl-16 text-lg sticky top-44;
 }
 
-.menu_elem {
-  font-family: GibsonRegular;
-  font-size: 1.5em;
-  display: flex;
-  margin-bottom: 12px;
-  height: 40px;
-  padding: 0px 0px 0px 50px;
-  cursor: pointer;
-  background-clip: border-box;
-  align-items: center;
+.menu_elem {;
+  @apply flex items-center text-speech-font mb-10 cursor-pointer bg-clip-border gap-x-3 transition;
 }
 
 .menu_elem.selected {
-  border-right: 5px solid #001a3b;
-  background-color: #ededed;
+  @apply font-bold text-speech-blue border-r border-r-4 border-solid border-speech-blue;
+}
+
+.menu_elem.selected svg path {
+    @apply fill-speech-blue;
 }
 
 .menu_elem > div:first-child {
-  margin-right: 10px;
-  width: 20px;
+  @apply w-8;
 }
 
 .menu_elem:hover {
-  background-color: #e3e3e3;
+  @apply text-speech-navy;
+}
+
+.menu_elem.selected:hover {
+  @apply text-speech-blue;
 }
 
 .open_docs_button {
@@ -103,7 +101,6 @@ h1 {
 }
 
 .rounded_shadow_box {
-  font-family: GibsonLight;
   font-size: 1.4em;
   padding: 0.7em 1.5em;
   margin-bottom: 1em;
@@ -168,7 +165,6 @@ h1 {
 }
 
 .description_text {
-  font-family: GibsonLight;
   font-size: 1.2em;
   max-width: 600px;
   padding-bottom: 1em;
@@ -225,10 +221,8 @@ h1 {
 }
 
 .account_forms section {
-  display: flex;
-  flex-direction: column;
   width: 600px;
-  margin-bottom: 3em;
+  @apply flex flex-col mb-12;
 }
 
 .account_forms input[placeholder='title'] {
@@ -240,7 +234,6 @@ h1 {
 }
 
 .faq_button_header {
-  font-family: GibsonLight;
   border: 0;
   margin-bottom: 2px;
   height: 3em;
@@ -248,4 +241,26 @@ h1 {
 
 .faq_button_header > div {
   font-size: 18px;
+}
+
+.content_wrapper {
+  @apply bg-white border border-solid border-speech-navy border-opacity-20 shadow-lg p-8;
+}
+
+.learn_wrapper {
+  @apply grid grid-cols-3 gap-10;
+}
+
+.learn {
+  @apply bg-white p-8 shadow flex flex-col;
+}
+
+.learn h3 {
+  @apply text-xl mb-3 font-semibold;
+}
+.learn p {
+  @apply text-base mb-5 text-speech-font flex-1;
+}
+.learn a {
+  @apply text-base text-speech-blue;
 }

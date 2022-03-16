@@ -21,7 +21,7 @@
 .login_text {
     width: 30em;
     margin-top: 5em;
-    font-family: GibsonLight;
+    /*font-family: GibsonLight;*/
     color: #3E4D5B;
     font-size: 1.4em;
     text-align: center;
@@ -51,7 +51,7 @@ input:focus {
     padding: 1em;
     border-radius: 15px;
     background: var(--main-navy);
-    font-family: GibsonRegular;
+    /*font-family: GibsonRegular;*/
     font-size: 1.5em;
     color: #fff;
     text-transform: uppercase;

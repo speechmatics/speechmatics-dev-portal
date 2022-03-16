@@ -1,22 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
-  font-family: 'GibsonBold';
-  src: url('/fonts/Gibson-Bold.otf');
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-Bold.woff2') format('woff2'),
+      url('/fonts/RMNeue-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'GibsonLight';
-  src: url('/fonts/Gibson-Light.otf');
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-SemiBold.woff2') format('woff2'),
+      url('/fonts/RMNeue-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'GibsonSemiBold';
-  src: url('/fonts/Gibson-SemiBold.otf');
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-Regular.woff2') format('woff2'),
+      url('/fonts/RMNeue-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-@font-face {
-  font-family: 'GibsonRegular';
-  src: url('/fonts/Gibson-Regular.otf');
-}
 
 * {
   box-sizing: border-box;
@@ -27,17 +39,8 @@ html {
 }
 
 body {
-  --main-teal: #5bb4ae;
-  --main-blue: #004bab;
-  --main-navy: #001a3b;
-  --new-teal-dark: #2a827a;
-  --new-blue-light: #5398fc;
-}
-
-body {
-  background-color: #fbfbfb;
-  font-family: GibsonRegular;
-  height: 100%;
+  font-family: "RM Neue" !important;
+  @apply h-full;
 }
 
 button {
@@ -49,13 +52,7 @@ a {
 }
 
 #__next {
-  height: 100%;
-}
-
-h1 {
-  font-size: 36px !important;
-  margin-bottom: 45px !important;
-  margin-top: 100px !important;
+  @apply h-full;
 }
 
 h2 {
@@ -68,10 +65,7 @@ h3 {
 }
 
 .all_container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+  @apply h-full w-full flex flex-col pt-16;
 }
 
 .all_container > .content {
@@ -86,7 +80,6 @@ h3 {
   color           : #fff;
   display         : grid;
   place-items     : center;
-  font-family     : GibsonLight;
 }
 
 .shadow_box {

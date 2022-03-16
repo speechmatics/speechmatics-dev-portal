@@ -30,18 +30,21 @@ export default function GetAccessToken({ }) {
     <Dashboard>
       <h1>API Token</h1>
       <div className="token_form">
-        <div className="description_text">
-          You need an API Key (also known as an Authorization Token) to make calls to our REST API {accountStore.getRuntimeURL()}.
-          See our{' '}
-          <a
-            target="_blank"
-            href="https://docs.speechmatics.com"
-            style={{ textDecoration: 'underline' }}
-          >
-            documentation
-          </a>{' '}
-          to find out how to make API calls.
+        <div className="">
+          <h2>
+            You need an API Key (also known as an Authorization Token) to make calls to our REST API {accountStore.getRuntimeURL()}.
+            See our{' '}
+            <a
+              target="_blank"
+              href="https://docs.speechmatics.com"
+              style={{ textDecoration: 'underline' }}
+            >
+              documentation
+            </a>{' '}
+            to find out how to make API calls.
+          </h2>
         </div>
+        <div className='divide_line'></div>
 
         <GenerateTokenCompo />
 

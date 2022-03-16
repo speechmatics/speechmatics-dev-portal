@@ -14,7 +14,7 @@ const menuData = [
   },
   {
     path: '/api-token/',
-    title: 'API Token',
+    title: 'Manage Access',
     icon: AccessTokenIcon,
   },
   {
@@ -24,12 +24,12 @@ const menuData = [
   },
   {
     path: '/usage/',
-    title: 'Usage',
+    title: 'Track Usage',
     icon: UsageIcon,
   },
   {
     path: '/resources/',
-    title: 'Resources',
+    title: 'Learn',
     icon: DocumentationIcon,
   },
 ];

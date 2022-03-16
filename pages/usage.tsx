@@ -35,49 +35,53 @@ export default observer(function Usage() {
   return (
     <Dashboard>
       <h1>Usage</h1>
+      <h2>Usage for the period: {currentUsage?.billingRange}</h2>
+      <div className='divide_line'></div>
 
-      <Text fontSize="2xl">Usage for the period: {currentUsage?.billingRange}</Text>
+      <div className='content_wrapper'>
+        <Grid className='gap-8' templateColumns="repeat(4, 1fr)">
+          <GridItem>Model</GridItem>
+          <GridItem>Limit (hours / month)</GridItem>
+          <GridItem>Hours used</GridItem>
+          <GridItem>Requests made</GridItem>
 
-      <Grid templateColumns="repeat(4, 1fr)" gap={5} marginTop="2em">
-        <GridItem>Model</GridItem>
-        <GridItem>Limit (hours / month)</GridItem>
-        <GridItem>Hours used</GridItem>
-        <GridItem>Requests made</GridItem>
+          <GridItem>Standard Model</GridItem>
+          <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+          <GridItem data-qa="usage-standard">
+            {Number(currentUsage?.usageStandard).toFixed(1)} hours
+          </GridItem>
+          <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
-        <GridItem>Standard Model</GridItem>
-        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-standard">
-          {Number(currentUsage?.usageStandard).toFixed(1)} hours
-        </GridItem>
-        <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+          <GridItem>Enhanced Model</GridItem>
+          <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
+          <GridItem data-qa="usage-enhanced">
+            {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
+          </GridItem>
+          <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
+        </Grid>
+      </div>
 
-        <GridItem>Enhanced Model</GridItem>
-        <GridItem>{accountStore.getContractLimitHrs()} hours</GridItem>
-        <GridItem data-qa="usage-enhanced">
-          {Number(currentUsage?.usageEnhanced).toFixed(1)} hours
-        </GridItem>
-        <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
-      </Grid>
+      <div className='content_wrapper'>
+        <h3>
+          Breakdown
+        </h3>
 
-      <Text fontSize="2xl" marginTop="3em">
-        Breakdown
-      </Text>
+        <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop="2em">
+          <GridItem>Day</GridItem>
+          <GridItem>Hours used</GridItem>
 
-      <Grid templateColumns="repeat(2, 1fr)" gap={5} marginTop="2em">
-        <GridItem>Day</GridItem>
-        <GridItem>Hours used</GridItem>
-
-        {breakdown?.map((el: UsageUnit) => {
-          // const usg = prepCurrentUsage(el);
-          return (
-            <React.Fragment key={el.since}>
-              <GridItem>{el.since}</GridItem>
-              <GridItem>{el.total_hrs}</GridItem>
-            </React.Fragment>
-          );
-        })}
-      </Grid>
-    </Dashboard>
+          {breakdown?.map((el: UsageUnit) => {
+            // const usg = prepCurrentUsage(el);
+            return (
+              <React.Fragment key={el.since}>
+                <GridItem>{el.since}</GridItem>
+                <GridItem>{el.total_hrs}</GridItem>
+              </React.Fragment>
+            );
+          })}
+        </Grid>
+      </div>
+    </Dashboard >
   );
 });
 
