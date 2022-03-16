@@ -42,10 +42,15 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, []);
 
+  const [b2cError, setb2cError] = useState('');
+  useEffect(() => {
+    if (window?.location.hash) setb2cError(decodeURI(window?.location.hash));
+  }, [typeof window !== 'undefined' && window?.location.hash]);
+
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-      <Text>{window.location.hash}</Text>
+      <Text textAlign="center">{b2cError}</Text>
       <Text textAlign="center">Just one more step and you're set! redirecting...</Text>
     </div>
   );
