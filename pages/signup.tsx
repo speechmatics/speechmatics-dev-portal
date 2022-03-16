@@ -5,7 +5,7 @@ import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
 import { Button, Text } from '@chakra-ui/react';
 
-export default function Login() {
+export default function SignUp() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
