@@ -23,7 +23,8 @@ module.exports = {
     const paths = {
       '/': { page: '/' },
       '/login': { page: '/login' },
-      '/getting-started': { page: '/getting-started'},
+      '/getting-started': { page: '/getting-started' },
+      '/signup': { page: '/signup' },
       '/home': { page: '/home' },
       '/manage-billing': { page: '/manage-billing' },
       '/subscribe': { page: '/subscribe' },
