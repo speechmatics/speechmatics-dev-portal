@@ -27,7 +27,7 @@ import { CardGreyImage, CardImage, PricingTags } from '../components/Icons';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -107,6 +107,7 @@ export default observer(function ManageBilling({}) {
               description="Check our competitive prices for an hour of transcription."
               buttonLabel="View Pricing"
               hrefUrl="/usage/"
+              mt='2em'
             />
           </TabPanel>
           <TabPanel>
