@@ -51,7 +51,7 @@ export default function SignUp() {
     st = window.setTimeout(
       () =>
         instance
-          .loginRedirect({
+          .loginPopup({
             ...loginRequest,
             extraQueryParameters,
             tokenQueryParameters,
