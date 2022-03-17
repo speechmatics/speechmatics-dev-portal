@@ -26,6 +26,7 @@ if (accounts.length > 0) {
 }
 
 msalInstance.addEventCallback((event) => {
+  console.log(msalInstance.addEventCallback, { event });
   if (event.eventType === EventType.LOGIN_SUCCESS && (event.payload as any).account) {
     const account = (event.payload as any).account;
     msalInstance.setActiveAccount(account);
@@ -56,4 +57,3 @@ export default function MyApp({ Component, pageProps }) {
     </AccountContext.Provider>
   );
 }
-
