@@ -1,25 +1,6 @@
-import {
-  VStack,
-  Text,
-  Divider,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Code,
-  HStack,
-  Box,
-  Button,
-} from '@chakra-ui/react';
+import { VStack, Text, HStack, Box, Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import {
-  CodeExamples,
-  PageHeader,
-  PageIntroduction,
-  SimplePanel,
-  SmPanel,
-} from '../components/common';
+import { PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
   CloudUploadIcon,

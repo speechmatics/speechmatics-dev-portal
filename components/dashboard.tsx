@@ -2,11 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
-import {
-  AccountIcon,
-  LogoutIcon,
-  SpeechmaticsLogoHorizontalWhite,
-} from './Icons';
+import { AccountIcon, LogoutIcon, SpeechmaticsLogoHorizontalWhite } from './Icons';
 import {
   Tooltip,
   Link as ChakraLink,
@@ -34,7 +30,7 @@ import {
 import { SmPanel } from './common';
 import { motion } from 'framer-motion';
 
-const variants = {
+const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
   enter: { opacity: 1, x: 0, y: 0 },
   exit: { opacity: 0, x: 0, y: -100 },
@@ -109,7 +105,7 @@ export default observer(function Dashboard({ children }) {
         </div>
         <div className="dashboard_content">
           <motion.main
-            variants={variants} // Pass the variant object into Framer Motion
+            variants={animationVariants} // Pass the variant object into Framer Motion
             initial="hidden" // Set the initial state to variants.hidden
             animate="enter" // Animated state to variants.enter
             exit="exit" // Exit state (used later) to variants.exit
@@ -240,6 +236,7 @@ function RightSidePanel({ logout, accountEmail }) {
           <Tooltip label="Account" placement="bottom">
             <div style={{ cursor: 'pointer', display: 'flex' }}>
               <Text
+                whiteSpace="nowrap"
                 color="#DFE0E3"
                 mr="1em"
                 mt="-3px"
