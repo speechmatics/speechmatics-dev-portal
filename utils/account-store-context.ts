@@ -3,56 +3,17 @@ import { makeObservable, observable, computed, action, makeAutoObservable } from
 import { callGetAccounts, callRemoveApiKey } from './call-api';
 import { AuthenticationResult } from '@azure/msal-common';
 
-interface GetAccountsResponse {
-  accounts: Account[];
-}
-
-interface Account {
-  account_id: number;
-  contracts: Contract[];
-}
-
-interface Contract {
-  contract_id: number;
-  usage_limits: UsageLimit[];
-  projects: Project[];
-  runtime_url: string;
-  payment_method: PaymentMethod | null;
-}
-
-interface UsageLimit {
-  name: string;
-  value: number;
-}
-
-interface Project {
-  project_id: number;
-  name: string;
-  api_keys: ApiKey[];
-}
-
-export interface ApiKey {
-  apikey_id: string;
-  name: string;
-  created_at: string;
-  client_ref: string;
-}
-
-export interface PaymentMethod {
-  card_type: string;
-  masked_card_number: string;
-  expiration_month: number;
-  expiration_year: number;
-}
-
 class AccountContext {
   _account: Account = null;
+
+  isLoading: boolean = false;
 
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
       assignServerState: action,
+      isLoading: observable,
     });
   }
 
@@ -106,10 +67,12 @@ class AccountContext {
   }
 
   async fetchServerState(idToken: string) {
+    this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
+          this.isLoading = false;
         } else {
           throw new Error(`callGetAccounts response malformed: ${jsonResp}`);
         }
@@ -154,3 +117,45 @@ export const accountStore = new AccountContext();
 export const tokenStore = new TokenContext();
 
 export default createContext({ accountStore, tokenStore });
+
+interface GetAccountsResponse {
+  accounts: Account[];
+}
+
+interface Account {
+  account_id: number;
+  contracts: Contract[];
+}
+
+interface Contract {
+  contract_id: number;
+  usage_limits: UsageLimit[];
+  projects: Project[];
+  runtime_url: string;
+  payment_method: PaymentMethod | null;
+}
+
+interface UsageLimit {
+  name: string;
+  value: number;
+}
+
+interface Project {
+  project_id: number;
+  name: string;
+  api_keys: ApiKey[];
+}
+
+export interface ApiKey {
+  apikey_id: string;
+  name: string;
+  created_at: string;
+  client_ref: string;
+}
+
+export interface PaymentMethod {
+  card_type: string;
+  masked_card_number: string;
+  expiration_month: number;
+  expiration_year: number;
+}

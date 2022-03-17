@@ -70,30 +70,6 @@ export default observer(function GettingStarted({}) {
           </Text>
         </SimplePanel>
       </VStack>
-
-      <HStack
-        width="800px"
-        bg="smGreen.500"
-        height="100px"
-        mt="3em"
-        justifyContent="space-between"
-        padding="2.5em 1.5em"
-      >
-        <Box flex="0 0 auto">
-          <img src="/assets/temp_trackIcon.png" />
-        </Box>
-        <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-          <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-            Track your usage
-          </Text>
-          <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-            Usage is measured in minutes of audio processed
-          </Text>
-        </VStack>
-        <Link href="/usage/">
-          <Button variant="speechmaticsWhite">View Usage</Button>
-        </Link>
-      </HStack>
     </Dashboard>
   );
 });
