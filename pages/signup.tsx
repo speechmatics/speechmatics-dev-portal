@@ -10,7 +10,7 @@ export default function SignUp() {
 
   const { instance, accounts, inProgress } = useMsal();
 
-  console.log({ accounts, inProgress });
+  console.log('accounts, inProgress', { accounts, inProgress });
 
   useEffect(() => {
     let st: number;
