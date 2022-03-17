@@ -10,6 +10,8 @@ export default function SignUp() {
 
   const { instance, accounts, inProgress } = useMsal();
 
+  console.log({ accounts, inProgress });
+
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length > 0) {
@@ -36,7 +38,7 @@ export default function SignUp() {
           .catch((error) => {
             console.log(error);
           }),
-      3000
+      10000
     );
 
     return () => window.clearTimeout(st);
