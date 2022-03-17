@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Dashboard from '../components/dashboard';
+import Image from 'next/image';
 
 export default function Home({ }) {
   return (
@@ -7,7 +8,82 @@ export default function Home({ }) {
       <h1>Getting Started!</h1>
       <h2>Here is an example of a Subtitle</h2>
       <div className='divide_line'></div>
-      <div className="steps_container">
+
+      <div className='grid grid-cols-2  gap-10 mb-10'>
+
+        <div className='bg-speech-blue  p-8 text-white w-50'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Introduction</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='bg-speech-green  p-8 text-white w-50'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Introduction</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+
+      </div>
+
+      <div className='learn_wrapper'>
+        <div className='learn p-8'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Introduction</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Configuring the job request  with a longer title</h3>
+          <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+        <div className='learn'>
+          <div className='w-8 h-8 items-center justify-center mb-3'>
+            <Image
+              src="/assets/icon-test.svg"
+              alt="Intro Icon"
+              width={26}
+              height={26}
+            />
+          </div>
+          <h3>Configuring</h3>
+          <p>Speechmatics Cloud Offering.</p>
+          <a href='#'>Learn More</a>
+        </div>
+      </div>
+
+
+      <div className="steps_container mt-48">
         {stepsData.map((item, i) => (
           <StepItem item={item} key={i} />
         ))}
