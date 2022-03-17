@@ -62,7 +62,7 @@ export default observer(function ManageBilling({ }) {
                 <DescriptionLabel>
                   {paymentMethod
                     ? `${paymentMethod.card_type.toUpperCase()} ending \
-                    ${paymentMethod.masked_card_number.substring(-5)} expiring on \
+                    ${paymentMethod.masked_card_number.slice(-5)} expiring on \
                     ${paymentMethod.expiration_month}/${paymentMethod.expiration_year}`
                     : 'Please add a payment card to increase your usage limits'}
                 </DescriptionLabel>
