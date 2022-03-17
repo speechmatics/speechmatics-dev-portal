@@ -1,5 +1,76 @@
 import React from 'react';
 
+export const LearnBookIcon = ({ width = 48, height = 48, ...props }) => (
+  <svg width={width} height={height} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <g opacity={0.8} stroke="#386DFB" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6.501 5.977v36.46a3.966 3.966 0 0 0 1.22 2.785c.76.73 1.782 1.13 2.838 1.112h28.413a2.004 2.004 0 0 0 1.418-.558c.38-.365.6-.865.611-1.39V13.453c0-.792-.316-1.552-.878-2.113a3.006 3.006 0 0 0-2.121-.875h-1.5" />
+      <path d="M38.002 10.466h-27A4.514 4.514 0 0 1 7.816 9.15a4.482 4.482 0 0 1-1.316-3.173 4.474 4.474 0 0 1 1.32-3.166 4.509 4.509 0 0 1 3.18-1.311h24c.796 0 1.56.315 2.122.875.562.56.879 1.32.879 2.114v5.977ZM14.002 23.914l4.5 4.483-4.5 4.482M24.173 28.397H32" />
+    </g>
+  </svg>
+);
+
+export const LookingGlassChartIcon = ({ width = 50, height = 48, ...props }) => (
+  <svg width={width} height={height} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <g opacity={0.8} stroke="#386DFB" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3.025 23.792a16.874 16.874 0 0 1 .136-12 16.958 16.958 0 0 1 8.085-8.897A17.059 17.059 0 0 1 23.22 1.57a17 17 0 0 1 9.849 6.911M31.019 29.967l4.666 4.646M47 41.658a2.989 2.989 0 0 1 .915 2.124 2.977 2.977 0 0 1-.878 2.139 3.002 3.002 0 0 1-2.148.875 3.01 3.01 0 0 1-2.132-.912l-7.778-7.748a1.988 1.988 0 0 1 0-2.818l1.414-1.408a2.004 2.004 0 0 1 2.828 0L47 41.658Z" />
+      <path d="m1.999 30.941 17.585-17.519a2.004 2.004 0 0 1 2.829 0l5.171 5.152a2.004 2.004 0 0 0 2.829 0L47.998 1.056" />
+      <path d="M42.002 1.056h6v5.977M35.971 19.019a16.894 16.894 0 0 1-3.052 8.7 16.987 16.987 0 0 1-7.173 5.819 17.06 17.06 0 0 1-17.621-2.531" />
+    </g>
+  </svg>
+);
+
+export const PadLockOpenIcon = ({ width = 49, height = 49, ...props }) => (
+  <svg width={width} height={height} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <g opacity={0.8} stroke="#386DFB" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13.008 12.963c0-2.909 1.16-5.698 3.224-7.754a11.03 11.03 0 0 1 7.783-3.212c2.92 0 5.72 1.155 7.784 3.212a10.945 10.945 0 0 1 3.224 7.754v6.978" />
+      <path d="M41.028 23.928a3.98 3.98 0 0 0-1.173-2.82 4.01 4.01 0 0 0-2.83-1.167H11.006a4.01 4.01 0 0 0-2.83 1.168 3.98 3.98 0 0 0-1.173 2.82v19.937a3.98 3.98 0 0 0 1.173 2.82 4.01 4.01 0 0 0 2.83 1.167h26.019a4.01 4.01 0 0 0 2.83-1.168 3.98 3.98 0 0 0 1.173-2.82V23.929Z" />
+      <path
+        d="M24.019 36.389a2.497 2.497 0 0 0 2.501-2.492 2.497 2.497 0 0 0-2.501-2.492 2.497 2.497 0 0 0-2.502 2.492 2.497 2.497 0 0 0 2.502 2.492Z"
+        fill="#fff"
+      />
+    </g>
+  </svg>
+);
+
+export const CloudUploadIcon = ({ w = 48, h = 48 }) => (
+  <svg width={w} height={h} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M32.6 31.782h4.8S46 30.66 46 22.216a9.547 9.547 0 0 0-9.91-9.546 13.37 13.37 0 0 0-25.442 4.918A7.172 7.172 0 0 0 2 24.6c0 7.29 7.652 7.176 7.652 7.176h5.726M24 20.782v22"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="m30 26.782-6-6-6 6"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const TerminalGraphIcon = ({ w = 40, h = 40 }) => (
+  <svg width={w} height={h} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g
+      clipPath="url(#a)"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M.833 11.673h38.334M35.833 3.34H4.167A3.333 3.333 0 0 0 .833 6.673V33.34a3.333 3.333 0 0 0 3.334 3.333h31.666a3.333 3.333 0 0 0 3.334-3.333V6.673a3.333 3.333 0 0 0-3.334-3.333ZM.833 11.673h38.334" />
+      <path d="M6.667 7.09a.417.417 0 1 1 0 .833.417.417 0 0 1 0-.833M11.667 7.09a.417.417 0 1 1 0 .834.417.417 0 0 1 0-.834ZM16.667 7.09a.417.417 0 1 1 0 .834.417.417 0 0 1 0-.834ZM.833 25H8.72a.833.833 0 0 0 .693-.372l2.207-3.295a.834.834 0 0 1 1.468.152l2.157 5.392a.833.833 0 0 0 1.467.153l4.935-7.402a.833.833 0 0 1 1.458.134l3.788 8.833a.833.833 0 0 0 1.46.135l2.232-3.35a.834.834 0 0 1 .693-.38h7.889" />
+    </g>
+    <defs>
+      <clipPath id="a">
+        <path fill="#fff" d="M0 0h40v40H0z" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
 export function SpeechmaticsLogo({ w = 400, h = 150 }) {
   return (
     <svg

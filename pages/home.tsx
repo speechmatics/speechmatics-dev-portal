@@ -13,86 +13,128 @@ import {
   Button,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { CodeExamples, PageHeader, PageIntroduction, SimplePanel } from '../components/common';
+import {
+  CodeExamples,
+  PageHeader,
+  PageIntroduction,
+  SimplePanel,
+  SmPanel,
+} from '../components/common';
 import Dashboard from '../components/dashboard';
+import {
+  CloudUploadIcon,
+  LearnBookIcon,
+  LookingGlassChartIcon,
+  PadLockOpenIcon,
+  TerminalGraphIcon,
+} from '../components/Icons';
 
 export default function Home({}) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Getting Started"
-        introduction="Get started with using our platform in a few simple steps."
+        headerLabel="Home"
+        introduction="Welcome, please take a quick look what can You do with us."
       />
-      <VStack alignItems="flex-start">
-        <SimplePanel>
-          <Text fontFamily="RMNeue-Bold" color="smGreen.500">
-            STEP 1
-          </Text>
-          <Text fontFamily="RMNeue-Bold" fontSize="1.3em">
-            Create an API key
-          </Text>
-          <Text fontFamily="RMNeue-Regular" fontSize="0.9em">
-            You need to{' '}
-            <Link href="/api-token/">
-              <a>
-                <Text color="smBlue.500" as="span">
-                  create an API key
-                </Text>
-              </a>
-            </Link>{' '}
-            to make transcription requests.
-          </Text>
-        </SimplePanel>
-      </VStack>
-      <VStack alignItems="flex-start" mt="3em">
-        <SimplePanel>
-          <Text fontFamily="RMNeue-Bold" color="smGreen.500">
-            STEP 2
-          </Text>
-          <Text fontFamily="RMNeue-Bold" fontSize="1.3em">
-            Make an API request
-          </Text>
-          <Text fontFamily="RMNeue-Regular" fontSize="0.9em">
-            Download our{' '}
-            <Link href="/api-token/">
-              <a>
-                <Text color="smBlue.500" as="span">
-                  sample audio file
-                </Text>
-              </a>
-            </Link>{' '}
-            into the folder, or use your own. <br />
-            Copy the following curl command and replace the API key with your own.
-            <br />
-            Run the command to generate a transcript.
-            <CodeExamples />
-          </Text>
-        </SimplePanel>
-      </VStack>
-
-      <HStack
-        width="800px"
-        bg="smGreen.500"
-        height="100px"
-        mt="3em"
-        justifyContent="space-between"
-        padding="2.5em 1.5em"
-      >
-        <Box flex="0 0 auto">
-          <img src="/assets/temp_trackIcon.png" />
-        </Box>
-        <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-          <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-            Track your usage
-          </Text>
-          <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-            Usage is measured in minutes of audio processed
-          </Text>
-        </VStack>
-        <Link href="/usage/">
-          <Button variant="speechmaticsWhite">View Usage</Button>
-        </Link>
+      <HStack alignItems="flex-start" spacing="2em">
+        <HomeBox
+          bgColor="smBlue.500"
+          icon={<TerminalGraphIcon />}
+          text="Transcribe an audio file with code"
+          buttonLabel="Get Started"
+          hrefUrl="/getting-started/"
+        />
+        <HomeBox
+          bgColor="smGreen.500"
+          icon={<CloudUploadIcon />}
+          iconPadding="20px"
+          text="Upload and transcribe an audio file"
+          buttonLabel="Transcribe Now"
+          hrefUrl="/getting-started/"
+        />
+      </HStack>
+      <HStack alignItems="flex-start" spacing="2em" mt="2em">
+        <HomeWhiteBox
+          icon={<PadLockOpenIcon />}
+          title="Manage API Keys"
+          description="You need to create an API key to make API requests."
+          buttonLabel="Create API key"
+          hrefUrl="/api-token/"
+        />
+        <HomeWhiteBox
+          icon={<LookingGlassChartIcon />}
+          title="Track your usage"
+          description="Usage is measured in hours of audio processed"
+          buttonLabel="View Usage"
+          hrefUrl="/usage/"
+        />
+        <HomeWhiteBox
+          icon={<LearnBookIcon />}
+          title="Learning Resources"
+          description="Explore our documentation and learning resources"
+          buttonLabel="Learn"
+          hrefUrl="/learn/"
+        />
       </HStack>
     </Dashboard>
   );
 }
+
+const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl }) => {
+  return (
+    <VStack width="381px" height="288px" bg={bgColor} borderRadius="2px" p="1.5em" spacing="1em">
+      <Box borderRadius={'100%'} width="88px" height="88px" bg="smWhite.150" p={iconPadding}>
+        {icon}
+      </Box>
+      <Text
+        fontFamily="RMNeue-Bold"
+        fontSize="1.5em"
+        lineHeight="1.2em"
+        textAlign="center"
+        color="smWhite.500"
+        paddingX="1.8em"
+      >
+        {text}
+      </Text>
+      <Link href={hrefUrl}>
+        <Button variant="speechmaticsWhite" color={bgColor}>
+          {buttonLabel}
+        </Button>
+      </Link>
+    </VStack>
+  );
+};
+
+const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
+  return (
+    <VStack
+      className="sm_panel"
+      width="240px"
+      height="278px"
+      alignItems="center"
+      padding="2em"
+      justifyContent="space-between"
+    >
+      <VStack>
+        <Box>{icon}</Box>
+        <Text as="div" fontFamily="RMNeue-Bold" fontSize="1.1em" textAlign="center">
+          {title}
+        </Text>
+        <Text
+          as="div"
+          fontFamily="RMNeue-Regular"
+          fontSize="0.8em"
+          color="smBlack.400"
+          textAlign="center"
+        >
+          {description}
+        </Text>
+      </VStack>
+      <Link href={hrefUrl}>
+        <Button variant="speechmaticsOutline" width="100%">
+          {buttonLabel}
+        </Button>
+      </Link>
+    </VStack>
+  );
+};
