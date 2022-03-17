@@ -19,13 +19,21 @@ import {
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import {
+  DescriptionLabel,
+  HeaderLabel,
+  InfoBarbox,
+  PageHeader,
+  SmPanel,
+} from '../components/common';
+import { CallSupportIcon, PricingTags, UsageLimitsIcon } from '../components/Icons';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<UsageRespJson>({});
   const { accountStore, tokenStore } = useContext(accountContext);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const idToken = tokenStore.tokenPayload?.idToken;
+  const paymentMethodAdded = !!accountStore.getPaymentMethod();
 
   useEffect(() => {
     let isActive = true;
@@ -105,20 +113,33 @@ export default observer(function Usage() {
                   padding="2.5em 1.5em"
                 >
                   <Box flex="0 0 auto">
-                    <img src="/assets/temp_increaseLimitsIcon.png" />
+                    {paymentMethodAdded ? <CallSupportIcon /> : <UsageLimitsIcon />}
                   </Box>
                   <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
                     <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-                      Increase usage limits
+                      {paymentMethodAdded ? 'Need more limits?' : 'Increase usage limits'}
                     </Text>
                     <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-                      Add Payment Card in order to increase these limits
+                      {paymentMethodAdded
+                        ? 'Contact our Sales Team for custom pricing.'
+                        : 'Add Payment Card in order to increase these limits'}
                     </Text>
                   </VStack>
-                  <Link href="/subscribe/">
-                    <Button variant="speechmaticsWhite">Add card</Button>
+                  <Link href={paymentMethodAdded ? 'https://speechmatics.com' : '/subscribe/'}>
+                    <Button variant="speechmaticsWhite">
+                      {paymentMethodAdded ? 'Get in touch' : 'Add card'}
+                    </Button>
                   </Link>
                 </HStack>
+              </GridItem>
+              <GridItem colSpan={2}>
+                <InfoBarbox
+                  icon={<PricingTags />}
+                  title="View our pricing"
+                  description="Check our competitive prices for an hour of transcription."
+                  buttonLabel="View Pricing"
+                  hrefUrl="/usage/"
+                />
               </GridItem>
             </Grid>
           </TabPanel>

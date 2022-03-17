@@ -1,5 +1,50 @@
 import React from 'react';
 
+export const CallSupportIcon = (props) => (
+  <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M37.333 50.167h2.333c4.513 0 8.167-2.49 8.167-7v-5.064"
+      stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M45.5 19.833a9.333 9.333 0 0 1 3.113 18.135A2.334 2.334 0 0 1 45.5 35.77V19.833ZM10.5 19.833a9.333 9.333 0 0 0-3.113 18.135A2.334 2.334 0 0 0 10.5 35.77V19.833ZM45.5 23.333v-4.666a17.5 17.5 0 0 0-35 0v4.666M26.833 47.833h9.334A1.167 1.167 0 0 1 37.333 49v2.333a1.167 1.167 0 0 1-1.166 1.167h-9.334a2.333 2.333 0 1 1 0-4.667v0ZM35.525 34.218a10.64 10.64 0 0 1-15.05 0"
+      stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M20.416 22.542a.583.583 0 1 1 0 1.167.583.583 0 0 1 0-1.167ZM35.583 22.542a.583.583 0 1 1 0 1.167.583.583 0 0 1 0-1.167Z"
+      stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const UsageLimitsIcon = (props) => (
+  <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M25.667 29.167H5.834A4.666 4.666 0 0 1 1.167 24.5V5.833a4.667 4.667 0 0 1 4.667-4.666h30.333a4.666 4.666 0 0 1 4.667 4.666V21M1.176 8.167h39.666M19.842 12.833H8.176M36.176 12.833H31.51M15.176 17.5h-7M43.176 54.833c6.444 0 11.667-5.223 11.667-11.666 0-6.444-5.223-11.667-11.667-11.667-6.443 0-11.666 5.223-11.666 11.667 0 6.443 5.223 11.666 11.666 11.666Z"
+      stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="m38.5 44.333 2.527 2.527a1.167 1.167 0 0 0 1.773-.147l5.033-7.046"
+      stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const PricingTags = (props) => (
   <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path

@@ -28,14 +28,15 @@ export const InfoBarbox = ({
   description,
   buttonLabel,
   hrefUrl,
+  ...props
 }) => (
   <HStack
     width="100%"
     bg={bgColor}
     height="110px"
-    mt="3em"
     justifyContent="space-between"
     padding="2.5em 1.5em"
+    {...props}
   >
     <Box flex="0 0 auto">{icon}</Box>
     <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
