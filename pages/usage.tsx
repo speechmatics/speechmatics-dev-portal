@@ -3,8 +3,10 @@ import React, { CSSProperties, useContext, useEffect, useState } from 'react';
 import Dashboard from '../components/dashboard';
 import {
   Box,
+  Button,
   Grid,
   GridItem,
+  HStack,
   Tab,
   TabList,
   TabPanel,
@@ -12,11 +14,12 @@ import {
   Tabs,
   Text,
   tokenToCSSVar,
+  VStack,
 } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
-import { HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<UsageRespJson>({});
@@ -58,10 +61,67 @@ export default observer(function Usage() {
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
+          <Tab>Limits</Tab>
           <Tab>Summary</Tab>
           <Tab>Details</Tab>
         </TabList>
         <TabPanels>
+          <TabPanel>
+            <HeaderLabel>Usage limits</HeaderLabel>
+            <DescriptionLabel>Hours of audio per month</DescriptionLabel>
+            <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
+              <GridItem bg="smBlue.150">
+                <HStack p="1.3em 1em 1em 1em">
+                  <img src="/assets/temp_baloonIcon.png" />
+                  <Box mt="1em" pl="1em">
+                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
+                      STANDARD MODEL
+                    </Text>
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em">
+                      {accountStore.getUsageLimit('standard')} hours / month
+                    </Text>
+                  </Box>
+                </HStack>
+              </GridItem>
+              <GridItem bg="smGreen.150">
+                <HStack p="1em 1em 1em 1em">
+                  <img src="/assets/temp_rocketIcon.png" />
+                  <Box mt="1em" pl="1em">
+                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
+                      ENHANCED MODEL
+                    </Text>
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
+                      {accountStore.getUsageLimit('enhanced')} hours / month
+                    </Text>
+                  </Box>
+                </HStack>
+              </GridItem>
+              <GridItem colSpan={2}>
+                <HStack
+                  width="100%"
+                  bg="smNavy.500"
+                  height="100px"
+                  justifyContent="space-between"
+                  padding="2.5em 1.5em"
+                >
+                  <Box flex="0 0 auto">
+                    <img src="/assets/temp_increaseLimitsIcon.png" />
+                  </Box>
+                  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+                    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+                      Increase usage limits
+                    </Text>
+                    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
+                      Add Payment Card in order to increase these limits
+                    </Text>
+                  </VStack>
+                  <Link href="/subscribe/">
+                    <Button variant="speechmaticsWhite">Add card</Button>
+                  </Link>
+                </HStack>
+              </GridItem>
+            </Grid>
+          </TabPanel>
           <TabPanel>
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')

@@ -4,6 +4,7 @@ import {
   Divider,
   HStack,
   IconButton,
+  Link,
   Tab,
   TabList,
   TabPanel,
@@ -19,6 +20,49 @@ import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
+
+export const InfoBarbox = ({
+  bgColor = 'smGreen.500',
+  icon,
+  title,
+  description,
+  buttonLabel,
+  hrefUrl,
+}) => (
+  <HStack
+    width="100%"
+    bg={bgColor}
+    height="110px"
+    mt="3em"
+    justifyContent="space-between"
+    padding="2.5em 1.5em"
+  >
+    <Box flex="0 0 auto">{icon}</Box>
+    <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+      <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+        {title}
+      </Text>
+      <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
+        {description}
+      </Text>
+    </VStack>
+    <Link href={hrefUrl}>
+      <Button variant="speechmaticsWhite" mb="1em">
+        {buttonLabel}
+      </Button>
+    </Link>
+  </HStack>
+);
+
+export const ViewUsageBox = ({}) => (
+  <InfoBarbox
+    icon={<img src="/assets/temp_trackIcon.png" />}
+    title="Track your usage"
+    description="Usage is measured in minutes of audio processed"
+    buttonLabel="View Usage"
+    hrefUrl="/usage/"
+  />
+);
 
 export const SmPanel = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
@@ -39,13 +83,13 @@ export const PageIntroduction = ({ children }) => (
 );
 
 export const HeaderLabel = ({ children, ...props }) => (
-  <Text fontFamily="Matter-Bold" fontSize="1.4em" mb="0.3em" {...props}>
+  <Text fontFamily="RMNeue-Bold" fontSize="1.4em" mb="0.3em" {...props}>
     {children}
   </Text>
 );
 
 export const DescriptionLabel = ({ children }) => (
-  <Text fontFamily="Matter-SemiBold" fontSize="1em" mb="1em" color="smBlack.300">
+  <Text fontFamily="RMNeue-Regular" fontSize="1em" mb="1em" color="smBlack.300">
     {children}
   </Text>
 );

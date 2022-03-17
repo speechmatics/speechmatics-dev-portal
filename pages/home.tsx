@@ -63,7 +63,7 @@ export default function Home({}) {
 
 const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl }) => {
   return (
-    <VStack width="381px" height="288px" bg={bgColor} borderRadius="2px" p="1.5em" spacing="1em">
+    <VStack width="376px" height="288px" bg={bgColor} borderRadius="2px" p="1.5em" spacing="1em">
       <Box borderRadius={'100%'} width="88px" height="88px" bg="smWhite.150" p={iconPadding}>
         {icon}
       </Box>

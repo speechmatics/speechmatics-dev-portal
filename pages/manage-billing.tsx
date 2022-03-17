@@ -15,8 +15,15 @@ import {
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import {
+  DescriptionLabel,
+  HeaderLabel,
+  InfoBarbox,
+  PageHeader,
+  SmPanel,
+} from '../components/common';
 import Dashboard from '../components/dashboard';
+import { CardGreyImage, CardImage, PricingTags } from '../components/Icons';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 
@@ -42,81 +49,65 @@ export default observer(function ManageBilling({}) {
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
-          <Tab>Limits</Tab>
           <Tab>Settings</Tab>
           <Tab>Payments</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <HeaderLabel>Usage limits</HeaderLabel>
-            <DescriptionLabel>Hours of audio per month</DescriptionLabel>
-            <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
-              <GridItem bg="smBlue.150">
-                <HStack p="1.3em 1em 1em 1em">
-                  <img src="/assets/temp_baloonIcon.png" />
-                  <Box mt="1em" pl="1em">
-                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      STANDARD MODEL
-                    </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em">
-                      {accountStore.getUsageLimit('standard')} hours / month
-                    </Text>
-                  </Box>
-                </HStack>
-              </GridItem>
-              <GridItem bg="smGreen.150">
-                <HStack p="1em 1em 1em 1em">
-                  <img src="/assets/temp_rocketIcon.png" />
-                  <Box mt="1em" pl="1em">
-                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      ENHANCED MODEL
-                    </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
-                      {accountStore.getUsageLimit('enhanced')} hours / month
-                    </Text>
-                  </Box>
-                </HStack>
-              </GridItem>
-              <GridItem colSpan={2}>
-                <HStack
-                  width="100%"
-                  bg="smNavy.500"
-                  height="100px"
-                  justifyContent="space-between"
-                  padding="2.5em 1.5em"
-                >
-                  <Box flex="0 0 auto">
-                    <img src="/assets/temp_increaseLimitsIcon.png" />
-                  </Box>
-                  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-                    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-                      Increase usage limits
-                    </Text>
-                    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-                      Add Payment Card in order to increase these limits
-                    </Text>
-                  </VStack>
+          <TabPanel p="1.5em">
+            <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
+              <VStack alignItems="flex-start">
+                <HeaderLabel>
+                  {paymentMethod ? 'Payment card active' : 'No payment card added'}
+                </HeaderLabel>
+                <DescriptionLabel>
+                  {paymentMethod
+                    ? `${paymentMethod.card_type.toUpperCase()} ending 
+                    ${paymentMethod.masked_card_number.substring(-5)} expiring on 05/23`
+                    : 'Please add a payment card to increase your usage limits'}
+                </DescriptionLabel>
+                <Box>
                   <Link href="/subscribe/">
-                    <Button variant="speechmaticsWhite">Add card</Button>
+                    <Button variant="speechmatics" alignSelf="flex-start">
+                      {paymentMethod ? 'Update Card' : 'Add a payment card'}
+                    </Button>
                   </Link>
-                </HStack>
-              </GridItem>
-            </Grid>
-          </TabPanel>
-          <TabPanel>
-            <div
-              className="rounded_shadow_box active_subscriptions_status"
-              style={{ margin: '0px 0px 40px 0px', alignSelf: 'center' }}
-            >
-              {paymentMethod
-                ? `You already have a subscription with payment method (${paymentMethod.card_type}, ${paymentMethod.masked_card_number})`
-                : 'You have no active subscriptions'}
-            </div>
-            <Link href="/subscribe/">
-              <Button variant="speechmatics" alignSelf="flex-start">
-                {paymentMethod ? 'replace payment method' : '+ add subscription'}
-              </Button>
-            </Link>
+                </Box>
+              </VStack>
+              <Box position="relative">
+                <Text
+                  position="absolute"
+                  color="#fff7"
+                  fontFamily="RMNeue-Regular"
+                  fontSize="1em"
+                  top="110px"
+                  right="14px"
+                  style={{ wordSpacing: '6px' }}
+                >
+                  {paymentMethod?.masked_card_number || 'XXXX XXXX XXXX XXXX'}
+                </Text>
+                <Text
+                  position="absolute"
+                  color="#fff7"
+                  fontFamily="RMNeue-Regular"
+                  fontSize=".8em"
+                  top="135px"
+                  right="14px"
+                >
+                  EXPIRY DATE{' '}
+                  {paymentMethod
+                    ? `${paymentMethod.expiration_month}/${paymentMethod.expiration_year}`
+                    : 'XX/XX'}
+                </Text>
+                {paymentMethod ? <CardImage /> : <CardGreyImage />}
+              </Box>
+            </HStack>
+            <InfoBarbox
+              icon={<PricingTags />}
+              title="View our pricing"
+              description="Check our competitive prices for an hour of transcription."
+              buttonLabel="View Pricing"
+              hrefUrl="/usage/"
+            />
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
