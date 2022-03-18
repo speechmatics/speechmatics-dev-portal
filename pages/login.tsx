@@ -1,6 +1,6 @@
 import { SpeechmaticsLogo } from '../components/Icons';
 import { useRouter } from 'next/router';
-import { useState, useContext, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
 import { Button } from '@chakra-ui/react';
@@ -23,7 +23,7 @@ export default function Login() {
     instance.loginRedirect(loginRequest).catch((error) => {
       console.log(error);
     });
-  }
+  };
 
   const LoginSub = () => {
     if (accounts.length > 0) {
@@ -33,7 +33,7 @@ export default function Login() {
     } else if (inProgress === 'none' && accounts.length == 0) {
       return (
         <div className="login_form">
-          <Button variant='speechmatics' onClick={loginHandler}>
+          <Button variant="speechmatics" onClick={loginHandler}>
             Log in / Sign up ➔
           </Button>
         </div>
