@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   DescriptionLabel,
   HeaderLabel,
@@ -39,19 +39,10 @@ import {
   PaginationPageGroup,
 } from './../components/pagination';
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
-  const idToken = tokenStore?.tokenPayload?.idToken;
 
-  const [payments, setPayments] = useState(null);
-
-  useEffect(() => {
-    if (idToken)
-      callGetPayments(idToken)
-        .then((resp) => setPayments(resp.payments))
-        .catch(errToast);
-  }, [idToken]);
 
   return (
     <Dashboard>
@@ -80,9 +71,7 @@ export default observer(function ManageBilling({}) {
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
 
-            <PaymentsGrid payments={payments} />
-
-            <GridPagination width="100%" d="flex" justifyContent="flex-end" mt="1em" />
+            <PaymentsComponent />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -90,15 +79,56 @@ export default observer(function ManageBilling({}) {
   );
 });
 
-const GridPagination: ChakraComponent<'div', {}> = ({ ...props }) => {
+const PaymentsComponent = ({ }) => {
+
+  const { tokenStore } = useContext(accountContext);
+  const idToken = tokenStore?.tokenPayload?.idToken;
+
+  const itemsPerPage = 5;
+
+  const [payments, setPayments] = useState<any[]>();
+  const [page, setPage] = useState(0);
+  const [pagesCount, setPagesCount] = useState(1);
+
+  let onSelectPage = useCallback((_page: number) => {
+    setPage(_page);
+  }, [payments])
+
+  useEffect(() => {
+    if (idToken)
+      callGetPayments(idToken)
+        .then((resp) => {
+          const respPayments = resp.payments;
+          setPayments(resp.payments.reverse());
+          setPagesCount(Math.floor(respPayments.length / itemsPerPage))
+        })
+        .catch(errToast);
+  }, [idToken]);
+
+  return <>
+    <PaymentsGrid payments={payments?.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)} />
+
+    {payments?.length > itemsPerPage && <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount}
+      width="100%" d="flex" justifyContent="flex-end" mt="1em" />}
+  </>
+}
+
+type GridPaginationProps = { onSelectPage: (page: number) => void, pagesCountInitial: number }
+
+const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({ onSelectPage, pagesCountInitial, ...props }) => {
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
-    pagesCount: 5,
+    pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
   });
 
+  const onPageChange = useCallback((page) => {
+    setCurrentPage(page);
+    onSelectPage?.(page);
+  }, [currentPage]);
+
   return (
     <Box {...props}>
-      <Pagination pagesCount={pagesCount} currentPage={currentPage} onPageChange={setCurrentPage}>
+      <Pagination pagesCount={pagesCount} currentPage={currentPage} onPageChange={onPageChange}>
         <PaginationContainer>
           <PaginationPrevious
             color="smBlack.300"
@@ -120,6 +150,7 @@ const GridPagination: ChakraComponent<'div', {}> = ({ ...props }) => {
                   bg: 'smBlue.200',
                   color: 'smBlue.500',
                 }}
+                _focus={{ boxShadow: null }}
                 fontFamily="RMNeue-Light"
                 key={`pagination_page_${page}`}
                 color="smBlack.300"
@@ -197,8 +228,8 @@ const PaymentsGrid = ({ payments }) => (
     <GridItem className="grid_header">Hours used</GridItem>
     <GridItem className="grid_header">Total cost</GridItem>
     <GridItem className="grid_header">Payment status</GridItem>
-    {payments?.reverse().map((el: PaymentItem, i: number) => (
-      <>
+    {payments?.map((el: PaymentItem, i: number) => (
+      <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
         <GridItem whiteSpace="nowrap">
           {el.start_date} - {el.end_date}
@@ -208,7 +239,7 @@ const PaymentsGrid = ({ payments }) => (
         <GridItem whiteSpace="nowrap">
           {el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}
         </GridItem>
-      </>
+      </React.Fragment>
     ))}
     {(!payments || payments?.length == 0) && (
       <GridItem colSpan={2}>
