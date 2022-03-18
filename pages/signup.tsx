@@ -38,7 +38,7 @@ export default function SignUp() {
             extraQueryParameters,
             tokenQueryParameters,
             authority:
-              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_SIGNIN',
+              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION',
           })
           .catch((error) => {
             console.log(error);
