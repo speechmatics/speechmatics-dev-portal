@@ -132,7 +132,7 @@ export default observer(function ManageBilling({ }) {
                   </GridItem>
                   <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
                   <GridItem>${el.total_cost}</GridItem>
-                  <GridItem>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
+                  <GridItem whiteSpace='nowrap'>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
                 </>
               ))}
               {(!payments || payments?.length == 0) && (
