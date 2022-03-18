@@ -40,7 +40,7 @@ export default function Home({}) {
           title="Manage API Keys"
           description="You need to create an API key to make API requests."
           buttonLabel="Create API key"
-          hrefUrl="/api-token/"
+          hrefUrl="/manage-access/"
         />
         <HomeWhiteBox
           icon={<LookingGlassChartIcon />}

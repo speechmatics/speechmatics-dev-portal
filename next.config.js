@@ -27,7 +27,7 @@ module.exports = {
       '/manage-billing': { page: '/manage-billing' },
       '/subscribe': { page: '/subscribe' },
       '/usage': { page: '/usage' },
-      '/api-token': { page: '/api-token' },
+      '/manage-access': { page: '/manage-access' },
       '/account': { page: '/account' },
       '/recent-jobs': { page: '/recent-jobs' },
     };

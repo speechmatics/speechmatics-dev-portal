@@ -13,7 +13,7 @@ const menuData = [
     icon: GettingStartedIcon,
   },
   {
-    path: '/api-token/',
+    path: '/manage-access/',
     title: 'Manage Access',
     icon: AccessTokenIcon,
   },

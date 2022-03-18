@@ -34,7 +34,7 @@ export default observer(function GettingStarted({}) {
           </Text>
           <Text fontFamily="RMNeue-Regular" fontSize="0.9em">
             You need to{' '}
-            <Link href="/api-token/">
+            <Link href="/manage-access/">
               <a>
                 <Text color="smBlue.500" as="span">
                   create an API key
@@ -55,7 +55,7 @@ export default observer(function GettingStarted({}) {
           </Text>
           <Text fontFamily="RMNeue-Regular" fontSize="0.9em">
             Download our{' '}
-            <Link href="/api-token/">
+            <Link href="/manage-access/">
               <a>
                 <Text color="smBlue.500" as="span">
                   sample audio file
