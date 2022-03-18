@@ -91,16 +91,15 @@ const PaymentsComponent = ({ }) => {
   const [pagesCount, setPagesCount] = useState(1);
 
   let onSelectPage = useCallback((_page: number) => {
-    setPage(_page);
+    setPage(_page - 1);
   }, [payments])
 
   useEffect(() => {
     if (idToken)
       callGetPayments(idToken)
         .then((resp) => {
-          const respPayments = resp.payments;
           setPayments(resp.payments.reverse());
-          setPagesCount(Math.floor(respPayments.length / itemsPerPage))
+          setPagesCount(Math.ceil(resp.payments.length / itemsPerPage))
         })
         .catch(errToast);
   }, [idToken]);
