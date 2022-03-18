@@ -69,7 +69,7 @@ export const msalConfig = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
 
-export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
+// export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
 
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -78,5 +78,5 @@ export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: [...defaultB2CScope],
+  // scopes: [...defaultB2CScope],
 };
