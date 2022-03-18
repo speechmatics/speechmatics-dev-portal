@@ -1,17 +1,4 @@
-import {
-  VStack,
-  Text,
-  Divider,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Code,
-  HStack,
-  Box,
-  Button,
-} from '@chakra-ui/react';
+import { Text, Box } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import {
@@ -19,8 +6,6 @@ import {
   DescriptionLabel,
   HeaderLabel,
   PageHeader,
-  PageIntroduction,
-  SimplePanel,
   SmPanel,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
