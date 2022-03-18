@@ -27,12 +27,15 @@ const theme = extendTheme({
       500: '#263243',
     },
     smBlack: {
+      100: '#F4F6F9',
+      150: '#E1E5E8',
       200: '#D1D7D6',
       300: '#78808B',
       400: '#5A5D5F',
       500: '#000000',
     },
     smRed: {
+      100: '#FAEFEF',
       500: '#D72F3F',
     },
     smPurple: {
@@ -62,12 +65,18 @@ const theme = extendTheme({
           fontSize: '0.9em',
           _hover: {
             bg: 'smBlue.400',
+            _disabled: {
+              bg: 'smBlack.200',
+            },
           },
           _focus: {
             boxShadow: 'none',
           },
           _active: {
             bg: 'smBlue.300',
+          },
+          _disabled: {
+            bg: 'smBlack.300',
           },
         } as CSSObject,
         speechmaticsWhite: {

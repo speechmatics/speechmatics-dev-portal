@@ -29,16 +29,17 @@ import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
   CodeExamples,
+  CopyButton,
   DescriptionLabel,
   HeaderLabel,
   PageHeader,
   SmPanel,
 } from '../components/common';
+import { ExclamationIcon } from '../components/Icons';
 
 //accountStore.getRuntimeURL()
 
 export default function GetAccessToken({}) {
-  const { accountStore } = useContext(accountContext);
   return (
     <Dashboard>
       <PageHeader headerLabel="Manage Access" introduction="Manage API keys" />
@@ -97,46 +98,46 @@ const GenerateTokenCompo = observer(() => {
   }, []);
 
   return (
-    <section>
-      {genTokenStage == 'init' && (
-        <HStack mt="1em">
+    <Box width="100%">
+      {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
+        <HStack mt="1em" spacing="1em" width="100%">
           {apiKeys?.length >= 5 ? (
-            <Text>You already have 5 tokens, remove one before requesting new.</Text>
+            <Text pb="1.5em">You already have 5 tokens, remove one before requesting new.</Text>
           ) : (
             <>
               <Input
                 variant="speechmatics"
-                width="550px"
+                flex="1"
                 type="text"
                 placeholder="your token's name here"
                 onChange={(ev) => setChosenTokenName(ev.target.value)}
                 style={{ border: noNameError ? '1px solid red' : '' }}
                 ref={nameInputRef}
                 p="1.55em 1em"
+                disabled={genTokenStage == 'waiting'}
               ></Input>
-              <Button variant="speechmatics" onClick={() => requestToken()}>
-                Generate API Key
+              <Button
+                variant="speechmatics"
+                disabled={genTokenStage == 'waiting'}
+                onClick={() => requestToken()}
+              >
+                {genTokenStage == 'waiting' && <Spinner mr="1em" />}Generate API Key
               </Button>
             </>
           )}
         </HStack>
       )}
-      {genTokenStage == 'waiting' && (
-        <HStack>
-          <Box>
-            Sending request for Your "{chosenTokenName}" token. Please do hold on for a second or
-            two...
-          </Box>
-          <Spinner size="md" />
-        </HStack>
-      )}
+
       {genTokenStage == 'generated' && (
-        <VStack alignItems="flex-start">
-          <Box>All good! Your new token is:</Box>
-          <Box fontSize={22} padding="20px 0px">
+        <VStack alignItems="flex-start" spacing="1.5em">
+          <Box fontSize={22} position="relative" width="100%">
             <Input
-              variant="speechmatics"
-              width={500}
+              bg="smBlack.100"
+              border="0"
+              borderRadius="2px"
+              p="1.5em"
+              color="smBlack.400"
+              width="100%"
               id="apikeyValue"
               type="text"
               value={generatedApikey}
@@ -144,28 +145,19 @@ const GenerateTokenCompo = observer(() => {
               onClick={generatedApikeyonClick}
               ref={generatedApikeyinputRef}
             />
-            <Tooltip label="copy" placement="right">
-              <IconButton
-                className="default_button"
-                aria-label="copy"
-                marginLeft={10}
-                icon={<IoCopyOutline />}
-                color="#bbb"
-                backgroundColor="#fff"
-                padding={5}
-                onClick={() => {
-                  navigator?.clipboard?.writeText(generatedApikey);
-                }}
-                _hover={{ color: '#fff', backgroundColor: 'var(--main-navy)' }}
-              />
-            </Tooltip>
+            <CopyButton copyContent={generatedApikey} position="absolute" top="8px" />
           </Box>
-          <Box>
-            Please copy it.{' '}
-            <Text as="span" color="#D72F3F">
-              You will see this token only once.
+          <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
+            <ExclamationIcon />
+            <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
+              For security reasons, this key will not be displayed again. Please copy it now and
+              keep it securely.
             </Text>
-          </Box>
+          </HStack>
+          <Text>
+            The following curl command contains your new API key which will become active after 1
+            minute.
+          </Text>
           <CodeExamples token={generatedApikey} />
           <HStack>
             <Button variant="speechmatics" onClick={() => setGenTokenStage('init')}>
@@ -186,7 +178,7 @@ const GenerateTokenCompo = observer(() => {
           </Button>
         </>
       )}
-    </section>
+    </Box>
   );
 });
 

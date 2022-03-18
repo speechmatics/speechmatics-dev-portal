@@ -1,5 +1,24 @@
 import React from 'react';
 
+export const ExclamationIcon = (props) => (
+  <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M23 11.811A11.161 11.161 0 0 1 12 23 10.835 10.835 0 0 1 1 12.192 11.162 11.162 0 0 1 12 1a10.838 10.838 0 0 1 11 10.811ZM12 13V7"
+      stroke="#D82C2C"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11.991 16.005a.244.244 0 0 0-.24.255.254.254 0 0 0 .252.245v0a.247.247 0 0 0 .241-.255.253.253 0 0 0-.244-.245h-.005"
+      stroke="#D82C2C"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const CallSupportIcon = (props) => (
   <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path

@@ -5,6 +5,7 @@ import {
   HStack,
   IconButton,
   Link,
+  ResponsiveValue,
   Tab,
   TabList,
   TabPanel,
@@ -154,30 +155,34 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 export const CodeHighlight = ({ code }) => {
   return (
     <Box position="relative">
-      <Button
-        top="6px"
-        right="6px"
-        position="absolute"
-        alignSelf="flex-start"
-        fontSize="0.8em"
-        aria-label="copy"
-        color="smNavy.500"
-        backgroundColor="#fff"
-        size="sm"
-        borderRadius="2px"
-        onClick={() => {
-          navigator?.clipboard?.writeText(code);
-        }}
-        _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
-      >
-        COPY
-      </Button>
+      <CopyButton copyContent={code} position="absolute" />
       <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
         {code}
       </SyntaxHighlighter>
     </Box>
   );
 };
+
+export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => (
+  <Button
+    top={top}
+    right="9px"
+    position={position as ResponsiveValue<any>}
+    alignSelf="flex-start"
+    fontSize="0.8rem"
+    aria-label="copy"
+    color="smNavy.500"
+    backgroundColor="#fff"
+    size="sm"
+    borderRadius="2px"
+    onClick={() => {
+      navigator?.clipboard?.writeText(copyContent);
+    }}
+    _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
+  >
+    COPY
+  </Button>
+);
 
 export const SimplePanel = ({ children }) => (
   <VStack
