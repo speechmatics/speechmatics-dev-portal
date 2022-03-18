@@ -102,7 +102,12 @@ const GenerateTokenCompo = observer(() => {
       {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
         <HStack mt="1em" spacing="1em" width="100%">
           {apiKeys?.length >= 5 ? (
-            <Text pb="1.5em">You already have 5 tokens, remove one before requesting new.</Text>
+            <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
+              <ExclamationIcon />
+              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
+                You already have 5 tokens, remove one before requesting new.
+              </Text>
+            </HStack>
           ) : (
             <>
               <Input
