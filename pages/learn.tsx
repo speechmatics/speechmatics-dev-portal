@@ -8,6 +8,7 @@ import {
   SmPanel,
 } from '../components/common';
 import { JobSubmitIcon } from '../components/Icons';
+import React from 'react';
 
 export default function Learn({}) {
   return (
@@ -25,17 +26,19 @@ export default function Learn({}) {
         />
         <Grid gridTemplateColumns="1fr 1fr 1fr" gap="1.5em">
           {elems.map((el, i) => (
-            <Link href="http://docs.speechmatics.com">
-              <SmPanel justifyContent="space-between" p="1.5em" height="100%">
-                <Box>
-                  <HeaderLabel>{el.title}</HeaderLabel>
-                  <DescriptionLabel>{el.descr}</DescriptionLabel>
-                </Box>
-                <Box fontFamily="RMNeue-Regular" color="smBlue.500">
-                  <a>Read Article &gt;</a>
-                </Box>
-              </SmPanel>
-            </Link>
+            <React.Fragment key={i}>
+              <Link href="http://docs.speechmatics.com">
+                <SmPanel justifyContent="space-between" p="1.5em" height="100%">
+                  <Box>
+                    <HeaderLabel>{el.title}</HeaderLabel>
+                    <DescriptionLabel>{el.descr}</DescriptionLabel>
+                  </Box>
+                  <Box fontFamily="RMNeue-Regular" color="smBlue.500">
+                    <a>Read Article &gt;</a>
+                  </Box>
+                </SmPanel>
+              </Link>
+            </React.Fragment>
           ))}
         </Grid>
       </VStack>
