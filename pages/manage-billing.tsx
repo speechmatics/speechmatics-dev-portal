@@ -28,7 +28,7 @@ import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../compo
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -127,7 +127,7 @@ export default observer(function ManageBilling({}) {
               {payments?.reverse().map((el: PaymentItem, i: number) => (
                 <>
                   <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
-                  <GridItem>
+                  <GridItem whiteSpace='nowrap'>
                     {el.start_date} - {el.end_date}
                   </GridItem>
                   <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
