@@ -110,7 +110,7 @@ export default observer(function Dashboard({ children }) {
             animate="enter" // Animated state to variants.enter
             exit="exit" // Exit state (used later) to variants.exit
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
-            className=""
+            style={{ width: '100%' }}
           >
             {children}
           </motion.main>

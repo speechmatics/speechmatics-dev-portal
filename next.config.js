@@ -28,8 +28,8 @@ module.exports = {
       '/subscribe': { page: '/subscribe' },
       '/usage': { page: '/usage' },
       '/manage-access': { page: '/manage-access' },
+      '/learn': { page: '/learn' },
       '/account': { page: '/account' },
-      '/recent-jobs': { page: '/recent-jobs' },
     };
 
     return paths;

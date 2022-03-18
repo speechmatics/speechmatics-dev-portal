@@ -27,11 +27,11 @@ const menuData = [
     title: 'Manage Billing',
     icon: SubscribeIcon,
   },
-  // {
-  //   path: '/resources/',
-  //   title: 'Resources',
-  //   icon: DocumentationIcon,
-  // },
+  {
+    path: '/learn/',
+    title: 'Learn',
+    icon: DocumentationIcon,
+  },
 ];
 
 export default menuData;

@@ -1,11 +1,13 @@
 import {
   Box,
   Button,
+  ComponentWithAs,
   Divider,
   HStack,
   IconButton,
   Link,
   ResponsiveValue,
+  StackProps,
   Tab,
   TabList,
   TabPanel,
@@ -66,7 +68,7 @@ export const ViewUsageBox = ({}) => (
   />
 );
 
-export const SmPanel = ({ children, ...props }) => (
+export const SmPanel: ComponentWithAs<'div', StackProps> = ({ children, ...props }) => (
   <VStack className="sm_panel" alignItems="flex-start" {...props}>
     {children}
   </VStack>
