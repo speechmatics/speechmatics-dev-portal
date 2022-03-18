@@ -78,7 +78,7 @@ export default observer(function Usage() {
             <HeaderLabel>Usage limits</HeaderLabel>
             <DescriptionLabel>Hours of audio per month</DescriptionLabel>
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
-              <GridItem bg="smBlue.150">
+              <GridItem bg="smBlue.200" className="flexColumnBetween">
                 <HStack p="1.3em 1em 1em 1em">
                   <img src="/assets/temp_baloonIcon.png" />
                   <Box mt="1em" pl="1em">
@@ -90,8 +90,19 @@ export default observer(function Usage() {
                     </Text>
                   </Box>
                 </HStack>
+                <Box
+                  bg="smBlue.100"
+                  p=".8em 1em .8em 1em"
+                  borderTop="1px solid"
+                  borderColor="smBlue.400"
+                >
+                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
+                    Speechmatics Standard Model provides high accuracy with reduced turnaround
+                    times.
+                  </Text>
+                </Box>
               </GridItem>
-              <GridItem bg="smGreen.150">
+              <GridItem bg="smGreen.200" className="flexColumnBetween">
                 <HStack p="1em 1em 1em 1em">
                   <img src="/assets/temp_rocketIcon.png" />
                   <Box mt="1em" pl="1em">
@@ -103,6 +114,16 @@ export default observer(function Usage() {
                     </Text>
                   </Box>
                 </HStack>
+                <Box
+                  bg="smGreen.100"
+                  p=".8em 1em .8em 1em"
+                  borderTop="1px solid"
+                  borderColor="smGreen.400"
+                >
+                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
+                    Speechmatics Enhanced Model provides our very highest level of accuracy.
+                  </Text>
+                </Box>
               </GridItem>
               <GridItem colSpan={2}>
                 <HStack

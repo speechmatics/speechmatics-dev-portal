@@ -3,14 +3,16 @@ import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 const theme = extendTheme({
   colors: {
     smGreen: {
-      150: '#EAF3F2',
+      100: '#F4F9F8',
+      200: '#EAF3F2',
       300: '#A7D0CD',
       400: '#4FA9A2',
       500: '#2A827A',
     },
     smBlue: {
-      100: '#E8F0F8',
-      150: '#EAF3FF',
+      100: '#F5F9FF',
+      150: '#E8F0F8',
+      200: '#EAF3FF',
       300: '#BFD8FE',
       400: '#5398FC',
       500: '#386DFB',
@@ -147,6 +149,7 @@ const theme = extendTheme({
           } as CSSObject,
           tabpanel: {
             bg: 'smWhite.500',
+            padding: '1.5em',
           } as CSSObject,
           tabpanels: {
             border: '1px solid #D1D7D6',

@@ -122,6 +122,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         <Tab>Linux</Tab>
       </TabList>
       <TabPanels>
+        {/* //TODO remove strict width */}
         <TabPanel width="750px">
           <CodeHighlight
             code={`curl -L -X POST ${
