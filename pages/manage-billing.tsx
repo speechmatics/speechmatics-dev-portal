@@ -20,6 +20,7 @@ import {
   DescriptionLabel,
   HeaderLabel,
   InfoBarbox,
+  pad,
   PageHeader,
   SmPanel,
 } from '../components/common';
@@ -64,7 +65,7 @@ export default observer(function ManageBilling({ }) {
                   {paymentMethod
                     ? `${paymentMethod.card_type.toUpperCase()} ending \
                     ${paymentMethod.masked_card_number.slice(-4)} expiring on \
-                    ${paymentMethod.expiration_month}/${paymentMethod.expiration_year}`
+                    ${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
                     : 'Please add a payment card to increase your usage limits'}
                 </DescriptionLabel>
                 <Box>
@@ -97,7 +98,7 @@ export default observer(function ManageBilling({ }) {
                 >
                   EXPIRY DATE{' '}
                   {paymentMethod
-                    ? `${paymentMethod.expiration_month}/${paymentMethod.expiration_year}`
+                    ? `${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
                     : 'XX/XX'}
                 </Text>
                 {paymentMethod ? <CardImage /> : <CardGreyImage />}
@@ -144,6 +145,9 @@ export default observer(function ManageBilling({ }) {
                 </GridItem>
               )}
             </Grid>
+
+
+
           </TabPanel>
         </TabPanels>
       </Tabs>

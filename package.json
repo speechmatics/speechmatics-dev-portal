@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ajna/pagination": "^1.4.14",
     "@azure/msal-browser": "^2.21.0",
     "@azure/msal-common": "^6.0.0",
     "@azure/msal-react": "^1.2.0",
