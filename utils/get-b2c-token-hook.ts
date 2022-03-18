@@ -1,7 +1,6 @@
 import { IPublicClientApplication } from '@azure/msal-browser';
 import { useEffect, useState } from 'react';
 import { AuthenticationResult, InteractionRequiredAuthError } from '@azure/msal-common';
-import { defaultB2CScope } from '../utils/auth-config';
 
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
@@ -12,7 +11,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
     console.log('acquiring B2CToken');
 
     const request = {
-      scopes: [...defaultB2CScope],
+      scopes: [],
       account,
     };
 
