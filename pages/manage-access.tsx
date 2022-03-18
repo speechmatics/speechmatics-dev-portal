@@ -16,6 +16,7 @@ import {
   Input,
   Grid,
   GridItem,
+  ChakraComponent,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext } from 'react';
@@ -40,21 +41,19 @@ export default function GetAccessToken({}) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Manage Access" introduction="Manage API keys" />
-      <SmPanel width="800px">
-        <HeaderLabel>Generate an API Key</HeaderLabel>
-        <DescriptionLabel>
-          You need an API Key (also known as an Authorization Token) to make calls to our REST API.
-        </DescriptionLabel>
 
-        <GenerateTokenCompo />
+      <SmPanel width="800px">
+        <GenerateTokenComponent />
       </SmPanel>
 
-      <PreviousTokens />
+      <SmPanel width="800px" mt="2em">
+        <PreviousTokens />
+      </SmPanel>
     </Dashboard>
   );
 }
 
-const GenerateTokenCompo = observer(() => {
+export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((props) => {
   const [genTokenStage, setGenTokenStage] = useState<'init' | 'waiting' | 'generated' | 'error'>(
     'init'
   );
@@ -95,7 +94,11 @@ const GenerateTokenCompo = observer(() => {
   }, []);
 
   return (
-    <Box width="100%">
+    <Box width="100%" {...props}>
+      <HeaderLabel>Generate an API Key</HeaderLabel>
+      <DescriptionLabel>
+        You need an API Key (also known as an Authorization Token) to make calls to our REST API.
+      </DescriptionLabel>
       {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
         <HStack mt="1em" spacing="1em" width="100%">
           {apiKeys?.length >= 5 ? (
@@ -210,7 +213,7 @@ const PreviousTokens = observer(() => {
   };
 
   return (
-    <section className="sm_panel" style={{ marginTop: '2em', width: '800px' }}>
+    <Box width="100%">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -255,6 +258,6 @@ const PreviousTokens = observer(() => {
           </React.Fragment>
         ))}
       </Grid>
-    </section>
+    </Box>
   );
 });
