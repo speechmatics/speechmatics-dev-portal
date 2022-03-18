@@ -4,6 +4,7 @@ import Dashboard from '../components/dashboard';
 import {
   Box,
   Button,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -26,7 +27,12 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { CallSupportIcon, PricingTags, UsageLimitsIcon } from '../components/Icons';
+import {
+  CallSupportIcon,
+  ExclamationIcon,
+  PricingTags,
+  UsageLimitsIcon,
+} from '../components/Icons';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<UsageRespJson>({});
@@ -218,6 +224,14 @@ export default observer(function Usage() {
                   </React.Fragment>
                 );
               })}
+              {(!breakdown || breakdown?.length == 0) && (
+                <GridItem colSpan={2}>
+                  <Flex width="100%" justifyContent="center">
+                    <ExclamationIcon />
+                    <Text ml="1em">You don’t currently have any usage data</Text>
+                  </Flex>
+                </GridItem>
+              )}
             </Grid>
           </TabPanel>
         </TabPanels>

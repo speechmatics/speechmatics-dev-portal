@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -23,11 +24,11 @@ import {
   SmPanel,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { CardGreyImage, CardImage, PricingTags } from '../components/Icons';
+import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/Icons';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 
-export default observer(function ManageBilling({ }) {
+export default observer(function ManageBilling({}) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const paymentMethod = accountStore.getPaymentMethod();
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -108,7 +109,7 @@ export default observer(function ManageBilling({ }) {
               description="Check our competitive prices for an hour of transcription."
               buttonLabel="View Pricing"
               hrefUrl="/usage/"
-              mt='2em'
+              mt="2em"
             />
           </TabPanel>
           <TabPanel>
@@ -134,6 +135,14 @@ export default observer(function ManageBilling({ }) {
                   <GridItem>{el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}</GridItem>
                 </>
               ))}
+              {(!payments || payments?.length == 0) && (
+                <GridItem colSpan={2}>
+                  <Flex width="100%" justifyContent="center">
+                    <ExclamationIcon />
+                    <Text ml="1em">You don’t currently have any due or paid invoices.</Text>
+                  </Flex>
+                </GridItem>
+              )}
             </Grid>
           </TabPanel>
         </TabPanels>

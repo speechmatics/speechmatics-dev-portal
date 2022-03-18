@@ -17,6 +17,7 @@ import {
   Grid,
   GridItem,
   ChakraComponent,
+  Flex,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext } from 'react';
@@ -257,6 +258,14 @@ const PreviousTokens = observer(() => {
             </GridItem>
           </React.Fragment>
         ))}
+        {(!apiKeys || apiKeys?.length == 0) && (
+          <GridItem colSpan={2}>
+            <Flex width="100%" justifyContent="center">
+              <ExclamationIcon />
+              <Text ml="1em">You don’t currently have any API keys</Text>
+            </Flex>
+          </GridItem>
+        )}
       </Grid>
     </Box>
   );

@@ -34,19 +34,9 @@ export default observer(function GettingStarted({}) {
             into the folder, or use your own. <br />
           </DescriptionLabel>
         </Box>
-        <Box
-          bg="smBlack.200"
-          height="1px"
-          width="calc(100% + 3em)"
-          style={{ marginLeft: '-1.5em', marginTop: '1em' }}
-        />
+        <PanelDivider />
         <GenerateTokenComponent paddingTop="0.5em" />
-        <Box
-          bg="smBlack.200"
-          height="1px"
-          width="calc(100% + 3em)"
-          style={{ marginLeft: '-1.5em', marginTop: '2em' }}
-        />
+        <PanelDivider />
         <Box paddingTop="0.5em">
           <HeaderLabel>Make an API request</HeaderLabel>
           <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
@@ -56,3 +46,12 @@ export default observer(function GettingStarted({}) {
     </Dashboard>
   );
 });
+
+const PanelDivider = () => (
+  <Box
+    bg="smBlack.200"
+    height="1px"
+    width="calc(100% + 3em)"
+    style={{ marginLeft: '-1.5em', marginTop: '1em' }}
+  />
+);
