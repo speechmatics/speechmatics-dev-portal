@@ -42,12 +42,11 @@ export default function MyApp({ Component, pageProps }) {
     <AccountContext.Provider value={{ accountStore, tokenStore }}>
       <ChakraProvider resetCSS={true} theme={theme}>
         <MsalProvider instance={msalInstance}>
+          <Head>
+            <title>Speechmatics Portal</title>
+          </Head>
           <div className="all_container">
-
             <div className="content">
-              <Head>
-                <title>Speechmatics Portal</title>
-              </Head>
               <Component {...pageProps} />
             </div>
             {/* <div className="footer"></div> */}
