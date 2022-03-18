@@ -24,7 +24,11 @@ export default function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     console.log(`urlParams ${urlParams.get('hint')} ${window.location}`);
-    const extraQueryParameters = { id_token_hint: urlParams.get('hint') };
+    const extraQueryParameters = {
+      id_token_hint: urlParams.get('hint'),
+      grant_type: 'authorization_code',
+    };
+    const tokenQueryParameters = { grant_type: 'authorization_code' };
     let st: number;
     st = window.setTimeout(
       () =>
@@ -32,8 +36,9 @@ export default function SignUp() {
           .loginPopup({
             ...loginRequest,
             extraQueryParameters,
+            tokenQueryParameters,
             authority:
-              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION',
+              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION?grant_type=authorization_code',
           })
           .catch((error) => {
             console.log(error);
