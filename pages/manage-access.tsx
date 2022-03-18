@@ -2,10 +2,8 @@ import {
   Box,
   Button,
   HStack,
-  Icon,
   IconButton,
   Spinner,
-  Tooltip,
   VStack,
   Text,
   useDisclosure,
@@ -14,16 +12,15 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Input,
   Grid,
   GridItem,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useState, useMemo, useRef, useContext } from 'react';
+import { useCallback, useState, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
-import { IoTrashBinOutline, IoCopyOutline } from 'react-icons/io5';
+import { IoTrashBinOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
