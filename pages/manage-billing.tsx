@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -30,30 +31,37 @@ import Dashboard from '../components/dashboard';
 import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/Icons';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
-import {
-  Pagination,
-  usePagination,
-  PaginationNext,
-  PaginationPage,
-  PaginationPrevious,
-  PaginationContainer,
-  PaginationPageGroup,
-} from './../components/pagination';
 
-export default observer(function ManageBilling({}) {
+const useGetPayments = (idToken: string) => {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (idToken) {
+      setIsLoading(true);
+      callGetPayments(idToken)
+        .then((resp) => {
+          setData(resp.payments.reverse());
+          setIsLoading(false);
+        })
+        .catch(err => {
+          setError(err);
+          errToast(err);
+          setIsLoading(false)
+        });
+    }
+  }, [idToken]);
+
+  return { data, isLoading, error }
+}
+
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
 
-  const [payments, setPayments] = useState([]);
 
-  useEffect(() => {
-    if (idToken)
-      callGetPayments(idToken)
-        .then((resp) => {
-          setPayments(resp.payments.reverse());
-        })
-        .catch(errToast);
-  }, [idToken]);
+  const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
 
   return (
     <Dashboard>
@@ -82,7 +90,7 @@ export default observer(function ManageBilling({}) {
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
 
-            <DataGridComponent data={payments} DataDisplayComponent={PaymentsGrid} />
+            <DataGridComponent data={paymentsData} DataDisplayComponent={PaymentsGrid} isLoading={isLoading} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -139,7 +147,7 @@ const AddReplacePaymentCard = ({ paymentMethod }) => (
   </HStack>
 );
 
-const PaymentsGrid = ({ data }) => (
+const PaymentsGrid = ({ data, isLoading }) => (
   <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch">
     <GridItem className="grid_header">Month</GridItem>
     <GridItem className="grid_header">Hours used</GridItem>
@@ -159,13 +167,19 @@ const PaymentsGrid = ({ data }) => (
       </React.Fragment>
     ))}
     {(!data || data?.length == 0) && (
-      <GridItem colSpan={2}>
+      <GridItem colSpan={4}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
           <Text ml="1em">You don’t currently have any due or paid invoices.</Text>
         </Flex>
       </GridItem>
     )}
+    {isLoading && <GridItem colSpan={4}>
+      <Flex width="100%" justifyContent="center">
+        <Spinner />
+        <Text ml="1em">One moment please...</Text>
+      </Flex>
+    </GridItem>}
   </Grid>
 );
 

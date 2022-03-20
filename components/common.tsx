@@ -68,7 +68,7 @@ export const InfoBarbox = ({
   </HStack>
 );
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -138,25 +138,21 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         {/* //TODO remove strict width */}
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${
-              accountStore.getRuntimeURL() || '$HOST'
-            }/v2/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
+              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
+              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
+              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
       </TabPanels>
@@ -210,7 +206,7 @@ export const SimplePanel = ({ children }) => (
   </VStack>
 );
 
-export const DataGridComponent = ({ data, DataDisplayComponent, itemsPerPage = 5 }) => {
+export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
   const [page, setPage] = useState(0);
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
@@ -226,6 +222,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, itemsPerPage = 5
     <>
       <DataDisplayComponent
         data={data?.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)}
+        isLoading={isLoading}
       />
 
       {data?.length > itemsPerPage && (

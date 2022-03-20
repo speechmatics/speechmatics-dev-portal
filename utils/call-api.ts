@@ -130,34 +130,4 @@ function getParams(paramsObj: { [key: string]: string | number }) {
   );
 }
 
-export async function accountsFlow(
-  accessToken: string,
-  isSettingUpAccount: (val: boolean) => void
-): Promise<any> {
-  return callGetAccounts(accessToken)
-    .then(async (jsonResp: any) => {
-      if (
-        jsonResp &&
-        jsonResp.accounts &&
-        Array.isArray(jsonResp.accounts) &&
-        jsonResp.accounts.length == 0
-      ) {
-        console.log(
-          'no account on management platform, sending a request to create with POST /accounts'
-        );
-        isSettingUpAccount(true);
-        return callPostAccounts(accessToken).then((jsonPostResp) => {
-          isSettingUpAccount(false);
-          return jsonPostResp;
-        });
-      } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
-        return jsonResp;
-      }
 
-      throw new Error(`unknown response from /accounts: ${jsonResp}`);
-    })
-    .catch((err) => {
-      errToast(`unknown error while fetching account: ${err}`);
-      console.error(err);
-    });
-}

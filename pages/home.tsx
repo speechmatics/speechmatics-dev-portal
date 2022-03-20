@@ -10,7 +10,7 @@ import {
   TerminalGraphIcon,
 } from '../components/Icons';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader

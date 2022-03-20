@@ -8,6 +8,7 @@ import {
   Grid,
   GridItem,
   HStack,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -17,7 +18,7 @@ import {
   tokenToCSSVar,
   VStack,
 } from '@chakra-ui/react';
-import { callGetUsage } from '../utils/call-api';
+import { callGetUsage, errToast } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import {
@@ -57,7 +58,10 @@ export default observer(function Usage() {
             setIsLoading(false);
           }
         })
-        .catch(console.error);
+        .catch(err => {
+          errToast(err);
+          setIsLoading(false);
+        });
     }
     return () => {
       isActive = false;
@@ -209,7 +213,7 @@ export default observer(function Usage() {
           <TabPanel>
             <HeaderLabel>Usage metrics</HeaderLabel>
 
-            <DataGridComponent data={breakdown} DataDisplayComponent={UsageBreakdownGrid} />
+            <DataGridComponent data={breakdown} DataDisplayComponent={UsageBreakdownGrid} isLoading={isLoading} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -217,7 +221,7 @@ export default observer(function Usage() {
   );
 });
 
-const UsageBreakdownGrid = ({ data }) => (
+const UsageBreakdownGrid = ({ data, isLoading }) => (
   <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">
     <GridItem className="grid_header">Day</GridItem>
     <GridItem className="grid_header">Hours used</GridItem>
@@ -239,6 +243,12 @@ const UsageBreakdownGrid = ({ data }) => (
         </Flex>
       </GridItem>
     )}
+    {isLoading && <GridItem colSpan={2}>
+      <Flex width="100%" justifyContent="center">
+        <Spinner />
+        <Text ml="1em">One moment please...</Text>
+      </Flex>
+    </GridItem>}
   </Grid>
 );
 

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
-import { callGetAccounts, callRemoveApiKey } from './call-api';
+import { callGetAccounts, callPostAccounts, callRemoveApiKey, errToast } from './call-api';
 import { AuthenticationResult } from '@azure/msal-common';
 
 class AccountContext {
@@ -77,7 +77,10 @@ class AccountContext {
           throw new Error(`callGetAccounts response malformed: ${jsonResp}`);
         }
       })
-      .catch((err) => console.error('fetchServerState', err));
+      .catch((err) => {
+        console.error('fetchServerState', err); 
+        this.isLoading = false;
+      });
   }
 
   assignServerState(response: GetAccountsResponse) {
@@ -86,6 +89,38 @@ class AccountContext {
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
     console.log('assignServerState', this._account);
+  }
+
+  async accountsFetchFlow(
+    accessToken: string,
+    isSettingUpAccount: (val: boolean) => void
+  ): Promise<any> {
+    return callGetAccounts(accessToken)
+      .then(async (jsonResp: any) => {
+        if (
+          jsonResp &&
+          jsonResp.accounts &&
+          Array.isArray(jsonResp.accounts) &&
+          jsonResp.accounts.length == 0
+        ) {
+          console.log(
+            'no account on management platform, sending a request to create with POST /accounts'
+          );
+          isSettingUpAccount(true);
+          return callPostAccounts(accessToken).then((jsonPostResp) => {
+            isSettingUpAccount(false);
+            return jsonPostResp;
+          });
+        } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
+          return jsonResp;
+        }
+  
+        throw new Error(`unknown response from /accounts: ${jsonResp}`);
+      })
+      .catch((err) => {
+        errToast(`unknown error while fetching account: ${err}`);
+        console.error(err);
+      });
   }
 }
 

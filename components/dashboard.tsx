@@ -16,7 +16,6 @@ import {
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
-import { accountsFlow } from '../utils/call-api';
 import { observer } from 'mobx-react-lite';
 import {
   Modal,
@@ -75,7 +74,7 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
-      accountsFlow(tokenPayload.idToken, isSettingUpAccount)
+      accountStore.accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
           onModalClose();
