@@ -74,7 +74,7 @@ export default observer(function Usage() {
         headerLabel="Track usage"
         introduction="Get started with using our platform and track usage."
       />
-      <Tabs size="lg" variant="speechmatics" width="800px" defaultIndex={2}>
+      <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Limits</Tab>
           <Tab>Summary</Tab>

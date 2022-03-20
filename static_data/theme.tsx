@@ -4,6 +4,9 @@ const smTabStyle = {
   bg: 'smBlue.100',
   //also look for button[role="tab"]:not(:first-child)
   borderBottom: '1px solid #D1D7D6',
+  borderTop: '2px solid #0000',
+  borderLeft: '1px solid #0000',
+  borderRight: '1px solid #0000',
   fontSize: '0.9em',
   py: '1.2em',
   px: '2.2em',
@@ -15,7 +18,7 @@ const smTabStyle = {
     borderTop: '2px solid #5398FC',
     borderLeft: '1px solid #D1D7D6',
     borderRight: '1px solid #D1D7D6',
-    borderBottom: '0px',
+    borderBottom: '1px solid #0000',
   },
   _focus: {
     boxShadow: 'none',
