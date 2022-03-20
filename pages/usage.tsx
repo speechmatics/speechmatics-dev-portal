@@ -21,6 +21,7 @@ import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import {
+  DataGridComponent,
   DescriptionLabel,
   HeaderLabel,
   InfoBarbox,
@@ -73,7 +74,7 @@ export default observer(function Usage() {
         headerLabel="Track usage"
         introduction="Get started with using our platform and track usage."
       />
-      <Tabs size="lg" variant="speechmatics" width="800px">
+      <Tabs size="lg" variant="speechmatics" width="800px" defaultIndex={2}>
         <TabList marginBottom="-1px">
           <Tab>Limits</Tab>
           <Tab>Summary</Tab>
@@ -207,38 +208,39 @@ export default observer(function Usage() {
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Usage metrics</HeaderLabel>
-            <Grid
-              templateColumns="repeat(2, 1fr)"
-              marginTop="2em"
-              className="sm_grid"
-              alignSelf="stretch"
-            >
-              <GridItem className="grid_header">Day</GridItem>
-              <GridItem className="grid_header">Hours used</GridItem>
 
-              {breakdown?.map((el: UsageUnit) => {
-                return (
-                  <React.Fragment key={el.since}>
-                    <GridItem>{el.since}</GridItem>
-                    <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
-                  </React.Fragment>
-                );
-              })}
-              {(!breakdown || breakdown?.length == 0) && (
-                <GridItem colSpan={2}>
-                  <Flex width="100%" justifyContent="center">
-                    <ExclamationIcon />
-                    <Text ml="1em">You don’t currently have any usage data</Text>
-                  </Flex>
-                </GridItem>
-              )}
-            </Grid>
+            <DataGridComponent data={breakdown} DataDisplayComponent={UsageBreakdownGrid} />
           </TabPanel>
         </TabPanels>
       </Tabs>
     </Dashboard>
   );
 });
+
+const UsageBreakdownGrid = ({ data }) => (
+  <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">
+    <GridItem className="grid_header">Day</GridItem>
+    <GridItem className="grid_header">Hours used</GridItem>
+
+    {data?.map((el: UsageUnit, i: number) => {
+      return (
+        <React.Fragment key={el.since}>
+          <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+          <GridItem>{el.since}</GridItem>
+          <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
+        </React.Fragment>
+      );
+    })}
+    {(!data || data?.length == 0) && (
+      <GridItem colSpan={2}>
+        <Flex width="100%" justifyContent="center">
+          <ExclamationIcon />
+          <Text ml="1em">You don’t currently have any usage data</Text>
+        </Flex>
+      </GridItem>
+    )}
+  </Grid>
+);
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
   return {

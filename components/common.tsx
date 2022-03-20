@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ChakraComponent,
   ComponentWithAs,
   Divider,
   HStack,
@@ -18,11 +19,20 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
+import {
+  usePagination,
+  Pagination,
+  PaginationContainer,
+  PaginationPrevious,
+  PaginationPageGroup,
+  PaginationPage,
+  PaginationNext,
+} from './pagination';
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',
@@ -58,7 +68,7 @@ export const InfoBarbox = ({
   </HStack>
 );
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -128,21 +138,25 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         {/* //TODO remove strict width */}
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${
+              accountStore.getRuntimeURL() || '$HOST'
+            }/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
       </TabPanels>
@@ -196,5 +210,99 @@ export const SimplePanel = ({ children }) => (
   </VStack>
 );
 
+export const DataGridComponent = ({ data, DataDisplayComponent, itemsPerPage = 5 }) => {
+  const [page, setPage] = useState(0);
 
-export const pad = (n: number) => n.toString().padStart(2, "0");
+  const pagesCount = Math.ceil(data?.length / itemsPerPage);
+
+  let onSelectPage = useCallback(
+    (_page: number) => {
+      setPage(_page - 1);
+    },
+    [data]
+  );
+
+  return (
+    <>
+      <DataDisplayComponent
+        data={data?.slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage)}
+      />
+
+      {data?.length > itemsPerPage && (
+        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} />
+      )}
+    </>
+  );
+};
+
+export type GridPaginationProps = {
+  onSelectPage: (page: number) => void;
+  pagesCountInitial: number;
+};
+
+export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
+  onSelectPage,
+  pagesCountInitial,
+  ...props
+}) => {
+  const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
+    pagesCount: pagesCountInitial,
+    initialState: { currentPage: 1 },
+  });
+
+  const onPageChange = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      onSelectPage?.(page);
+    },
+    [currentPage]
+  );
+
+  return (
+    <Box width="100%" d="flex" justifyContent="flex-end" mt="1em" {...props}>
+      <Pagination pagesCount={pagesCount} currentPage={currentPage} onPageChange={onPageChange}>
+        <PaginationContainer>
+          <PaginationPrevious
+            color="smBlack.300"
+            bg="smWhite.500"
+            borderRadius="2px"
+            fontSize="0.8em"
+            fontFamily="RMNeue-Light"
+          >
+            &lt; Previous
+          </PaginationPrevious>
+          <PaginationPageGroup>
+            {pages.map((page: number) => (
+              <PaginationPage
+                fontSize="0.8em"
+                p="1em"
+                bg="smWhite.500"
+                borderRadius="2px"
+                _current={{
+                  bg: 'smBlue.200',
+                  color: 'smBlue.500',
+                }}
+                _focus={{ boxShadow: null }}
+                fontFamily="RMNeue-Light"
+                key={`pagination_page_${page}`}
+                color="smBlack.300"
+                page={page}
+              />
+            ))}
+          </PaginationPageGroup>
+          <PaginationNext
+            color="smBlack.300"
+            bg="smWhite.500"
+            borderRadius="2px"
+            fontSize="0.8em"
+            fontFamily="RMNeue-Light"
+          >
+            Next &gt;
+          </PaginationNext>
+        </PaginationContainer>
+      </Pagination>
+    </Box>
+  );
+};
+
+export const pad = (n: number) => n.toString().padStart(2, '0');
