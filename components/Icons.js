@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const JobSubmitIcon = (props) => (
-  <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+export const JobSubmitIcon = ({ width = 56, height = 56, ...props }) => (
+  <svg fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="M8.166 11.667h46.667M15.167 6.417a.583.583 0 1 0 0 1.167.583.583 0 0 0 0-1.167ZM19.833 6.417a.583.583 0 1 0 0 1.166.583.583 0 0 0 0-1.166ZM24.5 6.417a.583.583 0 1 0 0 1.166.583.583 0 0 0 0-1.166Z"
       stroke="#5398FC"
@@ -33,6 +33,25 @@ export const JobSubmitIcon = (props) => (
     <path
       d="M45.5 46.667 40.832 42l-4.667 4.667"
       stroke="#5398FC"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const ExclamationIconLarge = (props) => (
+  <svg width={64} height={64} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      d="M61.333 31.496A29.765 29.765 0 0 1 32 61.333 28.897 28.897 0 0 1 2.666 32.512 29.765 29.765 0 0 1 32 2.667a28.902 28.902 0 0 1 29.333 28.829ZM32 34.667v-16"
+      stroke="#D82C2C"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M31.977 42.68a.654.654 0 0 0-.643.68.678.678 0 0 0 .675.653v0a.657.657 0 0 0 .643-.68.675.675 0 0 0-.65-.653h-.014"
+      stroke="#D82C2C"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
