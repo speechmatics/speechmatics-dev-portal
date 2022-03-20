@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const JobSubmitIcon = ({ width = 56, height = 56, ...props }) => (
-  <svg fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="M8.166 11.667h46.667M15.167 6.417a.583.583 0 1 0 0 1.167.583.583 0 0 0 0-1.167ZM19.833 6.417a.583.583 0 1 0 0 1.166.583.583 0 0 0 0-1.166ZM24.5 6.417a.583.583 0 1 0 0 1.166.583.583 0 0 0 0-1.166Z"
       stroke="#5398FC"
