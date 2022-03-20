@@ -128,7 +128,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
-    <Tabs size="lg" variant="speechmatics" mt="1em">
+    <Tabs size="lg" variant="speechmaticsCode" mt="1em">
       <TabList marginBottom="-1px">
         <Tab>Windows</Tab>
         <Tab>Mac</Tab>

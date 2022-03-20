@@ -1,5 +1,27 @@
 import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 
+const smTabStyle = {
+  bg: 'smBlue.100',
+  //also look for button[role="tab"]:not(:first-child)
+  borderBottom: '1px solid #D1D7D6',
+  fontSize: '0.9em',
+  py: '1.2em',
+  px: '2.2em',
+  fontFamily: 'Matter-Bold',
+  color: 'smBlack.300',
+  _selected: {
+    color: 'smBlue.400',
+    bg: 'white',
+    borderTop: '2px solid #5398FC',
+    borderLeft: '1px solid #D1D7D6',
+    borderRight: '1px solid #D1D7D6',
+    borderBottom: '0px',
+  },
+  _focus: {
+    boxShadow: 'none',
+  },
+} as CSSObject;
+
 const theme = extendTheme({
   colors: {
     smGreen: {
@@ -135,29 +157,21 @@ const theme = extendTheme({
     Tabs: {
       variants: {
         speechmatics: {
-          tab: {
-            bg: 'smBlue.100',
-            borderBottom: '1px solid #D1D7D6',
-            fontSize: '0.9em',
-            py: '1.2em',
-            px: '2.2em',
-            fontFamily: 'Matter-Bold',
-            color: 'smBlack.300',
-            _selected: {
-              color: 'smBlue.400',
-              bg: 'white',
-              borderTop: '2px solid #5398FC',
-              borderLeft: '1px solid #D1D7D6',
-              borderRight: '1px solid #D1D7D6',
-              borderBottom: '0px',
-            },
-            _focus: {
-              boxShadow: 'none',
-            },
-          } as CSSObject,
+          tab: smTabStyle,
           tabpanel: {
             bg: 'smWhite.500',
             padding: '1.5em',
+          } as CSSObject,
+          tabpanels: {
+            border: '1px solid #D1D7D6',
+            boxShadow: '4px 4px 7px #5A5D5F15',
+          } as CSSObject,
+        },
+        speechmaticsCode: {
+          tab: smTabStyle,
+          tabpanel: {
+            bg: 'smWhite.500',
+            padding: '0em',
           } as CSSObject,
           tabpanels: {
             border: '1px solid #D1D7D6',
