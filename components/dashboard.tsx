@@ -187,12 +187,15 @@ function UserNotAuthModal({ isModalOpen }) {
       <ModalContent>
         <ModalBody textAlign={'center'}>
           <SpeechmaticsLogo w={160} h={100} />
-          <Box>Your session expired. You'll be redirected to login page.</Box>
-          <Box>If the redirect won't work you can use this link </Box>
+          <Box>Your session expired. </Box>
+          <Box>You'll be redirected to login page.</Box>
+          <Box>If the redirect won't work you can use this link: </Box>
+        </ModalBody>
+        <ModalFooter>
           <Link href="/login">
             <Button variant="speechmatics">Go to Login</Button>
           </Link>
-        </ModalBody>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
