@@ -73,7 +73,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
       <ModalOverlay />
       <ModalContent borderRadius="2px" maxWidth="920px">
         <ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         </ModalHeader>
         <ModalBody p="1em">
           <ReactPlayer
