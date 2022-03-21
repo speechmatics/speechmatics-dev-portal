@@ -41,7 +41,7 @@ import { ExclamationIcon, ExclamationIconLarge } from '../components/Icons';
 export default function GetAccessToken({}) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Manage Access" introduction="Manage API keys." />
+      <PageHeader headerLabel="Manage Access" introduction="Manage API keys" />
 
       <SmPanel width="800px">
         <GenerateTokenComponent />

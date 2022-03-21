@@ -75,7 +75,7 @@ export default observer(function Usage() {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Track usage" introduction="Review usage of the API." />
+      <PageHeader headerLabel="Track usage" introduction="Review usage of the API" />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Limits</Tab>

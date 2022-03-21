@@ -13,7 +13,7 @@ import {
 export default function Home({}) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service." />
+      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service" />
       <HStack alignItems="flex-start" spacing="2em">
         <HomeBox
           bgColor="smBlue.500"
