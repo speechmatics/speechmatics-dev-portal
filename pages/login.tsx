@@ -20,6 +20,7 @@ export default function Login() {
     authority,
   };
 
+
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length > 0) {
