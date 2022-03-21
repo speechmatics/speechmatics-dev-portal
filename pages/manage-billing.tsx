@@ -122,7 +122,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
         <HeaderLabel>{paymentMethod ? 'Payment card active' : 'No payment card added'}</HeaderLabel>
         <DescriptionLabel>
           {paymentMethod
-            ? `${paymentMethod?.card_type?.toUpperCase() || 'Unknown card type'} ending \
+            ? `${paymentMethod?.card_type?.toUpperCase() || 'Card'} ending \
       ${paymentMethod?.masked_card_number?.slice(-4)} expiring on \
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
             : 'Please add a payment card to increase your usage limits'}
