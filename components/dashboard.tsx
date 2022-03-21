@@ -97,38 +97,40 @@ export default observer(function Dashboard({ children }) {
     instance.logoutRedirect({ account: account });
   };
 
-  return !isAuthenticated ? (
-    <Flex width="100%" className="smPanel" alignItems="center" justifyContent="center">
-      <Flex direction="column" alignItems="center" className="sm_panel">
-        <SpeechmaticsLogo w={160} h={100} />
-        <Box>Your session expired. You'll be redirected to login page.</Box>
-        <Box>If the redirect won't work you can use this link </Box>
-        <Link href="/login">
-          <Button variant="speechmatics">Go to Login</Button>
-        </Link>
-      </Flex>
-    </Flex>
-  ) : (
+  return (
     <div className="dashboard_container">
-      <UserCreationModal isModalOpen={isModalOpen} onModalClose={onModalClose} />
-      <HeaderBar logout={logout} accountEmail={account.username} />
-      <div className="dashboard_contents" tabIndex={0}>
-        <div className="dashboard_sidenav">
-          <Menu />
-        </div>
-        <div className="dashboard_content">
-          <motion.main
-            variants={animationVariants} // Pass the variant object into Framer Motion
-            initial="hidden" // Set the initial state to variants.hidden
-            animate="enter" // Animated state to variants.enter
-            exit="exit" // Exit state (used later) to variants.exit
-            transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
-            style={{ width: '100%' }}
-          >
-            {children}
-          </motion.main>
-        </div>
-      </div>
+      {isAuthenticated ? (
+        <>
+          <UserCreationModal isModalOpen={isModalOpen} onModalClose={onModalClose} />
+          <HeaderBar logout={logout} accountEmail={account.username} />
+          <div className="dashboard_contents" tabIndex={0}>
+            <div className="dashboard_sidenav">
+              <Menu />
+            </div>
+            <div className="dashboard_content">
+              <motion.main
+                variants={animationVariants} // Pass the variant object into Framer Motion
+                initial="hidden" // Set the initial state to variants.hidden
+                animate="enter" // Animated state to variants.enter
+                exit="exit" // Exit state (used later) to variants.exit
+                transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
+                style={{ width: '100%' }}
+              >
+                {children}
+              </motion.main>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Flex direction="column" alignItems="center" className="sm_panel">
+          <SpeechmaticsLogo w={160} h={100} />
+          <Box>Your session expired. You'll be redirected to login page.</Box>
+          <Box>If the redirect won't work you can use this link </Box>
+          <Link href="/login">
+            <Button variant="speechmatics">Go to Login</Button>
+          </Link>
+        </Flex>
+      )}
     </div>
   );
 });
