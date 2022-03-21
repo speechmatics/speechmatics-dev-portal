@@ -97,22 +97,18 @@ export default observer(function Dashboard({ children }) {
     instance.logoutRedirect({ account: account });
   };
 
-  if (!isAuthenticated) {
-    return (
-      <Flex width="100%" className="smPanel" alignItems="center" justifyContent="center">
-        <Flex direction="column" alignItems="center" className="sm_panel">
-          <SpeechmaticsLogo w={160} h={100} />
-          <Box>Your session expired. You'll be redirected to login page.</Box>
-          <Box>If the redirect won't work you can use this link </Box>
-          <Link href="/login">
-            <Button variant="speechmatics">Go to Login</Button>
-          </Link>
-        </Flex>
+  return !isAuthenticated ? (
+    <Flex width="100%" className="smPanel" alignItems="center" justifyContent="center">
+      <Flex direction="column" alignItems="center" className="sm_panel">
+        <SpeechmaticsLogo w={160} h={100} />
+        <Box>Your session expired. You'll be redirected to login page.</Box>
+        <Box>If the redirect won't work you can use this link </Box>
+        <Link href="/login">
+          <Button variant="speechmatics">Go to Login</Button>
+        </Link>
       </Flex>
-    );
-  }
-
-  return (
+    </Flex>
+  ) : (
     <div className="dashboard_container">
       <UserCreationModal isModalOpen={isModalOpen} onModalClose={onModalClose} />
       <HeaderBar logout={logout} accountEmail={account.username} />
