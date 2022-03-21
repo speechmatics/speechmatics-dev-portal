@@ -26,7 +26,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { SmPanel } from './common';
 import { motion } from 'framer-motion';
 
 const animationVariants = {
@@ -74,7 +73,8 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
-      accountStore.accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
+      accountStore
+        .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
           onModalClose();

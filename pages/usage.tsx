@@ -58,7 +58,7 @@ export default observer(function Usage() {
             setIsLoading(false);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           errToast(err);
           setIsLoading(false);
         });
@@ -97,7 +97,12 @@ export default observer(function Usage() {
                       STANDARD MODEL
                     </Text>
                     <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em">
-                      {accountStore.getUsageLimit('standard')} hours / month
+                      {accountStore.isLoading ? (
+                        <Spinner size="sm" />
+                      ) : (
+                        accountStore.getUsageLimit('standard')
+                      )}{' '}
+                      hours / month
                     </Text>
                   </Box>
                 </HStack>
@@ -121,7 +126,12 @@ export default observer(function Usage() {
                       ENHANCED MODEL
                     </Text>
                     <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
-                      {accountStore.getUsageLimit('enhanced')} hours / month
+                      {accountStore.isLoading ? (
+                        <Spinner size="sm" />
+                      ) : (
+                        accountStore.getUsageLimit('enhanced')
+                      )}{' '}
+                      hours / month
                     </Text>
                   </Box>
                 </HStack>
@@ -194,7 +204,9 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Requests made</GridItem>
 
               <GridItem>Standard Model</GridItem>
-              <GridItem>{accountStore.getUsageLimit('standard')} hours</GridItem>
+              <GridItem>
+                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
+              </GridItem>
               <GridItem data-qa="usage-standard">
                 {Number(currentUsage?.usageStandard).toFixed(2)} hours
               </GridItem>
@@ -203,7 +215,9 @@ export default observer(function Usage() {
                 <hr />
               </GridItem>
               <GridItem>Enhanced Model</GridItem>
-              <GridItem>{accountStore.getUsageLimit('enhanced')} hours</GridItem>
+              <GridItem>
+                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
+              </GridItem>
               <GridItem data-qa="usage-enhanced">
                 {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
               </GridItem>
@@ -213,7 +227,11 @@ export default observer(function Usage() {
           <TabPanel>
             <HeaderLabel>Usage metrics</HeaderLabel>
 
-            <DataGridComponent data={breakdown} DataDisplayComponent={UsageBreakdownGrid} isLoading={isLoading} />
+            <DataGridComponent
+              data={breakdown}
+              DataDisplayComponent={UsageBreakdownGrid}
+              isLoading={isLoading}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -235,7 +253,7 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
         </React.Fragment>
       );
     })}
-    {(!data || data?.length == 0) && (
+    {!isLoading && (!data || data?.length == 0) && (
       <GridItem colSpan={2}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
@@ -243,12 +261,14 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
         </Flex>
       </GridItem>
     )}
-    {isLoading && <GridItem colSpan={2}>
-      <Flex width="100%" justifyContent="center">
-        <Spinner />
-        <Text ml="1em">One moment please...</Text>
-      </Flex>
-    </GridItem>}
+    {isLoading && (
+      <GridItem colSpan={2}>
+        <Flex width="100%" justifyContent="center">
+          <Spinner />
+          <Text ml="1em">One moment please...</Text>
+        </Flex>
+      </GridItem>
+    )}
   </Grid>
 );
 

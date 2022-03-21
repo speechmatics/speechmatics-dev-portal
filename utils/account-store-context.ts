@@ -78,7 +78,7 @@ class AccountContext {
         }
       })
       .catch((err) => {
-        console.error('fetchServerState', err); 
+        console.error('fetchServerState', err);
         this.isLoading = false;
       });
   }
@@ -95,6 +95,7 @@ class AccountContext {
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
+    this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
         if (
@@ -109,16 +110,19 @@ class AccountContext {
           isSettingUpAccount(true);
           return callPostAccounts(accessToken).then((jsonPostResp) => {
             isSettingUpAccount(false);
+            this.isLoading = false;
             return jsonPostResp;
           });
         } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
+          this.isLoading = false;
           return jsonResp;
         }
-  
+
         throw new Error(`unknown response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
         errToast(`unknown error while fetching account: ${err}`);
+        this.isLoading = false;
         console.error(err);
       });
   }

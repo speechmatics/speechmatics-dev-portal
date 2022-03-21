@@ -292,11 +292,19 @@ const PreviousTokens = observer(() => {
             </GridItem>
           </React.Fragment>
         ))}
-        {(!apiKeys || apiKeys?.length == 0) && (
-          <GridItem colSpan={2}>
+        {!accountStore.isLoading && (!apiKeys || apiKeys?.length == 0) && (
+          <GridItem colSpan={3}>
             <Flex width="100%" justifyContent="center">
               <ExclamationIcon />
               <Text ml="1em">You don’t currently have any API keys</Text>
+            </Flex>
+          </GridItem>
+        )}
+        {accountStore.isLoading && (
+          <GridItem colSpan={3}>
+            <Flex width="100%" justifyContent="center">
+              <Spinner />
+              <Text ml="1em">One moment please...</Text>
             </Flex>
           </GridItem>
         )}

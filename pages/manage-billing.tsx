@@ -6,6 +6,8 @@ import {
   Grid,
   GridItem,
   HStack,
+  Skeleton,
+  SkeletonText,
   Spinner,
   Tab,
   TabList,
@@ -45,21 +47,20 @@ const useGetPayments = (idToken: string) => {
           setData(resp.payments.reverse());
           setIsLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err);
           errToast(err);
-          setIsLoading(false)
+          setIsLoading(false);
         });
     }
   }, [idToken]);
 
-  return { data, isLoading, error }
-}
+  return { data, isLoading, error };
+};
 
-export default observer(function ManageBilling({ }) {
+export default observer(function ManageBilling({}) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
-
 
   const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
 
@@ -76,7 +77,10 @@ export default observer(function ManageBilling({ }) {
         </TabList>
         <TabPanels>
           <TabPanel p="1.5em">
-            <AddReplacePaymentCard paymentMethod={accountStore.getPaymentMethod()} />
+            <AddReplacePaymentCard
+              paymentMethod={accountStore.getPaymentMethod()}
+              isLoading={accountStore.isLoading}
+            />
 
             <InfoBarbox
               icon={<PricingTags />}
@@ -90,7 +94,11 @@ export default observer(function ManageBilling({ }) {
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
 
-            <DataGridComponent data={paymentsData} DataDisplayComponent={PaymentsGrid} isLoading={isLoading} />
+            <DataGridComponent
+              data={paymentsData}
+              DataDisplayComponent={PaymentsGrid}
+              isLoading={isLoading}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -98,54 +106,64 @@ export default observer(function ManageBilling({ }) {
   );
 });
 
-const AddReplacePaymentCard = ({ paymentMethod }) => (
-  <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
-    <VStack alignItems="flex-start">
-      <HeaderLabel>{paymentMethod ? 'Payment card active' : 'No payment card added'}</HeaderLabel>
-      <DescriptionLabel>
-        {paymentMethod
-          ? `${paymentMethod.card_type.toUpperCase()} ending \
+const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
+  isLoading ? (
+    <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
+      <VStack alignItems="flex-start" spacing="1.6em">
+        <Box className="skeleton" height="2em" width="15em" />
+        <Box className="skeleton" height="1em" width="18em" />
+        <Box className="skeleton" height="3em" width="10em" />
+      </VStack>
+      <Box className="skeleton" height="185px" width="282px" />
+    </HStack>
+  ) : (
+    <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
+      <VStack alignItems="flex-start">
+        <HeaderLabel>{paymentMethod ? 'Payment card active' : 'No payment card added'}</HeaderLabel>
+        <DescriptionLabel>
+          {paymentMethod
+            ? `${paymentMethod.card_type.toUpperCase()} ending \
       ${paymentMethod.masked_card_number.slice(-4)} expiring on \
       ${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
-          : 'Please add a payment card to increase your usage limits'}
-      </DescriptionLabel>
-      <Box>
-        <Link href="/subscribe/">
-          <Button variant="speechmatics" alignSelf="flex-start">
-            {paymentMethod ? 'Update Card' : 'Add a payment card'}
-          </Button>
-        </Link>
+            : 'Please add a payment card to increase your usage limits'}
+        </DescriptionLabel>
+        <Box>
+          <Link href="/subscribe/">
+            <Button variant="speechmatics" alignSelf="flex-start">
+              {paymentMethod ? 'Update Card' : 'Add a payment card'}
+            </Button>
+          </Link>
+        </Box>
+      </VStack>
+      <Box position="relative">
+        <Text
+          position="absolute"
+          color="#fff7"
+          fontFamily="RMNeue-Regular"
+          fontSize="1em"
+          top="110px"
+          right="14px"
+          style={{ wordSpacing: '6px' }}
+        >
+          {paymentMethod?.masked_card_number || 'XXXX XXXX XXXX XXXX'}
+        </Text>
+        <Text
+          position="absolute"
+          color="#fff7"
+          fontFamily="RMNeue-Regular"
+          fontSize=".8em"
+          top="135px"
+          right="14px"
+        >
+          EXPIRY DATE{' '}
+          {paymentMethod
+            ? `${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
+            : 'XX/XX'}
+        </Text>
+        {paymentMethod ? <CardImage /> : <CardGreyImage />}
       </Box>
-    </VStack>
-    <Box position="relative">
-      <Text
-        position="absolute"
-        color="#fff7"
-        fontFamily="RMNeue-Regular"
-        fontSize="1em"
-        top="110px"
-        right="14px"
-        style={{ wordSpacing: '6px' }}
-      >
-        {paymentMethod?.masked_card_number || 'XXXX XXXX XXXX XXXX'}
-      </Text>
-      <Text
-        position="absolute"
-        color="#fff7"
-        fontFamily="RMNeue-Regular"
-        fontSize=".8em"
-        top="135px"
-        right="14px"
-      >
-        EXPIRY DATE{' '}
-        {paymentMethod
-          ? `${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
-          : 'XX/XX'}
-      </Text>
-      {paymentMethod ? <CardImage /> : <CardGreyImage />}
-    </Box>
-  </HStack>
-);
+    </HStack>
+  );
 
 const PaymentsGrid = ({ data, isLoading }) => (
   <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch">
@@ -166,7 +184,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
         </GridItem>
       </React.Fragment>
     ))}
-    {(!data || data?.length == 0) && (
+    {!isLoading && (!data || data?.length == 0) && (
       <GridItem colSpan={4}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
@@ -174,12 +192,14 @@ const PaymentsGrid = ({ data, isLoading }) => (
         </Flex>
       </GridItem>
     )}
-    {isLoading && <GridItem colSpan={4}>
-      <Flex width="100%" justifyContent="center">
-        <Spinner />
-        <Text ml="1em">One moment please...</Text>
-      </Flex>
-    </GridItem>}
+    {isLoading && (
+      <GridItem colSpan={4}>
+        <Flex width="100%" justifyContent="center">
+          <Spinner />
+          <Text ml="1em">One moment please...</Text>
+        </Flex>
+      </GridItem>
+    )}
   </Grid>
 );
 
