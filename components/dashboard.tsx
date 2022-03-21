@@ -45,9 +45,9 @@ export default observer(function Dashboard({ children }) {
   const router = useRouter();
 
   const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
+    isOpen: isUserCreationModalOpen,
+    onOpen: onUserCreationModalOpen,
+    onClose: onUserCreationModalClose,
   } = useDisclosure({ isOpen: false });
 
   const { instance, inProgress } = useMsal();
@@ -74,7 +74,7 @@ export default observer(function Dashboard({ children }) {
   }, [b2cError]);
 
   const isSettingUpAccount = (val: boolean) => {
-    if (val) onModalOpen();
+    if (val) onUserCreationModalOpen();
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export default observer(function Dashboard({ children }) {
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
-          onModalClose();
+          onUserCreationModalClose();
         })
         .catch(console.error);
     }
@@ -99,39 +99,29 @@ export default observer(function Dashboard({ children }) {
 
   return (
     <div className="dashboard_container">
-      {isAuthenticated ? (
-        <>
-          <UserCreationModal isModalOpen={isModalOpen} onModalClose={onModalClose} />
-          <HeaderBar logout={logout} accountEmail={account.username} />
-          <div className="dashboard_contents" tabIndex={0}>
-            <div className="dashboard_sidenav">
-              <Menu />
-            </div>
-            <div className="dashboard_content">
-              <motion.main
-                variants={animationVariants} // Pass the variant object into Framer Motion
-                initial="hidden" // Set the initial state to variants.hidden
-                animate="enter" // Animated state to variants.enter
-                exit="exit" // Exit state (used later) to variants.exit
-                transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
-                style={{ width: '100%' }}
-              >
-                {children}
-              </motion.main>
-            </div>
-          </div>
-        </>
-      ) : (
-        <Flex direction="column" alignItems="center" className="sm_panel">
-          <SpeechmaticsLogo w={160} h={100} />
-          <Box>Your session expired. You'll be redirected to login page.</Box>
-          <Box>If the redirect won't work you can use this link </Box>
-          <Link href="/login">
-            <Button variant="speechmatics">Go to Login</Button>
-          </Link>
-          <Box display="none">{children}</Box>
-        </Flex>
-      )}
+      <UserNotAuthModal isModalOpen={!isAuthenticated} />
+      <UserCreationModal
+        isModalOpen={isUserCreationModalOpen}
+        onModalClose={onUserCreationModalClose}
+      />
+      <HeaderBar logout={logout} accountEmail={account.username} />
+      <div className="dashboard_contents" tabIndex={0}>
+        <div className="dashboard_sidenav">
+          <Menu />
+        </div>
+        <div className="dashboard_content">
+          <motion.main
+            variants={animationVariants} // Pass the variant object into Framer Motion
+            initial="hidden" // Set the initial state to variants.hidden
+            animate="enter" // Animated state to variants.enter
+            exit="exit" // Exit state (used later) to variants.exit
+            transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
+            style={{ width: '100%' }}
+          >
+            {children}
+          </motion.main>
+        </div>
+      </div>
     </div>
   );
 });
@@ -190,6 +180,21 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
   );
 }
 
+function UserNotAuthModal({ isModalOpen }) {
+  return (
+    <Modal isOpen={isModalOpen} onClose={() => {}} closeOnOverlayClick={false}>
+      <ModalOverlay />
+      <ModalContent>
+        <SpeechmaticsLogo w={160} h={100} />
+        <Box>Your session expired. You'll be redirected to login page.</Box>
+        <Box>If the redirect won't work you can use this link </Box>
+        <Link href="/login">
+          <Button variant="speechmatics">Go to Login</Button>
+        </Link>
+      </ModalContent>
+    </Modal>
+  );
+}
 function RightSidePanel({ logout, accountEmail }) {
   return (
     <Box className="dashboard_side_bar">
