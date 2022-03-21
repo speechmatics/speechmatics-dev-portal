@@ -13,7 +13,7 @@ export default function Login() {
   const loginRequest = {
     scopes: [],
     authority:
-      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_WITH_EMAIL',
+      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY',
   };
 
   useEffect(() => {
