@@ -176,41 +176,6 @@ function MenuElem({ item, selected }) {
   );
 }
 
-function NotLoggedin() {
-  const router = useRouter();
-
-  useEffect(() => {
-    let st: number;
-    st = window.setTimeout(() => router.push('/login/'), 2000);
-    window.clearTimeout(st);
-    return () => window.clearTimeout(st);
-  });
-
-  return (
-    <Box
-      style={{
-        width: '100%',
-        height: '100%',
-        paddingTop: '100px',
-        display: 'flex',
-        alignContent: 'center',
-        justifyContent: 'center',
-        flex: '1 1 auto',
-        backgroundColor: 'var(--chakra-colors-smNavy-200)',
-      }}
-    >
-      <Box p="2em">You're not logged in, attempting to redirect you automatically...</Box>
-      <Box p="2em">
-        You can also use{' '}
-        <Link href="/login/">
-          <a>the link</a>
-        </Link>
-        .
-      </Box>
-    </Box>
-  );
-}
-
 function UserCreationModal({ isModalOpen, onModalClose }) {
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
