@@ -104,7 +104,7 @@ export default observer(function Dashboard({ children }) {
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
-      <HeaderBar logout={logout} accountEmail={account.username} />
+      <HeaderBar logout={logout} accountEmail={account?.username} />
       <div className="dashboard_contents" tabIndex={0}>
         <div className="dashboard_sidenav">
           <Menu />
@@ -185,12 +185,14 @@ function UserNotAuthModal({ isModalOpen }) {
     <Modal isOpen={isModalOpen} onClose={() => {}} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <SpeechmaticsLogo w={160} h={100} />
-        <Box>Your session expired. You'll be redirected to login page.</Box>
-        <Box>If the redirect won't work you can use this link </Box>
-        <Link href="/login">
-          <Button variant="speechmatics">Go to Login</Button>
-        </Link>
+        <ModalBody textAlign={'center'}>
+          <SpeechmaticsLogo w={160} h={100} />
+          <Box>Your session expired. You'll be redirected to login page.</Box>
+          <Box>If the redirect won't work you can use this link </Box>
+          <Link href="/login">
+            <Button variant="speechmatics">Go to Login</Button>
+          </Link>
+        </ModalBody>
       </ModalContent>
     </Modal>
   );
