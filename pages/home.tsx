@@ -10,13 +10,10 @@ import {
   TerminalGraphIcon,
 } from '../components/Icons';
 
-export default function Home({ }) {
+export default function Home({}) {
   return (
     <Dashboard>
-      <PageHeader
-        headerLabel="Home"
-        introduction="Welcome, please take a quick look what can You do with us."
-      />
+      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service." />
       <HStack alignItems="flex-start" spacing="2em">
         <HomeBox
           bgColor="smBlue.500"

@@ -513,6 +513,20 @@ export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   );
 }
 
+export const HomeIcon = () => (
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    strokeWidth="0"
+    viewBox="2 1 24 24"
+    height="1.5em"
+    width="1.5em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M5 22h14a2 2 0 0 0 2-2v-9a1 1 0 0 0-.29-.71l-8-8a1 1 0 0 0-1.41 0l-8 8A1 1 0 0 0 3 11v9a2 2 0 0 0 2 2zm5-2v-5h4v5zm-5-8.59 7-7 7 7V20h-3v-5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v5H5z"></path>
+  </svg>
+);
+
 export function TranscribeIcon({ w = 20, h = 13, color = '#2E3A59' }) {
   return (
     <svg width={w} height={h} viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">

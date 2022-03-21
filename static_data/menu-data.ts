@@ -1,16 +1,16 @@
 import {
   DocumentationIcon,
-  GettingStartedIcon,
   SubscribeIcon,
   UsageIcon,
   AccessTokenIcon,
+  HomeIcon,
 } from '../components/Icons';
 
 const menuData = [
   {
     path: '/home/',
     title: 'Home',
-    icon: GettingStartedIcon,
+    icon: HomeIcon,
   },
   {
     path: '/manage-access/',
