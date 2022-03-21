@@ -40,7 +40,8 @@ export const InfoBarbox = ({
   title,
   description,
   buttonLabel,
-  hrefUrl,
+  hrefUrl = null,
+  setStateUp = null,
   ...props
 }) => (
   <HStack
@@ -60,15 +61,22 @@ export const InfoBarbox = ({
         {description}
       </Text>
     </VStack>
-    <Link href={hrefUrl}>
-      <Button variant="speechmaticsWhite" mb="1em">
+    {hrefUrl && (
+      <Link href={hrefUrl}>
+        <Button variant="speechmaticsWhite" mb="1em">
+          {buttonLabel}
+        </Button>
+      </Link>
+    )}
+    {setStateUp && (
+      <Button variant="speechmaticsWhite" mb="1em" onClick={setStateUp}>
         {buttonLabel}
       </Button>
-    </Link>
+    )}
   </HStack>
 );
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -138,21 +146,25 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         {/* //TODO remove strict width */}
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${
+              accountStore.getRuntimeURL() || '$HOST'
+            }/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${token || `NDFjOTE3NGEtOWVm`
-              }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${
+              token || `NDFjOTE3NGEtOWVm`
+            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
           />
         </TabPanel>
       </TabPanels>
