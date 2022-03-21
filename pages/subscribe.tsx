@@ -160,7 +160,15 @@ function Subscribe({}) {
                 disabled={!submitButtonReady}
                 marginTop="2em"
               >
-                {submitButtonReady ? 'Submit Form' : <Spinner />}
+                {submitButtonReady ? (
+                  !!accountStore.getPaymentMethod() ? (
+                    'Replace the card'
+                  ) : (
+                    'Add card'
+                  )
+                ) : (
+                  <Spinner />
+                )}
               </Button>
             </p>
           </form>
