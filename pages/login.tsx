@@ -10,6 +10,12 @@ export default function Login() {
 
   const { instance, accounts, inProgress } = useMsal();
 
+  const loginRequest = {
+    scopes: [],
+    authority:
+      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_WITH_EMAIL',
+  };
+
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length > 0) {
@@ -23,7 +29,7 @@ export default function Login() {
     instance.loginRedirect(loginRequest).catch((error) => {
       console.log(error);
     });
-  }
+  };
 
   const LoginSub = () => {
     if (accounts.length > 0) {
@@ -33,7 +39,7 @@ export default function Login() {
     } else if (inProgress === 'none' && accounts.length == 0) {
       return (
         <div className="login_form">
-          <Button variant='speechmatics' onClick={loginHandler}>
+          <Button variant="speechmatics" onClick={loginHandler}>
             Log in / Sign up ➔
           </Button>
         </div>

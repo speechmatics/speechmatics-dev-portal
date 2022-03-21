@@ -1,4 +1,4 @@
-import { IPublicClientApplication } from '@azure/msal-browser';
+import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { useContext, useEffect, useState } from 'react';
 import { AuthenticationResult, InteractionRequiredAuthError } from '@azure/msal-common';
 import accountStoreContext from './account-store-context';
@@ -18,7 +18,9 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       scopes: [],
       account,
       extraQueryParameters,
-    };
+      authority:
+        'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_WITH_EMAIL',
+    } as SilentRequest;
 
     msalInstance
       .acquireTokenSilent(request)
