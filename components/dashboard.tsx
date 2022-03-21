@@ -129,6 +129,7 @@ export default observer(function Dashboard({ children }) {
           <Link href="/login">
             <Button variant="speechmatics">Go to Login</Button>
           </Link>
+          <Box display="none">{children}</Box>
         </Flex>
       )}
     </div>
