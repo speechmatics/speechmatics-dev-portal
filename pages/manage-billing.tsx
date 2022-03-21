@@ -68,7 +68,7 @@ export default observer(function ManageBilling({}) {
     <Dashboard>
       <PageHeader
         headerLabel="Manage billing"
-        introduction="Get started with using our platform your billing."
+        introduction="Manage your payments and usage limits."
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
