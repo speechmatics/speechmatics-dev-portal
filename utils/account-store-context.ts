@@ -48,11 +48,14 @@ export interface PaymentMethod {
 class AccountContext {
   _account: Account = null;
 
+  userHint: string = '';
+
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
       assignServerState: action,
+      userHint: observable,
     });
   }
 
