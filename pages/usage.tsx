@@ -33,6 +33,7 @@ import {
   CallSupportIcon,
   ExclamationIcon,
   PricingTags,
+  UsageInfoIcon,
   UsageLimitsIcon,
 } from '../components/Icons';
 
@@ -232,6 +233,14 @@ export default observer(function Usage() {
               DataDisplayComponent={UsageBreakdownGrid}
               isLoading={isLoading}
             />
+            <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
+              <Box>
+                <UsageInfoIcon />
+              </Box>
+              <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+                All usage is reported on a (UTC) calendar day basis and excludes the current day
+              </Text>
+            </Flex>
           </TabPanel>
         </TabPanels>
       </Tabs>

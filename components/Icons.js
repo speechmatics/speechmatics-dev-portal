@@ -59,6 +59,27 @@ export const ExclamationIconLarge = (props) => (
   </svg>
 );
 
+export const UsageInfoIcon = (props) => (
+  <svg width={25} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <g
+      clipPath="url(#a)"
+      stroke="#386DFB"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M22.767 2.501H1.648c-.555 0-1.005.448-1.005 1v19c0 .552.45 1 1.005 1h21.119c.555 0 1.005-.448 1.005-1v-19c0-.552-.45-1-1.005-1ZM5.672.501v5M18.744.501v5M.643 7.501h23.13" />
+      <path d="M17.236 15.5a4.98 4.98 0 0 1-.847 2.778 5.022 5.022 0 0 1-2.257 1.841 5.054 5.054 0 0 1-5.48-1.084 4.974 4.974 0 0 1-1.09-5.449 5.006 5.006 0 0 1 1.852-2.243 5.048 5.048 0 0 1 2.794-.843" />
+      <path d="m10.197 15 1.63 1.215a.505.505 0 0 0 .687-.08l4.723-5.635" />
+    </g>
+    <defs>
+      <clipPath id="a">
+        <path fill="#fff" transform="translate(.14)" d="M0 0h24.135v24H0z" />
+      </clipPath>
+    </defs>
+  </svg>
+);
+
 export const ExclamationIcon = (props) => (
   <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
