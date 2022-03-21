@@ -2,7 +2,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
-import { AccountIcon, LogoutIcon, SpeechmaticsLogoHorizontalWhite } from './Icons';
+import {
+  AccountIcon,
+  LogoutIcon,
+  SpeechmaticsLogo,
+  SpeechmaticsLogoHorizontalWhite,
+} from './Icons';
 import {
   Tooltip,
   Link as ChakraLink,
@@ -12,6 +17,8 @@ import {
   Text,
   Divider,
   HStack,
+  Button,
+  Flex,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -91,7 +98,18 @@ export default observer(function Dashboard({ children }) {
   };
 
   if (!isAuthenticated) {
-    return <>not logged in</>;
+    return (
+      <Flex width="100%" className="smPanel" alignItems="center" justifyContent="center">
+        <Flex direction="column" alignItems="center" className="sm_panel">
+          <SpeechmaticsLogo w={160} h={100} />
+          <Box>Your session expired. You'll be redirected to login page.</Box>
+          <Box>If the redirect won't work you can use this link </Box>
+          <Link href="/login">
+            <Button variant="speechmatics">Go to Login</Button>
+          </Link>
+        </Flex>
+      </Flex>
+    );
   }
 
   return (
