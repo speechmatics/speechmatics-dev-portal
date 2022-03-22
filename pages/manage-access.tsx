@@ -99,7 +99,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
     <Box width="100%" {...props}>
       <HeaderLabel>Generate an API Key</HeaderLabel>
       <DescriptionLabel>
-        You need an API Key (also known as an Authorization Token) to make calls to our REST API.
+        Create new keys to manage security or provide temporary access
       </DescriptionLabel>
       {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
         <HStack mt="1em" spacing="1em" width="100%">
