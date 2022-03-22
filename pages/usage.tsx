@@ -28,6 +28,7 @@ import {
   InfoBarbox,
   PageHeader,
   SmPanel,
+  UsageInfoBanner,
 } from '../components/common';
 import {
   CallSupportIcon,
@@ -184,6 +185,7 @@ export default observer(function Usage() {
                 />
               </GridItem>
             </Grid>
+
           </TabPanel>
           <TabPanel>
             <HeaderLabel>
@@ -226,6 +228,8 @@ export default observer(function Usage() {
               <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
             </Grid>
+            <UsageInfoBanner />
+
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Usage metrics</HeaderLabel>
@@ -235,20 +239,17 @@ export default observer(function Usage() {
               DataDisplayComponent={UsageBreakdownGrid}
               isLoading={isLoading}
             />
-            <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
-              <Box>
-                <UsageInfoIcon />
-              </Box>
-              <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-                All usage is reported on a (UTC) calendar day basis and excludes the current day
-              </Text>
-            </Flex>
+
+            <UsageInfoBanner />
+
           </TabPanel>
         </TabPanels>
       </Tabs>
     </Dashboard>
   );
 });
+
+
 
 const UsageBreakdownGrid = ({ data, isLoading }) => (
   <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">

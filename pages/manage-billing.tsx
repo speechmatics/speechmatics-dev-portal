@@ -28,6 +28,7 @@ import {
   pad,
   PageHeader,
   SmPanel,
+  UsageInfoBanner,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/Icons';
@@ -100,6 +101,8 @@ export default observer(function ManageBilling({ }) {
               DataDisplayComponent={PaymentsGrid}
               isLoading={isLoading}
             />
+
+            <UsageInfoBanner />
           </TabPanel>
         </TabPanels>
       </Tabs>

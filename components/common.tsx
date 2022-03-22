@@ -4,6 +4,7 @@ import {
   ChakraComponent,
   ComponentWithAs,
   Divider,
+  Flex,
   HStack,
   IconButton,
   Link,
@@ -24,6 +25,7 @@ import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
+import { UsageInfoIcon } from './Icons';
 import {
   usePagination,
   Pagination,
@@ -33,6 +35,18 @@ import {
   PaginationPage,
   PaginationNext,
 } from './pagination';
+
+
+
+export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
+  <Box>
+    <UsageInfoIcon />
+  </Box>
+  <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    All usage is reported on a (UTC) calendar day basis and excludes the current day
+  </Text>
+</Flex>
+
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',
