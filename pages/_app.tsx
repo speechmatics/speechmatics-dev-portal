@@ -22,7 +22,7 @@ export const msalInstance = new PublicClientApplication(msalConfig);
 // Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
 
-console.log("accounts:", accounts);
+console.log("accounts:", msalInstance.getAllAccounts());
 
 if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
@@ -32,6 +32,8 @@ msalInstance.addEventCallback((event) => {
   console.log('msalInstance.addEventCallback', { event });
   if (event.eventType === EventType.LOGIN_SUCCESS && (event.payload as any).account) {
     const account = (event.payload as any).account;
+    console.log("getAllAccounts:", msalInstance.getAllAccounts());
+
     msalInstance.setActiveAccount(account);
   }
 });
