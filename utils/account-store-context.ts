@@ -138,6 +138,8 @@ class AccountContext {
 class TokenContext {
   tokenPayload: AuthenticationResult = null;
 
+  authorityToUse: string = '';
+
   constructor() {
     makeObservable(this, {
       tokenPayload: observable,
