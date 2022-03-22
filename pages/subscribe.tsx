@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -267,7 +267,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       selector: '#chargify_address2',
       label: 'Address line 2',
       placeholder: '',
-      required: true,
+      required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
       style: defaultStyle,
