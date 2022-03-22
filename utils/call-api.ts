@@ -1,4 +1,5 @@
 import { createStandaloneToast } from '@chakra-ui/react';
+import { msalLogout } from './msal-utils';
 
 const toast = createStandaloneToast();
 
@@ -110,7 +111,9 @@ export const call = async (
       );
 
       if (response.status != 200 && response.status != 201) {
-        errToast(`response from ${method} ${apiEndpoint} has status ${response.status}`);
+        if (response.status == 401) {
+          msalLogout();
+        }
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 

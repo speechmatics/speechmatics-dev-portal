@@ -34,6 +34,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
         }
       })
       .catch((error) => {
+        setError(error);
         msalInstance.acquireTokenRedirect(request);
       });
   }, [msalInstance]);

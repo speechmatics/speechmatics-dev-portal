@@ -34,6 +34,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { msalLogout } from '../utils/msal-utils';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -51,6 +52,9 @@ export default observer(function Dashboard({ children }) {
   } = useDisclosure({ isOpen: false });
 
   const { instance, inProgress } = useMsal();
+
+  console.log({ instance, inProgress })
+
   const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
@@ -93,13 +97,12 @@ export default observer(function Dashboard({ children }) {
   const account = instance.getActiveAccount();
 
   const logout = () => {
-    accountStore.clear();
-    instance.logoutRedirect({ account: account });
+    msalLogout();
   };
 
   return (
     <div className="dashboard_container">
-      <UserNotAuthModal isModalOpen={!isAuthenticated} />
+      <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
@@ -182,7 +185,7 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
 
 function UserNotAuthModal({ isModalOpen }) {
   return (
-    <Modal isOpen={isModalOpen} onClose={() => {}} closeOnOverlayClick={false}>
+    <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalBody textAlign={'center'}>
@@ -251,3 +254,5 @@ function RightSidePanel({ logout, accountEmail }) {
     </Box>
   );
 }
+
+
