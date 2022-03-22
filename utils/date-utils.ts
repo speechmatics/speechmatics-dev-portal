@@ -1,4 +1,5 @@
 export function formatDate(date: Date) {
+  if (!date) return undefined;
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 

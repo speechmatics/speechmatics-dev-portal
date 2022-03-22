@@ -16,7 +16,6 @@ export const errToast = (descr: string | any) =>
 
 export const positiveToast = (descr: string) =>
   toast({
-    title: 'All fine.',
     description: descr,
     status: 'success',
     duration: 9000,
@@ -129,5 +128,3 @@ function getParams(paramsObj: { [key: string]: string | number }) {
     ''
   );
 }
-
-

@@ -190,8 +190,8 @@ export default observer(function Usage() {
           <TabPanel>
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')
-                ? `Usage until ${currentUsage?.until}`
-                : `Usage for the period: ${currentUsage?.billingRange}`}
+                ? `Usage until ${formatDate(new Date(currentUsage?.until))}`
+                : `Usage for the period: ${formatDate(new Date(aggregate?.since)) || ''} - ${formatDate(new Date(aggregate?.until)) || ''}`}
             </HeaderLabel>
 
             <Grid
@@ -286,7 +286,6 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
   return {
-    billingRange: `${aggregate?.since || ''} - ${aggregate?.until || ''}`,
     since: aggregate?.since,
     until: aggregate?.until,
     usageStandard:

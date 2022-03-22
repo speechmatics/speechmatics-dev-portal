@@ -83,7 +83,9 @@ function Subscribe({ }) {
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
           .then(async () => {
-            positiveToast('Card added successfully!');
+            positiveToast(!!accountStore.getPaymentMethod()
+              ? 'Card updates successfully!'
+              : 'Card added successfully!');
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
           })
@@ -162,7 +164,7 @@ function Subscribe({ }) {
               >
                 {submitButtonReady ? (
                   !!accountStore.getPaymentMethod() ? (
-                    'Replace the card'
+                    'Update card'
                   ) : (
                     'Add card'
                   )

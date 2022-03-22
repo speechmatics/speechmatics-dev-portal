@@ -95,6 +95,10 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
     generatedApikeyinputRef.current.select();
   }, []);
 
+  const inputOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((ev) => {
+    if (ev.key == "Enter") requestToken();
+  }, []);
+
   return (
     <Box width="100%" {...props}>
       <HeaderLabel>Generate an API Key</HeaderLabel>
@@ -122,6 +126,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
                 ref={nameInputRef}
                 p="1.55em 1em"
                 disabled={genTokenStage == 'waiting'}
+                onKeyDown={inputOnKeyDown}
               ></Input>
               <Button
                 variant="speechmatics"
