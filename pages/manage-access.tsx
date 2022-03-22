@@ -96,8 +96,11 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
   }, []);
 
   const inputOnKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((ev) => {
-    if (ev.key == "Enter") requestToken();
-  }, []);
+    if (ev.key == "Enter") {
+      ev.preventDefault();
+      requestToken();
+    }
+  }, [nameInputRef?.current?.value]);
 
   return (
     <Box width="100%" {...props}>
