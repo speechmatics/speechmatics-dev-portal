@@ -1,7 +1,12 @@
 import { createContext } from 'react';
 import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
 import { callGetAccounts, callPostAccounts, callRemoveApiKey, errToast } from './call-api';
-import { AuthenticationResult } from '@azure/msal-common';
+import {
+  AccountInfo,
+  AuthenticationResult,
+  InteractionRequiredAuthError,
+} from '@azure/msal-common';
+import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 
 class AccountContext {
   _account: Account = null;
@@ -141,6 +146,37 @@ class TokenContext {
   setTokenPayload(tokenPayload: AuthenticationResult) {
     this.tokenPayload = tokenPayload;
   }
+}
+
+export async function acquireTokenFlow(
+  msalInstance: IPublicClientApplication,
+  account: AccountInfo
+) {
+  const request = {
+    scopes: [],
+    account,
+  } as SilentRequest;
+
+  return msalInstance
+    .acquireTokenSilent(request)
+    .then((tokenResponse) => {
+      console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
+      return tokenResponse;
+    })
+    .catch(async (error) => {
+      if (error instanceof InteractionRequiredAuthError) {
+        // fallback to interaction when silent call fails
+        return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
+          console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
+          return tokenResponse;
+        });
+      }
+      console.log('acquireTokenSilenxt error', error);
+      throw new Error(`acquireTokenSilenxt error ${error}`);
+    })
+    .catch((error) => {
+      msalInstance.acquireTokenRedirect(request);
+    });
 }
 
 export function checkIfAccountResponseLegit(jsonResp: any) {
