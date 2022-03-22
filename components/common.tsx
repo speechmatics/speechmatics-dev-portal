@@ -76,7 +76,7 @@ export const InfoBarbox = ({
   </HStack>
 );
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -146,25 +146,21 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         {/* //TODO remove strict width */}
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${
-              accountStore.getRuntimeURL() || '$HOST'
-            }/v2/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl.exe -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              }" -F data_file=@example.wav -F config="<config.json"`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* mac */ curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              }" -F data_file=@example.wav -F config="$(cat config.json)"`}
           />
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`/* linux */ curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${
-              token || `NDFjOTE3NGEtOWVm`
-            }" -F data_file=@example.wav -F config="$(cat config.json)" | jq`}
+            code={`curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              }" -F data_file=@example.wav -F config="$(cat config.json)"`}
           />
         </TabPanel>
       </TabPanels>
