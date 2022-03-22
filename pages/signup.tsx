@@ -11,7 +11,7 @@ export default function SignUp() {
 
   const { instance, accounts, inProgress } = useMsal();
 
-  const { accountStore } = useContext(accountStoreContext);
+  const { accountStore, tokenStore } = useContext(accountStoreContext);
 
   console.log('accounts, inProgress', { accounts, inProgress });
 
@@ -32,6 +32,8 @@ export default function SignUp() {
       id_token_hint: userHint,
     };
     accountStore.userHint = userHint;
+    const authority = 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION';
+    tokenStore.authorityToUse = authority;
     const tokenQueryParameters = { grant_type: 'authorization_code' };
     let st: number;
     st = window.setTimeout(
@@ -41,8 +43,7 @@ export default function SignUp() {
             ...loginRequest,
             extraQueryParameters,
             tokenQueryParameters,
-            authority:
-              'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION',
+            authority,
           })
           .catch((error) => {
             console.log(error);

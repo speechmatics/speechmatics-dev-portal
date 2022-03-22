@@ -7,7 +7,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
   const [error, setError] = useState<any>();
-  const { accountStore } = useContext(accountStoreContext);
+  const { accountStore, tokenStore } = useContext(accountStoreContext);
 
   useEffect(() => {
     console.log('acquiring B2CToken', account);
@@ -15,6 +15,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
     const request = {
       scopes: [],
       account,
+      authority: tokenStore.authorityToUse,
     } as SilentRequest;
 
     msalInstance
