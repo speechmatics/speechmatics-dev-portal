@@ -35,10 +35,11 @@ import {
   SmPanel,
 } from '../components/common';
 import { ExclamationIcon, ExclamationIconLarge } from '../components/Icons';
+import { formatDate } from '../utils/date-utils';
 
 //accountStore.getRuntimeURL()
 
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Manage Access" introduction="Manage API keys" />
@@ -106,7 +107,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
             <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
               <ExclamationIcon />
               <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
-                You already have 5 tokens, remove one before requesting new.
+                Before generating a new API key, you need to remove an existing key.
               </Text>
             </HStack>
           ) : (
@@ -280,7 +281,7 @@ const PreviousTokens = observer(() => {
           <React.Fragment key={`${el.name}${el.created_at}`}>
             <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
             <GridItem>{el.name}</GridItem>
-            <GridItem>{new Date(el.created_at).toDateString()}</GridItem>
+            <GridItem>{formatDate(new Date(el.created_at))}</GridItem>
             <GridItem display="flex" justifyContent="flex-end" style={{ padding: '0.4em' }}>
               <IconButton
                 size="sm"
@@ -303,7 +304,7 @@ const PreviousTokens = observer(() => {
         {accountStore.isLoading && (
           <GridItem colSpan={3}>
             <Flex width="100%" justifyContent="center">
-              <Spinner />
+              <Spinner size='sm' />
               <Text ml="1em">One moment please...</Text>
             </Flex>
           </GridItem>

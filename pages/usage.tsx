@@ -36,6 +36,7 @@ import {
   UsageInfoIcon,
   UsageLimitsIcon,
 } from '../components/Icons';
+import { formatDate } from '../utils/date-utils';
 
 export default observer(function Usage() {
   const [usageJson, setUsageJson] = useState<UsageRespJson>({});
@@ -254,7 +255,7 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
       return (
         <React.Fragment key={el.since}>
           <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
-          <GridItem>{el.since}</GridItem>
+          <GridItem>{formatDate(new Date(el.since))}</GridItem>
           <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         </React.Fragment>
       );
@@ -263,14 +264,14 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
       <GridItem colSpan={2}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
-          <Text ml="1em">You don’t currently have any usage data</Text>
+          <Text ml="1em">You don't currently have any usage data</Text>
         </Flex>
       </GridItem>
     )}
     {isLoading && (
       <GridItem colSpan={2}>
         <Flex width="100%" justifyContent="center">
-          <Spinner />
+          <Spinner size='sm' />
           <Text ml="1em">One moment please...</Text>
         </Flex>
       </GridItem>

@@ -33,6 +33,7 @@ import Dashboard from '../components/dashboard';
 import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/Icons';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
+import { formatDate } from '../utils/date-utils';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -58,7 +59,7 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
 
@@ -175,12 +176,12 @@ const PaymentsGrid = ({ data, isLoading }) => (
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
         <GridItem whiteSpace="nowrap">
-          {el.start_date} - {el.end_date}
+          {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         <GridItem>${el.total_cost}</GridItem>
         <GridItem whiteSpace="nowrap">
-          {el.status === 'due' ? `Due on ${el.billing_date}` : `Paid`}
+          {el.status === 'due' ? `Due on ${formatDate(new Date(el.billing_date))}` : `Paid`}
         </GridItem>
       </React.Fragment>
     ))}
@@ -195,7 +196,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
     {isLoading && (
       <GridItem colSpan={4}>
         <Flex width="100%" justifyContent="center">
-          <Spinner />
+          <Spinner size='sm' />
           <Text ml="1em">One moment please...</Text>
         </Flex>
       </GridItem>
