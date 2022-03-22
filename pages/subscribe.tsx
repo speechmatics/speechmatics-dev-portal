@@ -83,7 +83,7 @@ function Subscribe({ }) {
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
           .then(async () => {
-            positiveToast('token SUCCESS redirecting...');
+            positiveToast('Card added successfully!');
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
           })
