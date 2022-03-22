@@ -166,11 +166,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
             minute.
           </Text>
           <CodeExamples token={generatedApikey} />
-          <HStack>
-            <Button variant="speechmatics" onClick={() => setGenTokenStage('init')}>
-              Great!
-            </Button>
-          </HStack>
+
         </VStack>
       )}
       {genTokenStage == 'error' && (
