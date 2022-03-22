@@ -141,7 +141,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
       )}
 
       {genTokenStage == 'generated' && (
-        <VStack alignItems="flex-start" spacing="1.5em">
+        <VStack alignItems="flex-start" spacing="1.5em" mt='1.5em'>
           <Box fontSize={22} position="relative" width="100%">
             <Input
               bg="smBlack.100"
