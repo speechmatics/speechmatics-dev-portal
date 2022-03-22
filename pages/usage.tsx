@@ -88,6 +88,34 @@ export default observer(function Usage() {
             <HeaderLabel>Usage limits</HeaderLabel>
             <DescriptionLabel>Hours of audio per month</DescriptionLabel>
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
+              <GridItem bg="smGreen.200" className="flexColumnBetween">
+                <HStack p="1em 1em 1em 1em">
+                  <img src="/assets/temp_rocketIcon.png" />
+                  <Box mt="1em" pl="1em">
+                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
+                      ENHANCED MODEL
+                    </Text>
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
+                      {accountStore.isLoading ? (
+                        <Spinner size="sm" />
+                      ) : (
+                        accountStore.getUsageLimit('enhanced')
+                      )}{' '}
+                      hours / month
+                    </Text>
+                  </Box>
+                </HStack>
+                <Box
+                  bg="smGreen.100"
+                  p=".8em 1em .8em 1em"
+                  borderTop="1px solid"
+                  borderColor="smGreen.400"
+                >
+                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
+                    Speechmatics Enhanced Model provides our very highest level of accuracy.
+                  </Text>
+                </Box>
+              </GridItem>
               <GridItem bg="smBlue.200" className="flexColumnBetween">
                 <HStack p="1.3em 1em 1em 1em">
                   <img src="/assets/temp_baloonIcon.png" />
@@ -117,34 +145,7 @@ export default observer(function Usage() {
                   </Text>
                 </Box>
               </GridItem>
-              <GridItem bg="smGreen.200" className="flexColumnBetween">
-                <HStack p="1em 1em 1em 1em">
-                  <img src="/assets/temp_rocketIcon.png" />
-                  <Box mt="1em" pl="1em">
-                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      ENHANCED MODEL
-                    </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
-                      {accountStore.isLoading ? (
-                        <Spinner size="sm" />
-                      ) : (
-                        accountStore.getUsageLimit('enhanced')
-                      )}{' '}
-                      hours / month
-                    </Text>
-                  </Box>
-                </HStack>
-                <Box
-                  bg="smGreen.100"
-                  p=".8em 1em .8em 1em"
-                  borderTop="1px solid"
-                  borderColor="smGreen.400"
-                >
-                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
-                    Speechmatics Enhanced Model provides our very highest level of accuracy.
-                  </Text>
-                </Box>
-              </GridItem>
+
               <GridItem colSpan={2}>
                 <HStack
                   width="100%"
@@ -202,17 +203,6 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Hours used</GridItem>
               <GridItem className="grid_header">Requests made</GridItem>
 
-              <GridItem>Standard Model</GridItem>
-              <GridItem>
-                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
-              </GridItem>
-              <GridItem data-qa="usage-standard">
-                {Number(currentUsage?.usageStandard).toFixed(2)} hours
-              </GridItem>
-              <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
-              <GridItem className="grid_row_divider">
-                <hr />
-              </GridItem>
               <GridItem>Enhanced Model</GridItem>
               <GridItem>
                 {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
@@ -221,6 +211,20 @@ export default observer(function Usage() {
                 {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
               </GridItem>
               <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
+
+              <GridItem className="grid_row_divider">
+                <hr />
+              </GridItem>
+
+              <GridItem>Standard Model</GridItem>
+              <GridItem>
+                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
+              </GridItem>
+              <GridItem data-qa="usage-standard">
+                {Number(currentUsage?.usageStandard).toFixed(2)} hours
+              </GridItem>
+              <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+
             </Grid>
           </TabPanel>
           <TabPanel>
