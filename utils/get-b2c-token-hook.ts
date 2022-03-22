@@ -19,7 +19,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       account,
       extraQueryParameters,
       authority:
-        'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY',
+        'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION',
     } as SilentRequest;
 
     msalInstance
