@@ -116,7 +116,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', {}> = observer((prop
                 variant="speechmatics"
                 flex="1"
                 type="text"
-                placeholder="your token's name here"
+                placeholder="Enter a name for your API key"
                 onChange={(ev) => setChosenTokenName(ev.target.value)}
                 style={{ border: noNameError ? '1px solid red' : '' }}
                 ref={nameInputRef}
