@@ -84,7 +84,7 @@ function Subscribe({ }) {
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
           .then(async () => {
             positiveToast(!!accountStore.getPaymentMethod()
-              ? 'Card updates successfully!'
+              ? 'Card updated successfully!'
               : 'Card added successfully!');
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
