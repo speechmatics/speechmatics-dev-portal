@@ -106,14 +106,13 @@ export const call = async (
         apiEndpoint,
         options,
         'is:',
-        await response.clone().json(),
+        await jsonCopy(response.clone()),
         response
       );
-
+      if (response.status == 401) {
+        msalLogout();
+      }
       if (response.status != 200 && response.status != 201) {
-        if (response.status == 401) {
-          msalLogout();
-        }
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 
@@ -130,4 +129,10 @@ function getParams(paramsObj: { [key: string]: string | number }) {
     (prev, curr, i) => `${prev}${i != 0 ? '&' : ''}${curr}=${paramsObj[curr]}`,
     ''
   );
+}
+
+async function jsonCopy(response: Response) {
+  try {
+    response.json();
+  } catch (e) {}
 }
