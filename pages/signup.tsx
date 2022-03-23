@@ -24,6 +24,7 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
+  //1
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
