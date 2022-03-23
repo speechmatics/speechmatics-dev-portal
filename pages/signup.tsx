@@ -13,6 +13,9 @@ export default function SignUp() {
 
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
+
+  const [b2cError, setb2cError] = useState('');
+
   console.log('accounts, inProgress', { accounts, inProgress });
 
   useEffect(() => {
@@ -28,7 +31,14 @@ export default function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
-    if (!userHint || (decodeURI(window?.location.hash).includes('AADB2C90091'))) return;
+    if (!userHint) {
+      setb2cError("hint parameter expected");
+      return;
+    };
+    if ((decodeURI(window?.location.hash).includes('AADB2C90091'))) {
+      setb2cError("Account creation cancelled");
+      return;
+    }
     console.log(`urlParams ${urlParams}`);
     const extraQueryParameters = {
       id_token_hint: userHint,
@@ -56,18 +66,12 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, []);
 
-  const [b2cError, setb2cError] = useState('');
-  useEffect(() => {
-    if (window?.location.hash && (decodeURI(window?.location.hash).includes('AADB2C90091'))) {
-      setb2cError("Flow cancelled");
-    }
-  }, [typeof window !== 'undefined' && window?.location.hash]);
 
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-      <Text textAlign="center">{b2cError}</Text>
-      <Text textAlign="center">Just one more step and you're set! redirecting...</Text>
+      <Text textAlign="center"></Text>
+      <Text textAlign="center">{b2cError || "Just one more thing and you're set! redirecting..."}</Text>
     </div>
   );
 }
