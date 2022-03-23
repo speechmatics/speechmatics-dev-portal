@@ -133,6 +133,6 @@ function getParams(paramsObj: { [key: string]: string | number }) {
 
 async function jsonCopy(response: Response) {
   try {
-    response.json();
+    return response.json();
   } catch (e) {}
 }
