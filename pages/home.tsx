@@ -41,7 +41,7 @@ export default function Home({ }) {
       </div>
 
       <div className='learn_wrapper'>
-        <div className='learn p-8'>
+        <div className='card'>
           <div className='w-8 h-8 items-center justify-center mb-3'>
             <Image
               src="/assets/icon-test.svg"
@@ -54,7 +54,7 @@ export default function Home({ }) {
           <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
           <a href='#'>Learn More</a>
         </div>
-        <div className='learn'>
+        <div className='card'>
           <div className='w-8 h-8 items-center justify-center mb-3'>
             <Image
               src="/assets/icon-test.svg"
@@ -67,7 +67,7 @@ export default function Home({ }) {
           <p>How to use the RESTful API for the Speechmatics Cloud Offering.</p>
           <a href='#'>Learn More</a>
         </div>
-        <div className='learn'>
+        <div className='card'>
           <div className='w-8 h-8 items-center justify-center mb-3'>
             <Image
               src="/assets/icon-test.svg"

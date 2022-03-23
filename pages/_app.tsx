@@ -50,8 +50,14 @@ export default function MyApp({ Component, pageProps }) {
                 width={208}
                 height={20}
               />
-              <div className='email-profile'>
-                michaelalmond@live.co.uk
+              <div className='profile'>
+                michaelalmond@live.co.uk <span className='arrow'>></span>
+                <div className='profile_dropdown absolute bg-speech-navy w-full'>
+                  <ul>
+                    <li>Profile</li>
+                    <li>Logout</li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div className="content">

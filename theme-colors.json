@@ -4,6 +4,10 @@
   "speech-navy": "#263243",
   "speech-font": "#5E6673",
   "speech-light-blue": "#F9FBFD",
+  "speech-light-grey": "#F4F6F9",
+  "speech-orange": "#E27919",
+  "speech-red": "#D82C2C",
+  "speech-grey": "#E27919",
   "white": "#FFFFFF",
   "black": "#000000"
 }

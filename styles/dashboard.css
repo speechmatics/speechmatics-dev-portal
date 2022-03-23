@@ -2,24 +2,32 @@
   @apply bg-speech-navy text-white p-5 fixed z-50 inset-x-0 top-0 flex justify-between;
 }
 
+.header .profile_dropdown {
+  @apply opacity-0;
+}
+
+.header:hover .profile_dropdown {
+  @apply opacity-90;
+}
+
 .dashboard_container {
-  @apply h-full flex flex-row bg-speech-light-blue; 
+  @apply h-full flex flex-col lg:flex-row bg-speech-light-blue; 
 }
 
 .dashboard_sidenav {
-  @apply items-center justify-start flex flex-col shrink-0 bg-white w-[320px] border-r border-speech-navy border-solid border-opacity-20;
+  @apply items-center justify-start flex flex-col lg:fixed lg:h-full shrink-0 bg-white lg:w-[320px] lg:pt-[7vh] border-r border-speech-navy border-solid border-opacity-20;
 }
 
 .dashboard_content {
-  @apply flex flex-row flex-1 justify-center mt-28 pb-12;
+  @apply flex flex-row flex-1 justify-center mt-8 pb-12 lg:mt-[7vh] lg:ml-[320px];
 }
 
 .dashboard_content_wrapper {
-  @apply flex flex-col flex-1 max-w-screen-lg mx-16;
+  @apply flex flex-col flex-1 max-w-screen-lg mx-8 lg:mx-16;
 }
 
 .dashboard_content_wrapper h1 {
-  @apply font-bold text-speech-navy text-4xl mb-4;
+  @apply font-bold text-speech-navy text-4xl mb-4 leading-tight;
 }
 
 .dashboard_content_wrapper h2 {
@@ -46,7 +54,12 @@ h1 {
 }
 
 .nav_menu {
-  @apply flex flex-col w-full items-stretch pl-16 text-lg sticky top-44;
+  @apply flex flex-row w-full items-stretch text-lg;
+}
+@screen lg {
+  .nav_menu {
+    @apply flex-col pl-16 mt-3 sticky;
+  }
 }
 
 .menu_elem {;
@@ -251,16 +264,16 @@ h1 {
   @apply grid grid-cols-3 gap-10;
 }
 
-.learn {
-  @apply bg-white p-8 shadow flex flex-col;
+.card {
+  @apply bg-white p-8 shadow-md flex flex-col;
 }
 
-.learn h3 {
+.card h3 {
   @apply text-xl mb-3 font-semibold;
 }
-.learn p {
+.card p {
   @apply text-base mb-5 text-speech-font flex-1;
 }
-.learn a {
+.card a {
   @apply text-base text-speech-blue;
 }
