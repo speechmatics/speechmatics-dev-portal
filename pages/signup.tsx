@@ -27,7 +27,7 @@ export default function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
-    if (!userHint) return;
+    if (!userHint || (decodeURI(window?.location.hash).includes('AADB2C90091'))) return;
     console.log(`urlParams ${urlParams}`);
     const extraQueryParameters = {
       id_token_hint: userHint,
@@ -57,7 +57,9 @@ export default function SignUp() {
 
   const [b2cError, setb2cError] = useState('');
   useEffect(() => {
-    if (window?.location.hash) setb2cError(decodeURI(window?.location.hash));
+    if (window?.location.hash && (decodeURI(window?.location.hash).includes('AADB2C90091'))) {
+      setb2cError("Flow cancelled");
+    }
   }, [typeof window !== 'undefined' && window?.location.hash]);
 
   return (
