@@ -27,7 +27,7 @@ export default function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
-    console.log(`urlParams ${userHint} ${window.location}`);
+    console.log(`urlParams ${urlParams}`);
     const extraQueryParameters = {
       id_token_hint: userHint,
     };
@@ -48,7 +48,7 @@ export default function SignUp() {
           .catch((error) => {
             console.log(error);
           }),
-      2000
+      5000
     );
 
     return () => window.clearTimeout(st);
