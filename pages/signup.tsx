@@ -31,14 +31,14 @@ export default function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
+    if ((decodeURI(window.location.hash).includes('AADB2C90091'))) {
+      setb2cError("Account creation cancelled");
+      return;
+    }
     if (!userHint) {
       setb2cError("hint parameter expected");
       return;
     };
-    if ((decodeURI(window?.location.hash).includes('AADB2C90091'))) {
-      setb2cError("Account creation cancelled");
-      return;
-    }
     console.log(`urlParams ${urlParams}`);
     const extraQueryParameters = {
       id_token_hint: userHint,
