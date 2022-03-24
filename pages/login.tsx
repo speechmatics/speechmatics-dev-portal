@@ -10,6 +10,12 @@ export default function Login() {
 
   const { instance, accounts, inProgress } = useMsal();
 
+  const loginRequest = {
+    scopes: [],
+    authority:
+      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_WITH_EMAIL',
+  };
+
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length > 0) {
