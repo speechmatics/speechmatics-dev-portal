@@ -53,8 +53,6 @@ export default observer(function Dashboard({ children }) {
 
   const { instance, inProgress } = useMsal();
 
-  console.log({ instance, inProgress })
-
   const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {

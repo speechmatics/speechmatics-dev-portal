@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 
 export default function Login() {
   const router = useRouter();
@@ -25,14 +25,19 @@ export default function Login() {
     });
   };
 
+  const x = new URLSearchParams(global.window?.location.search)
+  const loggedOutInfo = x.get('inactive') == 'true' ? <div>You were logged out due expired session.</div> : null;
+
+
   const LoginSub = () => {
-    if (accounts.length > 0) {
+    if (inProgress == 'startup' || inProgress == 'handleRedirect' || (accounts.length > 0 && inProgress === 'none')) {
       return <div className="login_text">You're logged in, let me redirect you...</div>;
-    } else if (inProgress === 'login') {
+    } else if (inProgress == 'login') {
       return <div className="login_text">Login is currently in progress!</div>;
-    } else if (inProgress === 'none' && accounts.length == 0) {
+    } else if (inProgress == 'none' && accounts.length == 0) {
       return (
         <div className="login_form">
+          {loggedOutInfo}
           <Button variant="speechmatics" onClick={loginHandler}>
             Log in / Sign up ➔
           </Button>
@@ -41,10 +46,10 @@ export default function Login() {
     } else return <></>;
   };
 
+
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-
       <LoginSub />
     </div>
   );

@@ -110,7 +110,7 @@ export const call = async (
         response
       );
       if (response.status == 401) {
-        msalLogout();
+        msalLogout(true);
       }
       if (response.status != 200 && response.status != 201) {
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
@@ -133,6 +133,8 @@ function getParams(paramsObj: { [key: string]: string | number }) {
 
 async function jsonCopy(response: Response) {
   try {
-    return response.json();
-  } catch (e) {}
+    return response.json().catch(console.error);
+  } catch (e) {
+    return '';
+  }
 }
