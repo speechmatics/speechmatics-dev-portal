@@ -2,12 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
-import {
-  AccountIcon,
-  LogoutIcon,
-  SpeechmaticsLogo,
-  SpeechmaticsLogoHorizontalWhite,
-} from './Icons';
+
 import {
   Tooltip,
   Link as ChakraLink,
@@ -35,6 +30,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
+import { SpeechmaticsLogoHorizontalWhite, SpeechmaticsLogo, AccountIcon, LogoutIcon } from './icons-library';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },

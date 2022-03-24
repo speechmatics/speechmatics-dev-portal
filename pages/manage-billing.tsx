@@ -31,7 +31,7 @@ import {
   UsageInfoBanner,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/Icons';
+import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/icons-library';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, errToast } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';

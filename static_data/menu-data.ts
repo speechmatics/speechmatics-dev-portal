@@ -4,7 +4,7 @@ import {
   UsageIcon,
   AccessTokenIcon,
   HomeIcon,
-} from '../components/Icons';
+} from '../components/icons-library';
 
 const menuData = [
   {

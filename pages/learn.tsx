@@ -21,11 +21,11 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { JobSubmitIcon } from '../components/Icons';
+import { JobSubmitIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-export default function Learn({}) {
+export default function Learn({ }) {
   const [isYtModalOpen, setIsYtModalOpen] = useState(false);
 
   const onYtModalClose = () => {

@@ -25,7 +25,8 @@ import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { UsageInfoIcon } from './Icons';
+import { UsageInfoIcon } from './icons-library';
+
 import {
   usePagination,
   Pagination,

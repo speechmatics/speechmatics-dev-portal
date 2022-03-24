@@ -34,7 +34,7 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { ExclamationIcon, ExclamationIconLarge } from '../components/Icons';
+import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 
 //accountStore.getRuntimeURL()

@@ -8,9 +8,9 @@ import {
   LookingGlassChartIcon,
   PadLockOpenIcon,
   TerminalGraphIcon,
-} from '../components/Icons';
+} from '../components/icons-library';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service" />

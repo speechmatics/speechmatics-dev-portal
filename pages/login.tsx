@@ -1,4 +1,4 @@
-import { SpeechmaticsLogo } from '../components/Icons';
+import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';

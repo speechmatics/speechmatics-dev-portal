@@ -38,7 +38,7 @@ import {
   RocketIcon,
   UsageInfoIcon,
   UsageLimitsIcon,
-} from '../components/Icons';
+} from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 
 export default observer(function Usage() {
