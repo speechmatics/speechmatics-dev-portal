@@ -4,7 +4,7 @@ import React from 'react';
 export const RocketIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width={40}
-    height={90}
+    height={70}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
