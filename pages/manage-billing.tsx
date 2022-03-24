@@ -182,7 +182,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
           {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
-        <GridItem>${el.total_cost}</GridItem>
+        <GridItem>${Number(el.total_cost).toFixed(2)}</GridItem>
         <GridItem whiteSpace="nowrap">
           {el.status === 'due' ? `Due on ${formatDate(new Date(el.billing_date))}` : `Paid`}
         </GridItem>

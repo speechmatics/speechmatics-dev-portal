@@ -109,7 +109,7 @@ function Subscribe({ }) {
       <h1>
         {!!accountStore.getPaymentMethod()
           ? 'Replace your existing payment card'
-          : 'Set up new subscription'}
+          : 'Add a payment card to your account'}
       </h1>
 
       <div>

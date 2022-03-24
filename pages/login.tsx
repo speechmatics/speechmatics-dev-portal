@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@chakra-ui/react';
 
 export default function Login() {
   const router = useRouter();
@@ -31,9 +31,9 @@ export default function Login() {
 
   const LoginSub = () => {
     if (inProgress == 'startup' || inProgress == 'handleRedirect' || (accounts.length > 0 && inProgress === 'none')) {
-      return <div className="login_text">You're logged in, let me redirect you...</div>;
+      return <div className="login_text"><Spinner /></div>;
     } else if (inProgress == 'login') {
-      return <div className="login_text">Login is currently in progress!</div>;
+      return <div className="login_text"><Spinner /></div>;
     } else if (inProgress == 'none' && accounts.length == 0) {
       return (
         <div className="login_form">
