@@ -2,8 +2,7 @@ import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../utils/auth-config';
-import { Box, Button, Spinner } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 
 export default function Login() {
   const router = useRouter();
