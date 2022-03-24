@@ -26,7 +26,7 @@ export default function Login() {
   };
 
   const x = new URLSearchParams(global.window?.location.search)
-  const loggedOutInfo = x.get('inactive') == 'true' ? <div>You were logged out due expired session.</div> : null;
+  const loggedOutInfo = x.get('inactive') == 'true' ? <div>You were logged out due to expired session.</div> : null;
 
 
   const LoginSub = () => {
