@@ -60,7 +60,7 @@ export default function SignUp() {
           .catch((error) => {
             console.log(error);
           }),
-      3000
+      10000
     );
 
     return () => window.clearTimeout(st);
