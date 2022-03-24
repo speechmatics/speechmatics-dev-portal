@@ -4,6 +4,7 @@ import { useContext, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { Button, Spinner } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
+import { RedirectRequest } from '@azure/msal-browser';
 
 export default function Login() {
   const router = useRouter();
@@ -18,7 +19,8 @@ export default function Login() {
   const loginRequest = {
     scopes: [],
     authority,
-  };
+    redirectUri: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
+  } as RedirectRequest;
 
   useEffect(() => {
     let st: number;
@@ -49,7 +51,7 @@ export default function Login() {
         <div className="login_form">
           {loggedOutInfo}
           <Button variant="speechmatics" onClick={loginHandler}>
-            Log in / Sign up ➔
+            Log in ➔
           </Button>
         </div>
       );
