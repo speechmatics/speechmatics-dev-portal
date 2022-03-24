@@ -48,17 +48,17 @@ export default function Learn({ }) {
         <Grid gridTemplateColumns="1fr 1fr 1fr" gap="1.5em">
           {elems.map((el, i) => (
             <React.Fragment key={i}>
-              <Link href="http://docs.speechmatics.com">
-                <SmPanel justifyContent="space-between" p="1.5em" height="100%">
-                  <Box>
-                    <HeaderLabel>{el.title}</HeaderLabel>
-                    <DescriptionLabel>{el.descr}</DescriptionLabel>
-                  </Box>
+              <SmPanel justifyContent="space-between" p="1.5em" height="100%">
+                <Box>
+                  <HeaderLabel>{el.title}</HeaderLabel>
+                  <DescriptionLabel>{el.descr}</DescriptionLabel>
+                </Box>
+                <Link href={el.link} target='_blank'>
                   <Box fontFamily="RMNeue-Regular" color="smBlue.500">
                     <a>Read Article &gt;</a>
                   </Box>
-                </SmPanel>
-              </Link>
+                </Link>
+              </SmPanel>
             </React.Fragment>
           ))}
         </Grid>
@@ -88,24 +88,42 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
 };
 
 const elems = [
-  { title: 'Release Notes', descr: "What's new in our SaaS" },
+  {
+    title: 'Release Notes',
+    descr: "What's new in our SaaS",
+    link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
+  },
   {
     title: 'Introduction',
     descr: 'How to use the RESTful API for the Speechmatics Cloud Offering.',
+    link: 'https://docs.speechmatics.com/en/cloud/introduction/'
   },
   {
     title: 'API How-To Guide',
     descr: 'Examples and guidance on using the Speechmatics Cloud Offering.',
+    link: 'https://docs.speechmatics.com/en/cloud/howto/'
+
   },
-  { title: 'Entities', descr: 'What entities are, and how they are formatted' },
+  {
+    title: 'Entities', descr: 'What entities are, and how they are formatted',
+    link: 'https://docs.speechmatics.com/en/cloud/entities/'
+  },
   {
     title: 'Configuring the Job Request',
     descr: 'How to configure your requests to take advantage of Speechmatics features.',
+    link: 'https://docs.speechmatics.com/en/cloud/configuring-job-request/'
   },
   {
     title: 'Understanding SaaS Usage',
-    descr: 'How to configure your requests to take advantage of Speechmatics features.',
+    descr: '',
+    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
   },
-  { title: 'Troubleshooting', descr: 'Resolving errors with the Cloud Offering.' },
-  { title: 'API Reference', descr: 'Reference guide for the ASR REST API.' },
+  {
+    title: 'Troubleshooting', descr: 'Resolving errors with the Cloud Offering.',
+    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
+  },
+  {
+    title: 'API Reference', descr: 'Reference guide for the ASR REST API.',
+    link: 'https://docs.speechmatics.com/en/cloud/saasv2api/'
+  },
 ];
