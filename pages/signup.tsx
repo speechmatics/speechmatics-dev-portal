@@ -4,11 +4,14 @@ import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
 import { Button, Text } from '@chakra-ui/react';
+import accountStoreContext from '../utils/account-store-context';
 
 export default function SignUp() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
+
+  const { accountStore } = useContext(accountStoreContext);
 
   console.log('accounts, inProgress', { accounts, inProgress });
 
@@ -23,11 +26,12 @@ export default function SignUp() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(`urlParams ${urlParams.get('hint')} ${window.location}`);
+    const userHint = urlParams.get('hint');
+    console.log(`urlParams ${userHint} ${window.location}`);
     const extraQueryParameters = {
-      id_token_hint: urlParams.get('hint'),
-      grant_type: 'authorization_code',
+      id_token_hint: userHint,
     };
+    accountStore.userHint = userHint;
     const tokenQueryParameters = { grant_type: 'authorization_code' };
     let st: number;
     st = window.setTimeout(

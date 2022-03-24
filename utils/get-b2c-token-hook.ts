@@ -1,18 +1,23 @@
 import { IPublicClientApplication } from '@azure/msal-browser';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthenticationResult, InteractionRequiredAuthError } from '@azure/msal-common';
+import accountStoreContext from './account-store-context';
 
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
   const [error, setError] = useState<any>();
+  const { accountStore } = useContext(accountStoreContext);
 
   useEffect(() => {
-    console.log('acquiring B2CToken');
-
+    console.log('acquiring B2CToken', account);
+    const extraQueryParameters = {
+      id_token_hint: accountStore.userHint,
+    };
     const request = {
       scopes: [],
       account,
+      extraQueryParameters,
     };
 
     msalInstance
