@@ -108,7 +108,7 @@ function Subscribe({ }) {
     <Dashboard>
       <h1>
         {!!accountStore.getPaymentMethod()
-          ? 'Replace the existing payment method'
+          ? 'Replace your existing payment card'
           : 'Set up new subscription'}
       </h1>
 
