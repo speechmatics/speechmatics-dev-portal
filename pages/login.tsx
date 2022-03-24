@@ -1,18 +1,23 @@
 import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { Button, Spinner } from '@chakra-ui/react';
+import accountStoreContext from '../utils/account-store-context';
 
 export default function Login() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
+  const { accountStore, tokenStore } = useContext(accountStoreContext);
+
+  const authority = 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY';
+
+  tokenStore.authorityToUse = authority;
 
   const loginRequest = {
     scopes: [],
-    authority:
-      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY',
+    authority,
   };
 
   useEffect(() => {
