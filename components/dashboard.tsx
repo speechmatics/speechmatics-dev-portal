@@ -101,7 +101,7 @@ export default observer(function Dashboard({ children }) {
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
-      <HeaderBar logout={logout} accountEmail={account?.username} />
+      <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <div className="dashboard_contents" tabIndex={0}>
         <div className="dashboard_sidenav">
           <Menu />
