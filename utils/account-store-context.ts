@@ -144,6 +144,7 @@ class TokenContext {
     makeObservable(this, {
       tokenPayload: observable,
       setTokenPayload: action,
+      authorityToUse: observable,
     });
   }
 

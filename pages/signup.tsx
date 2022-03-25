@@ -13,10 +13,7 @@ export default function SignUp() {
 
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
-
   const [b2cError, setb2cError] = useState('');
-
-  console.log('accounts, inProgress', { accounts, inProgress });
 
   useEffect(() => {
     let st: number;
@@ -27,7 +24,9 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-
+  const authority = process.env.INVITATION_SIGNUP_POLICY;
+  tokenStore.authorityToUse = authority;
+  console.log('setting tokenStore.authorityToUse', authority);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -42,10 +41,8 @@ export default function SignUp() {
     };
 
     accountStore.userHint = userHint;
-    const authority = process.env.INVITATION_SIGNUP_POLICY;
-    tokenStore.authorityToUse = authority;
 
-    console.log('setting tokenStore.authorityToUse', authority);
+
 
     if (inProgress == 'none' && accounts.length > 0) return;
 

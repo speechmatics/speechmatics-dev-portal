@@ -17,6 +17,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       scopes: [],
       account,
       authority: tokenStore.authorityToUse,
+      extraQueryParameters: { id_token_hint: accountStore.userHint },
     } as SilentRequest;
 
     msalInstance
