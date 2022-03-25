@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      TEST_IF_WORKS_ENV_VAR: 'mango stone'
+      TEST_IF_WORKS_ENV_VAR: 'orange moss'
       REDIRECT_URI: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
       REDIRECT_URI_INVITATION: 'https://orange-moss-04e884a03.1.azurestaticapps.net/signup/'
       POST_LOGOUT_REDIRECT_URI: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
