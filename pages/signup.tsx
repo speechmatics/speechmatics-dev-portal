@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
-import { Button, Text } from '@chakra-ui/react';
+import { Button, Spinner, Text } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
 
 export default function SignUp() {
@@ -27,7 +27,8 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-  //1
+
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
@@ -39,13 +40,21 @@ export default function SignUp() {
       setb2cError("hint parameter expected");
       return;
     };
-    console.log(`urlParams ${urlParams}`);
-    const extraQueryParameters = {
-      id_token_hint: userHint,
-    };
+
     accountStore.userHint = userHint;
     const authority = process.env.INVITATION_SIGNUP_POLICY;
     tokenStore.authorityToUse = authority;
+
+    console.log('setting tokenStore.authorityToUse', authority);
+
+    if (inProgress == 'none' && accounts.length > 0) return;
+
+    console.log(`urlParams ${urlParams}`);
+
+    const extraQueryParameters = {
+      id_token_hint: userHint,
+    };
+
     const tokenQueryParameters = { grant_type: 'authorization_code' };
     let st: number;
     st = window.setTimeout(
@@ -61,7 +70,7 @@ export default function SignUp() {
           .catch((error) => {
             console.log(error);
           }),
-      1000
+      2000
     );
 
     return () => window.clearTimeout(st);
@@ -72,7 +81,7 @@ export default function SignUp() {
     <div className="login_container">
       <SpeechmaticsLogo />
       <Text textAlign="center"></Text>
-      <Text textAlign="center">{b2cError || "Just one more thing and you're set! redirecting..."}</Text>
+      <Text textAlign="center">{b2cError || <Spinner />}</Text>
     </div>
   );
 }
