@@ -11,6 +11,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
 
   useEffect(() => {
     console.log('acquiring B2CToken', account);
+    console.log('tokenStore.authorityToUse', tokenStore.authorityToUse);
 
     const request = {
       scopes: [],
