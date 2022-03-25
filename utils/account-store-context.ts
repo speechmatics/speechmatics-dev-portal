@@ -12,6 +12,7 @@ class AccountContext {
   _account: Account = null;
 
   isLoading: boolean = false;
+  userHint: string = '';
 
   constructor() {
     makeObservable(this, {
@@ -19,6 +20,7 @@ class AccountContext {
       _account: observable,
       assignServerState: action,
       isLoading: observable,
+      userHint: observable,
     });
   }
 
@@ -135,6 +137,8 @@ class AccountContext {
 
 class TokenContext {
   tokenPayload: AuthenticationResult = null;
+
+  authorityToUse: string = '';
 
   constructor() {
     makeObservable(this, {

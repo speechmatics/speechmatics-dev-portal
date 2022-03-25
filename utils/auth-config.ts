@@ -1,33 +1,16 @@
 import { LogLevel } from '@azure/msal-browser';
 
 export const b2cPolicies = {
-  names: {
-    signUpSignIn: process.env.SIGNUP_SIGNIN_POLICY || 'B2C_1_susi',
-    forgotPassword: process.env.RESET_PASS_POLICY || 'B2C_1_reset',
-    editProfile: process.env.EDIT_PROFILE_POLICY || 'B2C_1_edit_profile',
-  },
-  authorities: {} as any,
   authorityDomain: process.env.AUTHORITY_DOMAIN,
   policyDomain: process.env.POLICY_DOMAIN,
-};
-
-b2cPolicies.authorities = {
-  signUpSignIn: {
-    authority: `https://${b2cPolicies.authorityDomain}/${b2cPolicies.policyDomain}/B2C_1_susi`,
-  },
-  forgotPassword: {
-    authority: `https://${b2cPolicies.authorityDomain}/${b2cPolicies.policyDomain}/B2C_1_reset`,
-  },
-  editProfile: {
-    authority: `https://${b2cPolicies.authorityDomain}/${b2cPolicies.policyDomain}/B2C_1_edit_profile`,
-  },
 };
 
 // Config object to be passed to Msal on creation
 export const msalConfig = {
   auth: {
     clientId: process.env.AUTH_CLIENT_ID, // This is the ONLY mandatory field that you need to supply.
-    authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose SUSI as your default authority.
+    authority:
+      'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY',
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
     postLogoutRedirectUri: process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/', // Indicates the page to navigate after logout.
@@ -69,7 +52,7 @@ export const msalConfig = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
 
-export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
+// export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
 
 /**
  * Scopes you add here will be prompted for user consent during sign-in.
@@ -78,5 +61,5 @@ export const defaultB2CScope = [process.env.DEFAULT_B2C_SCOPE];
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: [...defaultB2CScope],
+  scopes: [],
 };

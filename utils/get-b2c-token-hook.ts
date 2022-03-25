@@ -1,20 +1,22 @@
-import { IPublicClientApplication } from '@azure/msal-browser';
-import { useEffect, useState } from 'react';
+import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
+import { useContext, useEffect, useState } from 'react';
 import { AuthenticationResult, InteractionRequiredAuthError } from '@azure/msal-common';
-import { defaultB2CScope } from '../utils/auth-config';
+import accountStoreContext from './account-store-context';
 
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
   const [error, setError] = useState<any>();
+  const { accountStore, tokenStore } = useContext(accountStoreContext);
 
   useEffect(() => {
-    console.log('acquiring B2CToken');
+    console.log('acquiring B2CToken', account);
 
     const request = {
-      scopes: [...defaultB2CScope],
+      scopes: [],
       account,
-    };
+      authority: tokenStore.authorityToUse,
+    } as SilentRequest;
 
     msalInstance
       .acquireTokenSilent(request)

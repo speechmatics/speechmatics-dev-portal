@@ -1,14 +1,26 @@
 import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
-import { loginRequest } from '../utils/auth-config';
-import { Box, Button, Spinner } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
+import accountStoreContext from '../utils/account-store-context';
+import { RedirectRequest } from '@azure/msal-browser';
 
 export default function Login() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
+  const { accountStore, tokenStore } = useContext(accountStoreContext);
+
+  const authority = process.env.SIGNIN_POLICY;
+
+  tokenStore.authorityToUse = authority;
+
+  const loginRequest = {
+    scopes: [],
+    authority,
+    redirectUri: process.env.REDIRECT_URI
+  } as RedirectRequest;
 
   useEffect(() => {
     let st: number;
@@ -39,7 +51,7 @@ export default function Login() {
         <div className="login_form">
           {loggedOutInfo}
           <Button variant="speechmatics" onClick={loginHandler}>
-            Log in / Sign up ➔
+            Log in ➔
           </Button>
         </div>
       );
