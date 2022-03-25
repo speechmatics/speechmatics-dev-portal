@@ -16,7 +16,7 @@ jobs:
     name: Build and Deploy Job
     env:
       TEST_IF_WORKS_ENV_VAR: 'mango stone'
-      REDIRECT_URI: 'https://orange-moss-04e884a03.1.azurestaticapps.net/signup/'
+      REDIRECT_URI: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
       POST_LOGOUT_REDIRECT_URI: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
       SIGNUP_SIGNIN_POLICY: 'B2C_1_susi'
       RESET_PASS_POLICY: 'B2C_1_reset'
