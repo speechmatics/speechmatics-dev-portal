@@ -44,7 +44,7 @@ export default function SignUp() {
       id_token_hint: userHint,
     };
     accountStore.userHint = userHint;
-    const authority = 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION';
+    const authority = process.env.INVITATION_SIGNUP_POLICY;
     tokenStore.authorityToUse = authority;
     const tokenQueryParameters = { grant_type: 'authorization_code' };
     let st: number;
@@ -56,6 +56,7 @@ export default function SignUp() {
             extraQueryParameters,
             tokenQueryParameters,
             authority,
+            redirectUri: process.env.REDIRECT_URI_INVITATION
           })
           .catch((error) => {
             console.log(error);

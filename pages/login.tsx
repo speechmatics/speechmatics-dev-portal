@@ -12,14 +12,14 @@ export default function Login() {
   const { instance, accounts, inProgress } = useMsal();
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
-  const authority = 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY';
+  const authority = process.env.SIGNIN_POLICY;
 
   tokenStore.authorityToUse = authority;
 
   const loginRequest = {
     scopes: [],
     authority,
-    redirectUri: 'https://orange-moss-04e884a03.1.azurestaticapps.net/login/'
+    redirectUri: process.env.REDIRECT_URI
   } as RedirectRequest;
 
   useEffect(() => {

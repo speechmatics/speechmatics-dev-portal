@@ -18,6 +18,9 @@ module.exports = {
     DEFAULT_B2C_SCOPE: process.env.DEFAULT_B2C_SCOPE,
     CHARGIFY_PUBLIC_KEY: process.env.CHARGIFY_PUBLIC_KEY,
     CHARGIFY_SERVER_HOST: process.env.CHARGIFY_SERVER_HOST,
+    SIGNIN_POLICY: process.env.SIGNIN_POLICY,
+    INVITATION_SIGNUP_POLICY: process.env.INVITATION_SIGNUP_POLICY,
+    REDIRECT_URI_INVITATION: process.env.REDIRECT_URI_INVITATION,
   },
   exportPathMap: async function () {
     const paths = {
