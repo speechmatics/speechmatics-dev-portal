@@ -36,7 +36,8 @@ export default function SignUp() {
       return;
     }
     if (!userHint) {
-      setb2cError("hint parameter expected");
+      setb2cError("");
+      console.error("hint parameter expected")
       return;
     };
 
