@@ -10,7 +10,7 @@ export default function Account({ }) {
     instance
       .loginRedirect({
         scopes: [],
-        authority: "https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_PASSWORDRESET",
+        authority: process.env.RESET_PASSWORD_POLICY,
         redirectUri: process.env.REDIRECT_URI
       })
       .then((response) => console.log(response))
