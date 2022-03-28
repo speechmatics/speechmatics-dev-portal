@@ -38,6 +38,7 @@ export default function Login() {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
 
+    console.log({ inProgress, accounts, authority });
     if (inProgress == 'none' && accounts.length == 0 && authority == process.env.RESET_PASSWORD_POLICY) {
       loginHandler();
     }
