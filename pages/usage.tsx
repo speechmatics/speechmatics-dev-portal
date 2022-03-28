@@ -166,7 +166,7 @@ export default observer(function Usage() {
                   </Box>
                   <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
                     <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-                      {paymentMethodAdded ? 'Need more limits?' : 'Increase usage limits'}
+                      {paymentMethodAdded ? 'Need more usage?' : 'Increase usage limits'}
                     </Text>
                     <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
                       {paymentMethodAdded
