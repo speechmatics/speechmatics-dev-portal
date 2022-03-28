@@ -20,10 +20,10 @@ export default function Account({ }) {
     <Dashboard>
       <PageHeader headerLabel="Account" introduction="" />
 
-      {/* <DescriptionLabel>Reset Your password:</DescriptionLabel>
+      <DescriptionLabel>Reset Your password:</DescriptionLabel>
       <Button variant="speechmatics" onClick={resetPassword}>
         Reset password
-      </Button> */}
+      </Button>
     </Dashboard>
   );
 }
