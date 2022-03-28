@@ -26,22 +26,26 @@ export default function Login() {
     redirectUri: process.env.REDIRECT_URI
   } as RedirectRequest;
 
+  const loginHandler = () => {
+    instance.loginRedirect(loginRequest).catch((error) => {
+      console.log(error);
+    });
+  };
+
   useEffect(() => {
     let st: number;
     if (inProgress == 'none' && accounts.length > 0) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
 
-
+    if (inProgress == 'none' && accounts.length == 0 && authority == process.env.RESET_PASSWORD_POLICY) {
+      loginHandler();
+    }
 
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-  const loginHandler = () => {
-    instance.loginRedirect(loginRequest).catch((error) => {
-      console.log(error);
-    });
-  };
+
 
   const x = new URLSearchParams(global.window?.location.search)
   const loggedOutInfo = x.get('inactive') == 'true' ? <div>You were logged out due to an expired session.</div> : null;
