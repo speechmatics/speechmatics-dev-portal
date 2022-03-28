@@ -39,7 +39,7 @@ export default function Login() {
     }
 
     console.log({ inProgress, accounts, authority });
-    if (inProgress == 'startup' && authority == process.env.RESET_PASSWORD_POLICY) {
+    if (inProgress == 'none' && authority == process.env.RESET_PASSWORD_POLICY) {
       loginHandler();
     }
 
