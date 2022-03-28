@@ -14,7 +14,7 @@ export default function Login() {
 
   let authority = process.env.SIGNIN_POLICY;
 
-  if ((decodeURI(window.location.hash).includes('AADB2C90118'))) {
+  if ((decodeURI(global.window?.location.hash).includes('AADB2C90118'))) {
     authority = process.env.RESET_PASSWORD_POLICY;
   }
 
