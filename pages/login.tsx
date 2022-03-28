@@ -12,7 +12,11 @@ export default function Login() {
   const { instance, accounts, inProgress } = useMsal();
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
-  const authority = process.env.SIGNIN_POLICY;
+  let authority = process.env.SIGNIN_POLICY;
+
+  if ((decodeURI(window.location.hash).includes('AADB2C90118'))) {
+    authority = process.env.RESET_PASSWORD_POLICY;
+  }
 
   tokenStore.authorityToUse = authority;
 
@@ -27,6 +31,8 @@ export default function Login() {
     if (inProgress == 'none' && accounts.length > 0) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
+
+
 
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
