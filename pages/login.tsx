@@ -10,9 +10,10 @@ export default function Login() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
-  const { accountStore, tokenStore } = useContext(accountStoreContext);
+  const { tokenStore } = useContext(accountStoreContext);
 
   let authority = process.env.SIGNIN_POLICY;
+
 
   if ((decodeURI(global.window?.location.hash).includes('AADB2C90118'))) {
     authority = process.env.RESET_PASSWORD_POLICY;
@@ -38,10 +39,10 @@ export default function Login() {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
 
-    console.log({ inProgress, accounts, authority });
-    if (inProgress == 'none' && authority == process.env.RESET_PASSWORD_POLICY) {
-      loginHandler();
-    }
+    console.log('inProgress', inProgress, "accounts.length", accounts.length, "authority", authority);
+    // if (inProgress == 'none' && authority == process.env.RESET_PASSWORD_POLICY) {
+    //   loginHandler();
+    // }
 
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
