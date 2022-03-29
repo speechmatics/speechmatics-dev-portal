@@ -49,7 +49,8 @@ export default function Login() {
 
     if (inclErr && inProgress == 'none') {
       tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
-      loginRequest.redirectUri = process.env.REDIRECT_URI + "#postPasswordChange=1"
+      loginRequest.redirectUri = process.env.REDIRECT_URI;
+      loginRequest.state = 'postPasswordChange'
       loginHandler();
     }
 
