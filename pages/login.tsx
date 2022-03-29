@@ -29,8 +29,6 @@ export default function Login() {
     });
   };
 
-  console.log('global.window?.location.hash', global.window?.location.hash);
-
   const inclErr = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90118')), []);
   const postPassChange = useMemo(() => (decodeURI(global.window?.location.hash).includes('postPasswordChange')), []);
 
@@ -44,8 +42,6 @@ export default function Login() {
     if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
-
-    console.log('postPassChange', postPassChange, 'inclErr', inclErr, 'inProgress', inProgress)
 
     if (inclErr && inProgress == 'none') {
       tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
