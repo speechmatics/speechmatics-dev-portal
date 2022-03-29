@@ -54,8 +54,8 @@ export const callPostRequestTokenChargify = async (
   contractId: number,
   chargifyToken: string
 ) => {
-  return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}`, 'PUT', {
-    contract_request_token: chargifyToken,
+  return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}`, 'POST', {
+    card_request_token: chargifyToken,
   });
 };
 
