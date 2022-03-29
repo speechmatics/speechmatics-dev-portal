@@ -1,6 +1,6 @@
 import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { Button, Spinner } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
@@ -14,17 +14,13 @@ export default function Login() {
 
   let authority = process.env.SIGNIN_POLICY;
 
-
-  if ((decodeURI(global.window?.location.hash).includes('AADB2C90118'))) {
-    authority = process.env.RESET_PASSWORD_POLICY;
-  }
-
   tokenStore.authorityToUse = authority;
 
   const loginRequest = {
     scopes: [],
     authority,
-    redirectUri: process.env.REDIRECT_URI
+    redirectUri: process.env.REDIRECT_URI,
+
   } as RedirectRequest;
 
   const loginHandler = () => {
@@ -33,16 +29,29 @@ export default function Login() {
     });
   };
 
+  console.log('global.window?.location.hash', global.window?.location.hash);
+
+  const inclErr = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90118')), []);
+  const postPassChange = useMemo(() => (decodeURI(global.window?.location.hash).includes('postPasswordChange')), []);
+
+  if (postPassChange) {
+    tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
+  }
+
   useEffect(() => {
     let st: number;
-    if (inProgress == 'none' && accounts.length > 0) {
+
+    if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
     }
 
-    console.log('inProgress', inProgress, "accounts.length", accounts.length, "authority", authority);
-    // if (inProgress == 'none' && authority == process.env.RESET_PASSWORD_POLICY) {
-    //   loginHandler();
-    // }
+    console.log('postPassChange', postPassChange, 'inclErr', inclErr, 'inProgress', inProgress)
+
+    if (inclErr && inProgress == 'none') {
+      tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
+      loginRequest.redirectUri = process.env.REDIRECT_URI + "#postPasswordChange=1"
+      loginHandler();
+    }
 
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
