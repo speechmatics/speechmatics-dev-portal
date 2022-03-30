@@ -32,13 +32,13 @@ export default observer(function GettingStarted({ }) {
           <HeaderLabel>Download example audio file</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
-            <Link href="/manage-access/">
-              <a>
-                <Text color="smBlue.500" as="span">
-                  sample audio file
-                </Text>
-              </a>
-            </Link>{' '}
+            <a href='https://developersportalfiles.blob.core.windows.net/portal-files/example.wav'
+              download='example.wav' title='Download an example file'>
+              <Text color="smBlue.500" as="span">
+                sample audio file
+              </Text>
+            </a>
+            {' '}
             into the folder, or use your own. <br />
           </DescriptionLabel>
         </Box>
