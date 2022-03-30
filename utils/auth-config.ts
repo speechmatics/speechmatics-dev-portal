@@ -9,6 +9,7 @@ export const b2cPolicies = {
 export const msalConfig = {
   auth: {
     clientId: process.env.AUTH_CLIENT_ID, // This is the ONLY mandatory field that you need to supply.
+    authority: process.env.SIGNIN_POLICY,
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
     postLogoutRedirectUri: process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/', // Indicates the page to navigate after logout.
