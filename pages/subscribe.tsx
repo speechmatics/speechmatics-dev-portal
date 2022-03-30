@@ -92,14 +92,14 @@ function Subscribe({ }) {
           .catch((error) => {
             setSubmitButtonReady(true);
             console.log('{host} token ERROR - err: ', error);
-            errToast(`callPostRequestTokenChargify: ${JSON.stringify(error)}`);
+            errToast(`Something went wrong, please try again later. ${error.status}`);
           });
       },
 
       (error: any) => {
         setSubmitButtonReady(true);
         console.log('{host} token ERROR - err: ', error);
-        errToast(`chargify.token: ${JSON.stringify(error)}`);
+        errToast(`Error while attempting to add a card: ${error.errors}`);
       }
     );
   };
