@@ -32,7 +32,7 @@ export default function Login() {
   const inclErr = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90118')), []);
   const postPassChange = useMemo(() => (decodeURI(global.window?.location.hash).includes('postPasswordChange')), []);
 
-  console.log('global.window?.location.hash', global.window?.location.hash);
+  // console.log('global.window?.location.hash', global.window?.location.hash);
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
