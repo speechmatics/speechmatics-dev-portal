@@ -10,6 +10,8 @@ export function msalLogout(inactive: boolean = false) {
   msalInstance.logoutRedirect({
     account: account,
     authority: tokenStore.authorityToUse,
-    ...(inactive ? { postLogoutRedirectUri: '/login/?inactive=true' } : null),
+    postLogoutRedirectUri: `${process.env.POST_LOGOUT_REDIRECT_URI}${
+      inactive ? '#inactive' : '#logout'
+    }`,
   });
 }

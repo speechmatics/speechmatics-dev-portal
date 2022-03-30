@@ -14,6 +14,7 @@ import {
   HStack,
   Button,
   Flex,
+  VStack,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -149,11 +150,13 @@ function UserNotAuthModal({ isModalOpen }) {
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody textAlign={'center'}>
-          <SpeechmaticsLogo w={160} h={100} />
-          <Box>Your session expired. </Box>
-          <Box>You'll be redirected to login page.</Box>
-          <Box>If the redirect won't work you can use this link: </Box>
+        <ModalBody>
+          <VStack>
+            <SpeechmaticsLogo w={160} h={100} />
+            <Box>Your session expired. </Box>
+            <Box>You'll be redirected to login page.</Box>
+            <Box>If the redirect won't work you can use this link: </Box>
+          </VStack>
         </ModalBody>
         <ModalFooter>
           <Link href="/login">
