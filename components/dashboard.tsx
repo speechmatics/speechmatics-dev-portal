@@ -220,7 +220,7 @@ function RightSidePanel({ logout, accountEmail }) {
       {/* <Link href="/account/" passHref>
         <ChakraLink>
           <Tooltip label="Account" placement="bottom"> */}
-      <div style={{ cursor: 'pointer', display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <Text
           whiteSpace="nowrap"
           color="#DFE0E3"
