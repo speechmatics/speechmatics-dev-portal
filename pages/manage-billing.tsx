@@ -123,7 +123,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
             ? `${paymentMethod?.card_type?.toUpperCase() || 'Card'} ending \
       ${paymentMethod?.masked_card_number?.slice(-4)}, expiring on \
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
-            : 'Please add a payment card to increase your usage limits'}
+            : 'Please, add a payment card to increase your usage limits.'}
         </DescriptionLabel>
         <Box>
           <Link href="/subscribe/">

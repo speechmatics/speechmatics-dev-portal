@@ -41,7 +41,7 @@ export default function Learn({ }) {
           bgColor="smNavy.500"
           icon={<JobSubmitIcon />}
           title="How to submit a job"
-          description="Watch the Speechmatics how to submit a job demo"
+          description="Watch our demo on how to submit a transcription job."
           buttonLabel="Watch Video"
           setStateUp={() => setIsYtModalOpen(true)}
         />

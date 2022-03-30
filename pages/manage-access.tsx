@@ -115,7 +115,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
       <Box width="100%" {...boxProps}>
         <HeaderLabel>Generate an API Key</HeaderLabel>
         <DescriptionLabel>
-          Create new keys to manage security or provide temporary access
+          Create new keys to manage security or provide temporary access.
         </DescriptionLabel>
         {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
           <HStack mt="1em" spacing="1em" width="100%">

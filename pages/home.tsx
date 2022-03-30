@@ -36,14 +36,14 @@ export default function Home({ }) {
           <HomeWhiteBox
             icon={<LookingGlassChartIcon />}
             title="Track your usage"
-            description="Usage is measured in hours of audio processed"
+            description="Usage is measured in hours of audio processed."
             buttonLabel="View Usage"
             hrefUrl="/usage/"
           />
           <HomeWhiteBox
             icon={<LearnBookIcon />}
             title="Learning Resources"
-            description="Explore our documentation and learning resources"
+            description="Explore our documentation and learning resources."
             buttonLabel="Learn"
             hrefUrl="/learn/"
           />
