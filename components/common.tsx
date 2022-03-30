@@ -174,7 +174,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         </TabPanel>
         <TabPanel width="750px">
           <CodeHighlight
-            code={`curl -L -X POST ${accountStore.getRuntimeURL()}/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+            code={`curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
           />
         </TabPanel>
