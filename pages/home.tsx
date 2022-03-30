@@ -1,9 +1,10 @@
 import { VStack, Text, HStack, Box, Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import { PageHeader } from '../components/common';
+import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
   CloudUploadIcon,
+  JobSubmitIcon,
   LearnBookIcon,
   LookingGlassChartIcon,
   PadLockOpenIcon,
@@ -15,23 +16,15 @@ export default function Home({ }) {
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service" />
       <VStack spacing='2em' width='800px'>
-        <HStack alignItems="flex-start" spacing="2em">
-          <HomeBox
-            bgColor="smBlue.500"
-            icon={<TerminalGraphIcon />}
-            text="Transcribe an audio file with code"
-            buttonLabel="Get Started"
-            hrefUrl="/getting-started/"
-          />
-          <HomeBox
-            bgColor="smGreen.500"
-            icon={<CloudUploadIcon />}
-            iconPadding="20px"
-            text="Upload and transcribe an audio file"
-            buttonLabel="Transcribe Now"
-            hrefUrl="/getting-started/"
-          />
-        </HStack>
+        <InfoBarbox
+          width="100%"
+          bgColor="smBlue.500"
+          icon={<TerminalGraphIcon />}
+          title="Transcribe an audio file with code"
+          description=""
+          buttonLabel="Get Started"
+          hrefUrl="/getting-started/"
+        />
         <HStack alignItems="flex-start" spacing="2em">
           <HomeWhiteBox
             icon={<PadLockOpenIcon />}
