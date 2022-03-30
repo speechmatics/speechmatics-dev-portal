@@ -1,6 +1,7 @@
 import { Text, Box } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
+import { useState } from 'react';
 import {
   CodeExamples,
   DescriptionLabel,
@@ -9,9 +10,16 @@ import {
   SmPanel,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { GenerateTokenComponent } from './manage-access';
+import { GenerateTokenComponent, TokenGenStages as TokenGenStage } from './manage-access';
 
-export default observer(function GettingStarted({}) {
+export default observer(function GettingStarted({ }) {
+
+  const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
+
+  const tokenGenerationStage = (stage: TokenGenStage) => {
+    setShowDefaultCodeExample(stage != 'generated')
+  }
+
   return (
     <Dashboard>
       <PageHeader
@@ -35,13 +43,16 @@ export default observer(function GettingStarted({}) {
           </DescriptionLabel>
         </Box>
         <PanelDivider />
-        <GenerateTokenComponent paddingTop="0.5em" />
-        <PanelDivider />
-        <Box paddingTop="0.5em">
-          <HeaderLabel>Make an API request</HeaderLabel>
-          <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
-          <CodeExamples />
-        </Box>
+        <GenerateTokenComponent paddingTop="0.5em" raiseTokenStage={tokenGenerationStage} />
+
+        {showDefaultCodeExample && <>
+          <PanelDivider />
+          <Box paddingTop="0.5em">
+            <HeaderLabel>Make an API request</HeaderLabel>
+            <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
+            <CodeExamples />
+          </Box>
+        </>}
       </SmPanel>
     </Dashboard>
   );
