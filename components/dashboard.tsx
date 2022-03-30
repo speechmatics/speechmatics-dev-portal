@@ -217,25 +217,25 @@ function RightSidePanel({ logout, accountEmail }) {
 
         <Divider orientation="vertical" color="#5E6673" pr="1.5em" height="295%" />
       </HStack>
-      <Link href="/account/" passHref>
+      {/* <Link href="/account/" passHref>
         <ChakraLink>
-          <Tooltip label="Account" placement="bottom">
-            <div style={{ cursor: 'pointer', display: 'flex' }}>
-              <Text
-                whiteSpace="nowrap"
-                color="#DFE0E3"
-                mr="1em"
-                mt="-3px"
-                fontFamily="RMNeue-Regular"
-                _hover={{ color: '#F8FAFD' }}
-              >
-                {accountEmail}
-              </Text>
-              <AccountIcon w={20} h={20} color="#DFE0E3" />
-            </div>
-          </Tooltip>
+          <Tooltip label="Account" placement="bottom"> */}
+      <div style={{ display: 'flex' }}>
+        <Text
+          whiteSpace="nowrap"
+          color="#DFE0E3"
+          mr="1em"
+          mt="-3px"
+          fontFamily="RMNeue-Regular"
+          _hover={{ color: '#F8FAFD' }}
+        >
+          {accountEmail}
+        </Text>
+        <AccountIcon w={20} h={20} color="#DFE0E3" />
+      </div>
+      {/* </Tooltip>
         </ChakraLink>
-      </Link>
+      </Link> */}
       <Tooltip label="Log out" placement="bottom">
         <span
           style={{ cursor: 'pointer', marginLeft: '1em' }}
