@@ -80,7 +80,7 @@ export default observer(function Usage() {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Track usage" introduction="Review usage of the API" />
+      <PageHeader headerLabel="Track Usage" introduction="Review usage of the API" />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
           <Tab>Limits</Tab>
@@ -89,7 +89,7 @@ export default observer(function Usage() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <HeaderLabel>Usage limits</HeaderLabel>
+            <HeaderLabel>Usage Limits</HeaderLabel>
             <DescriptionLabel>Hours of audio per month</DescriptionLabel>
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
               <GridItem bg="smGreen.200" className="flexColumnBetween">
@@ -233,7 +233,7 @@ export default observer(function Usage() {
 
           </TabPanel>
           <TabPanel>
-            <HeaderLabel>Usage metrics</HeaderLabel>
+            <HeaderLabel>Usage Metrics</HeaderLabel>
 
             <DataGridComponent
               data={breakdown}

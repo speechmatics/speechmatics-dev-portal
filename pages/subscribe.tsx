@@ -116,7 +116,7 @@ function Subscribe({ }) {
         <div style={{ width: '700px' }}>
           <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
             <SmPanel>
-              <HeaderLabel>Your name</HeaderLabel>
+              <HeaderLabel>Your Name</HeaderLabel>
               <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 <div id="chargify_firstName"></div>
                 <div id="chargify_lastname"></div>
@@ -124,7 +124,7 @@ function Subscribe({ }) {
             </SmPanel>
 
             <SmPanel marginTop="2em">
-              <HeaderLabel>Your card information</HeaderLabel>
+              <HeaderLabel>Your Card Information</HeaderLabel>
               <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 <div id="chargify_ccnumber"></div>
                 <div id="chargify_cvv"></div>
@@ -134,7 +134,7 @@ function Subscribe({ }) {
             </SmPanel>
 
             <SmPanel marginTop="2em">
-              <HeaderLabel>Your address</HeaderLabel>
+              <HeaderLabel>Your Address</HeaderLabel>
               <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 <div id="chargify_address"></div>
                 <div id="chargify_address2"></div>
