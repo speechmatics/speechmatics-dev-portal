@@ -1,5 +1,5 @@
 export function formatDate(date: Date) {
-  if (!date) return undefined;
+  if (!date || isNaN(date as any) || !(date instanceof Date)) return undefined;
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
