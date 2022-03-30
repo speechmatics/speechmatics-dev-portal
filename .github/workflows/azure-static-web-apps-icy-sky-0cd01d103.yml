@@ -20,6 +20,7 @@ jobs:
       REDIRECT_URI_INVITATION: 'https://portal.speechmatics.com/signup/'
       SIGNIN_POLICY: 'https://identity.speechmatics.com/identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
       INVITATION_SIGNUP_POLICY: 'https://identity.speechmatics.com/identity.speechmatics.com/B2C_1A_SIGNUP_INVITATION'
+      RESET_PASSWORD_POLICY: 'https://identity.speechmatics.com/identity.speechmatics.com/B2C_1A_PASSWORDRESET'
       AUTHORITY_DOMAIN: 'identity.speechmatics.com'
       POLICY_DOMAIN: 'identity.speechmatics.com'
       AUTH_CLIENT_ID: '21d50769-1b5b-414d-be58-cc27ea9dc1fa'
