@@ -29,6 +29,7 @@ import {
   PageHeader,
   SmPanel,
   UsageInfoBanner,
+  ViewPricingBar,
 } from '../components/common';
 import {
   BaloonIcon,
@@ -182,13 +183,7 @@ export default observer(function Usage() {
                 </HStack>
               </GridItem>
               <GridItem colSpan={2}>
-                <InfoBarbox
-                  icon={<PricingTags />}
-                  title="View our pricing"
-                  description="Check our competitive prices for an hour of transcription."
-                  buttonLabel="View Pricing"
-                  hrefUrl="/usage/"
-                />
+                <ViewPricingBar />
               </GridItem>
             </Grid>
 

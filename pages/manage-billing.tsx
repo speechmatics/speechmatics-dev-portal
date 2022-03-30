@@ -29,6 +29,7 @@ import {
   PageHeader,
   SmPanel,
   UsageInfoBanner,
+  ViewPricingBar,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/icons-library';
@@ -84,14 +85,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={accountStore.isLoading}
             />
 
-            <InfoBarbox
-              icon={<PricingTags />}
-              title="View our pricing"
-              description="Check our competitive prices for an hour of transcription."
-              buttonLabel="View Pricing"
-              hrefUrl="/usage/"
-              mt="2em"
-            />
+            <ViewPricingBar mt='2em' />
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>

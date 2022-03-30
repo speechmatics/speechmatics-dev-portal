@@ -331,21 +331,21 @@ export const PricingTags = (props) => (
   <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="m38.598 21.114 4.2-4.286a6.589 6.589 0 0 0 1.633-4V3.496a2.333 2.333 0 0 0-2.333-2.333l-9.935.016A6.507 6.507 0 0 0 28.18 2.83L2.914 28.096a2.333 2.333 0 0 0 0 3.3l11.284 11.283a2.31 2.31 0 0 0 3.283-.016l2.45-2.502"
-      stroke="#fff"
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M36.265 12.829a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM43.265 33.833H38.52a3.131 3.131 0 0 0-1.166 6.039l4.813 1.925a3.128 3.128 0 0 1-1.166 6.036h-4.737M39.765 50.162v-2.333M39.765 33.829v-2.334"
-      stroke="#fff"
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M39.765 54.829c7.732 0 14-6.268 14-14s-6.268-14-14-14-14 6.268-14 14 6.268 14 14 14Z"
-      stroke="#fff"
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"

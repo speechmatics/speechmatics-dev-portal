@@ -5,6 +5,7 @@ import {
   ComponentWithAs,
   Divider,
   Flex,
+  FlexProps,
   HStack,
   IconButton,
   Link,
@@ -21,11 +22,10 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useContext, useState } from 'react';
-import { IoCopyOutline } from 'react-icons/io5';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { UsageInfoIcon } from './icons-library';
+import { PricingTags, UsageInfoIcon } from './icons-library';
 
 import {
   usePagination,
@@ -326,3 +326,16 @@ export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
 };
 
 export const pad = (n: number) => n.toString().padStart(2, '0');
+
+
+
+export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
+  <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
+    <PricingTags color='var(--chakra-colors-smBlue-500)' />
+    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our pricing</Text>
+    <Link href='https://speechmatics.com'>
+      <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
+        View Pricing
+      </Button>
+    </Link>
+  </Flex>)
