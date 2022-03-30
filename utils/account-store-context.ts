@@ -11,7 +11,7 @@ import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 class AccountContext {
   _account: Account = null;
 
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   userHint: string = '';
 
   constructor() {
@@ -21,6 +21,7 @@ class AccountContext {
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
+      fetchServerState: action,
     });
   }
 

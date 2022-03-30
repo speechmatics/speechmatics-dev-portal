@@ -155,32 +155,17 @@ export default observer(function Usage() {
               </GridItem>
 
               <GridItem colSpan={2}>
-                <HStack
-                  width="100%"
-                  bg="smNavy.500"
-                  height="100px"
-                  justifyContent="space-between"
-                  padding="2.5em 1.5em"
-                >
-                  <Box flex="0 0 auto">
-                    {paymentMethodAdded ? <CallSupportIcon /> : <UsageLimitsIcon />}
-                  </Box>
-                  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-                    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-                      {paymentMethodAdded ? 'Need more usage?' : 'Increase usage limits'}
-                    </Text>
-                    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-                      {paymentMethodAdded
-                        ? 'Contact our Sales Team for custom pricing.'
-                        : 'Add Payment Card in order to increase these limits'}
-                    </Text>
-                  </VStack>
-                  <Link href={paymentMethodAdded ? 'https://www.speechmatics.com/about-us/contact' : '/subscribe/'}>
-                    <Button variant="speechmaticsWhite">
-                      {paymentMethodAdded ? 'Get in touch' : 'Add card'}
-                    </Button>
-                  </Link>
-                </HStack>
+                {accountStore.isLoading ? <Box bg='smNavy.500' width='100%' height='100px' />
+                  : (paymentMethodAdded ?
+                    <GetInTouchBox icon={<CallSupportIcon />}
+                      title='Need more usage?'
+                      ctaText='Contact our Sales Team for custom pricing.'
+                      hrefLink='https://www.speechmatics.com/about-us/contact'
+                      buttonLabel='Get in touch' /> :
+                    <GetInTouchBox icon={<UsageLimitsIcon />} title='Increase usage limits'
+                      ctaText='Contact our Sales Team for custom pricing.'
+                      hrefLink='/subscribe/'
+                      buttonLabel='Add card' />)}
               </GridItem>
               <GridItem colSpan={2}>
                 <ViewPricingBar />
@@ -320,3 +305,29 @@ type UsageUnit = {
   total_hrs: number;
   summary: SummaryItem[];
 };
+
+
+const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => (<HStack
+  width="100%"
+  bg="smNavy.500"
+  height="100px"
+  justifyContent="space-between"
+  padding="0em 1.5em"
+>
+  <Box flex="0 0 auto">
+    {icon}
+  </Box>
+  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+      {title}
+    </Text>
+    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
+      {ctaText}
+    </Text>
+  </VStack>
+  <Link href={hrefLink}>
+    <Button variant="speechmaticsWhite">
+      {buttonLabel}
+    </Button>
+  </Link>
+</HStack>)
