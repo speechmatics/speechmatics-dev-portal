@@ -34,7 +34,7 @@ export default function Learn({ }) {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Learn" introduction="Explore our comprehensive API documentation" />
+      <PageHeader headerLabel="Learn" introduction="Explore our comprehensive API documentation." />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
       <VStack spacing="1.5em" alignItems="flex-start" width="800px">
         <InfoBarbox
@@ -90,7 +90,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
 const elems = [
   {
     title: 'Release Notes',
-    descr: "What's new in our SaaS",
+    descr: "What's new in our SaaS.",
     link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
   },
   {
@@ -105,7 +105,7 @@ const elems = [
 
   },
   {
-    title: 'Entities', descr: 'What entities are, and how they are formatted',
+    title: 'Entities', descr: 'What entities are, and how they are formatted.',
     link: 'https://docs.speechmatics.com/en/cloud/entities/'
   },
   {
