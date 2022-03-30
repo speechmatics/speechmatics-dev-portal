@@ -175,7 +175,7 @@ export default observer(function Usage() {
                         : 'Add Payment Card in order to increase these limits'}
                     </Text>
                   </VStack>
-                  <Link href={paymentMethodAdded ? 'https://speechmatics.com' : '/subscribe/'}>
+                  <Link href={paymentMethodAdded ? 'https://www.speechmatics.com/about-us/contact' : '/subscribe/'}>
                     <Button variant="speechmaticsWhite">
                       {paymentMethodAdded ? 'Get in touch' : 'Add card'}
                     </Button>
