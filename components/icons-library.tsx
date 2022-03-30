@@ -1,6 +1,115 @@
 import React from 'react';
 
 
+export const MenuLearnIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width={20}
+    height={20}
+    fill='none'
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g
+      opacity={0.8}
+      stroke={props.color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M2.709 2.5v15.25a1.662 1.662 0 0 0 1.69 1.63h11.84a.834.834 0 0 0 .845-.815V5.627a1.25 1.25 0 0 0-1.25-1.25h-.625" stroke={props.color} />
+      <path d="M15.834 4.377H4.584a1.875 1.875 0 0 1 0-3.75h10a1.25 1.25 0 0 1 1.25 1.25v2.5ZM5.834 10.002l1.875 1.875-1.875 1.875M10.072 11.877h3.261" stroke={props.color} />
+    </g>
+  </svg>
+)
+
+export const MenuBillingIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width={21}
+    height={21}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g
+      opacity={0.8}
+      stroke={props.color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18.816 3.5H2.191a1.75 1.75 0 0 0-1.75 1.75v10.5c0 .966.784 1.75 1.75 1.75h16.625a1.75 1.75 0 0 0 1.75-1.75V5.25a1.75 1.75 0 0 0-1.75-1.75ZM.441 7h20.125M17.941 10.5h-2.625M10.066 10.5h-7M5.691 13.125H3.066" />
+    </g>
+  </svg>
+)
+
+export const MenuTrackIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width={22}
+    height={22}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g
+      opacity={0.8}
+      stroke={props.color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M1.844 10.952a7.083 7.083 0 0 1 12.518-6.405M13.508 13.534l1.944 1.943M20.166 18.424a1.25 1.25 0 1 1-1.767 1.768l-3.24-3.241a.833.833 0 0 1 0-1.178l.588-.59a.833.833 0 0 1 1.179 0l3.24 3.241Z" />
+      <path d="m1.416 13.942 7.328-7.328a.833.833 0 0 1 1.178 0l2.155 2.155a.833.833 0 0 0 1.178 0l7.328-7.327" />
+      <path d="M18.084 1.442h2.5v2.5M15.571 8.955A7.082 7.082 0 0 1 3.97 13.97" />
+    </g>
+  </svg>
+)
+
+
+export const MenuPadlockIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width={20}
+    height={22}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g
+      opacity={0.8}
+      stroke={props.color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5.416 6a4.583 4.583 0 1 1 9.167 0v2.917M17.083 10.583a1.667 1.667 0 0 0-1.667-1.666H4.583a1.667 1.667 0 0 0-1.667 1.666v8.334a1.667 1.667 0 0 0 1.667 1.666h10.833a1.667 1.667 0 0 0 1.667-1.666v-8.334Z" />
+      <path
+        d="M10 15.792a1.042 1.042 0 1 0 0-2.084 1.042 1.042 0 0 0 0 2.084Z"
+        fill={props.color}
+      />
+    </g>
+  </svg>
+)
+
+export const MenuHomeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    width={20}
+    height={20}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <g
+      stroke={props.color}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M2.916 11.25v7.5a.833.833 0 0 0 .833.833H7.5a.417.417 0 0 0 .417-.416v-3.334a2.083 2.083 0 0 1 4.167 0v3.334a.417.417 0 0 0 .416.416h3.75a.834.834 0 0 0 .834-.833v-7.083M.416 10.833 9.999 1.25l9.584 9.583" />
+    </g>
+
+  </svg>
+
+)
+
 export const RocketIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width={40}
@@ -575,27 +684,27 @@ export function RecentJobsIcon({ w = 20, h = 14, color = '#2E3A59' }) {
   );
 }
 
-export function UsageIcon({ w = 18, h = 18, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M16 18H2C0.89543 18 0 17.1046 0 16V2C0 0.89543 0.89543 0 2 0H16C17.1046 0 18 0.89543 18 2V16C18 17.1046 17.1046 18 16 18ZM2 2V16H16V2H2ZM14 14H12V7H14V14ZM10 14H8V4H10V14ZM6 14H4V9H6V14Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
+// export function UsageIcon({ w = 18, h = 18, color = '#2E3A59' }) {
+//   return (
+//     <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+//       <path
+//         d="M16 18H2C0.89543 18 0 17.1046 0 16V2C0 0.89543 0.89543 0 2 0H16C17.1046 0 18 0.89543 18 2V16C18 17.1046 17.1046 18 16 18ZM2 2V16H16V2H2ZM14 14H12V7H14V14ZM10 14H8V4H10V14ZM6 14H4V9H6V14Z"
+//         fill={color}
+//       />
+//     </svg>
+//   );
+// }
 
-export function AccessTokenIcon({ w = 20, h = 16, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 2V14H18V2H2ZM16 12H10V10H16V12ZM5.414 12L4 10.586L6.293 8.293L4 6L5.414 4.586L9.121 8.293L5.415 12H5.414Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
+// export function AccessTokenIcon({ w = 20, h = 16, color = '#2E3A59' }) {
+//   return (
+//     <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+//       <path
+//         d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 2V14H18V2H2ZM16 12H10V10H16V12ZM5.414 12L4 10.586L6.293 8.293L4 6L5.414 4.586L9.121 8.293L5.415 12H5.414Z"
+//         fill={color}
+//       />
+//     </svg>
+//   );
+// }
 
 export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   return (
@@ -608,19 +717,19 @@ export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   );
 }
 
-export const HomeIcon = () => (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="2 1 24 24"
-    height="1.5em"
-    width="1.5em"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M5 22h14a2 2 0 0 0 2-2v-9a1 1 0 0 0-.29-.71l-8-8a1 1 0 0 0-1.41 0l-8 8A1 1 0 0 0 3 11v9a2 2 0 0 0 2 2zm5-2v-5h4v5zm-5-8.59 7-7 7 7V20h-3v-5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v5H5z"></path>
-  </svg>
-);
+// export const HomeIcon = () => (
+//   <svg
+//     stroke="currentColor"
+//     fill="currentColor"
+//     strokeWidth="0"
+//     viewBox="2 1 24 24"
+//     height="1.5em"
+//     width="1.5em"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <path d="M5 22h14a2 2 0 0 0 2-2v-9a1 1 0 0 0-.29-.71l-8-8a1 1 0 0 0-1.41 0l-8 8A1 1 0 0 0 3 11v9a2 2 0 0 0 2 2zm5-2v-5h4v5zm-5-8.59 7-7 7 7V20h-3v-5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v5H5z"></path>
+//   </svg>
+// );
 
 export function TranscribeIcon({ w = 20, h = 13, color = '#2E3A59' }) {
   return (
@@ -633,16 +742,16 @@ export function TranscribeIcon({ w = 20, h = 13, color = '#2E3A59' }) {
   );
 }
 
-export function SubscribeIcon({ w = 20, h = 20, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 8V14H18V8H2ZM2 2V4H18V2H2ZM11 12H4V10H11V12Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
+// export function SubscribeIcon({ w = 20, h = 20, color = '#2E3A59' }) {
+//   return (
+//     <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+//       <path
+//         d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 8V14H18V8H2ZM2 2V4H18V2H2ZM11 12H4V10H11V12Z"
+//         fill={color}
+//       />
+//     </svg>
+//   );
+// }
 
 export function DownloadIcon({ w = 14, h = 20, color = '#2E3A59' }) {
   return (
@@ -666,16 +775,16 @@ export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
   );
 }
 
-export function DocumentationIcon({ w = 18, h = 18, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M17 18H1C0.447715 18 0 17.5523 0 17V1C0 0.447715 0.447715 0 1 0H17C17.5523 0 18 0.447715 18 1V17C18 17.5523 17.5523 18 17 18ZM2 2V16H16V2H2ZM11 14H8V10H7V8H10V12H11V14ZM10 6H8V4H10V6Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
+// export function DocumentationIcon({ w = 18, h = 18, color = '#2E3A59' }) {
+//   return (
+//     <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+//       <path
+//         d="M17 18H1C0.447715 18 0 17.5523 0 17V1C0 0.447715 0.447715 0 1 0H17C17.5523 0 18 0.447715 18 1V17C18 17.5523 17.5523 18 17 18ZM2 2V16H16V2H2ZM11 14H8V10H7V8H10V12H11V14ZM10 6H8V4H10V6Z"
+//         fill={color}
+//       />
+//     </svg>
+//   );
+// }
 
 export const CardImage = ({ }) => (
   <svg

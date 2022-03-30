@@ -1,36 +1,36 @@
 import {
-  DocumentationIcon,
-  SubscribeIcon,
-  UsageIcon,
-  AccessTokenIcon,
-  HomeIcon,
+  MenuHomeIcon,
+  MenuPadlockIcon,
+  MenuTrackIcon,
+  MenuBillingIcon,
+  MenuLearnIcon,
 } from '../components/icons-library';
 
 const menuData = [
   {
     path: '/home/',
     title: 'Home',
-    icon: HomeIcon,
+    icon: MenuHomeIcon,
   },
   {
     path: '/manage-access/',
     title: 'Manage Access',
-    icon: AccessTokenIcon,
+    icon: MenuPadlockIcon,
   },
   {
     path: '/usage/',
     title: 'Track Usage',
-    icon: UsageIcon,
+    icon: MenuTrackIcon,
   },
   {
     path: '/manage-billing/',
     title: 'Manage Billing',
-    icon: SubscribeIcon,
+    icon: MenuBillingIcon,
   },
   {
     path: '/learn/',
     title: 'Learn',
-    icon: DocumentationIcon,
+    icon: MenuLearnIcon,
   },
 ];
 

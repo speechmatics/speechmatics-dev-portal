@@ -1,16 +1,16 @@
+import { VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import menuData from "../static_data/menu-data";
 
-
 export function Menu() {
   const router = useRouter();
   return (
-    <div className="nav_menu">
+    <VStack className="nav_menu" spacing='1.5em'>
       {menuData.map((item) => (
         <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
       ))}
-    </div>
+    </VStack>
   );
 }
 

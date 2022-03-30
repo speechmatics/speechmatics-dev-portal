@@ -79,10 +79,10 @@ h1 {
 }
 
 .menu_elem {
+  width: 100%;
   font-family: Matter-Medium;
   font-size: 1em;
   display: flex;
-  margin-bottom: 1em;
   height: 30px;
   padding: 0px 0px 0px 60px;
   cursor: pointer;
