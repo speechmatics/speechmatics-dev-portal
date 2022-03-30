@@ -328,7 +328,7 @@ export const UsageLimitsIcon = (props) => (
 );
 
 export const PricingTags = (props) => (
-  <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg width={props.width || 56} height={props.height || 56} viewBox='0 0 58 58' fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="m38.598 21.114 4.2-4.286a6.589 6.589 0 0 0 1.633-4V3.496a2.333 2.333 0 0 0-2.333-2.333l-9.935.016A6.507 6.507 0 0 0 28.18 2.83L2.914 28.096a2.333 2.333 0 0 0 0 3.3l11.284 11.283a2.31 2.31 0 0 0 3.283-.016l2.45-2.502"
       stroke={props.color || "#fff"}
