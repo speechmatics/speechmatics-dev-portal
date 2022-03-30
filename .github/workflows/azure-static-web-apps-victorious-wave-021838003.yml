@@ -20,6 +20,7 @@ jobs:
       REDIRECT_URI_INVITATION: 'https://victorious-wave-021838003.1.azurestaticapps.net/signup/'
       SIGNIN_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY'
       INVITATION_SIGNUP_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION'
+      RESET_PASSWORD_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_PASSWORDRESET'
       AUTHORITY_DOMAIN: 'speechmaticsb2c.b2clogin.com'
       POLICY_DOMAIN: 'speechmaticsb2c.onmicrosoft.com'
       AUTH_CLIENT_ID: '75a2952e-954e-4975-8a14-ef862a8e5a39'
