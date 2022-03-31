@@ -24,6 +24,7 @@ import { observer } from 'mobx-react-lite';
 import {
   DataGridComponent,
   DescriptionLabel,
+  GridSpinner,
   HeaderLabel,
   InfoBarbox,
   PageHeader,
@@ -262,7 +263,7 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
     {isLoading && (
       <GridItem colSpan={2}>
         <Flex width="100%" justifyContent="center">
-          <Spinner size='sm' />
+          <GridSpinner />
           <Text ml="1em">One moment please...</Text>
         </Flex>
       </GridItem>

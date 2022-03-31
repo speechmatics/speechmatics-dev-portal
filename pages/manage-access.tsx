@@ -31,6 +31,7 @@ import {
   CodeExamples,
   CopyButton,
   DescriptionLabel,
+  GridSpinner,
   HeaderLabel,
   PageHeader,
   SmPanel,
@@ -320,7 +321,7 @@ const PreviousTokens = observer(() => {
         {accountStore.isLoading && (
           <GridItem colSpan={3}>
             <Flex width="100%" justifyContent="center">
-              <Spinner size='sm' />
+              <GridSpinner />
               <Text ml="1em">One moment please...</Text>
             </Flex>
           </GridItem>

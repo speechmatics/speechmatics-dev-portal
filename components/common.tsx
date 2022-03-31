@@ -10,6 +10,7 @@ import {
   IconButton,
   Link,
   ResponsiveValue,
+  Spinner,
   StackProps,
   Tab,
   TabList,
@@ -339,3 +340,6 @@ export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
       </Button>
     </Link>
   </Flex>)
+
+
+export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />

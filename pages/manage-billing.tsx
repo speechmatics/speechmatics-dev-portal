@@ -23,6 +23,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   DataGridComponent,
   DescriptionLabel,
+  GridSpinner,
   HeaderLabel,
   InfoBarbox,
   pad,
@@ -193,7 +194,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
     {isLoading && (
       <GridItem colSpan={4}>
         <Flex width="100%" justifyContent="center">
-          <Spinner size='sm' />
+          <GridSpinner />
           <Text ml="1em">One moment please...</Text>
         </Flex>
       </GridItem>
