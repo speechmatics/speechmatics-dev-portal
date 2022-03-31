@@ -164,7 +164,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
   );
 
 const PaymentsGrid = ({ data, isLoading }) => (
-  <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch">
+  <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Month</GridItem>
     <GridItem className="grid_header">Hours used</GridItem>
     <GridItem className="grid_header">Total cost</GridItem>
@@ -172,12 +172,12 @@ const PaymentsGrid = ({ data, isLoading }) => (
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
-        <GridItem whiteSpace="nowrap">
+        <GridItem whiteSpace="nowrap" data-qa={`payments-month-${i}`}>
           {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
-        <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
-        <GridItem>${Number(el.total_cost).toFixed(2)}</GridItem>
-        <GridItem whiteSpace="nowrap">
+        <GridItem data-qa={`payments-hours-used-${i}`}>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
+        <GridItem data-qa={`payments-total-cost-${i}`}>${Number(el.total_cost).toFixed(2)}</GridItem>
+        <GridItem whiteSpace="nowrap" data-qa={`payments-status-${i}`}>
           {el.status === 'due' ? `Due on ${formatDate(new Date(el.billing_date))}` : `Paid on ${formatDate(new Date(el.billing_date))}`}
         </GridItem>
       </React.Fragment>
