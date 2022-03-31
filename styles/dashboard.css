@@ -39,14 +39,14 @@
 
 .dashboard_sidenav {
   background-color: var(--chakra-colors-smWhite-500);
-  width: 250px;
+  width: 265px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .dashboard_content {
-  margin-left: 3em;
+  margin-left: 4em;
   margin-right: 3em;
   padding-bottom: 3em;
   flex: 1 1 auto;
