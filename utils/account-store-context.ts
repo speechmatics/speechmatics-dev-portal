@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
-import { callGetAccounts, callPostAccounts, callRemoveApiKey, errToast } from './call-api';
+import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api';
 import {
   AccountInfo,
   AuthenticationResult,
@@ -239,4 +239,7 @@ export interface PaymentMethod {
   masked_card_number: string;
   expiration_month: number;
   expiration_year: number;
+}
+function errToast(arg0: string) {
+  throw new Error('Function not implemented.');
 }

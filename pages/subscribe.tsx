@@ -4,8 +4,6 @@ import accountContext from '../utils/account-store-context';
 import {
   callGetSecrChargify,
   callPostRequestTokenChargify,
-  errToast,
-  positiveToast,
 } from '../utils/call-api';
 
 import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
@@ -309,3 +307,11 @@ const chargifyFields = (color1, color2, color3, name) => {
     },
   };
 };
+function errToast(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
+function positiveToast(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,28 +1,9 @@
-import { createStandaloneToast } from '@chakra-ui/react';
+import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
-
-const toast = createStandaloneToast();
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 
-export const errToast = (descr: string | any) =>
-  toast({
-    title: 'An error occurred.',
-    description: typeof descr === 'string' ? descr : JSON.stringify(descr),
-    status: 'error',
-    duration: 9000,
-    position: 'bottom-right',
-    isClosable: true,
-  });
-
-export const positiveToast = (descr: string) =>
-  toast({
-    description: descr,
-    status: 'success',
-    duration: 9000,
-    position: 'bottom-right',
-    isClosable: true,
-  });
+//callRemoveCard;
 
 export const callPostAccounts = async (accessToken: string) => {
   return call(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
@@ -73,6 +54,10 @@ export const callPostApiKey = async (
 
 export const callGetPayments = async (idToken: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/payments`, 'GET');
+};
+
+export const callRemoveCard = async (idToken: string, contractId: number) => {
+  return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
 export const call = async (

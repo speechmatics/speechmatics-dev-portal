@@ -9,6 +9,12 @@ import {
   HStack,
   IconButton,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
   ResponsiveValue,
   Spinner,
   StackProps,
@@ -20,13 +26,14 @@ import {
   Text,
   Tooltip,
   VStack,
+  createStandaloneToast
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useContext, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { PricingTags, UsageInfoIcon } from './icons-library';
+import { ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
 
 import {
   usePagination,
@@ -343,3 +350,78 @@ export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
 
 
 export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />
+
+
+export const ConfirmRemoveModal = ({ isOpen, onClose, mainTitle, subTitle, onRemoveConfirm, confirmLabel }) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent borderRadius="2px">
+      <ModalCloseButton _focus={{ boxShadow: '' }} />
+      <ModalBody>
+        <Flex justifyContent="center" width="100%">
+          <Box mt="1em">
+            <ExclamationIconLarge />
+          </Box>
+        </Flex>
+        <Box fontFamily="RMNeue-Bold" fontSize="1.5em" textAlign="center" px="1.5em" mt="0.5em">
+          {mainTitle}
+        </Box>
+        <Box
+          fontFamily="RMNeue-Light"
+          fontSize="0.8em"
+          textAlign="center"
+          px="5em"
+          color="smBlack.400"
+          mt="1em"
+        >
+          {subTitle}
+        </Box>
+      </ModalBody>
+      <ModalFooter justifyContent="center">
+        <Flex alignItems="center">
+          <Button
+            variant="speechmatics"
+            bg="smRed.500"
+            _hover={{ bg: 'smRed.400' }}
+            mr={3}
+            py="1.1em"
+            onClick={onRemoveConfirm}
+          >
+            {confirmLabel}
+          </Button>
+          <Button
+            variant="speechmatics"
+            bg="smBlack.200"
+            color="smBlack.400"
+            py="1.1em"
+            _hover={{ bg: 'smBlack.150' }}
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+        </Flex>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>)
+
+
+
+const toast = createStandaloneToast();
+export const errToast = (descr: string | any) =>
+  toast({
+    title: 'An error occurred.',
+    description: typeof descr === 'string' ? descr : JSON.stringify(descr),
+    status: 'error',
+    duration: 9000,
+    position: 'bottom-right',
+    isClosable: true,
+  });
+
+export const positiveToast = (descr: string) =>
+  toast({
+    description: descr,
+    status: 'success',
+    duration: 9000,
+    position: 'bottom-right',
+    isClosable: true,
+  });

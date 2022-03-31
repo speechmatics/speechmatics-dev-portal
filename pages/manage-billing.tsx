@@ -15,14 +15,17 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
+  ConfirmRemoveModal,
   DataGridComponent,
   DescriptionLabel,
+  errToast,
   GridSpinner,
   HeaderLabel,
   InfoBarbox,
@@ -35,7 +38,7 @@ import {
 import Dashboard from '../components/dashboard';
 import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/icons-library';
 import accountContext from '../utils/account-store-context';
-import { callGetPayments, errToast } from '../utils/call-api';
+import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 
 const useGetPayments = (idToken: string) => {
@@ -66,13 +69,33 @@ export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+
   const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
+
+  const deleteCard = useCallback(() => {
+    onOpen();
+  }, [])
+
+  const onRemoveConfirm = () => {
+    callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
+      accountStore.fetchServerState(idToken)
+    );
+    onClose();
+  };
 
   return (
     <Dashboard>
       <PageHeader
         headerLabel="Manage billing"
         introduction="Manage your payments and usage limits."
+      />
+      <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
+        mainTitle={`Are you sure want to remove your card?`}
+        subTitle='This operation cannot be undone and will invalidate the API key'
+        onRemoveConfirm={onRemoveConfirm}
+        confirmLabel='Confirm deletion'
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
@@ -84,6 +107,7 @@ export default observer(function ManageBilling({ }) {
             <AddReplacePaymentCard
               paymentMethod={accountStore.getPaymentMethod()}
               isLoading={accountStore.isLoading}
+              deleteCard={deleteCard}
             />
 
             <ViewPricingBar mt='2em' />
@@ -105,7 +129,7 @@ export default observer(function ManageBilling({ }) {
   );
 });
 
-const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
+const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
   isLoading ? (
     <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
       <VStack alignItems="flex-start" spacing="1.6em">
@@ -133,6 +157,12 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading }) =>
             </Button>
           </Link>
         </Box>
+        {paymentMethod && <Box fontFamily='RMNeue-Regular' fontSize="0.8em" pt='1em' >To delete your card, please{' '}
+          <Text
+            onClick={deleteCard}
+            as='span' color='var(--chakra-colors-smBlue-500)'
+            cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here</Text>
+        </Box>}
       </VStack>
       <Box position="relative">
         <Text

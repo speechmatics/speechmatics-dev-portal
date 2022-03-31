@@ -29,6 +29,7 @@ import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
   CodeExamples,
+  ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
   GridSpinner,
@@ -233,56 +234,12 @@ const PreviousTokens = observer(() => {
 
   return (
     <Box width="100%">
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent borderRadius="2px">
-          <ModalCloseButton _focus={{ boxShadow: '' }} />
-          <ModalBody>
-            <Flex justifyContent="center" width="100%">
-              <Box mt="1em">
-                <ExclamationIconLarge />
-              </Box>
-            </Flex>
-            <Box fontFamily="RMNeue-Bold" fontSize="1.5em" textAlign="center" px="1.5em" mt="0.5em">
-              Are you sure want to delete "{apikeyName}" API key?
-            </Box>
-            <Box
-              fontFamily="RMNeue-Light"
-              fontSize="0.8em"
-              textAlign="center"
-              px="5em"
-              color="smBlack.400"
-              mt="1em"
-            >
-              This operation cannot be undone and will invalidate the API key
-            </Box>
-          </ModalBody>
-          <ModalFooter justifyContent="center">
-            <Flex alignItems="center">
-              <Button
-                variant="speechmatics"
-                bg="smRed.500"
-                _hover={{ bg: 'smRed.400' }}
-                mr={3}
-                py="1.1em"
-                onClick={onRemoveConfirm}
-              >
-                Confirm deletion
-              </Button>
-              <Button
-                variant="speechmatics"
-                bg="smBlack.200"
-                color="smBlack.400"
-                py="1.1em"
-                _hover={{ bg: 'smBlack.150' }}
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
+        mainTitle={`Are you sure want to delete "${apikeyName}" API key?`}
+        subTitle='This operation cannot be undone and will invalidate the API key'
+        onRemoveConfirm={onRemoveConfirm}
+        confirmLabel='Confirm deletion'
+      />
 
       <HeaderLabel>Current API Keys</HeaderLabel>
       <DescriptionLabel>
@@ -330,3 +287,6 @@ const PreviousTokens = observer(() => {
     </Box>
   );
 });
+
+
+

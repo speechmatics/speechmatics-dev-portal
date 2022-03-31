@@ -18,12 +18,13 @@ import {
   tokenToCSSVar,
   VStack,
 } from '@chakra-ui/react';
-import { callGetUsage, errToast } from '../utils/call-api';
+import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import {
   DataGridComponent,
   DescriptionLabel,
+  errToast,
   GridSpinner,
   HeaderLabel,
   InfoBarbox,
