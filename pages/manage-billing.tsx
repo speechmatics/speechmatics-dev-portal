@@ -95,7 +95,7 @@ export default observer(function ManageBilling({ }) {
         mainTitle={`Are you sure want to remove your card?`}
         subTitle=''
         onRemoveConfirm={onRemoveConfirm}
-        confirmLabel='Confirm deletion'
+        confirmLabel='Confirm'
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
