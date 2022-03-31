@@ -78,7 +78,6 @@ function Subscribe({ }) {
       chargifyForm.current,
 
       (charfigyToken: string) => {
-        console.log('{host} token SUCCESS - token: ', charfigyToken);
         setToken(charfigyToken);
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
@@ -91,14 +90,12 @@ function Subscribe({ }) {
           })
           .catch((error) => {
             setSubmitButtonReady(true);
-            console.log('{host} token ERROR - err: ', error);
             errToast(`Something went wrong, please try again later. ${error.status}`);
           });
       },
 
       (error: any) => {
         setSubmitButtonReady(true);
-        console.log('{host} token ERROR - err: ', error);
         errToast(`Error while attempting to add a card: ${error.errors}`);
       }
     );
