@@ -93,7 +93,7 @@ export default observer(function ManageBilling({ }) {
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
         mainTitle={`Are you sure want to remove your card?`}
-        subTitle='This operation cannot be undone and will invalidate the API key'
+        subTitle=''
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm deletion'
       />
