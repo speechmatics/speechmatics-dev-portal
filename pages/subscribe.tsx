@@ -9,7 +9,7 @@ import {
 import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
-import { HeaderLabel, SmPanel } from '../components/common';
+import { errToast, HeaderLabel, positiveToast, SmPanel } from '../components/common';
 
 declare global {
   interface Window {
@@ -307,11 +307,4 @@ const chargifyFields = (color1, color2, color3, name) => {
     },
   };
 };
-function errToast(arg0: string) {
-  throw new Error('Function not implemented.');
-}
-
-function positiveToast(arg0: string) {
-  throw new Error('Function not implemented.');
-}
 
