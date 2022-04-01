@@ -30,10 +30,13 @@ export default function Login() {
   };
 
   const passwordChangeFlow = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90118')), []);
+  const hintExpiredError = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90208')), []);
   const postPassChange = useMemo(() => (decodeURI(global.window?.location.hash).includes('postPasswordChange')), []);
   const loggedManualy = useMemo(() => (decodeURI(global.window?.location.hash).includes('logout')), []);
   const loggedExpired = useMemo(() => (decodeURI(global.window?.location.hash).includes('inactive')), []);
   // console.log('global.window?.location.hash', global.window?.location.hash);
+
+
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
@@ -68,13 +71,13 @@ export default function Login() {
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-      <LoginSub {...{ inProgress, accounts, loggedExpired, loggedManualy, loginHandler }} />
+      <LoginSub {...{ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }} />
     </div>
   );
 }
 
 
-const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHandler }) => {
+const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }) => {
   if (inProgress == 'startup' || inProgress == 'handleRedirect' || (accounts.length > 0 && inProgress === 'none')) {
     return <div className="login_text"><Spinner /></div>;
   } else if (inProgress == 'login') {
@@ -85,6 +88,7 @@ const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHan
         <Box fontFamily='RMNeue-Regular'>
           {loggedExpired && 'You were logged out due to an expired session.'}
           {loggedManualy && 'You were logged out.'}
+          {hintExpiredError && 'Your invitation token expired.'}
         </Box>
         <Button variant="speechmatics" onClick={loginHandler}>
           Log in ➔
