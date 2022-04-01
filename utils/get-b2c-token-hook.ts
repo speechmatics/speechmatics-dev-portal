@@ -11,12 +11,19 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
 
   useEffect(() => {
     console.log('acquiring B2CToken', account);
-    console.log('tokenStore.authorityToUse', tokenStore.authorityToUse);
+
+    const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
+      (account.idTokenClaims as any)?.acr
+    }`;
+
+    console.log('authority to use:', authority);
 
     const request = {
       scopes: [],
       account,
-      authority: tokenStore.authorityToUse,
+      authority: `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
+        (account.idTokenClaims as any)?.acr
+      }`,
       extraQueryParameters: { id_token_hint: accountStore.userHint },
     } as SilentRequest;
 
