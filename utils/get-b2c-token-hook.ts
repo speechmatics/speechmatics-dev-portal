@@ -13,7 +13,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
     console.log('acquiring B2CToken', account);
 
     const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
-      (account.idTokenClaims as any)?.acr
+      (account?.idTokenClaims as any)?.acr
     }`;
 
     console.log('authority to use:', authority);
@@ -21,7 +21,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
     const request = {
       scopes: [],
       account,
-      authority: authority,
+      authority: account ? authority : process.env.SIGNIN_POLICY,
       extraQueryParameters: { id_token_hint: accountStore.userHint },
     } as SilentRequest;
 
