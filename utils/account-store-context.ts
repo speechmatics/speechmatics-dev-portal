@@ -7,6 +7,7 @@ import {
   InteractionRequiredAuthError,
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
+import { errToast } from '../components/common';
 
 class AccountContext {
   _account: Account = null;
@@ -239,7 +240,4 @@ export interface PaymentMethod {
   masked_card_number: string;
   expiration_month: number;
   expiration_year: number;
-}
-function errToast(arg0: string) {
-  throw new Error('Function not implemented.');
 }
