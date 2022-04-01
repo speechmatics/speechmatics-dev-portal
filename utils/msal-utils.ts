@@ -22,10 +22,15 @@ msalInstance.addEventCallback((event) => {
 
 export function msalLogout(inactive: boolean = false) {
   const account = msalInstance.getActiveAccount();
+
+  const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
+    (account.idTokenClaims as any)?.acr
+  }`;
+
   accountStore.clear();
   msalInstance.logoutRedirect({
     account: account,
-    authority: tokenStore.authorityToUse,
+    authority,
     postLogoutRedirectUri: `${process.env.POST_LOGOUT_REDIRECT_URI}${
       inactive ? '#inactive' : '#logout'
     }`,

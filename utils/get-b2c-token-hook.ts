@@ -21,9 +21,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
     const request = {
       scopes: [],
       account,
-      authority: `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
-        (account.idTokenClaims as any)?.acr
-      }`,
+      authority: authority,
       extraQueryParameters: { id_token_hint: accountStore.userHint },
     } as SilentRequest;
 
