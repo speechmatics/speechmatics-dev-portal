@@ -75,15 +75,14 @@ export default observer(function SignUp() {
   useEffect(() => {
     if (tokenStore.loginFailureError) {
       setb2cError(tokenStore.loginFailureError ?
-        <>This invitation link has expired. Please contact <a style={{ color: 'var(--chakra-colors-smBlue-500' }} href="https://www.speechmatics.com/about-us/contact">our support.</a></> : '');
+        <>This invitation link has expired. Please contact <a style={{ color: 'var(--chakra-colors-smBlue-500' }} target='_blank' href="https://www.speechmatics.com/about-us/contact">our support.</a></> : '');
     }
   }, [tokenStore.loginFailureError]);
 
   return (
     <div className="login_container">
       <SpeechmaticsLogo />
-      <Text textAlign="center"></Text>
-      <Text textAlign="center">{b2cError || <Spinner />}</Text>
+      <Text textAlign="center" mt='1em'>{b2cError || <Spinner />}</Text>
     </div>
   );
 })
