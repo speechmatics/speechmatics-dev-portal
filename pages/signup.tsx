@@ -28,7 +28,6 @@ export default observer(function SignUp() {
 
   const authority = process.env.INVITATION_SIGNUP_POLICY;
   tokenStore.authorityToUse = authority;
-  console.log('setting tokenStore.authorityToUse', authority);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -47,8 +46,6 @@ export default observer(function SignUp() {
 
 
     if (inProgress == 'none' && accounts.length > 0) return;
-
-    console.log(`urlParams ${urlParams}`);
 
     const extraQueryParameters = {
       id_token_hint: userHint,
