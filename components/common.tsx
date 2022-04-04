@@ -1,3 +1,5 @@
+import { theme as baseTheme } from "@chakra-ui/theme"
+
 import {
   Box,
   Button,
@@ -406,22 +408,42 @@ export const ConfirmRemoveModal = ({ isOpen, onClose, mainTitle, subTitle, onRem
 
 
 
-const toast = createStandaloneToast();
+const toast = createStandaloneToast({
+  theme: {
+    ...baseTheme,
+    colors: {
+      red: {
+        500: "var(--chakra-colors-smRed-500)"
+      },
+      green: {
+        500: "var(--chakra-colors-smGreen-500)",
+      },
+    },
+  },
+});
 export const errToast = (descr: string | any) =>
   toast({
     title: 'An error occurred.',
     description: typeof descr === 'string' ? descr : JSON.stringify(descr),
     status: 'error',
-    duration: 9000,
+    duration: 10000,
     position: 'bottom-right',
     isClosable: true,
+    containerStyle: {
+      fontFamily: 'RMNeue-Regular'
+    }
   });
 
 export const positiveToast = (descr: string) =>
   toast({
     description: descr,
     status: 'success',
-    duration: 9000,
+    duration: 10000,
     position: 'bottom-right',
     isClosable: true,
+    containerStyle: {
+      fontFamily: 'RMNeue-Regular'
+    }
   });
+
+positiveToast('hello');

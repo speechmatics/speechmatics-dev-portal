@@ -157,3 +157,7 @@ pre.code_block > code {
 button[role='tab']:not(:first-child) {
   border-left: 1px solid var(--chakra-colors-smBlack-150);
 }
+
+.chakra-alert {
+  border-radius: 2px !important;
+}
