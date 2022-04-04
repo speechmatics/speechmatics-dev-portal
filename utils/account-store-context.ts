@@ -142,7 +142,7 @@ class TokenContext {
 
   authorityToUse: string = '';
 
-  loginFailureError: string = '';
+  loginFailureError: boolean = false;
 
   constructor() {
     makeObservable(this, {

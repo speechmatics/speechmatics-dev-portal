@@ -6,6 +6,7 @@ import { loginRequest } from '../utils/auth-config';
 import { Button, Spinner, Text } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 export default observer(function SignUp() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default observer(function SignUp() {
 
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
-  const [b2cError, setb2cError] = useState('');
+  const [b2cError, setb2cError] = useState<string | ReactJSXElement>('');
 
   useEffect(() => {
     let st: number;
@@ -76,7 +77,8 @@ export default observer(function SignUp() {
 
   useEffect(() => {
     if (tokenStore.loginFailureError) {
-      setb2cError(tokenStore.loginFailureError);
+      setb2cError(tokenStore.loginFailureError ?
+        <>This invitation link has expired. Please contact <a href="https://www.speechmatics.com/about-us/contact">our support.</a></> : '');
     }
   }, [tokenStore.loginFailureError]);
 
