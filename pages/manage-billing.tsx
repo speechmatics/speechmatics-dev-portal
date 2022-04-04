@@ -88,7 +88,7 @@ export default observer(function ManageBilling({ }) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Manage billing"
+        headerLabel="Manage Billing"
         introduction="Manage your payments and usage limits."
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
@@ -142,18 +142,18 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
   ) : (
     <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
       <VStack alignItems="flex-start">
-        <HeaderLabel>{paymentMethod ? 'Payment card active' : 'No payment card added'}</HeaderLabel>
+        <HeaderLabel>{paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}</HeaderLabel>
         <DescriptionLabel>
           {paymentMethod
             ? `${paymentMethod?.card_type?.toUpperCase() || 'Card'} ending \
       ${paymentMethod?.masked_card_number?.slice(-4)}, expiring on \
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
-            : 'Please, add a payment card to increase your usage limits.'}
+            : 'Add a payment card to increase your usage limits.'}
         </DescriptionLabel>
         <Box>
           <Link href="/subscribe/">
             <Button variant="speechmatics" alignSelf="flex-start">
-              {paymentMethod ? 'Update Card' : 'Add a payment card'}
+              {paymentMethod ? 'Replace Your Existing Payment Card' : 'Add a Payment Card'}
             </Button>
           </Link>
         </Box>
@@ -162,7 +162,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
             onClick={deleteCard}
             as='span' color='var(--chakra-colors-smBlue-500)'
             cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here</Text>
-        </Box>}
+        </Box>}.
       </VStack>
       <Box position="relative">
         <Text
@@ -197,9 +197,9 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
 const PaymentsGrid = ({ data, isLoading }) => (
   <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Month</GridItem>
-    <GridItem className="grid_header">Hours used</GridItem>
-    <GridItem className="grid_header">Total cost</GridItem>
-    <GridItem className="grid_header">Payment status</GridItem>
+    <GridItem className="grid_header">Hours Used</GridItem>
+    <GridItem className="grid_header">Total Cost</GridItem>
+    <GridItem className="grid_header">Payment Status</GridItem>
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>

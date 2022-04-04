@@ -14,13 +14,13 @@ import {
 export default function Home({ }) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics Cloud Service." />
+      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics’ SaaS Portal" />
       <VStack spacing='2em' width='800px'>
         <InfoBarbox
           width="100%"
           bgColor="smBlue.500"
           icon={<TerminalGraphIcon />}
-          title="Transcribe an audio file with code"
+          title="Transcribe an Audio File"
           description=""
           buttonLabel="Get Started"
           hrefUrl="/getting-started/"
@@ -30,12 +30,12 @@ export default function Home({ }) {
             icon={<PadLockOpenIcon />}
             title="Manage API Keys"
             description="You need to create an API key to make API requests."
-            buttonLabel="Create API key"
+            buttonLabel="Create API Key"
             hrefUrl="/manage-access/"
           />
           <HomeWhiteBox
             icon={<LookingGlassChartIcon />}
-            title="Track your usage"
+            title="Track Your Usage"
             description="Usage is measured in hours of audio processed."
             buttonLabel="View Usage"
             hrefUrl="/usage/"

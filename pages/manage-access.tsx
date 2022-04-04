@@ -45,7 +45,7 @@ import { formatDate } from '../utils/date-utils';
 export default function GetAccessToken({ }) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Manage Access" introduction="Manage API keys." />
+      <PageHeader headerLabel="Manage Access" introduction="Manage API Keys." />
 
       <SmPanel width="800px">
         <GenerateTokenComponent />
@@ -247,7 +247,7 @@ const PreviousTokens = observer(() => {
       </DescriptionLabel>
 
       <Grid gridTemplateColumns="repeat(3, 1fr)" className="sm_grid">
-        <GridItem className="grid_header">API key name</GridItem>
+        <GridItem className="grid_header">API Key Name</GridItem>
         <GridItem className="grid_header">Created</GridItem>
         <GridItem className="grid_header"></GridItem>
 

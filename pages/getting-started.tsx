@@ -23,13 +23,13 @@ export default observer(function GettingStarted({ }) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Getting Started"
-        introduction="Get started with using our platform in a few simple steps."
+        headerLabel="Get Started"
+        introduction="Start using our speech-to-text SaaS in a few simple steps."
       />
 
       <SmPanel width="800px">
         <Box>
-          <HeaderLabel>Download example audio file</HeaderLabel>
+          <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
             <a href='/example.wav'
@@ -48,7 +48,7 @@ export default observer(function GettingStarted({ }) {
         {showDefaultCodeExample && <>
           <PanelDivider />
           <Box paddingTop="0.5em">
-            <HeaderLabel>Make an API request</HeaderLabel>
+            <HeaderLabel>Make an API Request</HeaderLabel>
             <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
             <CodeExamples />
           </Box>
