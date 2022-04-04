@@ -54,7 +54,7 @@ export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" 
     <UsageInfoIcon />
   </Box>
   <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-    All usage is reported on a (UTC) calendar day basis and excludes the current day.
+    All usage is reported on a (UTC) calendar on a daily basis and excludes the current day.
   </Text>
 </Flex>
 
