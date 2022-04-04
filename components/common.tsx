@@ -445,5 +445,3 @@ export const positiveToast = (descr: string) =>
       fontFamily: 'RMNeue-Regular'
     }
   });
-
-positiveToast('hello');
