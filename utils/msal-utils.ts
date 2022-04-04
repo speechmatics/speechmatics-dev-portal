@@ -14,6 +14,11 @@ if (accounts.length > 0) {
 
 msalInstance.addEventCallback((event) => {
   console.log('msalInstance.addEventCallback', { event });
+  if (event.eventType === EventType.LOGIN_FAILURE)
+    tokenStore.loginFailureError = event?.error?.message?.includes('AADB2C90208')
+      ? 'This invitation link has expired. Please contact <a href="https://www.speechmatics.com/about-us/contact">our support.</a>'
+      : '';
+
   if (event.eventType === EventType.LOGIN_SUCCESS && (event.payload as any).account) {
     const account = (event.payload as any).account;
     msalInstance.setActiveAccount(account);

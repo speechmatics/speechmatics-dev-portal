@@ -5,8 +5,9 @@ import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
 import { Button, Spinner, Text } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
+import { observer } from 'mobx-react-lite';
 
-export default function SignUp() {
+export default observer(function SignUp() {
   const router = useRouter();
 
   const { instance, accounts, inProgress } = useMsal();
@@ -44,7 +45,6 @@ export default function SignUp() {
     accountStore.userHint = userHint;
 
 
-
     if (inProgress == 'none' && accounts.length > 0) return;
 
     console.log(`urlParams ${urlParams}`);
@@ -74,6 +74,11 @@ export default function SignUp() {
     return () => window.clearTimeout(st);
   }, []);
 
+  useEffect(() => {
+    if (tokenStore.loginFailureError) {
+      setb2cError(tokenStore.loginFailureError);
+    }
+  }, [tokenStore.loginFailureError]);
 
   return (
     <div className="login_container">
@@ -82,4 +87,4 @@ export default function SignUp() {
       <Text textAlign="center">{b2cError || <Spinner />}</Text>
     </div>
   );
-}
+})

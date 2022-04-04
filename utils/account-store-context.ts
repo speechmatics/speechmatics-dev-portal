@@ -142,11 +142,14 @@ class TokenContext {
 
   authorityToUse: string = '';
 
+  loginFailureError: string = '';
+
   constructor() {
     makeObservable(this, {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
+      loginFailureError: observable,
     });
   }
 
