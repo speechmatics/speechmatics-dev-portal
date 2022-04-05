@@ -48,7 +48,7 @@ export default observer(function Dashboard({ children }) {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
     onClose: onUserCreationModalClose,
-  } = useDisclosure({ isOpen: false });
+  } = useDisclosure();
 
   const { instance, inProgress } = useMsal();
 
@@ -75,6 +75,7 @@ export default observer(function Dashboard({ children }) {
   }, [b2cError]);
 
   const isSettingUpAccount = (val: boolean) => {
+    console.log('isSettingUpAccount', val)
     if (val) onUserCreationModalOpen();
   };
 
@@ -135,9 +136,9 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Just one or two seconds more...</ModalHeader>
+        <ModalHeader>Please wait...</ModalHeader>
         <ModalBody textAlign={'center'}>
-          Setting up the account for You! <Spinner ml={2} />
+          Setting up the Account <Spinner ml={2} />
         </ModalBody>
         <ModalFooter />
       </ModalContent>
