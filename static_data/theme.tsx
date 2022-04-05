@@ -3,7 +3,7 @@ import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 const smTabStyle = {
   bg: 'smBlue.100',
   //also look for button[role="tab"]:not(:first-child)
-  borderBottom: '1px solid #D1D7D6',
+  borderBottom: '1px solid var(--chakra-colors-smBlack-180)',
   borderTop: '2px solid #0000',
   borderLeft: '1px solid #0000',
   borderRight: '1px solid #0000',
@@ -16,8 +16,8 @@ const smTabStyle = {
     color: 'smBlue.400',
     bg: 'white',
     borderTop: '2px solid #5398FC',
-    borderLeft: '1px solid #D1D7D6',
-    borderRight: '1px solid #D1D7D6',
+    borderLeft: '1px solid var(--chakra-colors-smBlack-180)',
+    borderRight: '1px solid var(--chakra-colors-smBlack-180)',
     borderBottom: '1px solid #0000',
   },
   _focus: {
@@ -54,6 +54,7 @@ const theme = extendTheme({
     smBlack: {
       100: '#F4F6F9',
       150: '#E1E5E8',
+      180: '#E8EBED',
       200: '#D1D7D6',
       300: '#78808B',
       400: '#5A5D5F',
@@ -166,7 +167,7 @@ const theme = extendTheme({
             padding: '1.5em',
           } as CSSObject,
           tabpanels: {
-            border: '1px solid #D1D7D6',
+            border: '1px solid var(--chakra-colors-smBlack-180)',
             boxShadow: '4px 4px 7px #5A5D5F15',
           } as CSSObject,
         },
@@ -177,7 +178,7 @@ const theme = extendTheme({
             padding: '0em',
           } as CSSObject,
           tabpanels: {
-            border: '1px solid #D1D7D6',
+            border: '1px solid var(--chakra-colors-smBlack-180)',
             boxShadow: '4px 4px 7px #5A5D5F15',
           } as CSSObject,
         },
