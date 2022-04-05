@@ -18,7 +18,7 @@ jobs:
       REDIRECT_URI: 'https://staging-portal.internal.speechmatics.com/login/'
       POST_LOGOUT_REDIRECT_URI: 'https://staging-portal.internal.speechmatics.com/login/'
       REDIRECT_URI_INVITATION: 'https://staging-portal.internal.speechmatics.com/signup/'
-      SIGNIN_POLICY: 'https://sstaging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
+      SIGNIN_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
       INVITATION_SIGNUP_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNUP_INVITATION'
       RESET_PASSWORD_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_PASSWORDRESET'
       AUTHORITY_DOMAIN: 'staging-identity.speechmatics.com'
