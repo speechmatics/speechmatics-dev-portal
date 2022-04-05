@@ -15,6 +15,8 @@ class AccountContext {
   isLoading: boolean = true;
   userHint: string = '';
 
+  requestSent: boolean = false;
+
   constructor() {
     makeObservable(this, {
       clear: action,
@@ -76,7 +78,7 @@ class AccountContext {
   }
 
   async fetchServerState(idToken: string) {
-    this.isLoading = true;
+    this.requestSent = this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
@@ -104,7 +106,7 @@ class AccountContext {
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
-    this.isLoading = true;
+    this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
         if (

@@ -80,7 +80,7 @@ export default observer(function Dashboard({ children }) {
   };
 
   useEffect(() => {
-    if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
+    if (!accountStore.requestSent && !accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
       accountStore
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
