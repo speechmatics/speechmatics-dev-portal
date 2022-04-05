@@ -164,7 +164,7 @@ export default observer(function Usage() {
                       hrefLink='https://www.speechmatics.com/about-us/contact'
                       buttonLabel='Get in touch' /> :
                     <GetInTouchBox icon={<UsageLimitsIcon />} title='Increase Usage Limits'
-                      ctaText='Contact our Sales Team for custom pricing.'
+                      ctaText='Add a payment card to increase these limits.'
                       hrefLink='/subscribe/'
                       buttonLabel='Add Card' />)}
               </GridItem>
