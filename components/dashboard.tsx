@@ -135,10 +135,10 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Please wait...</ModalHeader>
-        <ModalBody textAlign={'center'}>
-          Setting up the Account <Spinner ml={2} />
+      <ModalContent borderRadius='2px'>
+        <ModalHeader fontFamily='RMNeue-Bold'>Please wait...</ModalHeader>
+        <ModalBody fontFamily='RMNeue-Regular' textAlign={'center'}>
+          Setting up the Account <Spinner ml={2} size='sm' />
         </ModalBody>
         <ModalFooter />
       </ModalContent>
@@ -151,7 +151,7 @@ function UserNotAuthModal({ isModalOpen }) {
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>
+        <ModalBody fontFamily='RMNeue-Regular'>
           <VStack>
             <SpeechmaticsLogo w={160} h={100} />
             <Box>Your session expired. </Box>
