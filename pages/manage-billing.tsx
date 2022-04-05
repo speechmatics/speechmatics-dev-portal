@@ -148,7 +148,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
             ? `${paymentMethod?.card_type?.toUpperCase() || 'Card'} ending \
       ${paymentMethod?.masked_card_number?.slice(-4)}, expiring on \
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
-            : 'Add a payment card to increase your usage limits.'}
+            : 'Add a payment card to increase these limits.'}
         </DescriptionLabel>
         <Box>
           <Link href="/subscribe/">
@@ -162,7 +162,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
             onClick={deleteCard}
             as='span' color='var(--chakra-colors-smBlue-500)'
             cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here</Text>
-        </Box>}.
+        </Box>}{'.'}
       </VStack>
       <Box position="relative">
         <Text
