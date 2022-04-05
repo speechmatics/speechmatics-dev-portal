@@ -109,7 +109,7 @@ export default observer(function Usage() {
                       ) : (
                         accountStore.getUsageLimit('enhanced')
                       )}{' '}
-                      hours / month
+                      hours per month
                     </Text>
                   </Box>
                 </HStack>
