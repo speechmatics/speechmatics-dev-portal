@@ -75,7 +75,7 @@ export const call = async (
   const options = {
     method: method,
     headers: headers,
-    body: method.toLowerCase() != 'get' ? JSON.stringify(body) : undefined,
+    body: method.toLowerCase() != 'get' && body ? JSON.stringify(body) : undefined,
   };
 
   if (method.toLowerCase() == 'get' && !!body) {
