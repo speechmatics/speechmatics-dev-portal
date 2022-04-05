@@ -90,7 +90,7 @@ const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHan
           {loggedManualy && 'You were logged out.'}
           {hintExpiredError && 'Your invitation token expired.'}
         </Box>
-        <Button variant="speechmatics" onClick={loginHandler}>
+        <Button variant="speechmatics" onClick={loginHandler} data-qa="button-log-in">
           Log in ➔
         </Button>
       </div>

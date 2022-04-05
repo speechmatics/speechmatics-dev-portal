@@ -152,7 +152,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
         </DescriptionLabel>
         <Box>
           <Link href="/subscribe/">
-            <Button variant="speechmatics" alignSelf="flex-start">
+            <Button variant="speechmatics" alignSelf="flex-start" data-qa="button-add-replace-payment">
               {paymentMethod ? 'Replace Your Existing Payment Card' : 'Add a Payment Card'}
             </Button>
           </Link>
