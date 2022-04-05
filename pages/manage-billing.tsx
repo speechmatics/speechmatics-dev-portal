@@ -99,8 +99,8 @@ export default observer(function ManageBilling({ }) {
       />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
-          <Tab>Settings</Tab>
-          <Tab>Payments</Tab>
+          <Tab data-qa="tab-settings">Settings</Tab>
+          <Tab data-qa="tab-payments">Payments</Tab>
         </TabList>
         <TabPanels>
           <TabPanel p="1.5em">

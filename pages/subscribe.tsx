@@ -156,6 +156,7 @@ function Subscribe({ }) {
                 type="submit"
                 disabled={!submitButtonReady}
                 marginTop="2em"
+                data-qa="button-add-replace-payment"
               >
                 {submitButtonReady ? (
                   !!accountStore.getPaymentMethod() ? (
