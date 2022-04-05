@@ -161,8 +161,8 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
           <Text
             onClick={deleteCard}
             as='span' color='var(--chakra-colors-smBlue-500)'
-            cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here</Text>
-        </Box>}{'.'}
+            cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here.</Text>
+        </Box>}
       </VStack>
       <Box position="relative">
         <Text
