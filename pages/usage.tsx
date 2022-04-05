@@ -85,9 +85,9 @@ export default observer(function Usage() {
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
-          <Tab>Limits</Tab>
-          <Tab>Summary</Tab>
-          <Tab>Details</Tab>
+          <Tab data-qa="tab-limits">Limits</Tab>
+          <Tab data-qa="tab-summary">Summary</Tab>
+          <Tab data-qa="tab-details">Details</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -103,7 +103,7 @@ export default observer(function Usage() {
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
                       ENHANCED
                     </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em" data-qa="limit-enhanced">
                       {accountStore.isLoading ? (
                         <Spinner size="sm" />
                       ) : (
@@ -133,7 +133,7 @@ export default observer(function Usage() {
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
                       STANDARD
                     </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em">
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em" data-qa="limit-standard">
                       {accountStore.isLoading ? (
                         <Spinner size="sm" />
                       ) : (

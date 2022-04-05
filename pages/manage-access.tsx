@@ -141,11 +141,13 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
                   p="1.55em 1em"
                   disabled={genTokenStage == 'waiting'}
                   onKeyDown={inputOnKeyDown}
+                  data-qa="input-token-name"
                 ></Input>
                 <Button
                   variant="speechmatics"
                   disabled={genTokenStage == 'waiting'}
                   onClick={() => requestToken()}
+                  data-qa="button-generate-key"
                 >
                   {genTokenStage == 'waiting' && <Spinner mr="1em" />}Generate API Key
                 </Button>
@@ -175,7 +177,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             </Box>
             <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
               <ExclamationIcon />
-              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
+              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em" data-qa="message-token-security">
                 For security reasons, this key will not be displayed again. Please copy it now and
                 keep it securely.
               </Text>
