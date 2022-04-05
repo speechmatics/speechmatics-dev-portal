@@ -126,14 +126,15 @@ export default observer(function Usage() {
               </GridItem>
               <GridItem bg="smBlue.200" className="flexColumnBetween">
                 <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
-                  <Box p='1em 0em 0em 0.5em'>
+                  <Box p='1em 0em 0em 0.2em'>
                     <BaloonIcon />
                   </Box>
-                  <Box pt='1.5em' pl="0.8em" >
+                  <Box pt='1.5em' pl="0.3em" >
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
                       STANDARD
                     </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em" data-qa="limit-standard">
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500"
+                      mt="0.15em" data-qa="limit-standard">
                       {accountStore.isLoading ? (
                         <Spinner size="sm" />
                       ) : (
