@@ -8,7 +8,8 @@ export function Menu() {
   return (
     <VStack className="nav_menu" spacing='1.5em'>
       {menuData.map((item) => (
-        <MenuElem item={item} key={item.path} selected={router.asPath == item.path} />
+        <MenuElem item={item} key={item.path} selected={router.asPath == item.path}
+                  data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}/>
       ))}
     </VStack>
   );
