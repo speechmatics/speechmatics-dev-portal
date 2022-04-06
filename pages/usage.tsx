@@ -67,7 +67,6 @@ export default observer(function Usage() {
           }
         })
         .catch((err) => {
-          errToast(err);
           setIsLoading(false);
         });
     }

@@ -129,10 +129,10 @@ class AccountContext {
           return jsonResp;
         }
 
-        throw new Error(`unknown response from /accounts: ${jsonResp}`);
+        throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        errToast(`unknown error while fetching account: ${err}`);
+        errToast(`while fetching account: ${err}`);
         this.isLoading = false;
         console.error(err);
       });

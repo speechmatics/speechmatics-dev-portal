@@ -56,7 +56,6 @@ const useGetPayments = (idToken: string) => {
         })
         .catch((err) => {
           setError(err);
-          errToast(err);
           setIsLoading(false);
         });
     }
