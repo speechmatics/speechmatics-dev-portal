@@ -35,7 +35,7 @@ import { useCallback, useContext, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
+import { ExclamationIcon, ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
 
 import {
   usePagination,
@@ -87,7 +87,7 @@ export const InfoBarbox = ({
       </Text>
     </VStack>
     {hrefUrl && (
-      <Link href={hrefUrl}>
+      <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
         <Button variant="speechmaticsWhite" mb="1em">
           {buttonLabel}
         </Button>
@@ -161,7 +161,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
-    <Tabs size="lg" variant="speechmaticsCode" mt="1em">
+    <Tabs size="lg" variant="speechmaticsCode" mt="1em" width="100%">
       <TabList marginBottom="-1px">
         <Tab>Windows</Tab>
         <Tab>Mac</Tab>
@@ -169,20 +169,20 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
       </TabList>
       <TabPanels>
         {/* //TODO remove strict width */}
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl.exe -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
           />
         </TabPanel>
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
               }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
           />
         </TabPanel>
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
@@ -445,3 +445,12 @@ export const positiveToast = (descr: string) =>
       fontFamily: 'RMNeue-Regular'
     }
   });
+
+
+export const AttentionBar = ({ description }) => (
+  <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
+    <ExclamationIcon />
+    <Text color="smRed.500" fontSize="0.95em" flex='1'>
+      {description}
+    </Text>
+  </HStack>)

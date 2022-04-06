@@ -156,7 +156,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
             </Button>
           </Link>
         </Box>
-        {paymentMethod && <Box fontFamily='RMNeue-Regular' fontSize="0.8em" pt='1em' >To delete your card, please{' '}
+        {paymentMethod && <Box fontSize="0.8em" pt='1em' >To delete your card, please{' '}
           <Text
             onClick={deleteCard}
             as='span' color='var(--chakra-colors-smBlue-500)'

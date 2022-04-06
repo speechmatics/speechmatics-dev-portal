@@ -85,7 +85,7 @@ const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHan
   } else if (inProgress == 'none' && accounts.length == 0) {
     return (
       <div className="login_form">
-        <Box fontFamily='RMNeue-Regular'>
+        <Box>
           {loggedExpired && 'You were logged out due to an expired session.'}
           {loggedManualy && 'You were logged out.'}
           {hintExpiredError && 'Your invitation token expired.'}

@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogoHorizontalWhite, SpeechmaticsLogo, AccountIcon, LogoutIcon } from './icons-library';
+import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { Menu } from './side-menu';
 
@@ -137,7 +137,7 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
       <ModalOverlay />
       <ModalContent borderRadius='2px'>
         <ModalHeader fontFamily='RMNeue-Bold'>Please wait...</ModalHeader>
-        <ModalBody fontFamily='RMNeue-Regular' textAlign={'center'}>
+        <ModalBody textAlign={'center'}>
           Setting up the Account <Spinner ml={2} size='sm' />
         </ModalBody>
         <ModalFooter />
@@ -151,7 +151,7 @@ function UserNotAuthModal({ isModalOpen }) {
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody fontFamily='RMNeue-Regular'>
+        <ModalBody >
           <VStack>
             <SpeechmaticsLogo w={160} h={100} />
             <Box>Your session expired. </Box>

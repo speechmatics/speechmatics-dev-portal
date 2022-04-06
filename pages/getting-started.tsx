@@ -1,8 +1,9 @@
 import { Text, Box } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
+  AttentionBar,
   CodeExamples,
   DescriptionLabel,
   HeaderLabel,
@@ -11,10 +12,16 @@ import {
 } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { GenerateTokenComponent, TokenGenStages as TokenGenStage } from './manage-access';
+import accountContext from '../utils/account-store-context';
+
+
 
 export default observer(function GettingStarted({ }) {
 
   const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
+
+  const { accountStore } = useContext(accountContext);
+
 
   const tokenGenerationStage = (stage: TokenGenStage) => {
     setShowDefaultCodeExample(stage != 'generated')
@@ -43,11 +50,15 @@ export default observer(function GettingStarted({ }) {
           </DescriptionLabel>
         </Box>
         <PanelDivider />
-        <GenerateTokenComponent paddingTop="0.5em" raiseTokenStage={tokenGenerationStage} />
-
+        <GenerateTokenComponent paddingTop="0.5em" raiseTokenStage={tokenGenerationStage} tokensFullDescr={
+          <>You've already created 5 API Keys.{' '}
+            Before generating a new API key, you need to remove an existing key from{' '}
+            <Link href='/manage-access/'><a style={{ cursor: 'pointer', textDecoration: 'underline' }}>Manage Access</a></Link>{' '}
+            page.
+          </>} />
         {showDefaultCodeExample && <>
           <PanelDivider />
-          <Box paddingTop="0.5em">
+          <Box paddingTop="0.5em" width='100%'>
             <HeaderLabel>Make an API Request</HeaderLabel>
             <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
             <CodeExamples />
