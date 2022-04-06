@@ -8,8 +8,7 @@ export function Menu() {
   return (
     <VStack className="nav_menu" spacing='1.5em'>
       {menuData.map((item) => (
-        <MenuElem item={item} key={item.path} selected={router.asPath == item.path}
-                  data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}/>
+        <MenuElem item={item} key={item.path} selected={router.asPath == item.path}/>
       ))}
     </VStack>
   );
@@ -24,7 +23,7 @@ function MenuElem({ item, selected }) {
             color: selected ? 'var(--chakra-colors-smBlue-500)' : 'var(--chakra-colors-smNavy-400)',
           })}
         </div>
-        <div>{item.title}</div>
+        <div data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}>{item.title}</div>
       </div>
     </Link>
   );
