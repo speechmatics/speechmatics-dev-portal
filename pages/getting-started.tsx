@@ -52,9 +52,8 @@ export default observer(function GettingStarted({ }) {
         <PanelDivider />
         <GenerateTokenComponent paddingTop="0.5em" raiseTokenStage={tokenGenerationStage} tokensFullDescr={
           <>You've already created 5 API Keys.{' '}
-            Before generating a new API key, you need to remove an existing key from{' '}
-            <Link href='/manage-access/'><a style={{ cursor: 'pointer', textDecoration: 'underline' }}>Manage Access</a></Link>{' '}
-            page.
+            Before generating a new API key, you need to <Link href='/manage-access/'>
+              <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>remove an existing key</a></Link>{'.'}
           </>} />
         {showDefaultCodeExample && <>
           <PanelDivider />

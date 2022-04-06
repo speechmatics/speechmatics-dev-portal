@@ -343,7 +343,7 @@ export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
   <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
     <PricingTags color='var(--chakra-colors-smBlue-500)' width={45} height={45} />
     <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
-    <Link href='https://speechmatics.com'>
+    <Link href='https://page.speechmatics.com/pricing.html' target='_blank'>
       <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
         View Pricing
       </Button>

@@ -4,6 +4,7 @@ import {
   MenuTrackIcon,
   MenuBillingIcon,
   MenuLearnIcon,
+  MenuRocketIcon,
 } from '../components/icons-library';
 
 const menuData = [
@@ -11,6 +12,11 @@ const menuData = [
     path: '/home/',
     title: 'Home',
     icon: MenuHomeIcon,
+  },
+  {
+    path: '/getting-started/',
+    title: 'Get Started',
+    icon: MenuRocketIcon,
   },
   {
     path: '/manage-access/',
