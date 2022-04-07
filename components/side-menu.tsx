@@ -20,7 +20,7 @@ function MenuElem({ item, selected }) {
       <div className={`menu_elem ${selected ? 'selected' : ''}`}>
         <div>
           {item.icon({
-            color: selected ? 'var(--chakra-colors-smBlue-500)' : 'var(--chakra-colors-smNavy-400)',
+            mono: !selected,
           })}
         </div>
         <Box data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}

@@ -1,22 +1,22 @@
 import {
-  MenuHomeIcon,
   MenuPadlockIcon,
-  MenuTrackIcon,
   MenuBillingIcon,
   MenuLearnIcon,
-  MenuRocketIcon,
+  MenuHouseIcon,
+  MenuGettingStartedIcon,
+  MenuTrackUsageIcon,
 } from '../components/icons-library';
 
 const menuData = [
   {
     path: '/home/',
     title: 'Home',
-    icon: MenuHomeIcon,
+    icon: MenuHouseIcon,
   },
   {
     path: '/getting-started/',
     title: 'Get Started',
-    icon: MenuRocketIcon,
+    icon: MenuGettingStartedIcon,
   },
   {
     path: '/manage-access/',
@@ -26,7 +26,7 @@ const menuData = [
   {
     path: '/usage/',
     title: 'Track Usage',
-    icon: MenuTrackIcon,
+    icon: MenuTrackUsageIcon,
   },
   {
     path: '/manage-billing/',

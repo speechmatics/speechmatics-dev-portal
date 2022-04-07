@@ -2,6 +2,80 @@ import React from 'react';
 import { SVGProps } from "react"
 
 
+export const MenuGettingStartedIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 14 26"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M2.63184 6.07834C2.63184 3.01739 5.11323 0.536011 8.1742 0.536011C11.2352 0.536011 13.7166 3.01739 13.7166 6.07834C13.7166 9.13929 11.2352 11.6207 8.1742 11.6207C5.11323 11.6207 2.63184 9.13929 2.63184 6.07834Z"
+      fill={props.mono ? "#A7D0CD" : "#FFCC33"}
+    />
+    <path
+      d="M6.98654 9.17731L4.05147 6.24226L5.17102 5.12271L6.98654 6.93821L11.1773 2.74744L12.2969 3.86698L6.98654 9.17731Z"
+      fill={props.mono ? "#36817E" : "#386DFB"}
+    />
+    <path
+      d="M1.84007 21.1219H8.96596V25.8725H1.84007V21.1219Z"
+      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+    />
+    <path
+      d="M9.75772 13.996H2.60649C1.30879 13.996 0.256531 15.0482 0.256531 16.3459V20.3254C0.256531 21.6397 1.32225 22.7054 2.63658 22.7054H7.37768C8.69201 22.7054 9.75772 21.6397 9.75772 20.3254V13.996Z"
+      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+    />
+    <path
+      d="M8.17419 8.45367C7.29929 8.45367 6.59066 9.1623 6.59066 10.0372V18.7465H9.75773V10.0372C9.75773 9.1623 9.0491 8.45367 8.17419 8.45367Z"
+      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+    />
+    <path
+      d="M8.89929 22.3546C8.28172 22.1345 7.95947 21.4552 8.17958 20.8368L10.3063 14.871C10.5264 14.2534 11.2065 13.9311 11.8241 14.1512C12.4416 14.3714 12.7639 15.0507 12.5438 15.6682L10.4171 21.6349C10.1962 22.2525 9.51687 22.5747 8.89929 22.3546Z"
+      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+    />
+  </svg>
+)
+
+export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 18 27"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M2.53371 0.888123H17.9731V23.0576H0.554291V2.86754C0.554291 1.77411 1.44028 0.888123 2.53371 0.888123Z"
+      fill={props.mono ? "#4FA9A2" : "#5398FC"}
+    />
+    <path
+      d="M2.53371 20.6823H17.9731V24.6411H2.53371C1.44028 24.6411 0.554291 23.7551 0.554291 22.6617C0.554291 21.5683 1.44028 20.6823 2.53371 20.6823Z"
+      fill={props.mono ? "#A7D0CD" : "#D1D7DC"}
+    />
+    <path
+      d="M7.68015 22.2658H2.92957V26.2246L5.30486 24.6411L7.68015 26.2246V22.2658Z"
+      fill={props.mono ? "#36817E" : "#CC3333"}
+    />
+    <path
+      d="M2.93112 0.888412H17.9746V20.6825H2.93112V0.888412Z"
+      fill={props.mono ? "#36817E" : "#386DFB"}
+    />
+    <path d="M10.8488 10.3895H15.5993V11.9731H10.8488V10.3895Z" fill="white" />
+    <path
+      d="M9.26385 10.3891L6.09674 13.5562L6.09618 15.1401L9.2633 11.9729L9.26385 10.3891Z"
+      fill="white"
+    />
+    <path
+      d="M9.26389 11.9731L6.09674 8.80592L6.09618 7.22207L9.26333 10.3892L9.26389 11.9731Z"
+      fill="white"
+    />
+  </svg>
+)
+
+
 
 export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
@@ -135,26 +209,26 @@ export const MenuRocketIcon = (props) => (
   </svg>
 )
 
-export const MenuLearnIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width={20}
-    height={20}
-    fill='none'
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <g
-      opacity={0.8}
-      stroke={props.color}
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M2.709 2.5v15.25a1.662 1.662 0 0 0 1.69 1.63h11.84a.834.834 0 0 0 .845-.815V5.627a1.25 1.25 0 0 0-1.25-1.25h-.625" stroke={props.color} />
-      <path d="M15.834 4.377H4.584a1.875 1.875 0 0 1 0-3.75h10a1.25 1.25 0 0 1 1.25 1.25v2.5ZM5.834 10.002l1.875 1.875-1.875 1.875M10.072 11.877h3.261" stroke={props.color} />
-    </g>
-  </svg>
-)
+// export const MenuLearnIcon = (props: React.SVGProps<SVGSVGElement>) => (
+//   <svg
+//     width={20}
+//     height={20}
+//     fill='none'
+//     xmlns="http://www.w3.org/2000/svg"
+//     {...props}
+//   >
+//     <g
+//       opacity={0.8}
+//       stroke={props.color}
+//       strokeWidth={1.5}
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//     >
+//       <path d="M2.709 2.5v15.25a1.662 1.662 0 0 0 1.69 1.63h11.84a.834.834 0 0 0 .845-.815V5.627a1.25 1.25 0 0 0-1.25-1.25h-.625" stroke={props.color} />
+//       <path d="M15.834 4.377H4.584a1.875 1.875 0 0 1 0-3.75h10a1.25 1.25 0 0 1 1.25 1.25v2.5ZM5.834 10.002l1.875 1.875-1.875 1.875M10.072 11.877h3.261" stroke={props.color} />
+//     </g>
+//   </svg>
+// )
 
 // export const MenuBillingIcon = (props: React.SVGProps<SVGSVGElement>) => (
 //   <svg
