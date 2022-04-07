@@ -114,6 +114,8 @@ class AccountContext {
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
+    if (!this._account && 'account_id' in response) this._account = response as any;
+
     console.log(
       'AccountContext assignServerState',
       this._account,
