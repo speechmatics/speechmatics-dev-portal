@@ -4,8 +4,8 @@ import { SVGProps } from "react"
 
 export const MenuGettingStartedIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     viewBox="0 0 14 26"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -40,8 +40,8 @@ export const MenuGettingStartedIcon = (props: SVGProps<SVGSVGElement> & { mono?:
 
 export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     viewBox="0 0 18 27"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -79,8 +79,8 @@ export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean 
 
 export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     viewBox="0 0 26 19"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -109,9 +109,10 @@ export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolea
 
 export const MenuTrackUsageIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     fill="none"
+    viewBox="0 0 26 26"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
@@ -146,9 +147,10 @@ export const MenuTrackUsageIcon = (props: SVGProps<SVGSVGElement> & { mono?: boo
 
 export const MenuPadlockIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     fill="none"
+    viewBox="0 0 17 27"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
@@ -176,9 +178,10 @@ export const MenuPadlockIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolea
 
 export const MenuHouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width="1em"
-    height="1em"
+    width="1.3em"
+    height="1.3em"
     fill="none"
+    viewBox="0 0 26 27"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
