@@ -82,14 +82,17 @@ class AccountContext {
         ?.usage_limits?.find((el) => el.name == dict[type])?.value
     );
 
+    if (this.account === undefined) return undefined;
+
     return (
-      (this._account?.contracts
+      this._account?.contracts
         .filter((con) => !!con)?.[0]
-        ?.usage_limits?.find((el) => el.name == dict[type])?.value || 0) / 3600
+        ?.usage_limits?.find((el) => el.name == dict[type])?.value / 3600
     );
   }
 
   async fetchServerState(idToken: string) {
+    console.log('fetchServerState');
     this.requestSent = this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
@@ -118,6 +121,7 @@ class AccountContext {
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
+    console.log('accountsFetchFlow');
     this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
