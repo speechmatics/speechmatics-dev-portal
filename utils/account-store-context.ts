@@ -25,6 +25,7 @@ class AccountContext {
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
+      getUsageLimit: action,
     });
   }
 
@@ -70,15 +71,18 @@ class AccountContext {
       enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
     };
 
-    return (
-      (this._account?.contracts
-        .filter((con) => !!con)?.[0]
-        ?.usage_limits?.find((el) => el.name == dict[type])?.value || 0) / 3600
-    );
+    const val = this._account?.contracts
+      .filter((con) => !!con)?.[0]
+      ?.usage_limits?.find((el) => el.name == dict[type])?.value;
+
+    if (val == undefined) return undefined;
+
+    return val / 3600;
   }
 
   async fetchServerState(idToken: string) {
-    this.requestSent = this.isLoading = true;
+    console.log('fetchServerState');
+    this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
@@ -99,13 +103,22 @@ class AccountContext {
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
-    console.log('assignServerState', this._account);
+    if (!this._account && 'account_id' in response) this._account = response as any;
+
+    console.log(
+      'AccountContext assignServerState',
+      this._account,
+      response,
+      response.accounts,
+      response.accounts?.filter((acc) => !!acc)
+    );
   }
 
   async accountsFetchFlow(
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
+    console.log('accountsFetchFlow');
     this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {

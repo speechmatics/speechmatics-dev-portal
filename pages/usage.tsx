@@ -53,7 +53,6 @@ export default observer(function Usage() {
 
   useEffect(() => {
     let isActive = true;
-    console.log(`Usage useEff`, !!idToken, !!accountStore.account);
     if (idToken && accountStore.account) {
       setIsLoading(true);
       callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
