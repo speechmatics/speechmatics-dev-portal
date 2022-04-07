@@ -93,7 +93,7 @@ class AccountContext {
 
   async fetchServerState(idToken: string) {
     console.log('fetchServerState');
-    this.requestSent = this.isLoading = true;
+    this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
@@ -114,7 +114,13 @@ class AccountContext {
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
-    console.log('assignServerState', this._account);
+    console.log(
+      'AccountContext assignServerState',
+      this._account,
+      response,
+      response.accounts,
+      response.accounts?.filter((acc) => !!acc)
+    );
   }
 
   async accountsFetchFlow(
