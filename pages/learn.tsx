@@ -21,7 +21,7 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { JobSubmitIcon, SubmitAJobIcon } from '../components/icons-library';
+import { SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
@@ -80,6 +80,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
             url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
             width="888px"
             height="500px"
+            controls={true}
           />
         </ModalBody>
       </ModalContent>
