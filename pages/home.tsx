@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
-  CloudUploadIcon,
-  JobSubmitIcon,
   LearnBookIcon,
   LookingGlassChartIcon,
   PadLockOpenIcon,

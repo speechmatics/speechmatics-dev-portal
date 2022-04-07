@@ -1,4 +1,54 @@
 import React from 'react';
+import { SVGProps } from "react"
+
+
+
+
+export const HouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M2.506 26.324V11.967L12.799 1.832l10.293 10.135v14.357H2.506Z"
+      fill={props.mono ? "#DFEEED" : "#FFEDB6"}
+    />
+    <path d="M13.59 17.614h7.127v5.543H13.59v-5.543Z" fill={props.mono ? "#4FA9A2" : "#BFD8FE"} />
+    <path d="M5.673 17.614h4.75v8.71h-4.75v-8.71Z" fill={props.mono ? "#36817E" : "#C63"} />
+    <path d="M6.465 18.406h3.167v3.167H6.465v-3.167Z" fill={props.mono ? "#4FA9A2" : "#BFD8FE"} />
+    <path
+      d="M23.884 14.447 12.799 4.221 1.714 14.447.131 12.811 12.799.987l12.668 11.824-1.583 1.636Z"
+      fill={props.mono ? "#36817E" : "#C33"}
+    />
+  </svg>
+)
+
+export const HouseIconColor = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="1em"
+    height="1em"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M2.506 26.278V11.92L12.799 1.786l10.293 10.135v14.357H2.506Z"
+      fill="#FFEDB6"
+    />
+    <path d="M13.59 17.569h7.127v5.542H13.59v-5.543Z" fill="#BFD8FE" />
+    <path d="M5.673 17.569h4.75v8.709h-4.75v-8.71Z" fill="#C63" />
+    <path d="M6.465 18.36h3.167v3.167H6.465V18.36Z" fill="#BFD8FE" />
+    <path
+      d="M23.884 14.401 12.799 4.175 1.714 14.401.131 12.765 12.799.94l12.668 11.824-1.583 1.636Z"
+      fill="#C33"
+    />
+  </svg>
+)
+
+
 
 
 export const MenuRocketIcon = (props) => (
@@ -640,26 +690,6 @@ export function SpeechmaticsLogoHorizontalWhite({ w = 400, h = 150 }) {
   );
 }
 
-export function ArrowRight({ w = 150, h = 15, color = 'rgb(172,172,172);' }) {
-  return (
-    <svg
-      width={w}
-      height={h}
-      viewBox="0 0 1473 340"
-      version="1.1"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g transform="matrix(1,0,0,1,-406.665,-147.76)">
-        <g transform="matrix(1,0,0,1,35.4248,-226.042)">
-          <path
-            d="M1769.06,521.509L393.005,521.509C380.993,521.509 371.24,531.262 371.24,543.274C371.24,555.286 380.993,565.038 393.005,565.038L1769.09,565.038L1658.54,675.748C1650.06,684.248 1650.07,698.04 1658.57,706.527C1667.07,715.015 1680.86,715.005 1689.35,706.505L1836.29,559.344C1840.65,555.363 1843.38,549.635 1843.38,543.274C1843.38,536.912 1840.89,531.716 1836.92,527.752C1810.53,501.424 1689.1,380.161 1689.1,380.161C1680.6,371.673 1666.81,371.684 1658.32,380.184C1649.84,388.684 1649.85,402.476 1658.35,410.963L1769.06,521.509Z"
-            fill={color}
-          />
-        </g>
-      </g>
-    </svg>
-  );
-}
 
 export function AccountIcon({ w = 20, h = 20, color = '#2E3A59' }) {
   return (
@@ -672,50 +702,6 @@ export function AccountIcon({ w = 20, h = 20, color = '#2E3A59' }) {
   );
 }
 
-export function GettingStartedIcon({ w = 20, h = 22, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M7.108 21.092L0 18.721V2.61297L6.892 4.91297L13.923 0.891968L20 3.32297V19.477L14.077 17.107L7.109 21.092H7.108ZM2 5.39197V17.279L6 18.612V6.71997L2 5.39197ZM12 4.29197L8 6.57997V18.28L12 15.992V4.29197ZM14.077 3.10597L14 3.15197V14.923L18 16.523V4.67597L14.077 3.10597Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
-
-export function RecentJobsIcon({ w = 20, h = 14, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M9.6471 13.01L4.6971 8.06099L6.1101 6.64599L9.6471 10.183L18.1321 1.69699L19.5461 3.11099L9.6461 13.011L9.6471 13.01ZM5.4041 13.01L0.454102 8.06099L1.8681 6.64599L6.8181 11.596L5.4051 13.01H5.4041ZM9.6471 8.76799L8.2321 7.35399L14.5961 0.98999L16.0111 2.40399L9.6471 8.76699V8.76799Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
-
-// export function UsageIcon({ w = 18, h = 18, color = '#2E3A59' }) {
-//   return (
-//     <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-//       <path
-//         d="M16 18H2C0.89543 18 0 17.1046 0 16V2C0 0.89543 0.89543 0 2 0H16C17.1046 0 18 0.89543 18 2V16C18 17.1046 17.1046 18 16 18ZM2 2V16H16V2H2ZM14 14H12V7H14V14ZM10 14H8V4H10V14ZM6 14H4V9H6V14Z"
-//         fill={color}
-//       />
-//     </svg>
-//   );
-// }
-
-// export function AccessTokenIcon({ w = 20, h = 16, color = '#2E3A59' }) {
-//   return (
-//     <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-//       <path
-//         d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 2V14H18V2H2ZM16 12H10V10H16V12ZM5.414 12L4 10.586L6.293 8.293L4 6L5.414 4.586L9.121 8.293L5.415 12H5.414Z"
-//         fill={color}
-//       />
-//     </svg>
-//   );
-// }
-
 export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   return (
     <svg width={w} height={h} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -727,52 +713,7 @@ export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   );
 }
 
-// export const HomeIcon = () => (
-//   <svg
-//     stroke="currentColor"
-//     fill="currentColor"
-//     strokeWidth="0"
-//     viewBox="2 1 24 24"
-//     height="1.5em"
-//     width="1.5em"
-//     xmlns="http://www.w3.org/2000/svg"
-//   >
-//     <path d="M5 22h14a2 2 0 0 0 2-2v-9a1 1 0 0 0-.29-.71l-8-8a1 1 0 0 0-1.41 0l-8 8A1 1 0 0 0 3 11v9a2 2 0 0 0 2 2zm5-2v-5h4v5zm-5-8.59 7-7 7 7V20h-3v-5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v5H5z"></path>
-//   </svg>
-// );
 
-export function TranscribeIcon({ w = 20, h = 13, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 20 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M13 12.411L10.3 9.711L11.714 8.295L13 9.583L18.008 4.583L19.419 6L13 12.41V12.411ZM9 10H0V8H9V10ZM13 6H0V4H13V6ZM13 2H0V0H13V2Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
-
-// export function SubscribeIcon({ w = 20, h = 20, color = '#2E3A59' }) {
-//   return (
-//     <svg width={w} height={h} viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-//       <path
-//         d="M18 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H18C19.1046 0 20 0.89543 20 2V14C20 15.1046 19.1046 16 18 16ZM2 8V14H18V8H2ZM2 2V4H18V2H2ZM11 12H4V10H11V12Z"
-//         fill={color}
-//       />
-//     </svg>
-//   );
-// }
-
-export function DownloadIcon({ w = 14, h = 20, color = '#2E3A59' }) {
-  return (
-    <svg width={w} height={h} viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M14 20H0V18H14V20ZM7 16L1 10L2.41 8.59L6 12.17V0H8V12.17L11.59 8.59L13 10L7 16Z"
-        fill={color}
-      />
-    </svg>
-  );
-}
 
 export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
   return (
@@ -785,16 +726,6 @@ export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
   );
 }
 
-// export function DocumentationIcon({ w = 18, h = 18, color = '#2E3A59' }) {
-//   return (
-//     <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-//       <path
-//         d="M17 18H1C0.447715 18 0 17.5523 0 17V1C0 0.447715 0.447715 0 1 0H17C17.5523 0 18 0.447715 18 1V17C18 17.5523 17.5523 18 17 18ZM2 2V16H16V2H2ZM11 14H8V10H7V8H10V12H11V14ZM10 6H8V4H10V6Z"
-//         fill={color}
-//       />
-//     </svg>
-//   );
-// }
 
 export const CardImage = ({ }) => (
   <svg
