@@ -28,6 +28,7 @@ import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
+  AttentionBar,
   CodeExamples,
   ConfirmRemoveModal,
   CopyButton,
@@ -39,13 +40,14 @@ import {
 } from '../components/common';
 import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 
 //accountStore.getRuntimeURL()
 
 export default function GetAccessToken({ }) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Manage Access" introduction="Manage API keys." />
+      <PageHeader headerLabel="Manage Access" introduction="Manage API Keys." />
 
       <SmPanel width="800px">
         <GenerateTokenComponent />
@@ -60,28 +62,30 @@ export default function GetAccessToken({ }) {
 
 export type TokenGenStages = 'init' | 'waiting' | 'generated' | 'error';
 
-type GTCprops = { codeExample?: boolean, boxProps?: BoxProps, raiseTokenStage?: (stage: TokenGenStages) => void }
+type GTCprops = { codeExample?: boolean, boxProps?: BoxProps, raiseTokenStage?: (stage: TokenGenStages) => void, tokensFullDescr?: string | ReactJSXElement }
 
 export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
-  = observer(({ codeExample = true, boxProps = null, raiseTokenStage = null }) => {
+  = observer(({ codeExample = true, boxProps = null, raiseTokenStage = null, tokensFullDescr = null }) => {
+
+    const { accountStore, tokenStore } = useContext(accountContext);
 
     const [genTokenStage, setGenTokenStageOnState] = useState<TokenGenStages>('init');
-
     const [chosenTokenName, setChosenTokenName] = useState('');
     const [generatedToken, setGeneratedToken] = useState('');
     const [noNameError, setNoNameError] = useState(false);
 
-    const setGenTokenStage = (stage: TokenGenStages) => {
-      raiseTokenStage?.(stage);
-      setGenTokenStageOnState(stage);
-    }
-
-    const { accountStore, tokenStore } = useContext(accountContext);
     const apiKeys = accountStore.getApiKeys();
     const idToken = tokenStore.tokenPayload?.idToken;
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const generatedApikeyinputRef = useRef<HTMLInputElement>(null);
+
+    const setGenTokenStage = useCallback((stage: TokenGenStages) => {
+      raiseTokenStage?.(stage);
+      setGenTokenStageOnState(stage);
+    }, [genTokenStage]);
+
+
 
     const requestToken = useCallback(() => {
       if (nameInputRef?.current?.value == '') {
@@ -122,12 +126,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
         {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage == 'generated') && (
           <HStack mt="1em" spacing="1em" width="100%">
             {apiKeys?.length >= 5 ? (
-              <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
-                <ExclamationIcon />
-                <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
-                  Before generating a new API key, you need to remove an existing key.
-                </Text>
-              </HStack>
+              <AttentionBar description={tokensFullDescr || 'Before generating a new API key, you need to remove an existing key.'} />
             ) : (
               <>
                 <Input
@@ -141,11 +140,13 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
                   p="1.55em 1em"
                   disabled={genTokenStage == 'waiting'}
                   onKeyDown={inputOnKeyDown}
+                  data-qa="input-token-name"
                 ></Input>
                 <Button
                   variant="speechmatics"
                   disabled={genTokenStage == 'waiting'}
                   onClick={() => requestToken()}
+                  data-qa="button-generate-key"
                 >
                   {genTokenStage == 'waiting' && <Spinner mr="1em" />}Generate API Key
                 </Button>
@@ -175,7 +176,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             </Box>
             <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
               <ExclamationIcon />
-              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em">
+              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em" data-qa="message-token-security">
                 For security reasons, this key will not be displayed again. Please copy it now and
                 keep it securely.
               </Text>
@@ -247,7 +248,7 @@ const PreviousTokens = observer(() => {
       </DescriptionLabel>
 
       <Grid gridTemplateColumns="repeat(3, 1fr)" className="sm_grid">
-        <GridItem className="grid_header">API key name</GridItem>
+        <GridItem className="grid_header">API Key Name</GridItem>
         <GridItem className="grid_header">Created</GridItem>
         <GridItem className="grid_header"></GridItem>
 

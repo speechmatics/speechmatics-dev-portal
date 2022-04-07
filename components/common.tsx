@@ -35,7 +35,7 @@ import { useCallback, useContext, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
+import { ExclamationIcon, ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
 
 import {
   usePagination,
@@ -54,7 +54,7 @@ export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" 
     <UsageInfoIcon />
   </Box>
   <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-    All usage is reported on a (UTC) calendar on a daily basis and excludes the current day.
+    All usage is reported on a UTC calendar-day basis and excludes the current day.
   </Text>
 </Flex>
 
@@ -87,7 +87,7 @@ export const InfoBarbox = ({
       </Text>
     </VStack>
     {hrefUrl && (
-      <Link href={hrefUrl}>
+      <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
         <Button variant="speechmaticsWhite" mb="1em">
           {buttonLabel}
         </Button>
@@ -161,7 +161,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
-    <Tabs size="lg" variant="speechmaticsCode" mt="1em">
+    <Tabs size="lg" variant="speechmaticsCode" mt="1em" width="100%">
       <TabList marginBottom="-1px">
         <Tab>Windows</Tab>
         <Tab>Mac</Tab>
@@ -169,20 +169,20 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
       </TabList>
       <TabPanels>
         {/* //TODO remove strict width */}
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl.exe -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
           />
         </TabPanel>
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
               }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
           />
         </TabPanel>
-        <TabPanel width="750px">
+        <TabPanel width="100%">
           <CodeHighlight
             code={`curl -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
               }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
@@ -342,8 +342,8 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
   <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
     <PricingTags color='var(--chakra-colors-smBlue-500)' width={45} height={45} />
-    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our pricing</Text>
-    <Link href='https://speechmatics.com'>
+    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
+    <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
       <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
         View Pricing
       </Button>
@@ -445,3 +445,12 @@ export const positiveToast = (descr: string) =>
       fontFamily: 'RMNeue-Regular'
     }
   });
+
+
+export const AttentionBar = ({ description }) => (
+  <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
+    <ExclamationIcon />
+    <Text color="smRed.500" fontSize="0.95em" flex='1'>
+      {description}
+    </Text>
+  </HStack>)

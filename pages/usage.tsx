@@ -67,7 +67,6 @@ export default observer(function Usage() {
           }
         })
         .catch((err) => {
-          errToast(err);
           setIsLoading(false);
         });
     }
@@ -82,17 +81,17 @@ export default observer(function Usage() {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Track Usage" introduction="Review usage of the API." />
+      <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
       <Tabs size="lg" variant="speechmatics" width="800px">
         <TabList marginBottom="-1px">
-          <Tab>Limits</Tab>
-          <Tab>Summary</Tab>
-          <Tab>Details</Tab>
+          <Tab data-qa="tab-limits">Limits</Tab>
+          <Tab data-qa="tab-summary">Summary</Tab>
+          <Tab data-qa="tab-details">Details</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <HeaderLabel>Usage Limits</HeaderLabel>
-            <DescriptionLabel>Hours of audio per month</DescriptionLabel>
+            <DescriptionLabel>Hours of Audio Per Month.</DescriptionLabel>
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
               <GridItem bg="smGreen.200" className="flexColumnBetween">
                 <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
@@ -101,15 +100,15 @@ export default observer(function Usage() {
                   </Box>
                   <Box pt='1.5em' pl="1.5em">
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      ENHANCED MODEL
+                      ENHANCED
                     </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em">
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em" data-qa="limit-enhanced">
                       {accountStore.isLoading ? (
                         <Spinner size="sm" />
                       ) : (
                         accountStore.getUsageLimit('enhanced')
                       )}{' '}
-                      hours / month
+                      hours per month
                     </Text>
                   </Box>
                 </HStack>
@@ -120,26 +119,27 @@ export default observer(function Usage() {
                   borderColor="smGreen.400"
                 >
                   <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
-                    Speechmatics Enhanced Model provides our very highest level of accuracy.
+                    Enhanced provides the highest transcription accuracy.
                   </Text>
                 </Box>
               </GridItem>
               <GridItem bg="smBlue.200" className="flexColumnBetween">
                 <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
-                  <Box p='1em 0em 0em 0.5em'>
+                  <Box p='1em 0em 0em 0.2em'>
                     <BaloonIcon />
                   </Box>
-                  <Box pt='1.5em' pl="0.8em" >
+                  <Box pt='1.5em' pl="0.3em" >
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      STANDARD MODEL
+                      STANDARD
                     </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500" mt="0.15em">
+                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500"
+                      mt="0.15em" data-qa="limit-standard">
                       {accountStore.isLoading ? (
                         <Spinner size="sm" />
                       ) : (
                         accountStore.getUsageLimit('standard')
                       )}{' '}
-                      hours / month
+                      hours per month
                     </Text>
                   </Box>
                 </HStack>
@@ -150,8 +150,7 @@ export default observer(function Usage() {
                   borderColor="smBlue.400"
                 >
                   <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
-                    Speechmatics Standard Model provides high accuracy with reduced turnaround
-                    times.
+                    Standard provides faster transcription with high accuracy.
                   </Text>
                 </Box>
               </GridItem>
@@ -164,10 +163,10 @@ export default observer(function Usage() {
                       ctaText='Contact our Sales Team for custom pricing.'
                       hrefLink='https://www.speechmatics.com/about-us/contact'
                       buttonLabel='Get in touch' /> :
-                    <GetInTouchBox icon={<UsageLimitsIcon />} title='Increase usage limits'
-                      ctaText='Contact our Sales Team for custom pricing.'
+                    <GetInTouchBox icon={<UsageLimitsIcon />} title='Increase Usage Limits'
+                      ctaText='Add a payment card to increase these limits.'
                       hrefLink='/subscribe/'
-                      buttonLabel='Add card' />)}
+                      buttonLabel='Add Card' />)}
               </GridItem>
               <GridItem colSpan={2}>
                 <ViewPricingBar />
@@ -188,12 +187,12 @@ export default observer(function Usage() {
               className="sm_grid"
               alignSelf="stretch"
             >
-              <GridItem className="grid_header">Model</GridItem>
-              <GridItem className="grid_header">Limit (hours / month)</GridItem>
-              <GridItem className="grid_header">Hours used</GridItem>
-              <GridItem className="grid_header">Requests made</GridItem>
+              <GridItem className="grid_header">Accuracy</GridItem>
+              <GridItem className="grid_header">Limit (Hours per Month)</GridItem>
+              <GridItem className="grid_header">Hours Used</GridItem>
+              <GridItem className="grid_header">Requests Made</GridItem>
 
-              <GridItem>Enhanced Model</GridItem>
+              <GridItem>Enhanced</GridItem>
               <GridItem>
                 {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
               </GridItem>
@@ -206,7 +205,7 @@ export default observer(function Usage() {
                 <hr />
               </GridItem>
 
-              <GridItem>Standard Model</GridItem>
+              <GridItem>Standard</GridItem>
               <GridItem>
                 {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
               </GridItem>
@@ -242,7 +241,7 @@ export default observer(function Usage() {
 const UsageBreakdownGrid = ({ data, isLoading }) => (
   <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">
     <GridItem className="grid_header">Day</GridItem>
-    <GridItem className="grid_header">Hours used</GridItem>
+    <GridItem className="grid_header">Hours Used</GridItem>
 
     {data?.map((el: UsageUnit, i: number) => {
       return (

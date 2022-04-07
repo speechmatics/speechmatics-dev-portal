@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import menuData from "../static_data/menu-data";
@@ -23,7 +23,8 @@ function MenuElem({ item, selected }) {
             color: selected ? 'var(--chakra-colors-smBlue-500)' : 'var(--chakra-colors-smNavy-400)',
           })}
         </div>
-        <div>{item.title}</div>
+        <Box data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}
+          pl='0.5em'>{item.title}</Box>
       </div>
     </Link>
   );

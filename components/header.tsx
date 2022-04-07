@@ -6,18 +6,17 @@ import { SpeechmaticsLogoHorizontalWhite, AccountIcon, LogoutIcon } from "./icon
 export function HeaderBar({ logout, accountEmail }) {
   return (
     <Box className="header_bar">
-      <Box p="0.5em 0em 0.5em 2em">
-        <SpeechmaticsLogoHorizontalWhite w={200} h={50} />
-      </Box>
+      <Link href="https://speechmatics.com">
+        <Box p="0.5em 0em 0.5em 2em" cursor='pointer'>
+          <SpeechmaticsLogoHorizontalWhite w={200} h={50} />
+        </Box>
+      </Link>
       <Box>
         <RightSidePanel logout={logout} accountEmail={accountEmail} />
       </Box>
     </Box>
   );
 }
-
-
-
 
 export function RightSidePanel({ logout, accountEmail }) {
   return (
@@ -53,7 +52,6 @@ export function RightSidePanel({ logout, accountEmail }) {
         >
           {accountEmail}
         </Text>
-        <AccountIcon w={20} h={20} color="#DFE0E3" />
       </div>
       {/* </Tooltip>
         </ChakraLink>

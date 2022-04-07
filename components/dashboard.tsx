@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogoHorizontalWhite, SpeechmaticsLogo, AccountIcon, LogoutIcon } from './icons-library';
+import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { Menu } from './side-menu';
 
@@ -48,7 +48,7 @@ export default observer(function Dashboard({ children }) {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
     onClose: onUserCreationModalClose,
-  } = useDisclosure({ isOpen: false });
+  } = useDisclosure();
 
   const { instance, inProgress } = useMsal();
 
@@ -75,11 +75,12 @@ export default observer(function Dashboard({ children }) {
   }, [b2cError]);
 
   const isSettingUpAccount = (val: boolean) => {
+    console.log('isSettingUpAccount', val)
     if (val) onUserCreationModalOpen();
   };
 
   useEffect(() => {
-    if (!accountStore.account && isAuthenticated && tokenPayload?.idToken) {
+    if (!accountStore.requestSent && !accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
       accountStore
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
@@ -134,10 +135,10 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={false}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Just one or two seconds more...</ModalHeader>
+      <ModalContent borderRadius='2px'>
+        <ModalHeader fontFamily='RMNeue-Bold'>Please wait...</ModalHeader>
         <ModalBody textAlign={'center'}>
-          Setting up the account for You! <Spinner ml={2} />
+          Setting up the Account <Spinner ml={2} size='sm' />
         </ModalBody>
         <ModalFooter />
       </ModalContent>
@@ -150,7 +151,7 @@ function UserNotAuthModal({ isModalOpen }) {
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>
+        <ModalBody >
           <VStack>
             <SpeechmaticsLogo w={160} h={100} />
             <Box>Your session expired. </Box>

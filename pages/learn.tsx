@@ -40,7 +40,7 @@ export default function Learn({ }) {
         <InfoBarbox
           bgColor="smNavy.500"
           icon={<JobSubmitIcon />}
-          title="How to submit a job"
+          title="How to Submit a Job"
           description="Watch our demo on how to submit a transcription job."
           buttonLabel="Watch Video"
           setStateUp={() => setIsYtModalOpen(true)}
@@ -77,7 +77,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
         </ModalHeader>
         <ModalBody p="1em">
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=yWEc5ukxaho"
+            url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
             width="888px"
             height="500px"
           />
@@ -95,12 +95,12 @@ const elems = [
   },
   {
     title: 'Introduction',
-    descr: 'How to use the RESTful API for the Speechmatics Cloud Offering.',
+    descr: 'How to use the RESTful API for the Speechmatics SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/introduction/'
   },
   {
     title: 'API How-To Guide',
-    descr: 'Examples and guidance on using the Speechmatics Cloud Offering.',
+    descr: 'Examples and guidance on using the Speechmatics SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/howto/'
 
   },
@@ -115,11 +115,11 @@ const elems = [
   },
   {
     title: 'Understanding SaaS Usage',
-    descr: '',
+    descr: 'How to make requests and understand your usage of our service.',
     link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
   },
   {
-    title: 'Troubleshooting', descr: 'Resolving errors with the Cloud Offering.',
+    title: 'Troubleshooting', descr: 'Resolving errors with the SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
   },
   {
