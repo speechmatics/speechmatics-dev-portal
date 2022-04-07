@@ -35,7 +35,7 @@ export default observer(function GettingStarted({ }) {
       />
 
       <SmPanel width="800px">
-        <Box>
+        <Box width='100%'>
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
@@ -50,14 +50,16 @@ export default observer(function GettingStarted({ }) {
           </DescriptionLabel>
         </Box>
         <PanelDivider />
-        <GenerateTokenComponent paddingTop="0.5em" raiseTokenStage={tokenGenerationStage} tokensFullDescr={
-          <>You've already created 5 API Keys.{' '}
-            Before generating a new API key, you need to <Link href='/manage-access/'>
-              <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>remove an existing key</a></Link>{'.'}
-          </>} />
+        <Box paddingTop="1em" width='100%'>
+          <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
+            <>You've already created 5 API Keys.{' '}
+              Before generating a new API key, you need to <Link href='/manage-access/'>
+                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>remove an existing key</a></Link>{'.'}
+            </>} />
+        </Box>
         {showDefaultCodeExample && <>
           <PanelDivider />
-          <Box paddingTop="0.5em" width='100%'>
+          <Box paddingTop="1em" width='100%'>
             <HeaderLabel>Make an API Request</HeaderLabel>
             <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
             <CodeExamples />
