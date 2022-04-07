@@ -305,7 +305,7 @@ export const TranscribeAudioIcon = (props: SVGProps<SVGSVGElement>) => (
 )
 
 
-export const MenuGettingStartedIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuGettingStartedIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -316,32 +316,32 @@ export const MenuGettingStartedIcon = (props: SVGProps<SVGSVGElement> & { mono?:
   >
     <path
       d="M2.63184 6.07834C2.63184 3.01739 5.11323 0.536011 8.1742 0.536011C11.2352 0.536011 13.7166 3.01739 13.7166 6.07834C13.7166 9.13929 11.2352 11.6207 8.1742 11.6207C5.11323 11.6207 2.63184 9.13929 2.63184 6.07834Z"
-      fill={props.mono ? "#A7D0CD" : "#FFCC33"}
+      fill={mono ? "#A7D0CD" : "#FFCC33"}
     />
     <path
       d="M6.98654 9.17731L4.05147 6.24226L5.17102 5.12271L6.98654 6.93821L11.1773 2.74744L12.2969 3.86698L6.98654 9.17731Z"
-      fill={props.mono ? "#36817E" : "#386DFB"}
+      fill={mono ? "#36817E" : "#386DFB"}
     />
     <path
       d="M1.84007 21.1219H8.96596V25.8725H1.84007V21.1219Z"
-      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+      fill={mono ? "#4FA9A2" : "#F08F63"}
     />
     <path
       d="M9.75772 13.996H2.60649C1.30879 13.996 0.256531 15.0482 0.256531 16.3459V20.3254C0.256531 21.6397 1.32225 22.7054 2.63658 22.7054H7.37768C8.69201 22.7054 9.75772 21.6397 9.75772 20.3254V13.996Z"
-      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+      fill={mono ? "#4FA9A2" : "#F08F63"}
     />
     <path
       d="M8.17419 8.45367C7.29929 8.45367 6.59066 9.1623 6.59066 10.0372V18.7465H9.75773V10.0372C9.75773 9.1623 9.0491 8.45367 8.17419 8.45367Z"
-      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+      fill={mono ? "#4FA9A2" : "#F08F63"}
     />
     <path
       d="M8.89929 22.3546C8.28172 22.1345 7.95947 21.4552 8.17958 20.8368L10.3063 14.871C10.5264 14.2534 11.2065 13.9311 11.8241 14.1512C12.4416 14.3714 12.7639 15.0507 12.5438 15.6682L10.4171 21.6349C10.1962 22.2525 9.51687 22.5747 8.89929 22.3546Z"
-      fill={props.mono ? "#4FA9A2" : "#F08F63"}
+      fill={mono ? "#4FA9A2" : "#F08F63"}
     />
   </svg>
 )
 
-export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuLearnIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -352,19 +352,19 @@ export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean 
   >
     <path
       d="M2.53371 0.888123H17.9731V23.0576H0.554291V2.86754C0.554291 1.77411 1.44028 0.888123 2.53371 0.888123Z"
-      fill={props.mono ? "#4FA9A2" : "#5398FC"}
+      fill={mono ? "#4FA9A2" : "#5398FC"}
     />
     <path
       d="M2.53371 20.6823H17.9731V24.6411H2.53371C1.44028 24.6411 0.554291 23.7551 0.554291 22.6617C0.554291 21.5683 1.44028 20.6823 2.53371 20.6823Z"
-      fill={props.mono ? "#A7D0CD" : "#D1D7DC"}
+      fill={mono ? "#A7D0CD" : "#D1D7DC"}
     />
     <path
       d="M7.68015 22.2658H2.92957V26.2246L5.30486 24.6411L7.68015 26.2246V22.2658Z"
-      fill={props.mono ? "#36817E" : "#CC3333"}
+      fill={mono ? "#36817E" : "#CC3333"}
     />
     <path
       d="M2.93112 0.888412H17.9746V20.6825H2.93112V0.888412Z"
-      fill={props.mono ? "#36817E" : "#386DFB"}
+      fill={mono ? "#36817E" : "#386DFB"}
     />
     <path d="M10.8488 10.3895H15.5993V11.9731H10.8488V10.3895Z" fill="white" />
     <path
@@ -380,7 +380,7 @@ export const MenuLearnIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean 
 
 
 
-export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuBillingIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -391,26 +391,26 @@ export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolea
   >
     <path
       d="M23.6928 18.365H1.9723C0.973884 18.365 0.16391 17.5558 0.16391 16.5574V2.75377C0.16391 1.75535 0.973884 0.946167 1.9723 0.946167H23.6928C24.6912 0.946167 25.5004 1.75535 25.5004 2.75377V16.5574C25.5004 17.5558 24.6912 18.365 23.6928 18.365Z"
-      fill={props.mono ? "#4FA9A2" : "#5398FC"}
+      fill={mono ? "#4FA9A2" : "#5398FC"}
     />
-    <path d="M0.16391 4.11325H25.5004V7.2803H0.16391V4.11325Z" fill={props.mono ? "#36817E" : "#BFD8FE"} />
+    <path d="M0.16391 4.11325H25.5004V7.2803H0.16391V4.11325Z" fill={mono ? "#36817E" : "#BFD8FE"} />
     <path
       d="M9.12907 15.198H4.65795C4.36262 15.198 4.12271 14.958 4.12271 14.6619V11.7751C4.12271 11.479 4.36262 11.2391 4.65795 11.2391H7.71497C7.84403 11.2391 7.96834 11.2858 8.06573 11.3697L9.47983 12.5954C9.59701 12.6968 9.6651 12.8448 9.6651 13V14.6619C9.6651 14.958 9.42519 15.198 9.12907 15.198Z"
-      fill={props.mono ? "#A7D0CD" : "#FFCC33"}
+      fill={mono ? "#A7D0CD" : "#FFCC33"}
     />
     <path
       d="M13.6239 9.65556H23.1251V10.4473H13.6239V9.65556Z"
-      fill={props.mono ? "#A7D0CD" : "#BFD8FE"}
+      fill={mono ? "#A7D0CD" : "#BFD8FE"}
     />
     <path
       d="M13.6239 12.0309H19.1663V12.8226H13.6239V12.0309Z"
-      fill={props.mono ? "#A7D0CD" : "#BFD8FE"}
+      fill={mono ? "#A7D0CD" : "#BFD8FE"}
     />
   </svg>
 )
 
 
-export const MenuTrackUsageIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuTrackUsageIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -421,34 +421,34 @@ export const MenuTrackUsageIcon = (props: SVGProps<SVGSVGElement> & { mono?: boo
   >
     <path
       d="m10.511 13.087 1.68-1.68 10.637 10.638-1.68 1.68-10.637-10.638Z"
-      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+      fill={mono ? "#4FA9A2" : "#5E6673"}
     />
     <path
       d="m15.55 19.245 2.8-2.799 6.717 6.719-2.799 2.799-6.718-6.718Z"
-      fill={props.mono ? "#36817E" : "#263243"}
+      fill={mono ? "#36817E" : "#263243"}
     />
     <path
       d="m15.549 19.246 2.8-2.8 1.119 1.12-2.8 2.8-1.12-1.12ZM21.148 24.845l2.799-2.8 1.12 1.12-2.8 2.8-1.12-1.12Z"
-      fill={props.mono ? "#A7D0CD" : "#AEB2B8"}
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
     <path
       d="M.486 9.697a8.71 8.71 0 1 1 17.42 0 8.71 8.71 0 0 1-17.42 0Z"
-      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+      fill={mono ? "#4FA9A2" : "#5E6673"}
     />
     <path
       d="M2.07 9.697A7.125 7.125 0 0 1 9.196 2.57a7.126 7.126 0 1 1 0 14.252A7.125 7.125 0 0 1 2.07 9.697Z"
-      fill={props.mono ? "#CAE3E1" : "#D8E8FE"}
+      fill={mono ? "#CAE3E1" : "#D8E8FE"}
     />
     <path
       d="M5.237 8.113H6.82v5.543H5.237V8.113ZM8.404 6.53h1.583v7.125H8.404V6.53ZM11.57 4.946h1.584v8.71h-1.583v-8.71Z"
-      fill={props.mono ? "#36817E" : "#386DFB"}
+      fill={mono ? "#36817E" : "#386DFB"}
     />
   </svg>
 )
 
 
 
-export const MenuPadlockIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuPadlockIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -459,27 +459,27 @@ export const MenuPadlockIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolea
   >
     <path
       d="M15.1 13.61H12.65V7.48a4.09 4.09 0 0 0-4.087-4.086A4.09 4.09 0 0 0 4.476 7.48H2.024A6.546 6.546 0 0 1 8.562.94a6.546 6.546 0 0 1 6.539 6.539v6.13Z"
-      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+      fill={mono ? "#4FA9A2" : "#5E6673"}
     />
-    <path d="M2.024 7.071h2.452V8.86H2.024V7.071Z" fill={props.mono ? "#4FA9A2" : "#5E6673"} />
+    <path d="M2.024 7.071h2.452V8.86H2.024V7.071Z" fill={mono ? "#4FA9A2" : "#5E6673"} />
     <path
       d="M8.754 26.278a8.195 8.195 0 0 1-8.195-8.195V13.15c0-1.058.857-1.916 1.915-1.916h12.56c1.057 0 1.914.858 1.914 1.916v4.933a8.195 8.195 0 0 1-8.194 8.195Z"
-      fill={props.mono ? "#A7D0CD" : "#AEB2B8"}
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
     <path
       d="M8.754 22.32a1.188 1.188 0 0 1-1.188-1.189v-4.354h2.375v4.354c0 .656-.532 1.188-1.187 1.188Z"
-      fill={props.mono ? "#36817E" : "#263243"}
+      fill={mono ? "#36817E" : "#263243"}
     />
     <path
       d="M6.774 15.59a1.98 1.98 0 1 1 3.958-.002 1.98 1.98 0 0 1-3.958.001Z"
-      fill={props.mono ? "#36817E" : "#263243"}
+      fill={mono ? "#36817E" : "#263243"}
     />
   </svg>
 )
 
 
 
-export const MenuHouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuHouseIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1.3em"}
     height={props.height || "1.3em"}
@@ -490,14 +490,14 @@ export const MenuHouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean 
   >
     <path
       d="M2.506 26.324V11.967L12.799 1.832l10.293 10.135v14.357H2.506Z"
-      fill={props.mono ? "#DFEEED" : "#FFEDB6"}
+      fill={mono ? "#DFEEED" : "#FFEDB6"}
     />
-    <path d="M13.59 17.614h7.127v5.543H13.59v-5.543Z" fill={props.mono ? "#4FA9A2" : "#BFD8FE"} />
-    <path d="M5.673 17.614h4.75v8.71h-4.75v-8.71Z" fill={props.mono ? "#36817E" : "#C63"} />
-    <path d="M6.465 18.406h3.167v3.167H6.465v-3.167Z" fill={props.mono ? "#4FA9A2" : "#BFD8FE"} />
+    <path d="M13.59 17.614h7.127v5.543H13.59v-5.543Z" fill={mono ? "#4FA9A2" : "#BFD8FE"} />
+    <path d="M5.673 17.614h4.75v8.71h-4.75v-8.71Z" fill={mono ? "#36817E" : "#C63"} />
+    <path d="M6.465 18.406h3.167v3.167H6.465v-3.167Z" fill={mono ? "#4FA9A2" : "#BFD8FE"} />
     <path
       d="M23.884 14.447 12.799 4.221 1.714 14.447.131 12.811 12.799.987l12.668 11.824-1.583 1.636Z"
-      fill={props.mono ? "#36817E" : "#C33"}
+      fill={mono ? "#36817E" : "#C33"}
     />
   </svg>
 )

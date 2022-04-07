@@ -1,4 +1,4 @@
-import { Text, Box } from '@chakra-ui/react';
+import { Text, Box, VStack } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
@@ -35,7 +35,7 @@ export default observer(function GettingStarted({ }) {
       />
 
       <SmPanel width="800px">
-        <Box width='100%' paddingBottom="1em">
+        <Box width='100%' >
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
@@ -51,11 +51,16 @@ export default observer(function GettingStarted({ }) {
         </Box>
         <PanelDivider />
         <Box paddingTop="1em" paddingBottom="1em" width='100%'>
-          <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
+          {accountStore.account ? <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
             <>You've already created 5 API Keys.{' '}
               Before generating a new API key, you need to <Link href='/manage-access/'>
                 <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>remove an existing key</a></Link>{'.'}
-            </>} />
+            </>} /> :
+            <VStack alignItems='flex-start'>
+              <Box className="skeleton" height="2em" width="15em" />
+              <Box className="skeleton" height="1em" width="28em" />
+              <Box className="skeleton" height="6em" width="100%" />
+            </VStack>}
         </Box>
         {showDefaultCodeExample && <>
           <PanelDivider />
