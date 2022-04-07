@@ -162,7 +162,7 @@ export default observer(function Usage() {
                       ctaText='Contact our Sales Team for custom pricing.'
                       hrefLink='https://www.speechmatics.com/about-us/contact'
                       buttonLabel='Get in touch' /> :
-                    <GetInTouchBox icon={<UsageLimitsIcon />} title='Increase Usage Limits'
+                    <GetInTouchBox icon={<CallSupportIcon />} title='Increase Usage Limits'
                       ctaText='Add a payment card to increase these limits.'
                       hrefLink='/subscribe/'
                       buttonLabel='Add Card' />)}
