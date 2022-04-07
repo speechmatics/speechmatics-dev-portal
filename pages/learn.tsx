@@ -21,7 +21,7 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { JobSubmitIcon } from '../components/icons-library';
+import { JobSubmitIcon, SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
@@ -39,7 +39,7 @@ export default function Learn({ }) {
       <VStack spacing="1.5em" alignItems="flex-start" width="800px">
         <InfoBarbox
           bgColor="smNavy.500"
-          icon={<JobSubmitIcon />}
+          icon={<SubmitAJobIcon width='4em' height='4em' />}
           title="How to Submit a Job"
           description="Watch our demo on how to submit a transcription job."
           buttonLabel="Watch Video"

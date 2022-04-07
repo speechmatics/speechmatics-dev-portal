@@ -94,10 +94,10 @@ export default observer(function Usage() {
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
               <GridItem bg="smGreen.200" className="flexColumnBetween">
                 <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
-                  <Box p='0.8em 0em 0.3em 1.2em'>
+                  <Box p='1em 0em 0em 0.2em'>
                     <RocketIcon />
                   </Box>
-                  <Box pt='1.5em' pl="1.5em">
+                  <Box pt='1em' pl="0.5em">
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
                       ENHANCED
                     </Text>
@@ -127,7 +127,7 @@ export default observer(function Usage() {
                   <Box p='1em 0em 0em 0.2em'>
                     <BaloonIcon />
                   </Box>
-                  <Box pt='1.5em' pl="0.3em" >
+                  <Box pt='1em' pl="0.5em" >
                     <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
                       STANDARD
                     </Text>
