@@ -120,7 +120,7 @@ const elems = [
   },
   {
     title: 'Troubleshooting', descr: 'Resolving errors with the SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
+    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/'
   },
   {
     title: 'API Reference', descr: 'Reference guide for the ASR REST API.',
