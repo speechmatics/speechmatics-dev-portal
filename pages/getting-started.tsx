@@ -35,7 +35,7 @@ export default observer(function GettingStarted({ }) {
       />
 
       <SmPanel width="800px">
-        <Box width='100%'>
+        <Box width='100%' paddingBottom="1em">
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
@@ -50,7 +50,7 @@ export default observer(function GettingStarted({ }) {
           </DescriptionLabel>
         </Box>
         <PanelDivider />
-        <Box paddingTop="1em" width='100%'>
+        <Box paddingTop="1em" paddingBottom="1em" width='100%'>
           <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
             <>You've already created 5 API Keys.{' '}
               Before generating a new API key, you need to <Link href='/manage-access/'>
@@ -75,6 +75,6 @@ const PanelDivider = () => (
     bg="smBlack.200"
     height="1px"
     width="calc(100% + 3em)"
-    style={{ marginLeft: '-1.5em', marginTop: '1em' }}
+    style={{ marginLeft: '-1.5em' }}
   />
 );
