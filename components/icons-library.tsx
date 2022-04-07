@@ -3,8 +3,104 @@ import { SVGProps } from "react"
 
 
 
+export const MenuBillingIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 26 19"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M23.6928 18.365H1.9723C0.973884 18.365 0.16391 17.5558 0.16391 16.5574V2.75377C0.16391 1.75535 0.973884 0.946167 1.9723 0.946167H23.6928C24.6912 0.946167 25.5004 1.75535 25.5004 2.75377V16.5574C25.5004 17.5558 24.6912 18.365 23.6928 18.365Z"
+      fill={props.mono ? "#4FA9A2" : "#5398FC"}
+    />
+    <path d="M0.16391 4.11325H25.5004V7.2803H0.16391V4.11325Z" fill={props.mono ? "#36817E" : "#BFD8FE"} />
+    <path
+      d="M9.12907 15.198H4.65795C4.36262 15.198 4.12271 14.958 4.12271 14.6619V11.7751C4.12271 11.479 4.36262 11.2391 4.65795 11.2391H7.71497C7.84403 11.2391 7.96834 11.2858 8.06573 11.3697L9.47983 12.5954C9.59701 12.6968 9.6651 12.8448 9.6651 13V14.6619C9.6651 14.958 9.42519 15.198 9.12907 15.198Z"
+      fill={props.mono ? "#A7D0CD" : "#FFCC33"}
+    />
+    <path
+      d="M13.6239 9.65556H23.1251V10.4473H13.6239V9.65556Z"
+      fill={props.mono ? "#A7D0CD" : "#BFD8FE"}
+    />
+    <path
+      d="M13.6239 12.0309H19.1663V12.8226H13.6239V12.0309Z"
+      fill={props.mono ? "#A7D0CD" : "#BFD8FE"}
+    />
+  </svg>
+)
 
-export const HouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+
+export const MenuTrackUsageIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="m10.511 13.087 1.68-1.68 10.637 10.638-1.68 1.68-10.637-10.638Z"
+      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path
+      d="m15.55 19.245 2.8-2.799 6.717 6.719-2.799 2.799-6.718-6.718Z"
+      fill={props.mono ? "#36817E" : "#263243"}
+    />
+    <path
+      d="m15.549 19.246 2.8-2.8 1.119 1.12-2.8 2.8-1.12-1.12ZM21.148 24.845l2.799-2.8 1.12 1.12-2.8 2.8-1.12-1.12Z"
+      fill={props.mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path
+      d="M.486 9.697a8.71 8.71 0 1 1 17.42 0 8.71 8.71 0 0 1-17.42 0Z"
+      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path
+      d="M2.07 9.697A7.125 7.125 0 0 1 9.196 2.57a7.126 7.126 0 1 1 0 14.252A7.125 7.125 0 0 1 2.07 9.697Z"
+      fill={props.mono ? "#CAE3E1" : "#D8E8FE"}
+    />
+    <path
+      d="M5.237 8.113H6.82v5.543H5.237V8.113ZM8.404 6.53h1.583v7.125H8.404V6.53ZM11.57 4.946h1.584v8.71h-1.583v-8.71Z"
+      fill={props.mono ? "#36817E" : "#386DFB"}
+    />
+  </svg>
+)
+
+
+
+export const MenuPadlockIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M15.1 13.61H12.65V7.48a4.09 4.09 0 0 0-4.087-4.086A4.09 4.09 0 0 0 4.476 7.48H2.024A6.546 6.546 0 0 1 8.562.94a6.546 6.546 0 0 1 6.539 6.539v6.13Z"
+      fill={props.mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path d="M2.024 7.071h2.452V8.86H2.024V7.071Z" fill={props.mono ? "#4FA9A2" : "#5E6673"} />
+    <path
+      d="M8.754 26.278a8.195 8.195 0 0 1-8.195-8.195V13.15c0-1.058.857-1.916 1.915-1.916h12.56c1.057 0 1.914.858 1.914 1.916v4.933a8.195 8.195 0 0 1-8.194 8.195Z"
+      fill={props.mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path
+      d="M8.754 22.32a1.188 1.188 0 0 1-1.188-1.189v-4.354h2.375v4.354c0 .656-.532 1.188-1.187 1.188Z"
+      fill={props.mono ? "#36817E" : "#263243"}
+    />
+    <path
+      d="M6.774 15.59a1.98 1.98 0 1 1 3.958-.002 1.98 1.98 0 0 1-3.958.001Z"
+      fill={props.mono ? "#36817E" : "#263243"}
+    />
+  </svg>
+)
+
+
+
+export const MenuHouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width="1em"
     height="1em"
@@ -22,28 +118,6 @@ export const HouseIcon = (props: SVGProps<SVGSVGElement> & { mono?: boolean }) =
     <path
       d="M23.884 14.447 12.799 4.221 1.714 14.447.131 12.811 12.799.987l12.668 11.824-1.583 1.636Z"
       fill={props.mono ? "#36817E" : "#C33"}
-    />
-  </svg>
-)
-
-export const HouseIconColor = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    width="1em"
-    height="1em"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path
-      d="M2.506 26.278V11.92L12.799 1.786l10.293 10.135v14.357H2.506Z"
-      fill="#FFEDB6"
-    />
-    <path d="M13.59 17.569h7.127v5.542H13.59v-5.543Z" fill="#BFD8FE" />
-    <path d="M5.673 17.569h4.75v8.709h-4.75v-8.71Z" fill="#C63" />
-    <path d="M6.465 18.36h3.167v3.167H6.465V18.36Z" fill="#BFD8FE" />
-    <path
-      d="M23.884 14.401 12.799 4.175 1.714 14.401.131 12.765 12.799.94l12.668 11.824-1.583 1.636Z"
-      fill="#C33"
     />
   </svg>
 )
@@ -82,25 +156,25 @@ export const MenuLearnIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export const MenuBillingIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width={21}
-    height={21}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <g
-      opacity={0.8}
-      stroke={props.color}
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18.816 3.5H2.191a1.75 1.75 0 0 0-1.75 1.75v10.5c0 .966.784 1.75 1.75 1.75h16.625a1.75 1.75 0 0 0 1.75-1.75V5.25a1.75 1.75 0 0 0-1.75-1.75ZM.441 7h20.125M17.941 10.5h-2.625M10.066 10.5h-7M5.691 13.125H3.066" />
-    </g>
-  </svg>
-)
+// export const MenuBillingIcon = (props: React.SVGProps<SVGSVGElement>) => (
+//   <svg
+//     width={21}
+//     height={21}
+//     fill="none"
+//     xmlns="http://www.w3.org/2000/svg"
+//     {...props}
+//   >
+//     <g
+//       opacity={0.8}
+//       stroke={props.color}
+//       strokeWidth={1.5}
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//     >
+//       <path d="M18.816 3.5H2.191a1.75 1.75 0 0 0-1.75 1.75v10.5c0 .966.784 1.75 1.75 1.75h16.625a1.75 1.75 0 0 0 1.75-1.75V5.25a1.75 1.75 0 0 0-1.75-1.75ZM.441 7h20.125M17.941 10.5h-2.625M10.066 10.5h-7M5.691 13.125H3.066" />
+//     </g>
+//   </svg>
+// )
 
 export const MenuTrackIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -125,7 +199,7 @@ export const MenuTrackIcon = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 
-export const MenuPadlockIcon = (props: React.SVGProps<SVGSVGElement>) => (
+export const MenuPadlockIcon_old = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width={20}
     height={22}
