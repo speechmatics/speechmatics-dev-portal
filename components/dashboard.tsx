@@ -80,13 +80,11 @@ export default observer(function Dashboard({ children }) {
   };
 
   useEffect(() => {
-    console.log('account assignServerState A', !accountStore.requestSent, !accountStore.account, isAuthenticated, tokenPayload?.idToken)
     if (!accountStore.requestSent && !accountStore.account && isAuthenticated && tokenPayload?.idToken) {
       tokenStore.setTokenPayload(tokenPayload);
       accountStore
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
-          console.log('account assignServerState B', resp)
           accountStore.assignServerState(resp);
           onUserCreationModalClose();
         })

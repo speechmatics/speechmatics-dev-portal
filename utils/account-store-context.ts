@@ -71,17 +71,6 @@ class AccountContext {
       enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
     };
 
-    console.log(
-      'getUsageLimit',
-      type,
-      dict[type],
-      this._account,
-      this._account?.contracts.filter((con) => !!con)?.[0],
-      this._account?.contracts
-        .filter((con) => !!con)?.[0]
-        ?.usage_limits?.find((el) => el.name == dict[type])?.value
-    );
-
     if (this.account === undefined) return undefined;
 
     return (
