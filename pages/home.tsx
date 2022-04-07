@@ -5,8 +5,12 @@ import Dashboard from '../components/dashboard';
 import {
   LearnBookIcon,
   LookingGlassChartIcon,
+  MenuLearnIcon,
+  MenuPadlockIcon,
+  MenuTrackUsageIcon,
   PadLockOpenIcon,
   TerminalGraphIcon,
+  TranscribeAudioIcon,
 } from '../components/icons-library';
 
 export default function Home({ }) {
@@ -17,7 +21,7 @@ export default function Home({ }) {
         <InfoBarbox
           width="100%"
           bgColor="smBlue.500"
-          icon={<TerminalGraphIcon />}
+          icon={<TranscribeAudioIcon width='4em' height='3em' />}
           title="Transcribe an Audio File"
           description=""
           buttonLabel="Get Started"
@@ -25,21 +29,21 @@ export default function Home({ }) {
         />
         <HStack alignItems="flex-start" spacing="2em">
           <HomeWhiteBox
-            icon={<PadLockOpenIcon />}
+            icon={<MenuPadlockIcon width='6em' height='4em' />}
             title="Manage API Keys"
             description="You need to create an API key to make API requests."
             buttonLabel="Create API Key"
             hrefUrl="/manage-access/"
           />
           <HomeWhiteBox
-            icon={<LookingGlassChartIcon />}
+            icon={<MenuTrackUsageIcon width='6em' height='4em' />}
             title="Track Your Usage"
             description="Usage is measured in hours of audio processed."
             buttonLabel="View Usage"
             hrefUrl="/usage/"
           />
           <HomeWhiteBox
-            icon={<LearnBookIcon />}
+            icon={<MenuLearnIcon width='6em' height='4em' />}
             title="Learning Resources"
             description="Explore our documentation and learning resources."
             buttonLabel="Learn"

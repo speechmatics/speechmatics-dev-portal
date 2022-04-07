@@ -35,7 +35,7 @@ import { useCallback, useContext, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
-import { ExclamationIcon, ExclamationIconLarge, PricingTags, UsageInfoIcon } from './icons-library';
+import { CalendarIcon, ExclamationIcon, ExclamationIconLarge, PricingTags, UsageInfoIcon, ViewPricingIcon } from './icons-library';
 
 import {
   usePagination,
@@ -51,7 +51,7 @@ import {
 
 export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
   <Box>
-    <UsageInfoIcon />
+    <CalendarIcon width='1.5em' height='1.5em' />
   </Box>
   <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
     All usage is reported on a UTC calendar-day basis and excludes the current day.
@@ -341,7 +341,7 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 
 export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
   <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
-    <PricingTags color='var(--chakra-colors-smBlue-500)' width={45} height={45} />
+    <ViewPricingIcon />
     <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
     <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
       <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
