@@ -71,13 +71,13 @@ class AccountContext {
       enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
     };
 
-    if (this.account === undefined) return undefined;
+    const val = this._account?.contracts
+      .filter((con) => !!con)?.[0]
+      ?.usage_limits?.find((el) => el.name == dict[type])?.value;
 
-    return (
-      this._account?.contracts
-        .filter((con) => !!con)?.[0]
-        ?.usage_limits?.find((el) => el.name == dict[type])?.value / 3600
-    );
+    if (val == undefined) return undefined;
+
+    return val / 3600;
   }
 
   async fetchServerState(idToken: string) {
