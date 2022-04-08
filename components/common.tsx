@@ -171,7 +171,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
           <TabPanel width="100%">
             <CodeHighlight
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config="{\"type\": \"transcription\", \"transcription_config\": { \"operating_point\":\"enhanced\", \"language\": \"en\" }}"`}
+                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>Get a transcript, using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
