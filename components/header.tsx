@@ -1,9 +1,10 @@
-import { Box, HStack, Divider, Tooltip, Text } from "@chakra-ui/react";
+import { Box, HStack, Divider, Tooltip, Text, useBreakpointValue } from "@chakra-ui/react";
 import Link from "next/link";
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 
 export function HeaderBar({ logout, accountEmail }) {
+
   return (
     <Box className="header_bar">
       <Link href="https://speechmatics.com">
@@ -11,6 +12,7 @@ export function HeaderBar({ logout, accountEmail }) {
           <SpeechmaticsLogoHorizontalWhite w={200} h={50} />
         </Box>
       </Link>
+
       <Box>
         <RightSidePanel logout={logout} accountEmail={accountEmail} />
       </Box>
@@ -19,6 +21,15 @@ export function HeaderBar({ logout, accountEmail }) {
 }
 
 export function RightSidePanel({ logout, accountEmail }) {
+  const breakVal = useBreakpointValue({
+    base: 'base',
+    xs: "xs",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
+    "2xl": "2xl"
+  })
   return (
     <Box className="dashboard_side_bar">
       <HStack>
@@ -30,7 +41,7 @@ export function RightSidePanel({ logout, accountEmail }) {
               mt="-3px"
               fontFamily="RMNeue-Regular"
               _hover={{ color: '#F8FAFD' }}
-            >
+            >{breakVal}{' '}
               Documentation
             </Text>
           </a>

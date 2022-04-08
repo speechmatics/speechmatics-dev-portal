@@ -143,18 +143,18 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <>
+    <Box width={['450px', '450px', '600px', '800px', '1000px']}>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
         style={{
           marginTop: '2em',
-          width: '800px',
+          width: '100%',
           marginBottom: '3em',
           borderColor: 'var(--chakra-colors-smNavy-270)',
         }}
       />
-    </>
+    </Box>
   );
 };
 export const CodeExamples = observer(({ token }: { token?: string }) => {
