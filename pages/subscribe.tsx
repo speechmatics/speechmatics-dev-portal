@@ -99,6 +99,8 @@ function Subscribe({ }) {
     );
   };
 
+
+
   return (
     <Dashboard>
       <h1>
@@ -112,7 +114,7 @@ function Subscribe({ }) {
           <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
             <SmPanel>
               <HeaderLabel>Your Name</HeaderLabel>
-              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <section style={sectStyle}>
                 <div id="chargify_firstName"></div>
                 <div id="chargify_lastname"></div>
               </section>
@@ -120,7 +122,7 @@ function Subscribe({ }) {
 
             <SmPanel marginTop="2em">
               <HeaderLabel>Your Card Information</HeaderLabel>
-              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <section style={sectStyle}>
                 <div id="chargify_ccnumber"></div>
                 <div id="chargify_cvv"></div>
                 <div id="chargify_ccmonth"></div>
@@ -130,7 +132,7 @@ function Subscribe({ }) {
 
             <SmPanel marginTop="2em">
               <HeaderLabel>Your Address</HeaderLabel>
-              <section style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <section style={sectStyle}>
                 <div id="chargify_address"></div>
                 <div id="chargify_address2"></div>
                 <div id="chargify_city"></div>
@@ -183,10 +185,15 @@ function Subscribe({ }) {
 
 export default observer(Subscribe);
 
+const sectStyle = {
+  display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
+  columnGap: '2em', alignSelf: 'center'
+} as React.CSSProperties
+
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '1.35em',
+    fontSize: '1.3em',
   };
 
   const defaultStyle = {
