@@ -25,7 +25,7 @@ jobs:
       AUTHORITY_DOMAIN: 'speechmaticsb2c.b2clogin.com'
       POLICY_DOMAIN: 'speechmaticsb2c.onmicrosoft.com'
       AUTH_CLIENT_ID: '75a2952e-954e-4975-8a14-ef862a8e5a39'
-      ENDPOINT_API_URL: 'https://staging-mp.speechmatics.com/v1'
+      ENDPOINT_API_URL: 'https://speechmatics-mp-dev-ingress-a.westeurope.cloudapp.azure.com/v1'
       TEST_API_CALL_ENDPOINT: 'https://self-service-chargify-poc.azurewebsites.net/hello'
       DEFAULT_B2C_SCOPE: 'https://speechmaticsb2c.onmicrosoft.com/michaltestapi/User.Read'
       CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'

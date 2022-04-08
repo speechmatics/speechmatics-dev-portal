@@ -21,7 +21,7 @@ import {
   PageHeader,
   SmPanel,
 } from '../components/common';
-import { JobSubmitIcon } from '../components/icons-library';
+import { SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
@@ -39,7 +39,7 @@ export default function Learn({ }) {
       <VStack spacing="1.5em" alignItems="flex-start" width="800px">
         <InfoBarbox
           bgColor="smNavy.500"
-          icon={<JobSubmitIcon />}
+          icon={<SubmitAJobIcon width='4em' height='4em' />}
           title="How to Submit a Job"
           description="Watch our demo on how to submit a transcription job."
           buttonLabel="Watch Video"
@@ -80,6 +80,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
             url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
             width="888px"
             height="500px"
+            controls={true}
           />
         </ModalBody>
       </ModalContent>
@@ -120,7 +121,7 @@ const elems = [
   },
   {
     title: 'Troubleshooting', descr: 'Resolving errors with the SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
+    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/'
   },
   {
     title: 'API Reference', descr: 'Reference guide for the ASR REST API.',

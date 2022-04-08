@@ -1,6 +1,6 @@
 import { Box, HStack, Divider, Tooltip, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { SpeechmaticsLogoHorizontalWhite, AccountIcon, LogoutIcon } from "./icons-library";
+import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 
 export function HeaderBar({ logout, accountEmail }) {

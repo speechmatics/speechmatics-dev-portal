@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SpeechmaticsLogo, ArrowRight } from '../components/icons-library';
+import { SpeechmaticsLogo } from '../components/icons-library';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
