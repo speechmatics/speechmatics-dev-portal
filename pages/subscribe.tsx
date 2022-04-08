@@ -186,7 +186,7 @@ export default observer(Subscribe);
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '1.5em',
+    fontSize: '1.35em',
   };
 
   const defaultStyle = {
@@ -199,7 +199,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       backgroundColor: color2,
       paddingTop: '2px',
       paddingBottom: '1px',
-      fontSize: '1.2em'
+      fontSize: '1.1em'
     },
     label: labelStyle,
     message: { paddingTop: '2px', paddingBottom: '1px' },
