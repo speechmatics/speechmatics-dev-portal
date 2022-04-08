@@ -170,12 +170,12 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         <TabPanels border='0px' boxShadow='none' pt='2px'>
           <TabPanel width="100%">
             <CodeHighlight
-              code={`curl.exe -L -X POST ${accountStore.getRuntimeURL()}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\": \\"en\\" }}"`}
+              code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>Get a transcript, using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL()}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
           </TabPanel>
@@ -188,7 +188,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
             <DescriptionLabel pt='2em'>Get a transcript, using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl -L -X GET ${accountStore.getRuntimeURL()}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
           </TabPanel>
