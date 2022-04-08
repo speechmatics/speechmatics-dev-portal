@@ -136,9 +136,9 @@ function Subscribe({ }) {
                 <div id="chargify_address"></div>
                 <div id="chargify_address2"></div>
                 <div id="chargify_city"></div>
-                <div id="chargify_state"></div>
-                <div id="chargify_zip"></div>
                 <div id="chargify_country"></div>
+                <div id="chargify_zip"></div>
+                <div id="chargify_state"></div>
               </section>
             </SmPanel>
 
