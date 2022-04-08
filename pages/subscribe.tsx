@@ -206,6 +206,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       backgroundColor: color2,
       paddingTop: '2px',
       paddingBottom: '1px',
+      borderRadius: '2px',
       fontSize: '1.1em'
     },
     label: labelStyle,
