@@ -186,14 +186,14 @@ export default observer(Subscribe);
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '13px',
+    fontSize: '1em',
   };
 
   const defaultStyle = {
     field: {
       backgroundColor: color1,
       padding: '3px',
-      borderRadius: '5px',
+      borderRadius: '2px',
     },
     input: {
       backgroundColor: color2,
