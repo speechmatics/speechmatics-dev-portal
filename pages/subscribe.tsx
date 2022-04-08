@@ -193,7 +193,7 @@ const sectStyle = {
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '1.3em',
+    fontSize: '1.2em',
   };
 
   const defaultStyle = {
