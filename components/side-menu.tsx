@@ -24,12 +24,12 @@ export function MenuContainer() {
 }
 
 function MobileMenu() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
 
   const onBurgerClick = useCallback(() => {
     if (isOpen) onClose()
     else onOpen();
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
     return () => {
@@ -45,16 +45,16 @@ function MobileMenu() {
   })
 
   return <>
-    <Slide direction="left" in={isOpen}>
+    <Slide direction="left" in={isOpen} style={{ zIndex: 1000 }}>
       <Box className="dashboard_sidenav" position={'absolute'} top='62px'
         display={isOpen ? 'unset' : 'none'}
-        borderBottom='1px solid var(--chakra-colors-smBlack-180)' zIndex='100' ref={ref}>
+        borderBottom='1px solid var(--chakra-colors-smBlack-180)' ref={ref}>
         <Menu />
       </Box>
     </Slide>
-    <Box position='absolute' top='62px' zIndex='101'>
+    <Box position='absolute' top='62px'>
       <IconButton icon={<FiMenu />} aria-label={''} size='lg'
-        variant='ghost' _focus={{ boxShadow: 'none' }} onClick={onBurgerClick} />
+        variant='ghost' _focus={{ boxShadow: 'none' }} onClick={onToggle} />
     </Box>
   </>
 }
