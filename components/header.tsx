@@ -79,7 +79,7 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
           _hover={{ color: '#F8FAFD' }}
           textOverflow='ellipsis'
           overflow='hidden'
-          maxWidth='clamp(4em, calc(25vw+100px), 25em)'
+          maxWidth='clamp(4em, calc(25vw + 100px), 25em)'
         >
           {accountEmail}
         </Text>
