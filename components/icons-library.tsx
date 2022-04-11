@@ -1000,10 +1000,11 @@ export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
 }
 
 
-export const CardImage = ({ }) => (
+export const CardImage = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={244}
-    height={168}
+    width={props.width || 244}
+    height={props.height || 168}
+    viewBox="0 0 244 168"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -1096,8 +1097,11 @@ export const CardImage = ({ }) => (
   </svg>
 );
 
-export const CardGreyImage = (props) => (
-  <svg width={244} height={168} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+export const CardGreyImage = (props: SVGProps<SVGSVGElement>) => (
+  <svg width={props.width || 244}
+    height={props.height || 168}
+    viewBox="0 0 244 168"
+    fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"
