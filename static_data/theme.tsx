@@ -1,4 +1,6 @@
 import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
+import { createBreakpoints } from "@chakra-ui/theme-tools"
+
 
 const smTabStyle = {
   bg: 'smBlue.100',
@@ -25,8 +27,17 @@ const smTabStyle = {
   },
 } as CSSObject;
 
+const breakpoints = createBreakpoints({
+  xs: "23em",
+  sm: "30em",
+  md: "48em",
+  lg: "62em",
+  xl: "80em",
+  "2xl": "96em",
+})
 
 const theme = extendTheme({
+  breakpoints,
   fonts: {
     body: 'RMNeue-Regular'
   },
@@ -192,5 +203,6 @@ const theme = extendTheme({
 });
 
 export default theme;
+
 
 

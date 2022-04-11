@@ -5,7 +5,7 @@ import menuData from "../static_data/menu-data";
 
 
 export function MenuContainer() {
-  const breakVal = useBreakpointValue({ base: 'none', lg: 'flex', md: 'none', sm: 'none' })
+  const breakVal = useBreakpointValue({ base: 'none', sm: 'none', md: 'flex', lg: 'flex' });
 
   return <Box className="dashboard_sidenav" display={breakVal}>
     <Menu />
