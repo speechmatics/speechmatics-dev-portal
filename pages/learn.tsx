@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Spinner,
   ModalCloseButton,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   DescriptionLabel,
@@ -68,18 +69,28 @@ export default function Learn({ }) {
 }
 
 const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
+
+  const vidWidth = useBreakpointValue({
+    xs: "20em",
+    sm: "25em",
+    md: "40em",
+    lg: "50em",
+    xl: "60em",
+    "2xl": "70em",
+  });
+
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={true}>
       <ModalOverlay />
-      <ModalContent borderRadius="2px" maxWidth="920px">
+      <ModalContent borderRadius="2px" maxWidth={`calc(${vidWidth} + 2em)`}>
         <ModalHeader>
           <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         </ModalHeader>
         <ModalBody p="1em">
           <ReactPlayer
             url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
-            width="888px"
-            height="500px"
+            width={vidWidth}
+            height={`calc(${vidWidth} * 0.6)`}
             controls={true}
           />
         </ModalBody>

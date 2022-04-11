@@ -7,12 +7,6 @@ import { FiMenu } from "react-icons/fi";
 import menuData from "../static_data/menu-data";
 
 
-const animationVariants = {
-  hidden: { opacity: 0, x: -40, y: 0 },
-  enter: { opacity: 1, x: 0, y: 0 },
-  exit: { opacity: 0, x: 0, y: -100 },
-};
-
 export function MenuContainer() {
   const showMenuBurger = useBreakpointValue({ base: true, xs: true, sm: true, md: false });
 
@@ -25,11 +19,6 @@ export function MenuContainer() {
 
 function MobileMenu() {
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
-
-  const onBurgerClick = useCallback(() => {
-    if (isOpen) onClose()
-    else onOpen();
-  }, [isOpen]);
 
   useEffect(() => {
     return () => {
@@ -47,8 +36,9 @@ function MobileMenu() {
   return <>
     <Slide direction="left" in={isOpen} style={{ zIndex: 1000 }}>
       <Box className="dashboard_sidenav" position={'absolute'} top='62px'
-        display={isOpen ? 'unset' : 'none'}
-        borderBottom='1px solid var(--chakra-colors-smBlack-180)' ref={ref}>
+        ref={ref}
+        borderBottom='1px solid var(--chakra-colors-smBlack-180)'
+        borderTop='1px solid var(--chakra-colors-smBlack-180)' >
         <Menu />
       </Box>
     </Slide>
