@@ -192,7 +192,5 @@ const theme = extendTheme({
 });
 
 export default theme;
-function createBreakpoints(arg0: { sm: string; md: string; lg: string; xl: string; "2xl": string; }) {
-  throw new Error('Function not implemented.');
-}
+
 
