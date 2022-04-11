@@ -382,16 +382,24 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 
 
 
-export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
-  <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
+export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  });
+
+  return <Flex justifyContent='center' p='1em' alignItems='center' direction={breakVal ? 'row' : 'column'} {...props}
+    {...{ [breakVal ? 'columnGap' : 'rowGap']: '1em' }}>
     <ViewPricingIcon />
-    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
+    <Text fontFamily='RMNeue-Bold' fontSize='20px'>View our Pricing</Text>
     <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
-      <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
+      <Button variant='speechmaticsOutline' mt='0em'>
         View Pricing
       </Button>
     </Link>
-  </Flex>)
+  </Flex>
+}
 
 
 export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />

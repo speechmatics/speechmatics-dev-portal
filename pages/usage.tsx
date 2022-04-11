@@ -15,6 +15,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
@@ -70,8 +71,6 @@ export default observer(function Usage() {
   const { aggregate, breakdown } = usageJson;
 
   const currentUsage = useMemo(() => prepCurrentUsage(aggregate), [aggregate]);
-
-
 
   return (
     <Dashboard>
@@ -255,40 +254,71 @@ type UsageUnit = {
 };
 
 
-const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => (<HStack
-  width="100%"
-  bg="smNavy.500"
-  justifyContent="space-between"
-  padding="1em 1.5em"
->
-  <Box flex="0 0 auto">
-    {icon}
-  </Box>
-  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-      {title}
-    </Text>
-    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-      {ctaText}
-    </Text>
-  </VStack>
-  <Link href={hrefLink}>
-    <Button variant="speechmaticsWhite">
-      {buttonLabel}
-    </Button>
-  </Link>
-</HStack>)
+const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  });
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children, ...props }) => <HStack {...props}
+      >{children}</HStack>
+      :
+      ({ children, ...props }) => <VStack {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <Containter
+    width="100%"
+    bg="smNavy.500"
+    justifyContent="space-between"
+    padding="1em 1.5em"
+  >
+    <Box flex="0 0 auto">
+      {icon}
+    </Box>
+    <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+      <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+        {title}
+      </Text>
+      <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500" pb='0.5em'>
+        {ctaText}
+      </Text>
+    </VStack>
+    <Link href={hrefLink}>
+      <Button variant="speechmaticsWhite" >
+        {buttonLabel}
+      </Button>
+    </Link>
+  </Containter>
+}
 
 
 const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, description }) => {
 
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  })
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children, ...props }) => <HStack {...props}
+      >{children}</HStack>
+      :
+      ({ children, ...props }) => <VStack {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
   return <GridItem bg={`${mainColor}.200`} className="flexColumnBetween">
-    <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
+    <Containter p={breakVal ? "1em 1em 1em 1em" : "0.5em"} alignItems='flex-start'>
       <Box p='1em 0em 0em 0.2em'>
         {icon}
       </Box>
       <Box pt='1em' pl="0.5em">
-        <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
+        <Text fontSize="0.85em" color="smBlack.400">
           {title}
         </Text>
         <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color={`${mainColor}.500`} mt="0.15em" data-qa={`limit-${usageLimitType}`}>
@@ -300,14 +330,14 @@ const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, descripti
           hours per month
         </Text>
       </Box>
-    </HStack>
+    </Containter>
     <Box
       bg={`${mainColor}.100`}
       p=".8em 1em .8em 1em"
       borderTop="1px solid"
       borderColor={`${mainColor}.400`}
     >
-      <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
+      <Text fontSize="0.8em" color="smBlack.400">
         {description}
       </Text>
     </Box>
