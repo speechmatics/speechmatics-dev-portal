@@ -56,6 +56,18 @@
   flex: 1;
 }
 
+@media screen and (max-width: 480px) {
+  .dashboard_content {
+    padding-left: 0em;
+    padding-right: 0em;
+  }
+
+  .page_header {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
+}
+
 .dashboard_side_bar {
   display: flex;
   flex-direction: row;

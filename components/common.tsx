@@ -143,7 +143,7 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <Box width='100%' maxWidth='1000px'>
+    <Box width='100%' maxWidth='1000px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
@@ -162,7 +162,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
   return (
     <>
-      <Tabs size="lg" variant="speechmaticsCode" mt="1em" width="100%">
+      <Tabs size="lg" pt='1em' variant="speechmaticsCode" width="100%">
         <TabList marginBottom="-1px">
           <Tab>Windows CMD</Tab>
           <Tab>Mac and Linux</Tab>
