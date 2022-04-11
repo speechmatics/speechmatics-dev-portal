@@ -161,7 +161,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
-    <><DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
+    <>
       <Tabs size="lg" variant="speechmaticsCode" mt="1em" width="100%">
         <TabList marginBottom="-1px">
           <Tab>Windows CMD</Tab>
@@ -169,6 +169,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         </TabList>
         <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
+            <DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
@@ -180,6 +181,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             />
           </TabPanel>
           <TabPanel width="100%">
+            <DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
