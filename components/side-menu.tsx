@@ -7,7 +7,7 @@ import menuData from "../static_data/menu-data";
 export function MenuContainer() {
   const breakVal = useBreakpointValue({ base: 'none', lg: 'flex', md: 'none', sm: 'none' })
 
-  return <Box className="dashboard_sidenav" width={['10em', '16.5em']} display={breakVal}>
+  return <Box className="dashboard_sidenav" display={breakVal}>
     <Menu />
   </Box>
 }
@@ -18,7 +18,8 @@ function Menu() {
   return (
     <VStack className="nav_menu" rowGap='0.8em'>
       {menuData.map((item) => (
-        <MenuElem item={item} key={item.path} selected={router.asPath == item.path} paddingLeft={['1.75em', '2em', '3.75em']} />
+        <MenuElem item={item} key={item.path} selected={router.asPath == item.path}
+          paddingLeft='clamp(1em, 4.2vw, 3em)' paddingRight='clamp(1em, 4.2vw, 3em)' />
       ))}
     </VStack>
   );

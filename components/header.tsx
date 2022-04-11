@@ -22,13 +22,13 @@ export function HeaderBar({ logout, accountEmail }) {
 
 export function RightSidePanel({ logout, accountEmail }) {
   const breakVal = useBreakpointValue({
-    base: 'base',
-    xs: "xs",
-    sm: "sm",
-    md: "md",
-    lg: "lg",
-    xl: "xl",
-    "2xl": "2xl"
+    base: true,
+    xs: true,
+    sm: true,
+    md: false,
+    lg: false,
+    xl: false,
+    "2xl": false
   })
   return (
     <Box className="dashboard_side_bar">
@@ -42,7 +42,7 @@ export function RightSidePanel({ logout, accountEmail }) {
               fontFamily="RMNeue-Regular"
               _hover={{ color: '#F8FAFD' }}
             >{breakVal}{' '}
-              Documentation
+              {breakVal ? 'Docs' : 'Documentation'}
             </Text>
           </a>
         </Link>

@@ -17,7 +17,7 @@ export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics’ SaaS Portal." />
-      <VStack spacing='2em' width={['450px', '600px', '700px', '800px', '1000px']}>
+      <VStack spacing='2em' width='100%' maxWidth='1000px'>
         <InfoBarbox
           width="100%"
           bgColor="smBlue.500"

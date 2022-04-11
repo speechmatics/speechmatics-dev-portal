@@ -97,7 +97,7 @@ export default observer(function Dashboard({ children }) {
         onModalClose={onUserCreationModalClose}
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
-      <Box className="dashboard_contents" tabIndex={0}>
+      <Box className="dashboard" tabIndex={0}>
         <MenuContainer />
         <Box className="dashboard_content">
           <motion.main

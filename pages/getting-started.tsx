@@ -34,7 +34,7 @@ export default observer(function GettingStarted({ }) {
         introduction="Start using our speech-to-text SaaS in a few simple steps."
       />
 
-      <SmPanel width="800px">
+      <SmPanel width='100%' maxWidth='1000px'>
         <Box width='100%' >
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>

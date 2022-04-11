@@ -143,7 +143,7 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <Box width={['450px', '450px', '600px', '800px', '1000px']}>
+    <Box width='100%' maxWidth='1000px'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
@@ -204,11 +204,13 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
 export const CodeHighlight = ({ code }) => {
   return (
-    <Box position="relative">
-      <CopyButton copyContent={code} position="absolute" />
-      <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
-        {code}
-      </SyntaxHighlighter>
+    <Box position="relative" width='100%' height='50px' >
+      <CopyButton copyContent={code} position="absolute" top='12px' />
+      <Box position='absolute' width='100%'>
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
+          {code}
+        </SyntaxHighlighter>
+      </Box>
     </Box>
   );
 };
@@ -225,6 +227,7 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
     backgroundColor="#fff"
     size="sm"
     borderRadius="2px"
+    zIndex={100}
     onClick={() => {
       navigator?.clipboard?.writeText(copyContent);
     }}
@@ -234,19 +237,6 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
   </Button>
 );
 
-export const SimplePanel = ({ children }) => (
-  <VStack
-    width="800px"
-    p="1em 1em 1.5em 1.5em"
-    alignItems="flex-start"
-    backgroundColor="smWhite.500"
-    border="1px solid"
-    borderColor="smBlack.200"
-    borderRadius="3px"
-  >
-    {children}
-  </VStack>
-);
 
 export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
   const [page, setPage] = useState(0);
