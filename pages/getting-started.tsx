@@ -66,7 +66,7 @@ export default observer(function GettingStarted({ }) {
           <PanelDivider />
           <Box paddingTop="1em" width='100%'>
             <HeaderLabel>Make an API Request</HeaderLabel>
-            <DescriptionLabel>Run the command to generate a transcript.</DescriptionLabel>{' '}
+            <DescriptionLabel>Run the commands to generate a transcript.</DescriptionLabel>{' '}
             <CodeExamples />
           </Box>
         </>}

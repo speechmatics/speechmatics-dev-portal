@@ -141,7 +141,7 @@ h1 {
 
 .sm_panel {
   background-color: var(--chakra-colors-smWhite-500);
-  border: 1px solid var(--chakra-colors-smBlack-200);
+  border: 1px solid var(--chakra-colors-smBlack-180);
   border-radius: 2px;
   box-shadow: 4px 4px 7px #5a5d5f15;
   padding: 1.5em;

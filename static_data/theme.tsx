@@ -26,6 +26,9 @@ const smTabStyle = {
 } as CSSObject;
 
 const theme = extendTheme({
+  fonts: {
+    body: 'RMNeue-Regular'
+  },
   colors: {
     smGreen: {
       100: '#F4F9F8',

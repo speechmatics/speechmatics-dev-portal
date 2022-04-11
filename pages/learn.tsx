@@ -90,11 +90,6 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
 
 const elems = [
   {
-    title: 'Release Notes',
-    descr: "What's new in our SaaS.",
-    link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
-  },
-  {
     title: 'Introduction',
     descr: 'How to use the RESTful API for the Speechmatics SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/introduction/'
@@ -126,5 +121,10 @@ const elems = [
   {
     title: 'API Reference', descr: 'Reference guide for the ASR REST API.',
     link: 'https://docs.speechmatics.com/en/cloud/saasv2api/'
+  },
+  {
+    title: 'Release Notes',
+    descr: "What's new in our SaaS.",
+    link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
   },
 ];
