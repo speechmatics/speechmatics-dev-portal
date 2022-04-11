@@ -81,7 +81,7 @@ export default observer(function Usage() {
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="800px">
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='1000px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
@@ -155,7 +155,7 @@ export default observer(function Usage() {
               </GridItem>
 
               <GridItem colSpan={2}>
-                {accountStore.isLoading ? <Box bg='smNavy.500' width='100%' height='100px' />
+                {accountStore.isLoading ? <Box bg='smNavy.500' width='100%' />
                   : (paymentMethodAdded ?
                     <GetInTouchBox icon={<CallSupportIcon />}
                       title='Need more usage?'
@@ -310,9 +310,8 @@ type UsageUnit = {
 const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => (<HStack
   width="100%"
   bg="smNavy.500"
-  height="100px"
   justifyContent="space-between"
-  padding="0em 1.5em"
+  padding="1em 1.5em"
 >
   <Box flex="0 0 auto">
     {icon}
