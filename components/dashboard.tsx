@@ -143,7 +143,7 @@ function UserNotAuthModal({ isModalOpen }) {
       <ModalContent>
         <ModalBody >
           <VStack>
-            <SpeechmaticsLogo w={160} h={100} />
+            <SpeechmaticsLogo width={160} height={100} />
             <Box>Your session expired. </Box>
             <Box>You'll be redirected to login page.</Box>
             <Box>If the redirect won't work you can use this link: </Box>

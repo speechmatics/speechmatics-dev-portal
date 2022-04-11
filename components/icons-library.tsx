@@ -757,7 +757,7 @@ export const TerminalGraphIcon = ({ w = 40, h = 40 }) => (
   </svg>
 );
 
-export function SpeechmaticsLogo({ w = 400, h = 150 }) {
+export function SpeechmaticsLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -766,8 +766,8 @@ export function SpeechmaticsLogo({ w = 400, h = 150 }) {
       strokeMiterlimit="2"
       clipRule="evenodd"
       viewBox="0 0 2481 756"
-      width={w}
-      height={h}
+      width={props.width || 400}
+      height={props.height || 150}
     >
       <g fillRule="nonzero">
         <path
