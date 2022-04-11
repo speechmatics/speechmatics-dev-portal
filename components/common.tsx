@@ -176,7 +176,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             />
             <DescriptionLabel pt='2em'>Get a transcript, using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
           </TabPanel>
@@ -190,7 +190,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
             <DescriptionLabel pt='2em'>Get a transcript, using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
           </TabPanel>
