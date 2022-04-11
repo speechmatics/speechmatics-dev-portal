@@ -31,7 +31,7 @@ import {
   createStandaloneToast
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
@@ -216,9 +216,26 @@ export const CodeHighlight = ({ code }) => {
   );
 };
 
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => (
-  <Tooltip label='copied' >
+export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
+
+  const [isTTOpen, setIsTTOpen] = useState(false);
+
+  useEffect(() => {
+    let st: number;
+
+    if (isTTOpen) setTimeout(() => {
+      setIsTTOpen(false)
+    }, 3000);
+
+    return () => clearTimeout(st);
+
+  }, [isTTOpen])
+
+  return <Tooltip label='copied' isOpen={isTTOpen}
+    placement='top' hasArrow
+    bg='smNavy.400' color='smWhite.500'>
     <Button
+      _focus={{ boxShadow: 'none' }}
       top={top}
       right="9px"
       position={position as ResponsiveValue<any>}
@@ -231,14 +248,15 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
       borderRadius="2px"
       zIndex={100}
       onClick={() => {
+        setIsTTOpen(true)
         navigator?.clipboard?.writeText(copyContent);
       }}
       _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
     >
       COPY
     </Button>
-  </Tooltip>
-);
+  </Tooltip >
+};
 
 
 export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
