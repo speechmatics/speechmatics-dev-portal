@@ -161,13 +161,14 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
   return (
-    <><DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
+    <>
+      <DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
       <Tabs size="lg" variant="speechmaticsCode" mt="1em" width="100%">
         <TabList marginBottom="-1px">
           <Tab>Windows CMD</Tab>
           <Tab>Mac and Linux</Tab>
         </TabList>
-        <TabPanels border='0px' boxShadow='none' pt='2px'>
+        <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='2em'>
           <TabPanel width="100%">
             <CodeHighlight
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
@@ -216,25 +217,27 @@ export const CodeHighlight = ({ code }) => {
 };
 
 export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => (
-  <Button
-    top={top}
-    right="9px"
-    position={position as ResponsiveValue<any>}
-    alignSelf="flex-start"
-    fontSize="0.8rem"
-    aria-label="copy"
-    color="smNavy.500"
-    backgroundColor="#fff"
-    size="sm"
-    borderRadius="2px"
-    zIndex={100}
-    onClick={() => {
-      navigator?.clipboard?.writeText(copyContent);
-    }}
-    _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
-  >
-    COPY
-  </Button>
+  <Tooltip label='copied' >
+    <Button
+      top={top}
+      right="9px"
+      position={position as ResponsiveValue<any>}
+      alignSelf="flex-start"
+      fontSize="0.8rem"
+      aria-label="copy"
+      color="smNavy.500"
+      backgroundColor="#fff"
+      size="sm"
+      borderRadius="2px"
+      zIndex={100}
+      onClick={() => {
+        navigator?.clipboard?.writeText(copyContent);
+      }}
+      _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
+    >
+      COPY
+    </Button>
+  </Tooltip>
 );
 
 
