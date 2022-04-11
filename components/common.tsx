@@ -203,7 +203,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             />
           </TabPanel>
           <TabPanel width="100%">
-            <DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
+            <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
