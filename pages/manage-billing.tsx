@@ -213,8 +213,17 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
   )
 };
 
-const PaymentsGrid = ({ data, isLoading }) => (
-  <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
+const PaymentsGrid = ({ data, isLoading }) => {
+  const breakVal = useBreakpointValue({
+    base: 0,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    '2xl': 6
+  });
+  return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Month</GridItem>
     <GridItem className="grid_header">Hours Used</GridItem>
     <GridItem className="grid_header">Total Cost</GridItem>
@@ -222,13 +231,15 @@ const PaymentsGrid = ({ data, isLoading }) => (
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
-        <GridItem whiteSpace="nowrap" data-qa={`payments-month-${i}`}>
+        <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-month-${i}`}>
           {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem data-qa={`payments-hours-used-${i}`}>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         <GridItem data-qa={`payments-total-cost-${i}`}>${Number(el.total_cost).toFixed(2)}</GridItem>
-        <GridItem whiteSpace="nowrap" data-qa={`payments-status-${i}`}>
-          {el.status === 'due' ? `Due on ${formatDate(new Date(el.billing_date))}` : `Paid on ${formatDate(new Date(el.billing_date))}`}
+        <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-status-${i}`}>
+          {el.status === 'due' ?
+            <>Due on {formatDate(new Date(el.billing_date))}</> :
+            <>Paid on ${formatDate(new Date(el.billing_date))}</>}
         </GridItem>
       </React.Fragment>
     ))}
@@ -249,7 +260,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
       </GridItem>
     )}
   </Grid>
-);
+};
 
 interface PaymentItem {
   start_date: string;
