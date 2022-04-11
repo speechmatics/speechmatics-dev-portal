@@ -19,6 +19,7 @@ import {
   ChakraComponent,
   Flex,
   BoxProps,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext } from 'react';
@@ -66,6 +67,16 @@ type GTCprops = { codeExample?: boolean, boxProps?: BoxProps, raiseTokenStage?: 
 
 export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
   = observer(({ codeExample = true, boxProps = null, raiseTokenStage = null, tokensFullDescr = null }) => {
+
+    const breakVal = useBreakpointValue({
+      base: 0,
+      xs: 1,
+      sm: 2,
+      md: 3,
+      lg: 4,
+      xl: 5,
+      '2xl': 6
+    });
 
     const { accountStore, tokenStore } = useContext(accountContext);
 
@@ -147,6 +158,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
                   disabled={genTokenStage == 'waiting'}
                   onClick={() => requestToken()}
                   data-qa="button-generate-key"
+                  {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}
                 >
                   {genTokenStage == 'waiting' && <Spinner mr="1em" />}Generate API Key
                 </Button>
