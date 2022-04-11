@@ -16,7 +16,7 @@ import {
 export default function Home({ }) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Home" introduction="Welcome to Speechmatics SaaS Portal." />
+      <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
       <VStack spacing='2em' width='800px'>
         <InfoBarbox
           width="100%"
