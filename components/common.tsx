@@ -168,7 +168,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
           <Tab>Windows CMD</Tab>
           <Tab>Mac and Linux</Tab>
         </TabList>
-        <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='2em'>
+        <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
             <CodeHighlight
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
