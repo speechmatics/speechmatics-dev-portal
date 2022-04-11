@@ -3,13 +3,9 @@ import Link from 'next/link';
 import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
-  LearnBookIcon,
-  LookingGlassChartIcon,
   MenuLearnIcon,
   MenuPadlockIcon,
   MenuTrackUsageIcon,
-  PadLockOpenIcon,
-  TerminalGraphIcon,
   TranscribeAudioIcon,
 } from '../components/icons-library';
 

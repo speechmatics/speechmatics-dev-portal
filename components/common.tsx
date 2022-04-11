@@ -28,10 +28,11 @@ import {
   Text,
   Tooltip,
   VStack,
-  createStandaloneToast
+  createStandaloneToast,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
@@ -46,6 +47,7 @@ import {
   PaginationPage,
   PaginationNext,
 } from './pagination';
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 
 
@@ -68,15 +70,35 @@ export const InfoBarbox = ({
   hrefUrl = null,
   setStateUp = null,
   ...props
-}) => (
-  <HStack
-    width="100%"
-    bg={bgColor}
-    height="110px"
-    justifyContent="space-between"
-    padding="2.5em 1.5em"
-    {...props}
-  >
+}) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  })
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children }) => <HStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        alignItems='center'
+        padding="1.5em 1.5em"
+        {...props}
+      >{children}</HStack>
+      :
+      ({ children }) => <VStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        padding="1.2em 0.5em"
+        spacing='1em'
+        {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <Containter>
     <Box flex="0 0 auto">{icon}</Box>
     <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
       <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
@@ -88,18 +110,18 @@ export const InfoBarbox = ({
     </VStack>
     {hrefUrl && (
       <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-        <Button variant="speechmaticsWhite" mb="1em">
+        <Button variant="speechmaticsWhite" mt='0px'>
           {buttonLabel}
         </Button>
       </Link>
     )}
     {setStateUp && (
-      <Button variant="speechmaticsWhite" mb="1em" onClick={setStateUp}>
+      <Button variant="speechmaticsWhite" onClick={setStateUp}>
         {buttonLabel}
       </Button>
     )}
-  </HStack>
-);
+  </Containter>
+};
 
 export const ViewUsageBox = ({ }) => (
   <InfoBarbox
@@ -475,3 +497,4 @@ export const AttentionBar = ({ description }) => (
       {description}
     </Text>
   </HStack>)
+
