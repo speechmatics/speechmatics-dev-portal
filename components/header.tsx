@@ -25,9 +25,7 @@ export function HeaderBar({ logout, accountEmail }) {
 
   return (
     <Box className="header_bar">
-      {breakValue && <Box position='absolute' top='62px'>
-        <IconButton icon={<FiMenu />} aria-label={''} variant='ghost' _focus={{ boxShadow: 'none' }} />{breakValName}
-      </Box>}
+
       <Link href="https://speechmatics.com">
         <Box p="0.5em 0em 0.5em 2em" cursor='pointer'>
           <SpeechmaticsLogoHorizontalWhite w={breakValue ? 150 : 200} h={50} />
