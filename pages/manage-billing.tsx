@@ -26,13 +26,10 @@ import {
   ConfirmRemoveModal,
   DataGridComponent,
   DescriptionLabel,
-  errToast,
   GridSpinner,
   HeaderLabel,
-  InfoBarbox,
   pad,
   PageHeader,
-  SmPanel,
   UsageInfoBanner,
   ViewPricingBar,
 } from '../components/common';
@@ -131,13 +128,7 @@ export default observer(function ManageBilling({ }) {
 
 const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
   const breakVal = useBreakpointValue({
-    base: 0,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-    '2xl': 6
+    base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
 
   return isLoading ? (
@@ -215,13 +206,7 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
 
 const PaymentsGrid = ({ data, isLoading }) => {
   const breakVal = useBreakpointValue({
-    base: 0,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-    '2xl': 6
+    base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
   return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Month</GridItem>
