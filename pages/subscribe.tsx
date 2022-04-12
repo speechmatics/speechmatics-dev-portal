@@ -9,7 +9,7 @@ import {
 import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
-import { errToast, HeaderLabel, positiveToast, SmPanel } from '../components/common';
+import { errToast, HeaderLabel, PageHeader, positiveToast, SmPanel } from '../components/common';
 
 declare global {
   interface Window {
@@ -103,11 +103,9 @@ function Subscribe({ }) {
 
   return (
     <Dashboard>
-      <h1>
-        {!!accountStore.getPaymentMethod()
-          ? 'Replace your existing payment card'
-          : 'Add a payment card to your account'}
-      </h1>
+      <PageHeader headerLabel={!!accountStore.getPaymentMethod()
+        ? 'Replace your existing payment card'
+        : 'Add a payment card to your account'} introduction="" />
 
       <div>
         <Box width='100%' maxWidth='630px'>
