@@ -6,98 +6,81 @@ import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 export function HeaderBar({ logout, accountEmail }) {
 
-  const breakValName = useBreakpointValue({
-    base: 'base',
-    xs: "23em",
-    sm: "30em",
-    md: "48em",
-    lg: "62em",
-    xl: "80em",
-    "2xl": "96em"
-  })
-
   const breakValue = useBreakpointValue({
-    base: true,
-    sm: true,
-    md: false,
-  })
+    base: 0,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    '2xl': 6
+  });
+
 
 
   return (
     <Box className="header_bar">
-
+      {/* <Box position='absolute' color='white'>{breakValue}</Box> */}
       <Link href="https://speechmatics.com">
-        <Box p="0.5em 0em 0.5em 2em" cursor='pointer'>
-          <SpeechmaticsLogoHorizontalWhite w={breakValue ? 150 : 200} h={50} />
+        <Box p="0.5em 1em 0.5em 2em" cursor='pointer'>
+          <SpeechmaticsLogoHorizontalWhite w={breakValue < 2 ? 150 : 200} h={50} />
         </Box>
       </Link>
 
-      <Box>
-        <RightSidePanel logout={logout} accountEmail={accountEmail} breakValue={breakValue} />
-      </Box>
+      <RightSidePanel logout={logout} accountEmail={accountEmail} breakValue={breakValue} />
     </Box>
   );
 }
 
 export function RightSidePanel({ logout, accountEmail, breakValue }) {
-  const breakValueInner = useBreakpointValue({
-    base: true,
-    xs: true,
-    sm: false,
-    md: false,
-  })
+
   return (
-    <Box className="dashboard_side_bar">
-      {!breakValueInner && <>
-        <HStack>
-          <Link href="https://docs.speechmatics.com">
-            <a target="_blank">
-              <Text
-                color="#DFE0E3"
-                pr="1em"
-                mt="-3px"
-                fontFamily="RMNeue-Regular"
-                _hover={{ color: '#F8FAFD' }}
-              >{breakValue}{' '}
-                {breakValue ? 'Docs' : 'Documentation'}
-              </Text>
-            </a>
-          </Link>
-          <Divider orientation="vertical" color="#5E6673" pr="1.5em" height="295%" />
-        </HStack>
+    <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
+      {breakValue > 1 && <>
+        <Link href="https://docs.speechmatics.com" >
+          <a target="_blank">
+            <Box
+              color="smNavy.270"
+              _hover={{ color: 'smNavy.200' }}>
+              {breakValue < 3 ? 'Docs' : 'Documentation'}
+            </Box>
+          </a>
+        </Link>
+        <Divider orientation="vertical" color="#5E6673" alignSelf='stretch' />
       </>
       }
-      {/* <Link href="/account/" passHref>
-        <ChakraLink>
-          <Tooltip label="Account" placement="bottom"> */}
       <Flex>
-        <Text
+        <Box
           whiteSpace="nowrap"
-          color="#DFE0E3"
-          mt="-3px"
-          fontFamily="RMNeue-Regular"
-          _hover={{ color: '#F8FAFD' }}
+          color="smNavy.270"
+          fontSize={breakValue < 2 ? '0.8em' : '1em'}
+          paddingTop={breakValue < 2 ? '3px' : 'unset'}
           textOverflow='ellipsis'
           overflow='hidden'
-          maxWidth='clamp(4em, calc(25vw + 100px), 25em)'
+          maxWidth={breakValue > 0 ? 'clamp(3em, 23vw, 25em)' : '3em'}
         >
           {accountEmail}
-        </Text>
+        </Box>
       </Flex>
-      {/* </Tooltip>
-        </ChakraLink>
-      </Link> */}
+
       <Tooltip label="Log out" placement="bottom">
-        <span
+        <Box
           style={{ cursor: 'pointer', marginLeft: '1em' }}
           data-qa="logout"
           onClick={() => logout()}
         >
-          <LogoutIcon w={20} h={20} color="#DFE0E3" />
-        </span>
+          <LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
+        </Box>
       </Tooltip>
-    </Box>
+    </HStack>
   );
 }
 
 
+{/* <Link href="/account/" passHref>
+        <ChakraLink>
+          <Tooltip label="Account" placement="bottom"> */}
+
+{/* </Tooltip>
+        </ChakraLink>
+      </Link> */}

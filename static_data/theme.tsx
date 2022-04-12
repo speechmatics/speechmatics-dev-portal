@@ -28,7 +28,7 @@ const smTabStyle = {
 } as CSSObject;
 
 const breakpoints = createBreakpoints({
-  xs: "23em",
+  xs: "22em",
   sm: "30em",
   md: "48em",
   lg: "62em",
