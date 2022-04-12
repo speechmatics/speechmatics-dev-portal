@@ -29,7 +29,7 @@ function Subscribe({ }) {
   const [token, setToken] = useState('');
   const [submitButtonReady, setSubmitButtonReady] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
-  const [paymentToken, setPaymentToken] = useState('xyz');
+  const [paymentToken, setPaymentToken] = useState('');
 
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
