@@ -147,14 +147,14 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
         <Box className="skeleton" height="1em" width="18em" />
         <Box className="skeleton" height="3em" width="10em" />
       </VStack>
-      <Box className="skeleton" height="185px" width="282px" />
+      {breakVal > 1 && <Box className="skeleton" height="185px" width="282px" />}
     </HStack>
   ) : (
     <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
       <VStack alignItems="flex-start">
         <HeaderLabel>
           {paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}
-          {breakVal < 2 && <span style={{ display: 'inline-block', marginLeft: '1em' }}>
+          {breakVal < 2 && <span style={{ display: 'inline-block', marginLeft: '0.5em' }}>
             {paymentMethod ? <CardImage width={40} height={30} /> :
               <CardGreyImage width={40} height={30} />}</span>}
         </HeaderLabel>
