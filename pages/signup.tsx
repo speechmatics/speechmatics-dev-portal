@@ -81,7 +81,7 @@ export default observer(function SignUp() {
 
   return (
     <div className="login_container">
-      <Box px='2em'><SpeechmaticsLogo width='minmax(90vw, 400px)' /></Box>
+      <Box px='3em' maxWidth='500px'><SpeechmaticsLogo width='100%' /></Box>
       <Text textAlign="center" mt='1em'>{b2cError || <Spinner />}</Text>
     </div>
   );
