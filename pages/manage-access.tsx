@@ -22,7 +22,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useState, useRef, useContext } from 'react';
+import { useCallback, useState, useRef, useContext, useEffect } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
@@ -37,6 +37,7 @@ import {
   GridSpinner,
   HeaderLabel,
   PageHeader,
+  positiveToast,
   SmPanel,
 } from '../components/common';
 import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
@@ -63,20 +64,21 @@ export default function GetAccessToken({ }) {
 
 export type TokenGenStages = 'init' | 'waiting' | 'generated' | 'error';
 
-type GTCprops = { codeExample?: boolean, boxProps?: BoxProps, raiseTokenStage?: (stage: TokenGenStages) => void, tokensFullDescr?: string | ReactJSXElement }
+type GTCprops = {
+  codeExample?: boolean,
+  boxProps?: BoxProps,
+  raiseTokenStage?: (stage: TokenGenStages) => void,
+  tokensFullDescr?: string | ReactJSXElement
+}
 
 export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
   = observer(({ codeExample = true, boxProps = null, raiseTokenStage = null, tokensFullDescr = null }) => {
 
     const breakVal = useBreakpointValue({
-      base: 0,
-      xs: 1,
-      sm: 2,
-      md: 3,
-      lg: 4,
-      xl: 5,
-      '2xl': 6
+      base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
     });
+
+
 
     const { accountStore, tokenStore } = useContext(accountContext);
 
@@ -96,7 +98,13 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
       setGenTokenStageOnState(stage);
     }, [genTokenStage]);
 
-
+    useEffect(() => {
+      if (accountStore.keyJustRemoved == true) {
+        setGenTokenStage('init');
+        accountStore.keyJustRemoved = false;
+        if (nameInputRef.current) nameInputRef.current.value = '';
+      }
+    }, [accountStore.keyJustRemoved])
 
     const requestToken = useCallback(() => {
       if (nameInputRef?.current?.value == '') {
@@ -110,6 +118,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             setGeneratedToken(resp.key_value);
             setGenTokenStage('generated');
             accountStore.fetchServerState(idToken);
+            if (nameInputRef.current) nameInputRef.current.value = '';
           })
           .catch((error) => {
             setGenTokenStage('error');
@@ -243,6 +252,8 @@ const PreviousTokens = observer(() => {
       accountStore.fetchServerState(idToken)
     );
     onClose();
+    accountStore.keyJustRemoved = true;
+    positiveToast('API Key removed');
   };
 
   return (
