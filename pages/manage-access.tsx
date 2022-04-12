@@ -248,12 +248,12 @@ const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('aboutToRemoveOne', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) =>
-      accountStore.fetchServerState(idToken)
-    );
+    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
+      accountStore.fetchServerState(idToken);
+      positiveToast('API Key removed');
+    });
     onClose();
     accountStore.keyJustRemoved = true;
-    positiveToast('API Key removed');
   };
 
   return (
