@@ -124,7 +124,7 @@ export default observer(function Usage() {
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')
                 ? <>Usage until {formatDate(new Date(currentUsage?.until))}</>
-                : <>Usage for the period: ${formatDate(new Date(aggregate?.since)) || ''} - ${formatDate(new Date(aggregate?.until)) || ''}</>}
+                : <>Usage for the period: {formatDate(new Date(aggregate?.since)) || ''} - {formatDate(new Date(aggregate?.until)) || ''}</>}
             </HeaderLabel>
 
             <Grid

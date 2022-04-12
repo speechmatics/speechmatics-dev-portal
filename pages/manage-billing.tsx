@@ -239,7 +239,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
         <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-status-${i}`}>
           {el.status === 'due' ?
             <>Due on {formatDate(new Date(el.billing_date))}</> :
-            <>Paid on ${formatDate(new Date(el.billing_date))}</>}
+            <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
       </React.Fragment>
     ))}
