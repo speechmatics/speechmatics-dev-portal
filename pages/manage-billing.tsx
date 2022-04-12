@@ -204,8 +204,8 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
           </Text></>}
         {breakVal > 1 ?
           paymentMethod ?
-            <CardImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} /> :
-            <CardGreyImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} />
+            <CardImage width={breakVal > 3 ? 244 : 100} height={breakVal > 3 ? 168 : 70} /> :
+            <CardGreyImage width={breakVal > 3 ? 244 : 100} height={breakVal > 3 ? 168 : 70} />
           : null
         }
       </Box>
