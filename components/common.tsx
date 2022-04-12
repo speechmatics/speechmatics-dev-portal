@@ -269,7 +269,7 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
       backgroundColor="#fff"
       size="sm"
       borderRadius="2px"
-      zIndex={100}
+      zIndex={99}
       onClick={() => {
         setIsTTOpen(true)
         navigator?.clipboard?.writeText(copyContent);
