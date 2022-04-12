@@ -6,7 +6,7 @@ import {
   callPostRequestTokenChargify,
 } from '../utils/call-api';
 
-import { Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { errToast, HeaderLabel, positiveToast, SmPanel } from '../components/common';
@@ -29,7 +29,7 @@ function Subscribe({ }) {
   const [token, setToken] = useState('');
   const [submitButtonReady, setSubmitButtonReady] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
-  const [paymentToken, setPaymentToken] = useState('');
+  const [paymentToken, setPaymentToken] = useState('xyz');
 
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
@@ -110,36 +110,36 @@ function Subscribe({ }) {
       </h1>
 
       <div>
-        <div style={{ width: '700px' }}>
+        <Box width='100%' maxWidth='630px'>
           <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
             <SmPanel>
               <HeaderLabel>Your Name</HeaderLabel>
-              <section style={sectStyle}>
+              <Box style={sectStyle}>
                 <div id="chargify_firstName"></div>
                 <div id="chargify_lastname"></div>
-              </section>
+              </Box>
             </SmPanel>
 
             <SmPanel marginTop="2em">
               <HeaderLabel>Your Card Information</HeaderLabel>
-              <section style={sectStyle}>
+              <Box style={sectStyle}>
                 <div id="chargify_ccnumber"></div>
                 <div id="chargify_cvv"></div>
                 <div id="chargify_ccmonth"></div>
                 <div id="chargify_ccyear"></div>
-              </section>
+              </Box>
             </SmPanel>
 
             <SmPanel marginTop="2em">
               <HeaderLabel>Your Address</HeaderLabel>
-              <section style={sectStyle}>
+              <Box style={sectStyle}>
                 <div id="chargify_address"></div>
                 <div id="chargify_address2"></div>
                 <div id="chargify_city"></div>
                 <div id="chargify_country"></div>
                 <div id="chargify_zip"></div>
                 <div id="chargify_state"></div>
-              </section>
+              </Box>
             </SmPanel>
 
             <label>
@@ -172,7 +172,7 @@ function Subscribe({ }) {
               </Button>
             </p>
           </form>
-        </div>
+        </Box>
         <style jsx>{`
           section {
             margin-top: 1em;
@@ -186,8 +186,8 @@ function Subscribe({ }) {
 export default observer(Subscribe);
 
 const sectStyle = {
-  display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
-  columnGap: '2em', alignSelf: 'center'
+  display: 'grid', gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
+  columnGap: '2em', alignSelf: 'center', width: '100%'
 } as React.CSSProperties
 
 const chargifyFields = (color1, color2, color3, name) => {

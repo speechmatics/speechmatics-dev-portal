@@ -13,6 +13,7 @@ import {
   ModalOverlay,
   Spinner,
   ModalCloseButton,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import {
   DescriptionLabel,
@@ -36,7 +37,7 @@ export default function Learn({ }) {
     <Dashboard>
       <PageHeader headerLabel="Learn" introduction="Explore our comprehensive API documentation." />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
-      <VStack spacing="1.5em" alignItems="flex-start" width="800px">
+      <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='1000px'>
         <InfoBarbox
           bgColor="smNavy.500"
           icon={<SubmitAJobIcon width='4em' height='4em' />}
@@ -45,7 +46,7 @@ export default function Learn({ }) {
           buttonLabel="Watch Video"
           setStateUp={() => setIsYtModalOpen(true)}
         />
-        <Grid gridTemplateColumns="1fr 1fr 1fr" gap="1.5em">
+        <Grid gridTemplateColumns="repeat(auto-fit, minmax(14em, 1fr))" gap="1.5em" width='100%'>
           {elems.map((el, i) => (
             <React.Fragment key={i}>
               <SmPanel justifyContent="space-between" p="1.5em" height="100%">
@@ -68,18 +69,28 @@ export default function Learn({ }) {
 }
 
 const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
+
+  const vidWidth = useBreakpointValue({
+    xs: "20em",
+    sm: "25em",
+    md: "40em",
+    lg: "50em",
+    xl: "60em",
+    "2xl": "70em",
+  });
+
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={true}>
       <ModalOverlay />
-      <ModalContent borderRadius="2px" maxWidth="920px">
+      <ModalContent borderRadius="2px" maxWidth={`calc(${vidWidth} + 2em)`}>
         <ModalHeader>
           <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         </ModalHeader>
         <ModalBody p="1em">
           <ReactPlayer
             url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
-            width="888px"
-            height="500px"
+            width={vidWidth}
+            height={`calc(${vidWidth} * 0.6)`}
             controls={true}
           />
         </ModalBody>

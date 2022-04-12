@@ -1,72 +1,81 @@
-import { Box, HStack, Divider, Tooltip, Text } from "@chakra-ui/react";
+import { Box, HStack, Divider, Tooltip, Text, useBreakpointValue, IconButton, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 
 export function HeaderBar({ logout, accountEmail }) {
+
+  const breakValue = useBreakpointValue({
+    base: 0,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    '2xl': 6
+  });
+
+
+
   return (
     <Box className="header_bar">
+      {/* <Box position='absolute' color='white'>{breakValue}</Box> */}
       <Link href="https://speechmatics.com">
-        <Box p="0.5em 0em 0.5em 2em" cursor='pointer'>
-          <SpeechmaticsLogoHorizontalWhite w={200} h={50} />
+        <Box p="0.5em 1em 0.5em 2em" cursor='pointer'>
+          <SpeechmaticsLogoHorizontalWhite w={breakValue < 2 ? 150 : 200} h={50} />
         </Box>
       </Link>
-      <Box>
-        <RightSidePanel logout={logout} accountEmail={accountEmail} />
-      </Box>
+      <RightSidePanel logout={logout} accountEmail={accountEmail} breakValue={breakValue} />
     </Box>
   );
 }
 
-export function RightSidePanel({ logout, accountEmail }) {
+export function RightSidePanel({ logout, accountEmail, breakValue }) {
+
   return (
-    <Box className="dashboard_side_bar">
-      <HStack>
-        <Link href="https://docs.speechmatics.com">
+    <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
+      {breakValue > 1 && <>
+        <Link href="https://docs.speechmatics.com" >
           <a target="_blank">
-            <Text
-              color="#DFE0E3"
-              pr="1em"
-              mt="-3px"
-              fontFamily="RMNeue-Regular"
-              _hover={{ color: '#F8FAFD' }}
-            >
-              Documentation
-            </Text>
+            <Box
+              color="smNavy.270"
+              _hover={{ color: 'smNavy.200' }}>
+              {breakValue < 3 ? 'Docs' : 'Documentation'}
+            </Box>
           </a>
         </Link>
-
-        <Divider orientation="vertical" color="#5E6673" pr="1.5em" height="295%" />
-      </HStack>
-      {/* <Link href="/account/" passHref>
-        <ChakraLink>
-          <Tooltip label="Account" placement="bottom"> */}
-      <div style={{ display: 'flex' }}>
-        <Text
+        <Divider orientation="vertical" color="#5E6673" alignSelf='stretch' />
+      </>
+      }
+      <Flex>
+        <Box
           whiteSpace="nowrap"
-          color="#DFE0E3"
-          mr="1em"
-          mt="-3px"
-          fontFamily="RMNeue-Regular"
-          _hover={{ color: '#F8FAFD' }}
-        >
-          {accountEmail}
-        </Text>
-      </div>
-      {/* </Tooltip>
-        </ChakraLink>
-      </Link> */}
+          color="smNavy.270"
+          fontSize={breakValue < 2 ? '0.8em' : '1em'}
+          paddingTop={breakValue < 2 ? '3px' : 'unset'}
+          textOverflow='ellipsis'
+          overflow='hidden'
+          maxWidth={breakValue > 0 ? 'clamp(3em, 23vw, 25em)' : '3em'}
+        >{accountEmail}</Box>
+      </Flex>
+
       <Tooltip label="Log out" placement="bottom">
-        <span
+        <Box
           style={{ cursor: 'pointer', marginLeft: '1em' }}
           data-qa="logout"
           onClick={() => logout()}
-        >
-          <LogoutIcon w={20} h={20} color="#DFE0E3" />
-        </span>
+        ><LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
+        </Box>
       </Tooltip>
-    </Box>
+    </HStack>
   );
 }
 
 
+{/* <Link href="/account/" passHref>
+        <ChakraLink>
+          <Tooltip label="Account" placement="bottom"> */}
+
+{/* </Tooltip>
+        </ChakraLink>
+      </Link> */}

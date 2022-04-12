@@ -1,6 +1,6 @@
 export function formatDate(date: Date) {
   if (!date || isNaN(date as any) || !(date instanceof Date)) return undefined;
-  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+  return <><span style={{ whiteSpace: 'nowrap' }}>{`${date.getDate()} ${months[date.getMonth()]}`}</span> {date.getFullYear()}</>;
 }
 
 const months = [

@@ -1,20 +1,13 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import menuData from '../static_data/menu-data';
 import { useContext, useEffect, useState } from 'react';
-
 import {
-  Tooltip,
-  Link as ChakraLink,
   Box,
   useDisclosure,
   Spinner,
-  Text,
-  Divider,
-  HStack,
   Button,
-  Flex,
   VStack,
+  IconButton,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -27,13 +20,13 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
-import { Menu } from './side-menu';
+import { MenuContainer } from './side-menu';
+import { FiMenu } from 'react-icons/fi';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -99,31 +92,28 @@ export default observer(function Dashboard({ children }) {
   };
 
   return (
-    <div className="dashboard_container">
+    <Box className="dashboard_container">
       <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
-      <div className="dashboard_contents" tabIndex={0}>
-        <div className="dashboard_sidenav">
-          <Menu />
-        </div>
-        <div className="dashboard_content">
+      <Box className="dashboard" tabIndex={0}>
+        <MenuContainer />
+        <Box className="dashboard_content">
           <motion.main
             variants={animationVariants} // Pass the variant object into Framer Motion
             initial="hidden" // Set the initial state to variants.hidden
             animate="enter" // Animated state to variants.enter
             exit="exit" // Exit state (used later) to variants.exit
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
-            style={{ width: '100%' }}
           >
             {children}
           </motion.main>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 });
 
@@ -153,7 +143,7 @@ function UserNotAuthModal({ isModalOpen }) {
       <ModalContent>
         <ModalBody >
           <VStack>
-            <SpeechmaticsLogo w={160} h={100} />
+            <SpeechmaticsLogo width={160} height={100} />
             <Box>Your session expired. </Box>
             <Box>You'll be redirected to login page.</Box>
             <Box>If the redirect won't work you can use this link: </Box>

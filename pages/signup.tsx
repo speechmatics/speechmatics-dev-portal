@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth-config';
-import { Button, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
@@ -81,7 +81,7 @@ export default observer(function SignUp() {
 
   return (
     <div className="login_container">
-      <SpeechmaticsLogo />
+      <Box px='3em' maxWidth='500px'><SpeechmaticsLogo width='100%' /></Box>
       <Text textAlign="center" mt='1em'>{b2cError || <Spinner />}</Text>
     </div>
   );

@@ -70,7 +70,7 @@ export default function Login() {
 
   return (
     <div className="login_container">
-      <SpeechmaticsLogo />
+      <Box px='3em' maxWidth='500px'><SpeechmaticsLogo width='100%' /></Box>
       <LoginSub {...{ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }} />
     </div>
   );

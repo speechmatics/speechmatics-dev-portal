@@ -28,10 +28,11 @@ import {
   Text,
   Tooltip,
   VStack,
-  createStandaloneToast
+  createStandaloneToast,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
@@ -46,6 +47,7 @@ import {
   PaginationPage,
   PaginationNext,
 } from './pagination';
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 
 
@@ -68,15 +70,35 @@ export const InfoBarbox = ({
   hrefUrl = null,
   setStateUp = null,
   ...props
-}) => (
-  <HStack
-    width="100%"
-    bg={bgColor}
-    height="110px"
-    justifyContent="space-between"
-    padding="2.5em 1.5em"
-    {...props}
-  >
+}) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  })
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children }) => <HStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        alignItems='center'
+        padding="1.5em 1.5em"
+        {...props}
+      >{children}</HStack>
+      :
+      ({ children }) => <VStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        padding="1.2em 0.5em"
+        spacing='1em'
+        {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <Containter>
     <Box flex="0 0 auto">{icon}</Box>
     <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
       <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
@@ -88,18 +110,18 @@ export const InfoBarbox = ({
     </VStack>
     {hrefUrl && (
       <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-        <Button variant="speechmaticsWhite" mb="1em">
+        <Button variant="speechmaticsWhite" mt='0px'>
           {buttonLabel}
         </Button>
       </Link>
     )}
     {setStateUp && (
-      <Button variant="speechmaticsWhite" mb="1em" onClick={setStateUp}>
+      <Button variant="speechmaticsWhite" onClick={setStateUp}>
         {buttonLabel}
       </Button>
     )}
-  </HStack>
-);
+  </Containter>
+};
 
 export const ViewUsageBox = ({ }) => (
   <InfoBarbox
@@ -143,18 +165,18 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <>
+    <Box width='100%' maxWidth='1000px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
         style={{
           marginTop: '2em',
-          width: '800px',
+          width: '100%',
           marginBottom: '3em',
           borderColor: 'var(--chakra-colors-smNavy-270)',
         }}
       />
-    </>
+    </Box>
   );
 };
 export const CodeExamples = observer(({ token }: { token?: string }) => {
@@ -181,7 +203,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             />
           </TabPanel>
           <TabPanel width="100%">
-            <DescriptionLabel pt='1em'>Submit a transcription job:​</DescriptionLabel>
+            <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
@@ -206,49 +228,59 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
 export const CodeHighlight = ({ code }) => {
   return (
-    <Box position="relative">
-      <CopyButton copyContent={code} position="absolute" />
-      <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
-        {code}
-      </SyntaxHighlighter>
+    <Box position="relative" width='100%' height='50px' >
+      <CopyButton copyContent={code} position="absolute" top='12px' />
+      <Box position='absolute' width='100%'>
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
+          {code}
+        </SyntaxHighlighter>
+      </Box>
     </Box>
   );
 };
 
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => (
-  <Button
-    top={top}
-    right="9px"
-    position={position as ResponsiveValue<any>}
-    alignSelf="flex-start"
-    fontSize="0.8rem"
-    aria-label="copy"
-    color="smNavy.500"
-    backgroundColor="#fff"
-    size="sm"
-    borderRadius="2px"
-    onClick={() => {
-      navigator?.clipboard?.writeText(copyContent);
-    }}
-    _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
-  >
-    COPY
-  </Button>
-);
+export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
 
-export const SimplePanel = ({ children }) => (
-  <VStack
-    width="800px"
-    p="1em 1em 1.5em 1.5em"
-    alignItems="flex-start"
-    backgroundColor="smWhite.500"
-    border="1px solid"
-    borderColor="smBlack.200"
-    borderRadius="3px"
-  >
-    {children}
-  </VStack>
-);
+  const [isTTOpen, setIsTTOpen] = useState(false);
+
+  useEffect(() => {
+    let st: number;
+
+    if (isTTOpen) setTimeout(() => {
+      setIsTTOpen(false)
+    }, 3000);
+
+    return () => clearTimeout(st);
+
+  }, [isTTOpen])
+
+  return <Tooltip label='copied' isOpen={isTTOpen}
+    placement='top' hasArrow
+    bg='smNavy.400' color='smWhite.500'>
+    <Button
+      _focus={{ boxShadow: 'none' }}
+      top={top}
+      right="9px"
+      position={position as ResponsiveValue<any>}
+      alignSelf="flex-start"
+      fontSize="0.8rem"
+      aria-label="copy"
+      color="smNavy.500"
+      backgroundColor="#fff"
+      size="sm"
+      borderRadius="2px"
+      zIndex={100}
+      onClick={() => {
+        setIsTTOpen(true)
+        navigator?.clipboard?.writeText(copyContent);
+      }}
+      _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
+    >
+      COPY
+    </Button>
+  </Tooltip >
+};
+
 
 export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
   const [page, setPage] = useState(0);
@@ -350,16 +382,24 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 
 
 
-export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
-  <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
+export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  });
+
+  return <Flex justifyContent='center' p='1em' alignItems='center' direction={breakVal ? 'row' : 'column'} {...props}
+    {...{ [breakVal ? 'columnGap' : 'rowGap']: '1em' }}>
     <ViewPricingIcon />
-    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
+    <Text fontFamily='RMNeue-Bold' fontSize='20px'>View our Pricing</Text>
     <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
-      <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
+      <Button variant='speechmaticsOutline' mt='0em'>
         View Pricing
       </Button>
     </Link>
-  </Flex>)
+  </Flex>
+}
 
 
 export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />
@@ -465,3 +505,4 @@ export const AttentionBar = ({ description }) => (
       {description}
     </Text>
   </HStack>)
+

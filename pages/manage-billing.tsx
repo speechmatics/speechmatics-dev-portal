@@ -15,6 +15,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useBreakpointValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -96,7 +97,7 @@ export default observer(function ManageBilling({ }) {
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size="lg" variant="speechmatics" width="800px">
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='1000px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-settings">Settings</Tab>
           <Tab data-qa="tab-payments">Payments</Tab>
@@ -128,20 +129,35 @@ export default observer(function ManageBilling({ }) {
   );
 });
 
-const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
-  isLoading ? (
+const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
+  const breakVal = useBreakpointValue({
+    base: 0,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    '2xl': 6
+  });
+
+  return isLoading ? (
     <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
       <VStack alignItems="flex-start" spacing="1.6em">
         <Box className="skeleton" height="2em" width="15em" />
         <Box className="skeleton" height="1em" width="18em" />
         <Box className="skeleton" height="3em" width="10em" />
       </VStack>
-      <Box className="skeleton" height="185px" width="282px" />
+      {breakVal > 1 && <Box className="skeleton" height="185px" width="282px" />}
     </HStack>
   ) : (
     <HStack width="100%" justifyContent="space-between" alignItems="flex-start">
       <VStack alignItems="flex-start">
-        <HeaderLabel>{paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}</HeaderLabel>
+        <HeaderLabel>
+          {paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}
+          {breakVal < 2 && <span style={{ display: 'inline-block', marginLeft: '0.5em' }}>
+            {paymentMethod ? <CardImage width={40} height={30} /> :
+              <CardGreyImage width={40} height={30} />}</span>}
+        </HeaderLabel>
         <DescriptionLabel>
           {paymentMethod
             ? `${paymentMethod?.card_type?.toUpperCase().replace(/_/g, ' ') || 'Card'} ending \
@@ -164,10 +180,9 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
         </Box>}
       </VStack>
       <Box position="relative">
-        <Text
+        {breakVal > 2 && <> <Text
           position="absolute"
           color="#fff7"
-          fontFamily="RMNeue-Regular"
           fontSize="1em"
           top="110px"
           right="14px"
@@ -175,26 +190,40 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) =>
         >
           {paymentMethod?.masked_card_number || 'XXXX XXXX XXXX XXXX'}
         </Text>
-        <Text
-          position="absolute"
-          color="#fff7"
-          fontFamily="RMNeue-Regular"
-          fontSize=".8em"
-          top="135px"
-          right="14px"
-        >
-          EXPIRY DATE{' '}
-          {paymentMethod
-            ? `${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
-            : 'XX/XX'}
-        </Text>
-        {paymentMethod ? <CardImage /> : <CardGreyImage />}
+          <Text
+            position="absolute"
+            color="#fff7"
+            fontSize=".8em"
+            top="135px"
+            right="14px"
+          >
+            EXPIRY DATE{' '}
+            {paymentMethod
+              ? `${pad(paymentMethod.expiration_month)}/${paymentMethod.expiration_year}`
+              : 'XX/XX'}
+          </Text></>}
+        {breakVal > 1 ?
+          paymentMethod ?
+            <CardImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} /> :
+            <CardGreyImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} />
+          : null
+        }
       </Box>
     </HStack>
-  );
+  )
+};
 
-const PaymentsGrid = ({ data, isLoading }) => (
-  <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
+const PaymentsGrid = ({ data, isLoading }) => {
+  const breakVal = useBreakpointValue({
+    base: 0,
+    xs: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+    '2xl': 6
+  });
+  return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Month</GridItem>
     <GridItem className="grid_header">Hours Used</GridItem>
     <GridItem className="grid_header">Total Cost</GridItem>
@@ -202,13 +231,15 @@ const PaymentsGrid = ({ data, isLoading }) => (
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
-        <GridItem whiteSpace="nowrap" data-qa={`payments-month-${i}`}>
+        <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-month-${i}`}>
           {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem data-qa={`payments-hours-used-${i}`}>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         <GridItem data-qa={`payments-total-cost-${i}`}>${Number(el.total_cost).toFixed(2)}</GridItem>
-        <GridItem whiteSpace="nowrap" data-qa={`payments-status-${i}`}>
-          {el.status === 'due' ? `Due on ${formatDate(new Date(el.billing_date))}` : `Paid on ${formatDate(new Date(el.billing_date))}`}
+        <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-status-${i}`}>
+          {el.status === 'due' ?
+            <>Due on {formatDate(new Date(el.billing_date))}</> :
+            <>Paid on ${formatDate(new Date(el.billing_date))}</>}
         </GridItem>
       </React.Fragment>
     ))}
@@ -229,7 +260,7 @@ const PaymentsGrid = ({ data, isLoading }) => (
       </GridItem>
     )}
   </Grid>
-);
+};
 
 interface PaymentItem {
   start_date: string;
