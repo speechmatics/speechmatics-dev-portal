@@ -81,11 +81,7 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
     <VStack
       className="sm_panel"
       width="100%"
-      // minWidth='10em'
-      // maxWidth='16em'
-      height="278px"
       alignItems="center"
-      padding="2em"
       justifyContent="space-between"
     >
       <VStack>
