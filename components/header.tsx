@@ -1,6 +1,5 @@
 import { Box, HStack, Divider, Tooltip, Text, useBreakpointValue, IconButton, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import { FiMenu } from "react-icons/fi";
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 
@@ -26,7 +25,6 @@ export function HeaderBar({ logout, accountEmail }) {
           <SpeechmaticsLogoHorizontalWhite w={breakValue < 2 ? 150 : 200} h={50} />
         </Box>
       </Link>
-
       <RightSidePanel logout={logout} accountEmail={accountEmail} breakValue={breakValue} />
     </Box>
   );
@@ -58,9 +56,7 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
           textOverflow='ellipsis'
           overflow='hidden'
           maxWidth={breakValue > 0 ? 'clamp(3em, 23vw, 25em)' : '3em'}
-        >
-          {accountEmail}
-        </Box>
+        >{accountEmail}</Box>
       </Flex>
 
       <Tooltip label="Log out" placement="bottom">
@@ -68,8 +64,7 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
           style={{ cursor: 'pointer', marginLeft: '1em' }}
           data-qa="logout"
           onClick={() => logout()}
-        >
-          <LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
+        ><LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
         </Box>
       </Tooltip>
     </HStack>
