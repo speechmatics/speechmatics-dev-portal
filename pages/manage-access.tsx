@@ -195,7 +195,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
               />
               <CopyButton copyContent={generatedToken} position="absolute" top="8px" />
             </Box>
-            <AttentionBar description={'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'} />
+            <AttentionBar data-qa="message-token-security" description={'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'} />
 
             {codeExample && <>
               <Text color='smBlack.300'>
