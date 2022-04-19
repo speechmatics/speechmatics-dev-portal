@@ -498,10 +498,10 @@ export const positiveToast = (descr: string) =>
   });
 
 
-export const AttentionBar = ({ description }) => (
+export const AttentionBar = ({ description, data_qa='attentionBar' }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
     <ExclamationIcon />
-    <Text color="smRed.500" fontSize="0.95em" flex='1'>
+    <Text data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex='1'>
       {description}
     </Text>
   </HStack>)
