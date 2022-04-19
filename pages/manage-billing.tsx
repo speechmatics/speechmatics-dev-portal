@@ -209,7 +209,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
     base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
   return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
-    <GridItem className="grid_header">Month</GridItem>
+    <GridItem className="grid_header">Billing Period</GridItem>
     <GridItem className="grid_header">Hours Used</GridItem>
     <GridItem className="grid_header">Total Cost</GridItem>
     <GridItem className="grid_header">Payment Status</GridItem>
