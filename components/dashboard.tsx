@@ -127,7 +127,7 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
       <ModalOverlay />
       <ModalContent borderRadius='2px'>
         <ModalHeader fontFamily='RMNeue-Bold'>Please wait...</ModalHeader>
-        <ModalBody textAlign={'center'}>
+        <ModalBody textAlign={'center'} data-qa={'user-creation-modal'}>
           Setting up the Account <Spinner ml={2} size='sm' />
         </ModalBody>
         <ModalFooter />
