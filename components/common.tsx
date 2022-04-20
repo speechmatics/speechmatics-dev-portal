@@ -198,9 +198,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             />
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
           <TabPanel width="100%">
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
@@ -212,9 +213,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight
-              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -498,7 +500,7 @@ export const positiveToast = (descr: string) =>
   });
 
 
-export const AttentionBar = ({ description, data_qa='attentionBar' }) => (
+export const AttentionBar = ({ description, data_qa = 'attentionBar' }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
     <ExclamationIcon />
     <Text data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex='1'>
