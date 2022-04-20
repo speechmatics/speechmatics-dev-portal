@@ -48,6 +48,7 @@ import {
   PaginationNext,
 } from './pagination';
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { Limits } from "./pagination/lib/hooks/usePagination";
 
 
 
@@ -289,6 +290,8 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
 
+  console.log(`DataGridComponent ${pagesCount} ${data?.length} ${itemsPerPage}`);
+
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
@@ -304,7 +307,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
       />
 
       {data?.length > itemsPerPage && (
-        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} />
+        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} limits={{ inner: 1, outer: 1 }} />
       )}
     </>
   );
@@ -313,16 +316,19 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 export type GridPaginationProps = {
   onSelectPage: (page: number) => void;
   pagesCountInitial: number;
+  limits?: Limits;
 };
 
 export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
   onSelectPage,
   pagesCountInitial,
+  limits,
   ...props
 }) => {
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
     pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
+    limits: limits
   });
 
   const onPageChange = useCallback(

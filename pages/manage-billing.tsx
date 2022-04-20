@@ -38,6 +38,7 @@ import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../compo
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
+import { HiDownload } from 'react-icons/hi';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -208,14 +209,19 @@ const PaymentsGrid = ({ data, isLoading }) => {
   const breakVal = useBreakpointValue({
     base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
-  return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
+
+  const columns = 5;
+
+  return <Grid gridTemplateColumns={`1fr 1fr 1fr 1fr 0fr`} className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
     <GridItem className="grid_header">Billing Period</GridItem>
     <GridItem className="grid_header">Hours Used</GridItem>
     <GridItem className="grid_header">Total Cost</GridItem>
     <GridItem className="grid_header">Payment Status</GridItem>
+    <GridItem className="grid_header"></GridItem>
+
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
-        <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+        <GridItem className="grid_row_divider" colSpan={columns}>{i != 0 && <hr />}</GridItem>
         <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-month-${i}`}>
           {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
         </GridItem>
@@ -226,10 +232,15 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <>Due on {formatDate(new Date(el.billing_date))}</> :
             <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
+        <GridItem data-qa={`payments-download-invoice-${i}`}>
+          {el.url && <Link href={el.url}>
+            <a target='_blank' download><HiDownload /></a>
+          </Link>}
+        </GridItem>
       </React.Fragment>
     ))}
     {!isLoading && (!data || data?.length == 0) && (
-      <GridItem colSpan={4}>
+      <GridItem colSpan={columns}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
           <Text ml="1em">You don’t currently have any due or paid invoices.</Text>
@@ -237,7 +248,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
       </GridItem>
     )}
     {isLoading && (
-      <GridItem colSpan={4}>
+      <GridItem colSpan={columns}>
         <Flex width="100%" justifyContent="center">
           <GridSpinner />
           <Text ml="1em">One moment please...</Text>
