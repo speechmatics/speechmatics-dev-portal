@@ -111,7 +111,7 @@ export const InfoBarbox = ({
     </VStack>
     {hrefUrl && (
       <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-        <Button variant="speechmaticsWhite" mt='0px'>
+        <Button variant="speechmaticsWhite" mt='0px' data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
           {buttonLabel}
         </Button>
       </Link>
