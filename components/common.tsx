@@ -193,12 +193,12 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
             <DescriptionLabel >Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-post-job-standard'}
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-get-job-standard'}
               code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
@@ -206,14 +206,14 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
           </TabPanel>
           <TabPanel width="100%">
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-post-job-enhanced'}
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
             />
 
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-get-job-enhanced'}
               code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
@@ -229,11 +229,11 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   );
 });
 
-export const CodeHighlight = ({ code }) => {
+export const CodeHighlight = ({ code, data_qa }) => {
   return (
     <Box position="relative" width='100%' height='50px' >
       <CopyButton copyContent={code} position="absolute" top='12px' />
-      <Box position='absolute' width='100%'>
+      <Box position='absolute' width='100%' data-qa={data_qa} aria-label={code}>
         <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
           {code}
         </SyntaxHighlighter>
