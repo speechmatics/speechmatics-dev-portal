@@ -187,8 +187,8 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
     <>
       <Tabs size="lg" pt='1em' variant="speechmaticsCode" width="100%">
         <TabList marginBottom="-1px">
-          <Tab>Windows CMD</Tab>
-          <Tab>Mac and Linux</Tab>
+          <Tab data-qa={'tab-windows-cmd'}>Windows CMD</Tab>
+          <Tab data-qa={'tab-mac-and-linux'}>Mac and Linux</Tab>
         </TabList>
         <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
