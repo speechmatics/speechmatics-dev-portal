@@ -233,8 +233,8 @@ export const CodeHighlight = ({ code, data_qa }) => {
   return (
     <Box position="relative" width='100%' height='50px' >
       <CopyButton copyContent={code} position="absolute" top='12px' />
-      <Box position='absolute' width='100%' data-qa={data_qa} aria-label={code}>
-        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
+      <Box position='absolute' width='100%'>
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block" data-qa={data_qa} aria-label={code}>
           {code}
         </SyntaxHighlighter>
       </Box>
