@@ -51,11 +51,11 @@ export default function GetAccessToken({ }) {
     <Dashboard>
       <PageHeader headerLabel="Manage Access" introduction="Manage API Keys." />
 
-      <SmPanel width="100%" maxWidth='1000px'>
+      <SmPanel width="100%" maxWidth='900px'>
         <GenerateTokenComponent />
       </SmPanel>
 
-      <SmPanel width="100%" maxWidth='1000px' mt="2em">
+      <SmPanel width="100%" maxWidth='900px' mt="2em">
         <PreviousTokens />
       </SmPanel>
     </Dashboard>

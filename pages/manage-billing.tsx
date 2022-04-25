@@ -95,7 +95,7 @@ export default observer(function ManageBilling({ }) {
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='1000px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-settings">Settings</Tab>
           <Tab data-qa="tab-payments">Payments</Tab>

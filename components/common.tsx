@@ -166,7 +166,7 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <Box width='100%' maxWidth='1000px' className='page_header'>
+    <Box width='100%' maxWidth='900px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr

@@ -13,7 +13,7 @@ export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
-      <VStack spacing='2em' width='100%' maxWidth='1000px'>
+      <VStack spacing='2em' width='100%' maxWidth='900px'>
         <InfoBarbox
           width="100%"
           bgColor="smBlue.500"
