@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## changes since the previous prodction update until 2022-04-26
+## changes since the previous production update until 2022-04-26
 
 - changed maxWidth on panels to 900px (from 1000)
 - additional data-qa attributes
