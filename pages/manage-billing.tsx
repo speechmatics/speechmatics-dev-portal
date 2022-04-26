@@ -233,7 +233,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
         <GridItem data-qa={`payments-download-invoice-${i}`}>
-          {0 && /* temp. hidden */el.url && <Link href={el.url}>
+          {false && /* temp. hidden */el.url && <Link href={el.url}>
             <a target='_blank' download><HiDownload /></a>
           </Link>}
         </GridItem>
