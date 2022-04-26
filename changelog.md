@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## changes since the previous production update until 2022-04-26
 
+- the portal is now responsive
 - changed maxWidth on panels to 900px (from 1000)
 - additional data-qa attributes
 - added button for downloading the invoice [DEL-2936](https://speechmatics.atlassian.net/browse/DEL-2936)
