@@ -214,7 +214,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
             <CodeHighlight data_qa={'code-get-job-enhanced'}
-              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
             <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
