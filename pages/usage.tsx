@@ -161,7 +161,7 @@ export default observer(function Usage() {
               <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
             </Grid>
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner />
 
           </TabPanel>
           <TabPanel>
@@ -173,7 +173,7 @@ export default observer(function Usage() {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner />
 
           </TabPanel>
         </TabPanels>
