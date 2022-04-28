@@ -52,12 +52,12 @@ import { Limits } from "./pagination/lib/hooks/usePagination";
 
 
 
-export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
+export const UsageInfoBanner = ({ text }) => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
   <Box>
     <CalendarIcon width='1.5em' height='1.5em' />
   </Box>
   <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-    All usage is reported on a UTC calendar-day basis and excludes the current day.
+    {text}
   </Text>
 </Flex>
 
