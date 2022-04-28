@@ -119,7 +119,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="Hours Used is reported on a UTC calendar-day basis and updated every X minutes. Total Cost excludes usage for the current day." />
+            <UsageInfoBanner />
           </TabPanel>
         </TabPanels>
       </Tabs>

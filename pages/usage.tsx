@@ -161,7 +161,7 @@ export default observer(function Usage() {
               <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
             </Grid>
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner />
 
           </TabPanel>
           <TabPanel>
@@ -173,7 +173,7 @@ export default observer(function Usage() {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner />
 
           </TabPanel>
         </TabPanels>
@@ -190,7 +190,6 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
     <GridItem className="grid_header">Hours Used</GridItem>
 
     {data?.map((el: UsageUnit, i: number) => {
-      console.log(el.since)
       return (
         <React.Fragment key={el.since}>
           <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
