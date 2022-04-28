@@ -190,7 +190,6 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
     <GridItem className="grid_header">Hours Used</GridItem>
 
     {data?.map((el: UsageUnit, i: number) => {
-      console.log(el.since)
       return (
         <React.Fragment key={el.since}>
           <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
