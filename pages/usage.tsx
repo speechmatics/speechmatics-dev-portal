@@ -184,6 +184,7 @@ export default observer(function Usage() {
 
 
 
+
 const UsageBreakdownGrid = ({ data, isLoading }) => (
   <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">
     <GridItem className="grid_header">Day</GridItem>
