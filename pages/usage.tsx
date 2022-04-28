@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { CSSProperties, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import Dashboard from '../components/dashboard';
 import {
   Box,
@@ -15,7 +15,7 @@ import {
   TabPanels,
   Tabs,
   Text,
-  tokenToCSSVar,
+  useBreakpointValue,
   VStack,
 } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
@@ -24,12 +24,9 @@ import { observer } from 'mobx-react-lite';
 import {
   DataGridComponent,
   DescriptionLabel,
-  errToast,
   GridSpinner,
   HeaderLabel,
-  InfoBarbox,
   PageHeader,
-  SmPanel,
   UsageInfoBanner,
   ViewPricingBar,
 } from '../components/common';
@@ -37,10 +34,7 @@ import {
   BaloonIcon,
   CallSupportIcon,
   ExclamationIcon,
-  PricingTags,
   RocketIcon,
-  UsageInfoIcon,
-  UsageLimitsIcon,
 } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 
@@ -76,12 +70,12 @@ export default observer(function Usage() {
 
   const { aggregate, breakdown } = usageJson;
 
-  const currentUsage = prepCurrentUsage(aggregate);
+  const currentUsage = useMemo(() => prepCurrentUsage(aggregate), [aggregate]);
 
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="800px">
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
@@ -92,70 +86,23 @@ export default observer(function Usage() {
             <HeaderLabel>Usage Limits</HeaderLabel>
             <DescriptionLabel>Hours of Audio Per Month.</DescriptionLabel>
             <Grid gridTemplateColumns="1fr 1fr" gap="1.5em">
-              <GridItem bg="smGreen.200" className="flexColumnBetween">
-                <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
-                  <Box p='1em 0em 0em 0.2em'>
-                    <RocketIcon />
-                  </Box>
-                  <Box pt='1em' pl="0.5em">
-                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      ENHANCED
-                    </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smGreen.500" mt="0.15em" data-qa="limit-enhanced">
-                      {accountStore.isLoading ? (
-                        <Spinner size="sm" />
-                      ) : (
-                        accountStore.getUsageLimit('enhanced')
-                      )}{' '}
-                      hours per month
-                    </Text>
-                  </Box>
-                </HStack>
-                <Box
-                  bg="smGreen.100"
-                  p=".8em 1em .8em 1em"
-                  borderTop="1px solid"
-                  borderColor="smGreen.400"
-                >
-                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
-                    Enhanced provides the highest transcription accuracy.
-                  </Text>
-                </Box>
-              </GridItem>
-              <GridItem bg="smBlue.200" className="flexColumnBetween">
-                <HStack p="1em 1em 1em 1em" alignItems='flex-start'>
-                  <Box p='1em 0em 0em 0.2em'>
-                    <BaloonIcon />
-                  </Box>
-                  <Box pt='1em' pl="0.5em" >
-                    <Text fontFamily="RMNeue-Regular" fontSize="0.85em" color="smBlack.400">
-                      STANDARD
-                    </Text>
-                    <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color="smBlue.500"
-                      mt="0.15em" data-qa="limit-standard">
-                      {accountStore.isLoading ? (
-                        <Spinner size="sm" />
-                      ) : (
-                        accountStore.getUsageLimit('standard')
-                      )}{' '}
-                      hours per month
-                    </Text>
-                  </Box>
-                </HStack>
-                <Box
-                  bg="smBlue.100"
-                  p=".8em 1em .8em 1em"
-                  borderTop="1px solid"
-                  borderColor="smBlue.400"
-                >
-                  <Text fontFamily="RMNeue-Regular" fontSize="0.8em" color="smBlack.400">
-                    Standard provides faster transcription with high accuracy.
-                  </Text>
-                </Box>
-              </GridItem>
+              <ModelDescriptionBox
+                mainColor='smGreen'
+                icon={<RocketIcon />}
+                title='ENHANCED'
+                usageLimitType='enhanced'
+                description='Enhanced provides the highest transcription accuracy.'
+              />
+              <ModelDescriptionBox
+                mainColor='smBlue'
+                icon={<BaloonIcon />}
+                title='STANDARD'
+                usageLimitType='standard'
+                description='Standard provides faster transcription with high accuracy.'
+              />
 
               <GridItem colSpan={2}>
-                {accountStore.isLoading ? <Box bg='smNavy.500' width='100%' height='100px' />
+                {accountStore.isLoading ? <Box bg='smNavy.500' width='100%' />
                   : (paymentMethodAdded ?
                     <GetInTouchBox icon={<CallSupportIcon />}
                       title='Need more usage?'
@@ -176,8 +123,8 @@ export default observer(function Usage() {
           <TabPanel>
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')
-                ? `Usage until ${formatDate(new Date(currentUsage?.until))}`
-                : `Usage for the period: ${formatDate(new Date(aggregate?.since)) || ''} - ${formatDate(new Date(aggregate?.until)) || ''}`}
+                ? <>Usage until {formatDate(new Date(currentUsage?.until))}</>
+                : <>Usage for the period: {formatDate(new Date(aggregate?.since)) || ''} - {formatDate(new Date(aggregate?.until)) || ''}</>}
             </HeaderLabel>
 
             <Grid
@@ -234,6 +181,7 @@ export default observer(function Usage() {
     </Dashboard>
   );
 });
+
 
 
 
@@ -307,27 +255,92 @@ type UsageUnit = {
 };
 
 
-const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => (<HStack
-  width="100%"
-  bg="smNavy.500"
-  height="100px"
-  justifyContent="space-between"
-  padding="0em 1.5em"
->
-  <Box flex="0 0 auto">
-    {icon}
-  </Box>
-  <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-    <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-      {title}
-    </Text>
-    <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-      {ctaText}
-    </Text>
-  </VStack>
-  <Link href={hrefLink}>
-    <Button variant="speechmaticsWhite">
-      {buttonLabel}
-    </Button>
-  </Link>
-</HStack>)
+const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  });
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children, ...props }) => <HStack {...props}
+      >{children}</HStack>
+      :
+      ({ children, ...props }) => <VStack {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <Containter
+    width="100%"
+    bg="smNavy.500"
+    justifyContent="space-between"
+    padding="1em 1.5em"
+  >
+    <Box flex="0 0 auto">
+      {icon}
+    </Box>
+    <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+      <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+        {title}
+      </Text>
+      <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500" pb='0.5em'>
+        {ctaText}
+      </Text>
+    </VStack>
+    <Link href={hrefLink}>
+      <Button variant="speechmaticsWhite" >
+        {buttonLabel}
+      </Button>
+    </Link>
+  </Containter>
+}
+
+
+const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, description }) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  })
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children, ...props }) => <HStack {...props}
+      >{children}</HStack>
+      :
+      ({ children, ...props }) => <VStack {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <GridItem bg={`${mainColor}.200`} className="flexColumnBetween">
+    <Containter p={breakVal ? "1em 1em 1em 1em" : "0.5em"} alignItems='flex-start'>
+      <Box p='1em 0em 0em 0.2em'>
+        {icon}
+      </Box>
+      <Box pt='1em' pl="0.5em">
+        <Text fontSize="0.85em" color="smBlack.400">
+          {title}
+        </Text>
+        <Text fontFamily="RMNeue-Bold" fontSize="1.5em" color={`${mainColor}.500`} mt="0.15em" data-qa={`limit-${usageLimitType}`}>
+          {accountStore.isLoading ? (
+            <Spinner size="sm" />
+          ) : (
+            accountStore.getUsageLimit(usageLimitType)
+          )}{' '}
+          hours per month
+        </Text>
+      </Box>
+    </Containter>
+    <Box
+      bg={`${mainColor}.100`}
+      p=".8em 1em .8em 1em"
+      borderTop="1px solid"
+      borderColor={`${mainColor}.400`}
+    >
+      <Text fontSize="0.8em" color="smBlack.400">
+        {description}
+      </Text>
+    </Box>
+  </GridItem>
+}

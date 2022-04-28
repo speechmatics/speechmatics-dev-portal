@@ -28,10 +28,11 @@ import {
   Text,
   Tooltip,
   VStack,
-  createStandaloneToast
+  createStandaloneToast,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import accountContext from '../utils/account-store-context';
@@ -46,6 +47,8 @@ import {
   PaginationPage,
   PaginationNext,
 } from './pagination';
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { Limits } from "./pagination/lib/hooks/usePagination";
 
 
 
@@ -68,15 +71,35 @@ export const InfoBarbox = ({
   hrefUrl = null,
   setStateUp = null,
   ...props
-}) => (
-  <HStack
-    width="100%"
-    bg={bgColor}
-    height="110px"
-    justifyContent="space-between"
-    padding="2.5em 1.5em"
-    {...props}
-  >
+}) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  })
+
+  const Containter = useMemo(
+    () => (breakVal ?
+      ({ children }) => <HStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        alignItems='center'
+        padding="1.5em 1.5em"
+        {...props}
+      >{children}</HStack>
+      :
+      ({ children }) => <VStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        padding="1.2em 0.5em"
+        spacing='1em'
+        {...props}
+      >{children}</VStack>
+    ), [breakVal]);
+
+  return <Containter>
     <Box flex="0 0 auto">{icon}</Box>
     <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
       <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
@@ -88,18 +111,18 @@ export const InfoBarbox = ({
     </VStack>
     {hrefUrl && (
       <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-        <Button variant="speechmaticsWhite" mb="1em">
+        <Button variant="speechmaticsWhite" mt='0px' data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
           {buttonLabel}
         </Button>
       </Link>
     )}
     {setStateUp && (
-      <Button variant="speechmaticsWhite" mb="1em" onClick={setStateUp}>
+      <Button variant="speechmaticsWhite" onClick={setStateUp}>
         {buttonLabel}
       </Button>
     )}
-  </HStack>
-);
+  </Containter>
+};
 
 export const ViewUsageBox = ({ }) => (
   <InfoBarbox
@@ -143,18 +166,18 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <>
+    <Box width='100%' maxWidth='900px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
         style={{
           marginTop: '2em',
-          width: '800px',
+          width: '100%',
           marginBottom: '3em',
           borderColor: 'var(--chakra-colors-smNavy-270)',
         }}
       />
-    </>
+    </Box>
   );
 };
 export const CodeExamples = observer(({ token }: { token?: string }) => {
@@ -164,35 +187,38 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
     <>
       <Tabs size="lg" pt='1em' variant="speechmaticsCode" width="100%">
         <TabList marginBottom="-1px">
-          <Tab>Windows CMD</Tab>
-          <Tab>Mac and Linux</Tab>
+          <Tab data-qa={'tab-windows-cmd'}>Windows CMD</Tab>
+          <Tab data-qa={'tab-mac-and-linux'}>Mac and Linux</Tab>
         </TabList>
         <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
             <DescriptionLabel >Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-post-job-standard'}
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+            <CodeHighlight data_qa={'code-get-job-standard'}
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
           <TabPanel width="100%">
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+
+            <CodeHighlight data_qa={'code-post-job-enhanced'}
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
             />
 
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
-              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+            <CodeHighlight data_qa={'code-get-job-enhanced'}
+              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -204,56 +230,68 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   );
 });
 
-export const CodeHighlight = ({ code }) => {
+export const CodeHighlight = ({ code, data_qa }) => {
   return (
-    <Box position="relative">
-      <CopyButton copyContent={code} position="absolute" />
-      <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
-        {code}
-      </SyntaxHighlighter>
+    <Box position="relative" width='100%' height='50px' >
+      <CopyButton copyContent={code} position="absolute" top='12px' />
+      <Box position='absolute' width='100%'>
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block" data-qa={data_qa} aria-label={code}>
+          {code}
+        </SyntaxHighlighter>
+      </Box>
     </Box>
   );
 };
 
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => (
-  <Button
-    top={top}
-    right="9px"
-    position={position as ResponsiveValue<any>}
-    alignSelf="flex-start"
-    fontSize="0.8rem"
-    aria-label="copy"
-    color="smNavy.500"
-    backgroundColor="#fff"
-    size="sm"
-    borderRadius="2px"
-    onClick={() => {
-      navigator?.clipboard?.writeText(copyContent);
-    }}
-    _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
-  >
-    COPY
-  </Button>
-);
+export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
 
-export const SimplePanel = ({ children }) => (
-  <VStack
-    width="800px"
-    p="1em 1em 1.5em 1.5em"
-    alignItems="flex-start"
-    backgroundColor="smWhite.500"
-    border="1px solid"
-    borderColor="smBlack.200"
-    borderRadius="3px"
-  >
-    {children}
-  </VStack>
-);
+  const [isTTOpen, setIsTTOpen] = useState(false);
+
+  useEffect(() => {
+    let st: number;
+
+    if (isTTOpen) setTimeout(() => {
+      setIsTTOpen(false)
+    }, 3000);
+
+    return () => clearTimeout(st);
+
+  }, [isTTOpen])
+
+  return <Tooltip label='copied' isOpen={isTTOpen}
+    placement='top' hasArrow
+    bg='smNavy.400' color='smWhite.500'>
+    <Button
+      _focus={{ boxShadow: 'none' }}
+      top={top}
+      right="9px"
+      position={position as ResponsiveValue<any>}
+      alignSelf="flex-start"
+      fontSize="0.8rem"
+      aria-label="copy"
+      color="smNavy.500"
+      backgroundColor="#fff"
+      size="sm"
+      borderRadius="2px"
+      zIndex={99}
+      onClick={() => {
+        setIsTTOpen(true)
+        navigator?.clipboard?.writeText(copyContent);
+      }}
+      _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
+    >
+      COPY
+    </Button>
+  </Tooltip >
+};
+
 
 export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
   const [page, setPage] = useState(0);
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
+
+  console.log(`DataGridComponent ${pagesCount} ${data?.length} ${itemsPerPage}`);
 
   let onSelectPage = useCallback(
     (_page: number) => {
@@ -270,7 +308,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
       />
 
       {data?.length > itemsPerPage && (
-        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} />
+        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} limits={{ inner: 1, outer: 1 }} />
       )}
     </>
   );
@@ -279,16 +317,19 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 export type GridPaginationProps = {
   onSelectPage: (page: number) => void;
   pagesCountInitial: number;
+  limits?: Limits;
 };
 
 export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
   onSelectPage,
   pagesCountInitial,
+  limits,
   ...props
 }) => {
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
     pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
+    limits: limits
   });
 
   const onPageChange = useCallback(
@@ -350,16 +391,24 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 
 
 
-export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => (
-  <Flex justifyContent='center' p='1em' alignItems='center' {...props}>
+export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => {
+
+  const breakVal = useBreakpointValue({
+    xs: false,
+    sm: true,
+  });
+
+  return <Flex justifyContent='center' p='1em' alignItems='center' direction={breakVal ? 'row' : 'column'} {...props}
+    {...{ [breakVal ? 'columnGap' : 'rowGap']: '1em' }}>
     <ViewPricingIcon />
-    <Text fontFamily='RMNeue-Bold' fontSize='20px' ml='1em'>View our Pricing</Text>
+    <Text fontFamily='RMNeue-Bold' fontSize='20px'>View our Pricing</Text>
     <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
-      <Button variant='speechmaticsOutline' ml='2em' mt='0em'>
+      <Button variant='speechmaticsOutline' mt='0em'>
         View Pricing
       </Button>
     </Link>
-  </Flex>)
+  </Flex>
+}
 
 
 export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />
@@ -458,10 +507,11 @@ export const positiveToast = (descr: string) =>
   });
 
 
-export const AttentionBar = ({ description }) => (
+export const AttentionBar = ({ description, data_qa = 'attentionBar' }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
     <ExclamationIcon />
-    <Text color="smRed.500" fontSize="0.95em" flex='1'>
+    <Text data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex='1'>
       {description}
     </Text>
   </HStack>)
+

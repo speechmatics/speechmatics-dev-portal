@@ -1,15 +1,11 @@
-import { VStack, Text, HStack, Box, Button } from '@chakra-ui/react';
+import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
 import Link from 'next/link';
 import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
-  LearnBookIcon,
-  LookingGlassChartIcon,
   MenuLearnIcon,
   MenuPadlockIcon,
   MenuTrackUsageIcon,
-  PadLockOpenIcon,
-  TerminalGraphIcon,
   TranscribeAudioIcon,
 } from '../components/icons-library';
 
@@ -17,7 +13,7 @@ export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
-      <VStack spacing='2em' width='800px'>
+      <VStack spacing='2em' width='100%' maxWidth='900px'>
         <InfoBarbox
           width="100%"
           bgColor="smBlue.500"
@@ -27,7 +23,7 @@ export default function Home({ }) {
           buttonLabel="Get Started"
           hrefUrl="/getting-started/"
         />
-        <HStack alignItems="flex-start" spacing="2em">
+        <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
             title="Manage API Keys"
@@ -49,7 +45,7 @@ export default function Home({ }) {
             buttonLabel="Learn"
             hrefUrl="/learn/"
           />
-        </HStack>
+        </Grid>
       </VStack>
     </Dashboard>
   );
@@ -85,6 +81,8 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
     <VStack
       className="sm_panel"
       width="100%"
+      // minWidth='10em'
+      // maxWidth='16em'
       height="278px"
       alignItems="center"
       padding="2em"
