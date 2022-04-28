@@ -57,7 +57,7 @@ export const UsageInfoBanner = ({text}) => {
     <Box>
       <CalendarIcon width='1.5em' height='1.5em' />
     </Box>
-    <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    <Text width="100%" color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
       {text}
     </Text>
   </Flex>
