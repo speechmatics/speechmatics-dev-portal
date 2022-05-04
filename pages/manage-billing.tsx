@@ -87,7 +87,7 @@ export default observer(function ManageBilling({ }) {
     <Dashboard>
       <PageHeader
         headerLabel="Manage Billing"
-        introduction="Manage your payments and usage limits."
+        introduction="Manage Your Payments and Usage Limits."
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
         mainTitle={`Are you sure want to remove your card?`}
@@ -119,7 +119,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="Hours Used is reported on a UTC calendar-day basis and updated every 5 minutes. Total Cost excludes usage for the current day." />
+            <UsageInfoBanner text="Hours used is reported on a UTC calendar-day basis and updated every 5 minutes. Total cost excludes usage for the current day." />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -223,7 +223,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
       <React.Fragment key={i}>
         <GridItem className="grid_row_divider" colSpan={columns}>{i != 0 && <hr />}</GridItem>
         <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-month-${i}`}>
-          {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
+          {formatDate(new Date(el.start_date))} &#8211; {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem data-qa={`payments-hours-used-${i}`}>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         <GridItem data-qa={`payments-total-cost-${i}`}>${Number(el.total_cost).toFixed(2)}</GridItem>
