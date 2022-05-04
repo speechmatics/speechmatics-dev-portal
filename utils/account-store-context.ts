@@ -17,6 +17,8 @@ class AccountContext {
 
   requestSent: boolean = false;
 
+  keyJustRemoved: boolean = false;
+
   constructor() {
     makeObservable(this, {
       clear: action,
@@ -26,6 +28,7 @@ class AccountContext {
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
+      keyJustRemoved: observable,
     });
   }
 

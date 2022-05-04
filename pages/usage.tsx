@@ -75,7 +75,7 @@ export default observer(function Usage() {
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='1000px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
@@ -124,7 +124,7 @@ export default observer(function Usage() {
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')
                 ? <>Usage until {formatDate(new Date(currentUsage?.until))}</>
-                : <>Usage for the period: ${formatDate(new Date(aggregate?.since)) || ''} - ${formatDate(new Date(aggregate?.until)) || ''}</>}
+                : <>Usage for the period: {formatDate(new Date(aggregate?.since)) || ''} &#8211; {formatDate(new Date(aggregate?.until)) || ''}</>}
             </HeaderLabel>
 
             <Grid
@@ -161,7 +161,7 @@ export default observer(function Usage() {
               <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
 
             </Grid>
-            <UsageInfoBanner />
+            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
 
           </TabPanel>
           <TabPanel>
@@ -173,7 +173,7 @@ export default observer(function Usage() {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner />
+            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
 
           </TabPanel>
         </TabPanels>
@@ -181,6 +181,7 @@ export default observer(function Usage() {
     </Dashboard>
   );
 });
+
 
 
 

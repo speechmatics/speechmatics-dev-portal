@@ -37,7 +37,7 @@ export default function Learn({ }) {
     <Dashboard>
       <PageHeader headerLabel="Learn" introduction="Explore our comprehensive API documentation." />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
-      <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='1000px'>
+      <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='900px'>
         <InfoBarbox
           bgColor="smNavy.500"
           icon={<SubmitAJobIcon width='4em' height='4em' />}

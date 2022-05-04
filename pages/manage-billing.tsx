@@ -26,13 +26,10 @@ import {
   ConfirmRemoveModal,
   DataGridComponent,
   DescriptionLabel,
-  errToast,
   GridSpinner,
   HeaderLabel,
-  InfoBarbox,
   pad,
   PageHeader,
-  SmPanel,
   UsageInfoBanner,
   ViewPricingBar,
 } from '../components/common';
@@ -41,6 +38,7 @@ import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../compo
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
+import { HiDownload } from 'react-icons/hi';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -89,7 +87,7 @@ export default observer(function ManageBilling({ }) {
     <Dashboard>
       <PageHeader
         headerLabel="Manage Billing"
-        introduction="Manage your payments and usage limits."
+        introduction="Manage Your Payments and Usage Limits."
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
         mainTitle={`Are you sure want to remove your card?`}
@@ -97,7 +95,7 @@ export default observer(function ManageBilling({ }) {
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='1000px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-settings">Settings</Tab>
           <Tab data-qa="tab-payments">Payments</Tab>
@@ -121,7 +119,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner />
+            <UsageInfoBanner text="Hours used is reported on a UTC calendar-day basis and updated every 5 minutes. Total cost excludes usage for the current day." />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -131,13 +129,7 @@ export default observer(function ManageBilling({ }) {
 
 const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
   const breakVal = useBreakpointValue({
-    base: 0,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-    '2xl': 6
+    base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
 
   return isLoading ? (
@@ -204,8 +196,8 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
           </Text></>}
         {breakVal > 1 ?
           paymentMethod ?
-            <CardImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} /> :
-            <CardGreyImage width={breakVal > 3 ? '' : 100} height={breakVal > 3 ? '' : 70} />
+            <CardImage width={breakVal > 3 ? 244 : 100} height={breakVal > 3 ? 168 : 70} /> :
+            <CardGreyImage width={breakVal > 3 ? 244 : 100} height={breakVal > 3 ? 168 : 70} />
           : null
         }
       </Box>
@@ -215,36 +207,40 @@ const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
 
 const PaymentsGrid = ({ data, isLoading }) => {
   const breakVal = useBreakpointValue({
-    base: 0,
-    xs: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-    '2xl': 6
+    base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
   });
-  return <Grid gridTemplateColumns="repeat(4, 1fr)" className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
-    <GridItem className="grid_header">Month</GridItem>
+
+  const columns = 5;
+
+  return <Grid gridTemplateColumns={`1fr 1fr 1fr 1fr 0fr`} className="sm_grid" mt="1.5em" alignSelf="stretch" data-qa='payments'>
+    <GridItem className="grid_header">Billing Period</GridItem>
     <GridItem className="grid_header">Hours Used</GridItem>
     <GridItem className="grid_header">Total Cost</GridItem>
     <GridItem className="grid_header">Payment Status</GridItem>
+    <GridItem className="grid_header"></GridItem>
+
     {data?.map((el: PaymentItem, i: number) => (
       <React.Fragment key={i}>
-        <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+        <GridItem className="grid_row_divider" colSpan={columns}>{i != 0 && <hr />}</GridItem>
         <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-month-${i}`}>
-          {formatDate(new Date(el.start_date))} - {formatDate(new Date(el.end_date))}
+          {formatDate(new Date(el.start_date))} &#8211; {formatDate(new Date(el.end_date))}
         </GridItem>
         <GridItem data-qa={`payments-hours-used-${i}`}>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         <GridItem data-qa={`payments-total-cost-${i}`}>${Number(el.total_cost).toFixed(2)}</GridItem>
         <GridItem whiteSpace={breakVal > 2 ? 'nowrap' : 'unset'} data-qa={`payments-status-${i}`}>
           {el.status === 'due' ?
             <>Due on {formatDate(new Date(el.billing_date))}</> :
-            <>Paid on ${formatDate(new Date(el.billing_date))}</>}
+            <>Paid on {formatDate(new Date(el.billing_date))}</>}
+        </GridItem>
+        <GridItem data-qa={`payments-download-invoice-${i}`}>
+          {false && /* temp. hidden */el.url && <Link href={el.url}>
+            <a target='_blank' download><HiDownload /></a>
+          </Link>}
         </GridItem>
       </React.Fragment>
     ))}
     {!isLoading && (!data || data?.length == 0) && (
-      <GridItem colSpan={4}>
+      <GridItem colSpan={columns}>
         <Flex width="100%" justifyContent="center">
           <ExclamationIcon />
           <Text ml="1em">You don’t currently have any due or paid invoices.</Text>
@@ -252,7 +248,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
       </GridItem>
     )}
     {isLoading && (
-      <GridItem colSpan={4}>
+      <GridItem colSpan={columns}>
         <Flex width="100%" justifyContent="center">
           <GridSpinner />
           <Text ml="1em">One moment please...</Text>

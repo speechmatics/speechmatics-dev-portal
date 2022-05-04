@@ -48,15 +48,16 @@ import {
   PaginationNext,
 } from './pagination';
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { Limits } from "./pagination/lib/hooks/usePagination";
 
 
 
-export const UsageInfoBanner = () => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
+export const UsageInfoBanner = ({ text }) => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
   <Box>
     <CalendarIcon width='1.5em' height='1.5em' />
   </Box>
   <Text color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-    All usage is reported on a UTC calendar-day basis and excludes the current day.
+    {text}
   </Text>
 </Flex>
 
@@ -110,7 +111,7 @@ export const InfoBarbox = ({
     </VStack>
     {hrefUrl && (
       <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-        <Button variant="speechmaticsWhite" mt='0px'>
+        <Button variant="speechmaticsWhite" mt='0px' data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
           {buttonLabel}
         </Button>
       </Link>
@@ -165,7 +166,7 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <Box width='100%' maxWidth='1000px' className='page_header'>
+    <Box width='100%' maxWidth='900px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
@@ -186,35 +187,38 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
     <>
       <Tabs size="lg" pt='1em' variant="speechmaticsCode" width="100%">
         <TabList marginBottom="-1px">
-          <Tab>Windows CMD</Tab>
-          <Tab>Mac and Linux</Tab>
+          <Tab data-qa={'tab-windows-cmd'}>Windows CMD</Tab>
+          <Tab data-qa={'tab-mac-and-linux'}>Mac and Linux</Tab>
         </TabList>
         <TabPanels border='0px' borderTop='1px' borderTopColor='var(--chakra-colors-smBlack-180)' boxShadow='none' pt='1.5em'>
           <TabPanel width="100%">
             <DescriptionLabel >Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+            <CodeHighlight data_qa={'code-post-job-standard'}
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+            <CodeHighlight data_qa={'code-get-job-standard'}
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
           <TabPanel width="100%">
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
+
+            <CodeHighlight data_qa={'code-post-job-enhanced'}
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
             />
 
             <DescriptionLabel pt='2em'>Get a transcript using the job ID returned by the POST request above:</DescriptionLabel>
-            <CodeHighlight
-              code={`curl -L -X GET ${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+            <CodeHighlight data_qa={'code-get-job-enhanced'}
+              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'}/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
             />
+            <DescriptionLabel pt='2em'>To get output in JSON format, remove the format=txt query parameter from the GET request.</DescriptionLabel>
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -226,12 +230,12 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   );
 });
 
-export const CodeHighlight = ({ code }) => {
+export const CodeHighlight = ({ code, data_qa }) => {
   return (
     <Box position="relative" width='100%' height='50px' >
       <CopyButton copyContent={code} position="absolute" top='12px' />
       <Box position='absolute' width='100%'>
-        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block">
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block" data-qa={data_qa} aria-label={code}>
           {code}
         </SyntaxHighlighter>
       </Box>
@@ -269,7 +273,7 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
       backgroundColor="#fff"
       size="sm"
       borderRadius="2px"
-      zIndex={100}
+      zIndex={99}
       onClick={() => {
         setIsTTOpen(true)
         navigator?.clipboard?.writeText(copyContent);
@@ -287,6 +291,8 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
 
+  console.log(`DataGridComponent ${pagesCount} ${data?.length} ${itemsPerPage}`);
+
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
@@ -302,7 +308,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
       />
 
       {data?.length > itemsPerPage && (
-        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} />
+        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} limits={{ inner: 1, outer: 1 }} />
       )}
     </>
   );
@@ -311,16 +317,19 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 export type GridPaginationProps = {
   onSelectPage: (page: number) => void;
   pagesCountInitial: number;
+  limits?: Limits;
 };
 
 export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
   onSelectPage,
   pagesCountInitial,
+  limits,
   ...props
 }) => {
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
     pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
+    limits: limits
   });
 
   const onPageChange = useCallback(
@@ -498,10 +507,10 @@ export const positiveToast = (descr: string) =>
   });
 
 
-export const AttentionBar = ({ description }) => (
+export const AttentionBar = ({ description, data_qa = 'attentionBar' }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
     <ExclamationIcon />
-    <Text color="smRed.500" fontSize="0.95em" flex='1'>
+    <Text data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex='1'>
       {description}
     </Text>
   </HStack>)

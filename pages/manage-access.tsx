@@ -22,7 +22,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useState, useRef, useContext } from 'react';
+import { useCallback, useState, useRef, useContext, useEffect } from 'react';
 import Dashboard from '../components/dashboard';
 import { IoTrashBinOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
@@ -37,6 +37,7 @@ import {
   GridSpinner,
   HeaderLabel,
   PageHeader,
+  positiveToast,
   SmPanel,
 } from '../components/common';
 import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
@@ -50,11 +51,11 @@ export default function GetAccessToken({ }) {
     <Dashboard>
       <PageHeader headerLabel="Manage Access" introduction="Manage API Keys." />
 
-      <SmPanel width="100%" maxWidth='1000px'>
+      <SmPanel width="100%" maxWidth='900px'>
         <GenerateTokenComponent />
       </SmPanel>
 
-      <SmPanel width="100%" maxWidth='1000px' mt="2em">
+      <SmPanel width="100%" maxWidth='900px' mt="2em">
         <PreviousTokens />
       </SmPanel>
     </Dashboard>
@@ -63,20 +64,21 @@ export default function GetAccessToken({ }) {
 
 export type TokenGenStages = 'init' | 'waiting' | 'generated' | 'error';
 
-type GTCprops = { codeExample?: boolean, boxProps?: BoxProps, raiseTokenStage?: (stage: TokenGenStages) => void, tokensFullDescr?: string | ReactJSXElement }
+type GTCprops = {
+  codeExample?: boolean,
+  boxProps?: BoxProps,
+  raiseTokenStage?: (stage: TokenGenStages) => void,
+  tokensFullDescr?: string | ReactJSXElement
+}
 
 export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
   = observer(({ codeExample = true, boxProps = null, raiseTokenStage = null, tokensFullDescr = null }) => {
 
     const breakVal = useBreakpointValue({
-      base: 0,
-      xs: 1,
-      sm: 2,
-      md: 3,
-      lg: 4,
-      xl: 5,
-      '2xl': 6
+      base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
     });
+
+
 
     const { accountStore, tokenStore } = useContext(accountContext);
 
@@ -96,7 +98,13 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
       setGenTokenStageOnState(stage);
     }, [genTokenStage]);
 
-
+    useEffect(() => {
+      if (accountStore.keyJustRemoved == true) {
+        setGenTokenStage('init');
+        accountStore.keyJustRemoved = false;
+        if (nameInputRef.current) nameInputRef.current.value = '';
+      }
+    }, [accountStore.keyJustRemoved])
 
     const requestToken = useCallback(() => {
       if (nameInputRef?.current?.value == '') {
@@ -110,6 +118,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             setGeneratedToken(resp.key_value);
             setGenTokenStage('generated');
             accountStore.fetchServerState(idToken);
+            if (nameInputRef.current) nameInputRef.current.value = '';
           })
           .catch((error) => {
             setGenTokenStage('error');
@@ -186,13 +195,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
               />
               <CopyButton copyContent={generatedToken} position="absolute" top="8px" />
             </Box>
-            <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
-              <ExclamationIcon />
-              <Text color="smRed.500" fontFamily="RMNeue-Regular" fontSize="0.95em" data-qa="message-token-security">
-                For security reasons, this key will not be displayed again. Please copy it now and
-                keep it securely.
-              </Text>
-            </HStack>
+            <AttentionBar data_qa="message-token-security" description={'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'} />
 
             {codeExample && <>
               <Text color='smBlack.300'>
@@ -239,10 +242,12 @@ const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('aboutToRemoveOne', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) =>
-      accountStore.fetchServerState(idToken)
-    );
+    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
+      accountStore.fetchServerState(idToken);
+      positiveToast('API Key removed');
+    });
     onClose();
+    accountStore.keyJustRemoved = true;
   };
 
   return (

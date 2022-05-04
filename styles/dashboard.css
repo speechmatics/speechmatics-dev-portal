@@ -143,6 +143,12 @@ h1 {
   font-family: 'RMNeue-Light';
 }
 
+@media screen and (max-width: 480px) {
+  .sm_grid div {
+    padding: 0.8em 0.5em 0.8em 0.5em;
+  }
+}
+
 .grid_row_divider {
   grid-column: span 4;
   padding: 0px 1em 0px 1em !important;
