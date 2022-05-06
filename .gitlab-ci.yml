@@ -1,6 +1,6 @@
 variables:
   API_TOKEN: $TEST_DEPLOYMENT_TOKEN
-  APP_PATH: '$CI_PROJECT_DIR/src'
+  APP_PATH: $CI_PROJECT_DIR
 
 deploy:
   stage: deploy
