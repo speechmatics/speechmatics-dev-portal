@@ -18,9 +18,10 @@ variables:
   CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
   TEST_ENV: "my env test is here"
 
-deploy:
-  stage: deploy
-  script:
+env-set:
+  extends: deploy
+  before_script:
+    - echo "starting script process"
     - |
         export REDIRECT_URI=${REDIRECT_URI}
         export POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI}
@@ -36,6 +37,11 @@ deploy:
         export CHARGIFY_PUBLIC_KEY=${CHARGIFY_PUBLIC_KEY}
         export CHARGIFY_SERVER_HOST=${CHARGIFY_SERVER_HOST}
         export TEST_ENV=${TEST_ENV}
+
+deploy:
+  stage: deploy
+  script:
+    - echo "all done"
   image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
   only:
     - ci-test
