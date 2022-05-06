@@ -14,6 +14,8 @@ export default function Login() {
 
   let authority = process.env.SIGNIN_POLICY;
 
+  console.log(process.env.TEST_ENV)
+
   tokenStore.authorityToUse = authority;
 
   const loginRequest = {
