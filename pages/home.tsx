@@ -51,31 +51,6 @@ export default function Home({ }) {
   );
 }
 
-const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl }) => {
-  return (
-    <VStack width="100%" height="288px" bg={bgColor} borderRadius="2px" p="1.5em" spacing="1em">
-      <Box borderRadius={'100%'} width="88px" height="88px" bg="smWhite.150" p={iconPadding}>
-        {icon}
-      </Box>
-      <Text
-        fontFamily="RMNeue-Bold"
-        fontSize="1.5em"
-        lineHeight="1.2em"
-        textAlign="center"
-        color="smWhite.500"
-        paddingX="1.8em"
-      >
-        {text}
-      </Text>
-      <Link href={hrefUrl}>
-        <Button variant="speechmaticsWhite" color={bgColor}>
-          {buttonLabel}
-        </Button>
-      </Link>
-    </VStack>
-  );
-};
-
 const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
   return (
     <VStack
