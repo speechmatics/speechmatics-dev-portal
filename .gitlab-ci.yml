@@ -41,6 +41,12 @@ env-load:
   only:
     - ci-test
 
+test:
+  stage: test
+  script: cat .env
+  only:
+    - ci-test
+
 deploy:
   stage: deploy
   image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
