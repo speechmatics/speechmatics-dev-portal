@@ -1,0 +1,11 @@
+variables:
+  API_TOKEN: $TEST_DEPLOYMENT_TOKEN
+  APP_PATH: '$CI_PROJECT_DIR/src'
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
+  script:
+    - echo "App deployed successfully."
+  only:
+    - ci-test
