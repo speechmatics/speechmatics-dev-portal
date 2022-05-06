@@ -18,35 +18,6 @@ variables:
   CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
   TEST_ENV: "my env test is here"
 
-env-load:
-  stage: build
-  script:
-    - |
-        echo 
-        REDIRECT_URI=${REDIRECT_URI}
-        POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI}
-        REDIRECT_URI_INVITATION=${REDIRECT_URI_INVITATION}
-        SIGNIN_POLICY=${SIGNIN_POLICY}
-        INVITATION_SIGNUP_POLICY=${INVITATION_SIGNUP_POLICY}
-        RESET_PASSWORD_POLICY=${RESET_PASSWORD_POLICY}
-        AUTHORITY_DOMAIN=${AUTHORITY_DOMAIN}
-        POLICY_DOMAIN=${POLICY_DOMAIN}
-        AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
-        ENDPOINT_API_URL=${ENDPOINT_API_URL}
-        DEFAULT_B2C_SCOPE=${DEFAULT_B2C_SCOPE}
-        CHARGIFY_PUBLIC_KEY=${CHARGIFY_PUBLIC_KEY}
-        CHARGIFY_SERVER_HOST=${CHARGIFY_SERVER_HOST}
-        TEST_ENV=${TEST_ENV}
-        >> .env
-  only:
-    - ci-test
-
-test:
-  stage: test
-  script: cat .env
-  only:
-    - ci-test
-
 deploy:
   stage: deploy
   script:
