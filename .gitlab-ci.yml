@@ -1,22 +1,5 @@
 deploy:
   stage: deploy
-  before_script:
-    - echo "starting script process"
-    - |
-        export REDIRECT_URI=${REDIRECT_URI}
-        export POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI}
-        export REDIRECT_URI_INVITATION=${REDIRECT_URI_INVITATION}
-        export SIGNIN_POLICY=${SIGNIN_POLICY}
-        export INVITATION_SIGNUP_POLICY=${INVITATION_SIGNUP_POLICY}
-        export RESET_PASSWORD_POLICY=${RESET_PASSWORD_POLICY}
-        export AUTHORITY_DOMAIN=${AUTHORITY_DOMAIN}
-        export POLICY_DOMAIN=${POLICY_DOMAIN}
-        export AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
-        export ENDPOINT_API_URL=${ENDPOINT_API_URL}
-        export DEFAULT_B2C_SCOPE=${DEFAULT_B2C_SCOPE}
-        export CHARGIFY_PUBLIC_KEY=${CHARGIFY_PUBLIC_KEY}
-        export CHARGIFY_SERVER_HOST=${CHARGIFY_SERVER_HOST}
-        export TEST_ENV=${TEST_ENV}
   script:
     - echo "all done"
   image: registry.gitlab.com/static-web-apps/azure-static-web-apps-deploy
@@ -28,14 +11,15 @@ deploy:
     REDIRECT_URI: 'https://thankful-dune-0fbe9e810.1.azurestaticapps.net/login/'
     POST_LOGOUT_REDIRECT_URI: 'https://thankful-dune-0fbe9e810.1.azurestaticapps.net/login/'
     REDIRECT_URI_INVITATION: 'https://thankful-dune-0fbe9e810.1.azurestaticapps.net/signup/'
-    SIGNIN_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
-    INVITATION_SIGNUP_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNUP_INVITATION'
-    RESET_PASSWORD_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_PASSWORDRESET'
-    AUTHORITY_DOMAIN: 'staging-identity.speechmatics.com'
-    POLICY_DOMAIN: 'staging-identity.speechmatics.com'
+    SIGNIN_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNIN_ONLY'
+    INVITATION_SIGNUP_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_SIGNUP_INVITATION'
+    RESET_PASSWORD_POLICY: 'https://speechmaticsb2c.b2clogin.com/speechmaticsb2c.onmicrosoft.com/B2C_1A_PASSWORDRESET'
+    AUTHORITY_DOMAIN: 'speechmaticsb2c.b2clogin.com'
+    POLICY_DOMAIN: 'speechmaticsb2c.onmicrosoft.com'
     AUTH_CLIENT_ID: '75a2952e-954e-4975-8a14-ef862a8e5a39'
-    ENDPOINT_API_URL: 'https://staging-mp.speechmatics.com/v1'
-    DEFAULT_B2C_SCOPE: 'https://staging-identity.speechmatics.com/michaltestapi/User.Read'
+    ENDPOINT_API_URL: 'https://speechmatics-mp-dev-ingress-a.westeurope.cloudapp.azure.com/v1'
+    TEST_API_CALL_ENDPOINT: 'https://self-service-chargify-poc.azurewebsites.net/hello'
+    DEFAULT_B2C_SCOPE: 'https://speechmaticsb2c.onmicrosoft.com/michaltestapi/User.Read'
     CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'
     CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
     TEST_ENV: "my env test is here"
