@@ -16,6 +16,7 @@ variables:
   DEFAULT_B2C_SCOPE: 'https://staging-identity.speechmatics.com/michaltestapi/User.Read'
   CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'
   CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
+  TEST_ENV: "my env test is here ========="
 
 deploy:
   stage: deploy
