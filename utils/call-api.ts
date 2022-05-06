@@ -13,12 +13,13 @@ export const callGetAccounts = async (idToken: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
-export const callGetUsage = async (idToken: string, contractId: number, projectId: number) => {
+export const callGetUsage = async (idToken: string, contractId: number, projectId: number, dates: any) => {
   return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {
     contract_id: contractId,
     project_id: projectId,
     grouping: 'day',
     sort_order: 'asc',
+    ...dates
   });
 };
 
@@ -105,7 +106,6 @@ export const call = async (
     })
     .catch((error) => {
       errToast(`details: ${error}`);
-      console.log(error);
     });
 };
 

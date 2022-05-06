@@ -39,27 +39,54 @@ import {
 import { formatDate } from '../utils/date-utils';
 
 export default observer(function Usage() {
-  const [usageJson, setUsageJson] = useState<UsageRespJson>({});
+  const [usageDetailsJson, setUsageDetailsJson] = useState<UsageRespJson>({});
+  const [usageSummaryJson, setUsageSummaryJson] = useState<UsageRespJson>({});
   const { accountStore, tokenStore } = useContext(accountContext);
+  const [usageError, setUsageError] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const idToken = tokenStore.tokenPayload?.idToken;
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
+  const getMonthSpan: any = () => {
+    const date: Date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    return {
+      since: `${year}-${month > 9 ? month : '0' + month}-01`
+    }
+  }
 
   useEffect(() => {
     let isActive = true;
     if (idToken && accountStore.account) {
+      setUsageError(false);
       setIsLoading(true);
-      callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId())
+      const month_span: any = getMonthSpan()
+      callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId(), {})
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
-            setUsageJson({
+            setUsageDetailsJson({
               aggregate: respJson.aggregate,
               breakdown: respJson.breakdown.reverse(),
             });
-            setIsLoading(false);
           }
+          callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId(), month_span)
+            .then((respJson) => {
+              if (isActive && !!respJson && 'aggregate' in respJson) {
+                setUsageSummaryJson({
+                  aggregate: respJson.aggregate,
+                  breakdown: respJson.breakdown.reverse(),
+                });
+                setIsLoading(false);
+              }
+            })
+            .catch((err) => {
+              console.log('hello')
+              setUsageError(true);
+              setIsLoading(false);
+            })
         })
         .catch((err) => {
+          setUsageError(true);
           setIsLoading(false);
         });
     }
@@ -68,7 +95,9 @@ export default observer(function Usage() {
     };
   }, [idToken, accountStore.account]);
 
-  const { aggregate, breakdown } = usageJson;
+  const { breakdown } = usageDetailsJson;
+
+  const { aggregate } = usageSummaryJson;
 
   const currentUsage = useMemo(() => prepCurrentUsage(aggregate), [aggregate]);
 
@@ -123,8 +152,16 @@ export default observer(function Usage() {
           <TabPanel>
             <HeaderLabel>
               {currentUsage?.since?.startsWith('1970-01-01')
-                ? <>Usage until {formatDate(new Date(currentUsage?.until))}</>
-                : <>Usage for the period: {formatDate(new Date(aggregate?.since)) || ''} &#8211; {formatDate(new Date(aggregate?.until)) || ''}</>}
+                ? <>Usage Summary</>
+                : (
+                  currentUsage?.since
+                  ? <>Usage for {
+                      new Date(currentUsage?.since).toLocaleString('default', { month: 'long' })
+                    } {
+                      new Date(currentUsage?.since).toLocaleString('default', { year: "numeric" })
+                      }</>
+                  : <>Usage Summary</>
+                )}
             </HeaderLabel>
 
             <Grid
@@ -137,28 +174,56 @@ export default observer(function Usage() {
               <GridItem className="grid_header">Limit (Hours per Month)</GridItem>
               <GridItem className="grid_header">Hours Used</GridItem>
               <GridItem className="grid_header">Requests Made</GridItem>
+              
+              {isLoading && (
+                <GridItem colSpan={4}>
+                  <Flex width="100%" justifyContent="center">
+                    <GridSpinner />
+                    <Text ml="1em">One moment please...</Text>
+                  </Flex>
+                </GridItem>
+              )}
+              {!isLoading && !currentUsage && !usageError && (
+                <GridItem colSpan={4}>
+                  <Flex width="100%" justifyContent="center">
+                    <ExclamationIcon />
+                    <Text ml="1em">You don't currently have any usage data.</Text>
+                  </Flex>
+                </GridItem>
+              )} 
+              {!isLoading && !currentUsage && usageError && (
+                <GridItem colSpan={4}>
+                  <Flex width="100%" justifyContent="center">
+                    <ExclamationIcon />
+                    <Text ml="1em">We couldn't get your usage data.</Text>
+                  </Flex>
+                </GridItem>
+              )} 
+              {!isLoading && currentUsage && (
+                <>
+                  <GridItem>Enhanced</GridItem>
+                  <GridItem>
+                    {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
+                  </GridItem>
+                  <GridItem data-qa="usage-enhanced">
+                    {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
+                  </GridItem>
+                  <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
 
-              <GridItem>Enhanced</GridItem>
-              <GridItem>
-                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
-              </GridItem>
-              <GridItem data-qa="usage-enhanced">
-                {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
-              </GridItem>
-              <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
+                  <GridItem className="grid_row_divider">
+                    <hr />
+                  </GridItem>
 
-              <GridItem className="grid_row_divider">
-                <hr />
-              </GridItem>
-
-              <GridItem>Standard</GridItem>
-              <GridItem>
-                {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
-              </GridItem>
-              <GridItem data-qa="usage-standard">
-                {Number(currentUsage?.usageStandard).toFixed(2)} hours
-              </GridItem>
-              <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+                  <GridItem>Standard</GridItem>
+                  <GridItem>
+                    {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
+                  </GridItem>
+                  <GridItem data-qa="usage-standard">
+                    {Number(currentUsage?.usageStandard).toFixed(2)} hours
+                  </GridItem>
+                  <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+                </>
+              )}
 
             </Grid>
             <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
@@ -219,22 +284,24 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
 );
 
 const prepCurrentUsage = (aggregate: UsageUnit) => {
-  return {
-    since: aggregate?.since,
-    until: aggregate?.until,
-    usageStandard:
-      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
-        ?.duration_hrs || 0,
-    usageEnhanced:
-      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
-        ?.duration_hrs || 0,
-    countStandard:
-      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
-        ?.count || 0,
-    countEnhanced:
-      aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
-        ?.count || 0,
-  };
+  if ( aggregate ) {
+    return {
+      since: aggregate?.since,
+      until: aggregate?.until,
+      usageStandard:
+        aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
+          ?.duration_hrs || 0,
+      usageEnhanced:
+        aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
+          ?.duration_hrs || 0,
+      countStandard:
+        aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'standard')
+          ?.count || 0,
+      countEnhanced:
+        aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
+          ?.count || 0,
+    };
+  } else return null
 };
 
 type UsageRespJson = { aggregate?: UsageUnit; breakdown?: UsageUnit[] };
