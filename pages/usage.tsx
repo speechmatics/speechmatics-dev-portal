@@ -84,10 +84,6 @@ export default observer(function Usage() {
               setUsageError(true);
               setIsLoading(false);
             })
-          .catch((err) => {
-            setUsageError(true);
-            setIsLoading(false);
-          });
         })
         .catch((err) => {
           setUsageError(true);
