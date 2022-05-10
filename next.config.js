@@ -2,7 +2,7 @@
 // const withPlugins = require("next-compose-plugins");
 
 module.exports = {
-  trailingSlash: true,
+  // trailingSlash: true,
   env: {
     TEST_IF_WORKS_ENV_VAR: process.env.TEST_IF_WORKS_ENV_VAR,
     REDIRECT_URI: process.env.REDIRECT_URI,
