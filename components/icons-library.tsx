@@ -2,6 +2,23 @@ import React from 'react';
 import { SVGProps } from "react"
 
 
+export const QuestionmarkInCircle = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    width={20}
+    height={20}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <rect width={20} height={20} rx={10} fill="#E7E7E7" />
+    <path
+      d="M10.888 11.828v-1.5c1.152-.132 2.136-1.02 2.136-2.46 0-1.5-1.116-2.4-2.628-2.4-1.488 0-2.628 1.02-2.676 2.652h1.128c.048-.996.648-1.668 1.536-1.668.9 0 1.5.54 1.5 1.452 0 .972-.732 1.596-1.8 1.596h-.288v2.328h1.092ZM10.924 14v-1.38H9.712V14h1.212Z"
+      fill="#5E6673"
+    />
+  </svg>
+)
+
+
 export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={25}
