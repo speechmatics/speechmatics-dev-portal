@@ -25,11 +25,14 @@ const accuracyModels = [
 export default observer(function Transcribe({ }) {
   return (
     <Dashboard>
-      <PageHeader headerLabel="Transcribe" introduction="Use our online tool to transcribe your audio." />
+      <PageHeader
+        headerLabel="Transcribe"
+        introduction="Upload and Transcribe an Audio File." />
+
       <SmPanel width='100%' maxWidth='900px'>
         <Box width='100%'>
           <HeaderLabel>Upload a File</HeaderLabel>
-          <DescriptionLabel>Upload and Transcribe an Audio File.</DescriptionLabel>
+          <DescriptionLabel>The audio file can be wav, mp3 or any compatible format.</DescriptionLabel>
           <Box alignSelf='stretch' pt={5} pb={3}>
             <FileUploadComponent />
 
@@ -134,7 +137,10 @@ const FileUploadComponent = ({ }) => {
   const dropAreaRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    onGridDragDropSetup(dropAreaRef.current, selectFiles, setFilesDragged);
+    const callbacksRefs = onGridDragDropSetup(dropAreaRef.current, selectFiles, setFilesDragged);
+    return () => {
+      removeListenersOnDropZone(dropAreaRef.current, callbacksRefs);
+    }
   }, [dropAreaRef.current])
 
   const onSelectFiles = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,27 +187,36 @@ const filesMap = (files: FileList | undefined | null): File[] => {
 }
 
 
-const onGridDragDropSetup = (elem: HTMLElement | null,
+function onGridDragDropSetup(elem: HTMLElement | null,
   filesDropped: (files: FileList | undefined) => void,
   filesDraggedOver?: (v: boolean) => void,
-) => {
+) {
   if (!elem) return;
+  let callbackRefs = []
   console.log('setting up drag drop', elem);
-  elem.addEventListener('dragover', (ev: DragEvent) => {
+  elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
     ev.preventDefault();
     filesDraggedOver?.(true);
   });
-  elem.addEventListener('drop', (ev: DragEvent) => {
+  elem.addEventListener('drop', callbackRefs[1] = (ev: DragEvent) => {
     ev.preventDefault();
     ev.stopPropagation();
     filesDropped(ev.dataTransfer?.files);
     filesDraggedOver?.(false);
   });
-  elem.addEventListener('dragleave', (ev: DragEvent) => {
+  elem.addEventListener('dragleave', callbackRefs[2] = (ev: DragEvent) => {
     ev.preventDefault();
     ev.stopPropagation();
     filesDraggedOver?.(false);
   });
 
+  return callbackRefs;
+}
 
+function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
+  const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
+
+  elem.removeEventListener('dragover', dragOverCb);
+  elem.removeEventListener('drop', dropCb);
+  elem.removeEventListener('dragleave', dragLeaveCb);
 }
