@@ -29,7 +29,7 @@ export default observer(function Transcribe({ }) {
       <SmPanel width='100%' maxWidth='900px'>
         <Box width='100%'>
           <HeaderLabel>Upload a File</HeaderLabel>
-          <DescriptionLabel>Upload and Transcribe an Audio File</DescriptionLabel>
+          <DescriptionLabel>Upload and Transcribe an Audio File.</DescriptionLabel>
           <Box alignSelf='stretch' pt={5} pb={3}>
             <FileUploadComponent />
 
