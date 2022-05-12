@@ -19,6 +19,11 @@ const menuData = [
     icon: MenuGettingStartedIcon,
   },
   {
+    path: '/transcribe/',
+    title: 'Transcribe',
+    icon: MenuGettingStartedIcon,
+  },
+  {
     path: '/manage-access/',
     title: 'Manage Access',
     icon: MenuPadlockIcon,
