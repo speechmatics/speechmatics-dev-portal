@@ -162,7 +162,7 @@ const FileUploadComponent = ({ }) => {
       <UploadFileIcon />
       <VStack alignItems='flex-start' spacing={0}>
         <Box color='smBlack.420'>Click here and choose a file or drag the file here.</Box>
-        <Box color='smBlack.250' fontSize='.75em'>Change maximum file size to 1 GB</Box>
+        <Box color='smBlack.250' fontSize='.75em'>Maximum file size 1GB or 2 hours of audio.</Box>
       </VStack>
     </Flex>
     <Box position='absolute' height='100%' width='100%' ref={dropAreaRef} cursor='pointer' onClick={dropClicked} />
