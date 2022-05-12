@@ -29,7 +29,7 @@ export default observer(function Transcribe({ }) {
       <SmPanel width='100%' maxWidth='900px'>
         <Box width='100%'>
           <HeaderLabel>Upload a File</HeaderLabel>
-          <DescriptionLabel>The audio file can be wav, mp3 or any compatible format.</DescriptionLabel>
+          <DescriptionLabel>Upload and Transcribe an Audio File</DescriptionLabel>
           <Box alignSelf='stretch' pt={5} pb={3}>
             <FileUploadComponent />
 
@@ -162,7 +162,7 @@ const FileUploadComponent = ({ }) => {
       <UploadFileIcon />
       <VStack alignItems='flex-start' spacing={0}>
         <Box color='smBlack.420'>Click here and choose a file or drag the file here.</Box>
-        <Box color='smBlack.250' fontSize='.75em'>Maximum file size 50MB</Box>
+        <Box color='smBlack.250' fontSize='.75em'>Change maximum file size to 1 GB</Box>
       </VStack>
     </Flex>
     <Box position='absolute' height='100%' width='100%' ref={dropAreaRef} cursor='pointer' onClick={dropClicked} />
