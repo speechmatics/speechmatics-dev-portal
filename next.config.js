@@ -36,6 +36,7 @@ module.exports = {
       '/manage-access': { page: '/manage-access' },
       '/learn': { page: '/learn' },
       '/account': { page: '/account' },
+      '/transcribe': { page: '/transcribe' },
     };
 
     return paths;
