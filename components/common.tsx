@@ -291,8 +291,6 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
 
-  console.log(`DataGridComponent ${pagesCount} ${data?.length} ${itemsPerPage}`);
-
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
