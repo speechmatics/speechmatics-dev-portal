@@ -390,9 +390,9 @@ export const MenuLearnIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mo
 
 export const MenuBillingIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width={props.width || "1.3em"}
-    height={props.height || "1.3em"}
-    viewBox="0 0 26 19"
+    width="1em"
+    height="1em"
+    viewBox="0 0 33 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
