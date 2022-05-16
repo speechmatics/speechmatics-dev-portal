@@ -138,13 +138,13 @@ h1 {
   background-color: var(--chakra-colors-smNavy-250);
 }
 
-.sm_grid div {
+.sm_grid > div {
   padding: 0.8em 1em 0.8em 1em;
   font-family: 'RMNeue-Light';
 }
 
 @media screen and (max-width: 480px) {
-  .sm_grid div {
+  .sm_grid > div {
     padding: 0.8em 0.5em 0.8em 0.5em;
   }
 }
