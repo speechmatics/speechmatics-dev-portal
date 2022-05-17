@@ -47,3 +47,8 @@
   font-family: 'RMNeue-Regular';
   src: url('/fonts/RMNeue-Regular.otf');
 }
+
+@font-face {
+  font-family: 'RMNeue-SemiBold';
+  src: url('/fonts/RMNeue-SemiBold.ttf');
+}

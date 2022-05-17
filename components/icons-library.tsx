@@ -7,21 +7,20 @@ export const UploadFileIcon = (props: SVGProps<SVGSVGElement>) => (
     width={39}
     height={39}
     viewBox="0 0 39 39"
-
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
       d="M26.488 25.823h3.9s6.987-.912 6.987-7.773a7.755 7.755 0 0 0-8.052-7.756A10.863 10.863 0 0 0 8.652 14.29a5.827 5.827 0 0 0-7.027 5.697c0 5.923 6.217 5.83 6.217 5.83h4.653M19.5 16.885V34.76"
-      stroke="#AAA"
+      stroke={props.color || "#AAA"}
       strokeWidth={1.5}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24.375 21.76 19.5 16.885l-4.875 4.875"
-      stroke="#AAA"
+      stroke={props.color || "#AAA"}
       strokeWidth={1.5}
       strokeLinecap="round"
       strokeLinejoin="round"
