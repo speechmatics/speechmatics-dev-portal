@@ -1,6 +1,7 @@
 import { Box, BoxProps, Button, Divider, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { FileProcessingIcon, OkayIcon } from "../components/icons-library";
@@ -36,15 +37,23 @@ export default observer(function Transcribe({ }) {
         introduction="Upload and Transcribe an Audio File." />
 
       <SmPanel width='100%' maxWidth='900px'>
-        {/* <TranscribeForm /> */}
-        <ProcessingTranscription />
+        {stage == 'form' && <TranscribeForm onAdvance={() => setStage('pendingFile')} />}
+        {['pendingFile', 'pendingTranscription', 'failed'].includes(stage) &&
+          <ProcessingTranscription onTranscribeAnotherFile={() => setStage('form')} />}
       </SmPanel>
     </Dashboard>
   );
 })
 
+type TranscribeFormProps = {
+  onAdvance: () => void;
+}
 
-const TranscribeForm = observer(function ({ }) {
+const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
+
+  const onGetTranscriptionClick = useCallback(() => {
+    onAdvance();
+  }, [])
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
@@ -62,12 +71,16 @@ const TranscribeForm = observer(function ({ }) {
       <SelectField label="Accuracy" tooltip="Accuracy model" data={accuracyModels} onSelect={() => { }} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%'>Get Your Transcription</Button>
+      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
     </Flex>
   </>
 })
 
-const ProcessingTranscription = observer(function () {
+type ProcessingTranscriptionProps = {
+  onTranscribeAnotherFile: () => void;
+}
+
+const ProcessingTranscription = function ({ onTranscribeAnotherFile }: ProcessingTranscriptionProps) {
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
     <FileProcessingIcon width={64} height={64} />
@@ -75,15 +88,16 @@ const ProcessingTranscription = observer(function () {
     <Box pt={2}>Status of your job (ID: 2137ABBC) is: <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'>Running</Text>.</Box>
     <Box>This page will automatically fetch and show you the results.</Box>
 
-    <FileProcessingProgress stage='pendingFile' py={4} />
-    <Divider py={4} color='smBlack.200' />
-
+    <FileProcessingProgress stage='pendingFile' my={4} />
+    <Divider my={8} color='smBlack.200' />
+    <Box width='100%' textAlign='center' color='smNavy.500' mb={4}>Go to the <Text as='span' className="text_link"><Link href='/usage#recent-jobs'>Recent Jobs</Link></Text> page to view all your recent transcriptions.</Box>
+    <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
   </Flex>
-})
+}
 
 type FileProcessingProgressProps = { stage: Stage } & BoxProps;
 
-const FileProcessingProgress = observer(function ({ stage, ...boxProps }: FileProcessingProgressProps) {
+const FileProcessingProgress = function ({ stage, ...boxProps }: FileProcessingProgressProps) {
 
   return <Box {...boxProps} width='100%' pos='relative' height='4em'>
     <Box rounded='full' width='100%' height={2} bgColor='smBlue.140' pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
@@ -95,7 +109,7 @@ const FileProcessingProgress = observer(function ({ stage, ...boxProps }: FilePr
     <ProgressPoint status='running' label='Running Transcription' posX="50%" step='2' />
     <ProgressPoint status='pending' label='Transcription Complete' posX="85%" step='3' />
   </Box>
-})
+}
 
 type ProgressPointProps = {
   status: 'done' | 'running' | 'pending' | 'failed';
