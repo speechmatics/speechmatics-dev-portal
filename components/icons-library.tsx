@@ -1,6 +1,54 @@
 import React from 'react';
 import { SVGProps } from "react"
 
+export function OkayIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 13 11"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.4 1.5l-6.067 8L1 6.132"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export const FileProcessingIcon = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M1.333 46.685v-40M6.667 17.352v18.667M12 14.685v24M17.333 12.019v29.333M22.667 9.352v34.667M54.667 26.685v-20M49.333 17.352v8M44 14.685v10.667M38.667 12.019v14.666M33.333 9.352v20M28 1.352v34.667M46.667 62.667c8.836 0 16-7.164 16-16 0-8.837-7.164-16-16-16-8.837 0-16 7.163-16 16 0 8.836 7.163 16 16 16z"
+        stroke="#2B8279"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M53.797 42.016l-7.746 10.328a2.004 2.004 0 01-3.014.216l-4-4"
+        stroke="#2B8279"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export const UploadFileIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg

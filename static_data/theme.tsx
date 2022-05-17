@@ -51,6 +51,7 @@ const theme = extendTheme({
     },
     smBlue: {
       100: '#F5F9FF',
+      140: '#E7EFFF',
       150: '#E8F0F8',
       200: '#EAF3FF',
       300: '#BFD8FE',
@@ -62,6 +63,7 @@ const theme = extendTheme({
       200: '#F8FAFD',
       250: '#F4F6F9',
       270: '#DFE0E3',
+      280: '#AAAFB6',
       300: '#AEB2B8',
       400: '#5E6673',
       500: '#263243',

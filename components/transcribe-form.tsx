@@ -160,8 +160,8 @@ export function onGridDragDropSetup(elem: HTMLElement | null,
 }
 
 export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
+  if (!elem) return;
   const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
-
   elem.removeEventListener('dragover', dragOverCb);
   elem.removeEventListener('drop', dropCb);
   elem.removeEventListener('dragleave', dragLeaveCb);
