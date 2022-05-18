@@ -2,6 +2,34 @@ import React from 'react';
 import { SVGProps } from "react"
 
 
+export function ViewEyeIcon(props) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 22 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M14.042 8.816a3.156 3.156 0 11-6.312 0 3.156 3.156 0 016.312 0v0z"
+        stroke={props.color || "#5E6673"}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M.828 8.818c1.34-4.268 5.328-7.363 10.038-7.363s8.697 3.095 10.038 7.363c-1.34 4.268-5.328 7.364-10.038 7.364S2.168 13.086.828 8.818v0z"
+        stroke={props.color || "#5E6673"}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function CompleteIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
