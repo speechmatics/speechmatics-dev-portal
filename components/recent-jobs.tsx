@@ -9,7 +9,7 @@ export const RecentJobs = observer(({ }) => {
 
   return <>
     <DescriptionLabel>Check the status of your transcriptions from 01 February 2022 to 08 February 2022.</DescriptionLabel>
-    <VStack>
+    <VStack spacing={6}>
       {testJobs.map(el => (
         <RecentJobElement {...el} />
       ))}
@@ -33,7 +33,9 @@ const RecentJobElement = observer(({ status, fileName, date, accuracy, duration,
     <VStack alignItems='flex-start' p={4} flex={2}>
       <Box fontFamily='RMNeue-bold' color='smNavy.400'>{fileName}</Box>
       <HStack fontSize='0.8em' color='smNavy.350' width='100%' spacing={4} justifyContent='space-between'>
-        <Box flexBasis='30%' whiteSpace='nowrap'>{date.getUTCDate()} {date.toLocaleString('default', { month: 'short' })} {date.getFullYear()} {date.getUTCHours()}:{date.getUTCMinutes()}</Box>
+        <Box flexBasis='30%' whiteSpace='nowrap'>
+          {date.getUTCDate()} {date.toLocaleString('default', { month: 'short' })} {date.getFullYear()} {date.getUTCHours()}:{date.getUTCMinutes()}
+        </Box>
         <Box flex={2}>{accuracy}</Box>
         <Box flex={1}>{duration}s</Box>
         <Box flex={2}>{language}</Box>
