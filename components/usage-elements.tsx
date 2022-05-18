@@ -16,7 +16,7 @@ import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './common';
-import { ExclamationIcon } from '../components/icons-library';
+import { ExclamationIcon } from './icons-library';
 import { formatDate } from '../utils/date-utils';
 
 export const UsageSummary = observer(function Usage() {

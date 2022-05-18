@@ -24,12 +24,13 @@ import {
   UsageBreakdown,
   GetInTouchBox,
   UsageSummary
-} from '../components/usage';
+} from '../components/usage-elements';
 import {
   BaloonIcon,
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
+import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
@@ -43,6 +44,7 @@ export default observer(function Usage() {
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
           <Tab data-qa="tab-details">Details</Tab>
+          <Tab data-qa="tab-recent-jobs">Recent Jobs</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -95,6 +97,10 @@ export default observer(function Usage() {
 
             <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
 
+          </TabPanel>
+          <TabPanel>
+            <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
+            <RecentJobs />
           </TabPanel>
         </TabPanels>
       </Tabs>

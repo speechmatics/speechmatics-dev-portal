@@ -43,7 +43,7 @@ export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <path
         d="M23 18.218v1.913A2.87 2.87 0 0120.131 23H3.869A2.87 2.87 0 011 20.131v-1.913M12 18.108V1M19 11.108l-7 7-7-7"
-        stroke="#fff"
+        stroke={props.color || "#fff"}
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
