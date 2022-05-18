@@ -22,6 +22,28 @@ export function OkayIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function FileProcessingFailedIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M1.333 46.685v-40 40zm5.334-29.333v18.667-18.667zM12 14.685v24-24zm5.333-2.666v29.333-29.333zm5.334-2.667v34.667V9.352zm32 17.333v-20 20zm-5.334-9.333v8-8zM44 14.685v10.667-10.667zm-5.333-2.666v14.666-14.666zm-5.334-2.667v20-20zm-5.333-8v34.667V1.352zm18.667 61.315c8.836 0 16-7.164 16-16 0-8.837-7.164-16-16-16-8.837 0-16 7.163-16 16 0 8.836 7.163 16 16 16zM41 41l12 12M53 41L41 53"
+        stroke="#D82C2C"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+
 export const FileProcessingIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg

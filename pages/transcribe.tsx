@@ -24,7 +24,7 @@ const accuracyModels = [
 
 ]
 
-type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'complete' | 'failed';
+type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
 
 export default observer(function Transcribe({ }) {
 
@@ -39,7 +39,7 @@ export default observer(function Transcribe({ }) {
       <SmPanel width='100%' maxWidth='900px'>
         {stage == 'form' && <TranscribeForm onAdvance={() => setStage('pendingFile')} />}
         {['pendingFile', 'pendingTranscription', 'failed'].includes(stage) &&
-          <ProcessingTranscription onTranscribeAnotherFile={() => setStage('form')} />}
+          <ProcessingTranscription stage={stage} onTranscribeAnotherFile={() => setStage('form')} />}
       </SmPanel>
     </Dashboard>
   );
@@ -77,18 +77,40 @@ const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
 })
 
 type ProcessingTranscriptionProps = {
+  stage: Stage;
   onTranscribeAnotherFile: () => void;
 }
 
-const ProcessingTranscription = function ({ onTranscribeAnotherFile }: ProcessingTranscriptionProps) {
+const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: ProcessingTranscriptionProps) {
+
+  const fileSize = '1MB'; // get from files[]
+  const jobId = 'AABBCCDD'; // get from store after uploading a file
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
     <FileProcessingIcon width={64} height={64} />
-    <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2}>Your Transcription Has Been Submitted</Box>
-    <Box pt={2}>Status of your job (ID: 2137ABBC) is: <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'>Running</Text>.</Box>
-    <Box>This page will automatically fetch and show you the results.</Box>
 
-    <FileProcessingProgress stage='pendingFile' my={4} />
+    <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2} textAlign='center'>
+      {stage == 'pendingFile' && 'Your Transcription File Is Being Sent.'}
+      {stage == 'pendingTranscription' && 'Your Transcription Has Been Submitted.'}
+      {stage == 'failed' && 'Your Transcription Has Failed.'}
+    </Box>
+
+    {stage == 'pendingFile' && <>
+      <Box pt={2}>You file size is:
+        <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
+      </Box>
+      <Box>This page will automatically fetch and show you the results.</Box>
+    </>}
+
+    {stage == 'pendingTranscription' && <>
+      <Box pt={2}>Status of your job (ID: {jobId}) is:
+        <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> Running</Text>.
+      </Box>
+      <Box>This page will automatically fetch and show you the results.</Box>
+    </>}
+
+
+    <FileProcessingProgress stage={stage} my={4} />
     <Divider my={8} color='smBlack.200' />
     <Box width='100%' textAlign='center' color='smNavy.500' mb={4}>Go to the <Text as='span' className="text_link"><Link href='/usage#recent-jobs'>Recent Jobs</Link></Text> page to view all your recent transcriptions.</Box>
     <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
@@ -100,8 +122,10 @@ type FileProcessingProgressProps = { stage: Stage } & BoxProps;
 const FileProcessingProgress = function ({ stage, ...boxProps }: FileProcessingProgressProps) {
 
   return <Box {...boxProps} width='100%' pos='relative' height='4em'>
-    <Box rounded='full' width='100%' height={2} bgColor='smBlue.140' pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
-    <Box rounded='full' width='50%' height={2} bgGradient='linear(to-r, smBlue.500 25%, smGreen.500)' pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
+    <Box rounded='full' width='100%' height={2} bgColor='smBlue.140' pos='absolute'
+      top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
+    <Box rounded='full' width='50%' height={2} bgGradient='linear(to-r, smBlue.500 25%, smGreen.500)'
+      pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
     <Box rounded='full' width='50%' height={2} pos='absolute' top='50%' zIndex={0}
       style={{ transform: 'translate(0, -50%)' }} className='striped_background animate_background' />
 
@@ -118,7 +142,7 @@ type ProgressPointProps = {
   posX: string;
 }
 
-const colors = {
+const statusColors = {
   done: { label: 'smBlue.500', pointBg: 'smBlue.500', step: 'smWhite.500' },
   running: { label: 'smGreen.500', pointBg: 'smGreen.500', step: 'smWhite.500' },
   pending: { label: 'smNavy.280', pointBg: 'smBlue.140', step: '#5E667366' },
@@ -127,11 +151,15 @@ const colors = {
 
 const ProgressPoint = function ({ status, label, step, posX }: ProgressPointProps) {
 
-  return <VStack top='50%' left={posX} style={{ transform: 'translate(-50%, -30%)' }} pos='absolute' spacing={1}>
-    <Flex rounded='full' w={8} h={8} bgColor={colors[status].pointBg} border='3px solid white'
+  return <VStack top='50%' left={posX} style={{ transform: 'translate(-50%, -1em)' }}
+    pos='absolute' spacing={1}>
+    <Flex rounded='full' w={8} h={8} bgColor={statusColors[status].pointBg}
+      border='3px solid white'
       justifyContent='center' alignItems='center' zIndex={2}
-      fontFamily='RMNeue-SemiBold' color={colors[status].step} fontSize='.75em' >{status == 'done' ? <OkayIcon /> : step}</Flex>
-    <Box fontSize='12' color={colors[status].label}>{label}</Box>
+      fontFamily='RMNeue-SemiBold' color={statusColors[status].step} fontSize='.75em' >
+      {status == 'done' ? <OkayIcon /> : step}
+    </Flex>
+    <Box fontSize='12' color={statusColors[status].label} textAlign='center'>{label}</Box>
   </VStack>
 }
 

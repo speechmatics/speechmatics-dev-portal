@@ -29,12 +29,13 @@ export const FileUploadComponent = ({ }) => {
     fileInputRef.current.click();
   }
 
-  return <Flex alignSelf='stretch' height='100px'
+  return <Flex alignSelf='stretch'
     bgColor={filesDragged ? 'smBlue.200' : 'smBlue.100'}
-    p='4em'
     _hover={{ bgColor: 'smBlue.150' }}
     border='2px dashed' borderColor='#386DFB66'
-    justifyContent='center' alignItems='center' position='relative'>
+    justifyContent='center' alignItems='center' position='relative'
+    py={6} px={8}
+  >
     <input type='file' ref={fileInputRef}
       style={{ display: 'none' }} onChange={onSelectFiles}
       // multiple 
@@ -43,8 +44,8 @@ export const FileUploadComponent = ({ }) => {
       <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em'
       />
       <VStack alignItems='flex-start' spacing={0}>
-        <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em'>Click here and choose a file or drag the file here.</Box>
-        <Box color='smBlack.250' fontSize='.85em'>Maximum file size 1GB or 2 hours of audio.</Box>
+        <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+        <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
       </VStack>
     </Flex>
     <Box position='absolute' height='100%' width='100%' ref={dropAreaRef} cursor='pointer' onClick={dropClicked} />
