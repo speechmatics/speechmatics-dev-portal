@@ -29,19 +29,22 @@ type RecentJobElementProps = {
 
 const RecentJobElement = observer(({ status, fileName, date, accuracy, duration, language, id }: RecentJobElementProps) => {
   return <HStack border='1px solid' borderColor='smBlack.200'
-    borderLeft='3px solid' borderLeftColor='smOrange.400' width='100%'>
+    borderLeft='3px solid' borderLeftColor={status == 'running' ? 'smOrange.400' : 'smGreen.500'} width='100%'>
     <VStack alignItems='flex-start' p={4} flex={2}>
       <Box fontFamily='RMNeue-bold' color='smNavy.400'>{fileName}</Box>
       <HStack fontSize='0.8em' color='smNavy.350' width='100%' spacing={4} justifyContent='space-between'>
-        <Box>{date.getUTCDate()} {date.toLocaleString('default', { month: 'short' })} {date.getFullYear()} {date.getUTCHours()}:{date.getUTCMinutes()}</Box>
-        <Box>{accuracy}</Box>
-        <Box>{duration}s</Box>
-        <Box>{language}</Box>
-        <Box>({id})</Box>
+        <Box flexBasis='30%' whiteSpace='nowrap'>{date.getUTCDate()} {date.toLocaleString('default', { month: 'short' })} {date.getFullYear()} {date.getUTCHours()}:{date.getUTCMinutes()}</Box>
+        <Box flex={2}>{accuracy}</Box>
+        <Box flex={1}>{duration}s</Box>
+        <Box flex={2}>{language}</Box>
+        <Box flex={2}>({id})</Box>
       </HStack>
     </VStack>
     <HStack flex={1} spacing={4} justifyContent='space-evenly'>
-      <HStack flex={3}><Box w={2} h={2} rounded='full' bgColor='smOrange.400' /><Box>{status}</Box></HStack>
+      <HStack flex={3}>
+        <Box w={2} h={2} rounded='full' bgColor={status == 'running' ? 'smOrange.400' : 'smGreen.500'} />
+        <Box color={status == 'running' ? 'smOrange.400' : 'smGreen.500'}>{status}</Box>
+      </HStack>
       <Box flex={1}><DownloadIcon color='var(--chakra-colors-smNavy-350)' /></Box>
       <Box flex={1}><ViewEyeIcon color='var(--chakra-colors-smNavy-350)' /></Box>
     </HStack>
