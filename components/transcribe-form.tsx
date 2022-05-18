@@ -1,6 +1,8 @@
-import { Box, HStack, Tooltip, Select, Flex, Button, VStack } from "@chakra-ui/react";
+import { Box, HStack, Tooltip, Select, Flex, Button, VStack, BoxProps } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
-import { QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
+import { OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
+
+export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
 
 
 export const FileUploadComponent = ({ }) => {
@@ -167,3 +169,94 @@ export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array
   elem.removeEventListener('drop', dropCb);
   elem.removeEventListener('dragleave', dragLeaveCb);
 }
+
+
+
+type ProgressPointProps = {
+  status: 'done' | 'running' | 'pending' | 'failed';
+  label: string;
+  step: string;
+  posX: string;
+}
+
+const statusColors = {
+  done: { label: 'smBlue.500', pointBg: 'smBlue.500', step: 'smWhite.500' },
+  running: { label: 'smGreen.500', pointBg: 'smGreen.500', step: 'smWhite.500' },
+  pending: { label: 'smNavy.280', pointBg: 'smBlue.140', step: '#5E667366' },
+  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' }
+}
+
+export const ProgressPoint = function ({ status, label, step, posX }: ProgressPointProps) {
+
+  return <VStack top='50%' left={posX} style={{ transform: 'translate(-50%, -1em)' }}
+    pos='absolute' spacing={1}>
+    <Flex rounded='full' w={8} h={8} bgColor={statusColors[status].pointBg}
+      border='3px solid white'
+      justifyContent='center' alignItems='center' zIndex={2}
+      fontFamily='RMNeue-SemiBold' color={statusColors[status].step} fontSize='.75em' >
+      {status == 'done' ? <OkayIcon /> : step}
+    </Flex>
+    <Box fontSize='12' color={statusColors[status].label} textAlign='center'>{label}</Box>
+  </VStack>
+}
+
+
+type FileProcessingProgressProps = { stage: Stage } & BoxProps;
+
+const stageToProps = {
+  'pendingFile': {
+    barWidth: '15%',
+    step1: 'running',
+    step2: 'pending',
+    step3: 'pending',
+    gradEndColor: 'smGreen.500',
+    animateStripes: true
+  },
+  'pendingTranscription': {
+    barWidth: '50%',
+    step1: 'done',
+    step2: 'running',
+    step3: 'pending',
+    gradEndColor: 'smGreen.500',
+    animateStripes: true
+  },
+  'failed': {
+    barWidth: '50%',
+    step1: 'done',
+    step2: 'failed',
+    step3: 'pending',
+    gradEndColor: 'smRed.500',
+    animateStripes: false
+  },
+  'complete': {
+    barWidth: '100%',
+    step1: 'done',
+    step2: 'done',
+    step3: 'done',
+    gradEndColor: 'smGreen.500',
+    animateStripes: false
+  }
+}
+
+export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProcessingProgressProps) {
+
+  const stageProps = stageToProps[stage]
+
+  return <Box {...boxProps} width='100%' pos='relative' height='4em'>
+
+    <Box rounded='full' width='100%' height={2} bgColor='smBlue.140' pos='absolute'
+      top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
+
+    <Box rounded='full' width={stageProps.barWidth} transition='all 0.5s' height={2}
+      bgGradient={`linear(to-r, smBlue.500 25%, ${stageProps.gradEndColor})`}
+      pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
+
+    <Box rounded='full' width={stageProps.barWidth} transition='all 0.5s' height={2} pos='absolute' top='50%' zIndex={0}
+      style={{ transform: 'translate(0, -50%)' }} className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`} />
+
+    <ProgressPoint status={stageProps.step1} label='Audio Uploading' posX="15%" step='1' />
+    <ProgressPoint status={stageProps.step2} label='Running Transcription' posX="50%" step='2' />
+    <ProgressPoint status={stageProps.step3} label='Transcription Complete' posX="85%" step='3' />
+  </Box>
+}
+

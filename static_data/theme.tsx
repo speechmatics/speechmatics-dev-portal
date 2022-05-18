@@ -107,7 +107,6 @@ const theme = extendTheme({
           color: 'smWhite.500',
           bg: 'smBlue.500',
           borderRadius: '2px',
-          mt: '1em',
           py: '1.8em',
           px: '2.5em',
           fontSize: '0.9em',
@@ -127,11 +126,35 @@ const theme = extendTheme({
             bg: 'smBlack.300',
           },
         } as CSSObject,
+
+        speechmaticsGreen: {
+          color: 'smWhite.500',
+          bg: 'smGreen.500',
+          borderRadius: '2px',
+          py: '1.8em',
+          px: '2.5em',
+          fontSize: '0.9em',
+          _hover: {
+            bg: 'smGreen.400',
+            _disabled: {
+              bg: 'smBlack.200',
+            },
+          },
+          _focus: {
+            boxShadow: 'none',
+          },
+          _active: {
+            bg: 'smGreen.300',
+          },
+          _disabled: {
+            bg: 'smBlack.300',
+          },
+        } as CSSObject,
+
         speechmaticsWhite: {
           color: 'smNavy.500',
           bg: 'smWhite.500',
           borderRadius: '2px',
-          mt: '1em',
           py: '1.8em',
           px: '2.5em',
           fontSize: '0.9em',
@@ -145,6 +168,7 @@ const theme = extendTheme({
             bg: 'smBlue.300',
           },
         } as CSSObject,
+
         speechmaticsOutline: {
           color: 'smBlue.500',
           bg: 'smWhite.500',

@@ -1,11 +1,12 @@
-import { Box, BoxProps, Button, Divider, Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, BoxProps, Button, Divider, Flex, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, VStack } from "@chakra-ui/react";
+import faker from "@faker-js/faker";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { FileProcessingIcon, OkayIcon } from "../components/icons-library";
-import { FileUploadComponent, ChoiceButtons, SelectField } from "../components/transcribe-form";
+import { CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
+import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress, Stage } from "../components/transcribe-form";
 
 const languagesData = [
   { label: 'English', value: 'en', selected: true },
@@ -24,11 +25,9 @@ const accuracyModels = [
 
 ]
 
-type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
-
 export default observer(function Transcribe({ }) {
 
-  const [stage, setStage] = useState<Stage>('form')
+  const [stage, setStage] = useState<Stage>('complete')
 
   return (
     <Dashboard>
@@ -38,7 +37,7 @@ export default observer(function Transcribe({ }) {
 
       <SmPanel width='100%' maxWidth='900px'>
         {stage == 'form' && <TranscribeForm onAdvance={() => setStage('pendingFile')} />}
-        {['pendingFile', 'pendingTranscription', 'failed'].includes(stage) &&
+        {['pendingFile', 'pendingTranscription', 'failed', 'complete'].includes(stage) &&
           <ProcessingTranscription stage={stage} onTranscribeAnotherFile={() => setStage('form')} />}
       </SmPanel>
     </Dashboard>
@@ -85,81 +84,124 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
 
   const fileSize = '1MB'; // get from files[]
   const jobId = 'AABBCCDD'; // get from store after uploading a file
+  const fileName = 'alpha.mp3';
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
-    <FileProcessingIcon width={64} height={64} />
 
-    <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2} textAlign='center'>
-      {stage == 'pendingFile' && 'Your Transcription File Is Being Sent.'}
-      {stage == 'pendingTranscription' && 'Your Transcription Has Been Submitted.'}
-      {stage == 'failed' && 'Your Transcription Has Failed.'}
-    </Box>
+    {stage == 'pendingFile' &&
+      <PendingLabelsSlots
+        icon={FileProcessingIcon}
+        title={'Your Transcription File Is Being Sent.'}
+        subtitle={<>Your file size is:
+          <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
+        </>}
+        subtitle2={'This page will automatically fetch and show you the results.'}
+      />}
 
-    {stage == 'pendingFile' && <>
-      <Box pt={2}>You file size is:
-        <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
-      </Box>
-      <Box>This page will automatically fetch and show you the results.</Box>
-    </>}
-
-    {stage == 'pendingTranscription' && <>
-      <Box pt={2}>Status of your job (ID: {jobId}) is:
+    {stage == 'pendingTranscription' && <PendingLabelsSlots
+      icon={FileProcessingIcon}
+      title={'Your Transcription File Is Being Sent.'}
+      subtitle={<>Status of your job (ID: {jobId}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> Running</Text>.
-      </Box>
-      <Box>This page will automatically fetch and show you the results.</Box>
-    </>}
+      </>}
+      subtitle2={'This page will automatically fetch and show you the results.'}
+    />}
 
+
+    {stage == 'failed' && <PendingLabelsSlots
+      icon={FileProcessingFailedIcon}
+      title='Your Transcription Has Failed.'
+      subtitle={<>Status of your job (ID: {jobId}) is:
+        <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
+      </>}
+      subtitle2={<>You have reached your monthly usage limit.{' '}
+        Please <Link href='/manage-billing'><a className="text_link">Add a Payment Card</a></Link> to increase your limit.</>}
+    />}
+
+    {stage == 'complete' && <PendingLabelsSlots
+      icon={FileProcessingIcon}
+      title='Your Transcription Is Ready.'
+      subtitle={`Transcription of: "${fileName}"`}
+      subtitle2={<></>}
+    />}
 
     <FileProcessingProgress stage={stage} my={4} />
-    <Divider my={8} color='smBlack.200' />
-    <Box width='100%' textAlign='center' color='smNavy.500' mb={4}>Go to the <Text as='span' className="text_link"><Link href='/usage#recent-jobs'>Recent Jobs</Link></Text> page to view all your recent transcriptions.</Box>
+
+    {stage == 'complete' &&
+      <TranscriptionViewer my={4} date='2 May 2022 4:18pm' jobId="ASDFZXCV"
+        accuracy="Enhanced" language="English" downloadLink="http://asdvcxv.fd"
+        transcriptionText={faker.lorem.sentences(20)} />}
+
+
+    {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
+
+    <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
+      Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
+      {' '}page to view all your recent transcriptions.
+    </Box>
     <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
   </Flex>
 }
 
-type FileProcessingProgressProps = { stage: Stage } & BoxProps;
+const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
+  {icon({ width: 64, height: 64 })}
 
-const FileProcessingProgress = function ({ stage, ...boxProps }: FileProcessingProgressProps) {
-
-  return <Box {...boxProps} width='100%' pos='relative' height='4em'>
-    <Box rounded='full' width='100%' height={2} bgColor='smBlue.140' pos='absolute'
-      top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
-    <Box rounded='full' width='50%' height={2} bgGradient='linear(to-r, smBlue.500 25%, smGreen.500)'
-      pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
-    <Box rounded='full' width='50%' height={2} pos='absolute' top='50%' zIndex={0}
-      style={{ transform: 'translate(0, -50%)' }} className='striped_background animate_background' />
-
-    <ProgressPoint status='done' label='Audio Uploading' posX="15%" step='1' />
-    <ProgressPoint status='running' label='Running Transcription' posX="50%" step='2' />
-    <ProgressPoint status='pending' label='Transcription Complete' posX="85%" step='3' />
+  <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2} textAlign='center'>
+    {title}
   </Box>
-}
 
-type ProgressPointProps = {
-  status: 'done' | 'running' | 'pending' | 'failed';
-  label: string;
-  step: string;
-  posX: string;
-}
+  <Box color='smNavy.400' fontSize='1.2em'>{subtitle}</Box>
+  <Box textAlign='center' color='smBlack.300'>{subtitle2}</Box>
+</>
+)
 
-const statusColors = {
-  done: { label: 'smBlue.500', pointBg: 'smBlue.500', step: 'smWhite.500' },
-  running: { label: 'smGreen.500', pointBg: 'smGreen.500', step: 'smWhite.500' },
-  pending: { label: 'smNavy.280', pointBg: 'smBlue.140', step: '#5E667366' },
-  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' }
-}
 
-const ProgressPoint = function ({ status, label, step, posX }: ProgressPointProps) {
+type TranscriptionViewerProps = {
+  transcriptionText: string;
+  date: string;
+  jobId: string;
+  accuracy: string;
+  language: string;
+  downloadLink: string;
+} & BoxProps
 
-  return <VStack top='50%' left={posX} style={{ transform: 'translate(-50%, -1em)' }}
-    pos='absolute' spacing={1}>
-    <Flex rounded='full' w={8} h={8} bgColor={statusColors[status].pointBg}
-      border='3px solid white'
-      justifyContent='center' alignItems='center' zIndex={2}
-      fontFamily='RMNeue-SemiBold' color={statusColors[status].step} fontSize='.75em' >
-      {status == 'done' ? <OkayIcon /> : step}
-    </Flex>
-    <Box fontSize='12' color={statusColors[status].label} textAlign='center'>{label}</Box>
+const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
+  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
+    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
+      borderBottom='1px'
+      borderColor='smBlack.200'>
+      <Stat title='Submitted:' value={date} />
+      <Stat title='Job ID:' value={jobId} />
+      <Stat title='Accuracy:' value={accuracy} />
+      <Stat title='Language:' value={language} />
+    </HStack>
+    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
+      {transcriptionText}
+    </Box>
+    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
+      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
+      <Menu>
+        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
+          Download Transcription
+        </MenuButton>
+        <MenuList>
+          <MenuItem py={1}>Download as text</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as JSON</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as srt</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download audio</MenuItem>
+        </MenuList>
+      </Menu>
+    </HStack>
   </VStack>
-}
+)
 
+const Stat = ({ title, value, ...boxProps }) => (
+  <Box {...boxProps}>
+    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
+    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
+  </Box>
+)

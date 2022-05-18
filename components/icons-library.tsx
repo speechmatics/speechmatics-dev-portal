@@ -1,6 +1,58 @@
 import React from 'react';
 import { SVGProps } from "react"
 
+
+export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M23 18.218v1.913A2.87 2.87 0 0120.131 23H3.869A2.87 2.87 0 011 20.131v-1.913M12 18.108V1M19 11.108l-7 7-7-7"
+        stroke="#fff"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function CopyIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g clipPath="url(#prefix__clip0_0_486)">
+        <path
+          d="M17.5 20.5v3h-14v-20h3m14 17h-14V.5h8l6 6v14zm-6-20v6h6l-6-6z"
+          stroke="#fff"
+          strokeWidth={1.5}
+          strokeMiterlimit={10}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="prefix__clip0_0_486">
+          <path fill="#fff" d="M0 0h24v24H0z" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+
 export function OkayIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
