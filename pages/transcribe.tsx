@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
+import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
 import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress, Stage } from "../components/transcribe-form";
 
 const languagesData = [
@@ -27,7 +27,7 @@ const accuracyModels = [
 
 export default observer(function Transcribe({ }) {
 
-  const [stage, setStage] = useState<Stage>('complete')
+  const [stage, setStage] = useState<Stage>('form')
 
   return (
     <Dashboard>
@@ -119,13 +119,13 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
     />}
 
     {stage == 'complete' && <PendingLabelsSlots
-      icon={FileProcessingIcon}
+      icon={CompleteIcon}
       title='Your Transcription Is Ready.'
       subtitle={`Transcription of: "${fileName}"`}
       subtitle2={<></>}
     />}
 
-    <FileProcessingProgress stage={stage} my={4} />
+    {stage != 'complete' && <FileProcessingProgress stage={stage} my={4} />}
 
     {stage == 'complete' &&
       <TranscriptionViewer my={4} date='2 May 2022 4:18pm' jobId="ASDFZXCV"
@@ -144,6 +144,7 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
 }
 
 const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
+
   {icon({ width: 64, height: 64 })}
 
   <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2} textAlign='center'>

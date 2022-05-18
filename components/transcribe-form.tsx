@@ -206,6 +206,7 @@ type FileProcessingProgressProps = { stage: Stage } & BoxProps;
 const stageToProps = {
   'pendingFile': {
     barWidth: '15%',
+    animDur: '15s',
     step1: 'running',
     step2: 'pending',
     step3: 'pending',
@@ -214,6 +215,7 @@ const stageToProps = {
   },
   'pendingTranscription': {
     barWidth: '50%',
+    animDur: '30s',
     step1: 'done',
     step2: 'running',
     step3: 'pending',
@@ -222,6 +224,7 @@ const stageToProps = {
   },
   'failed': {
     barWidth: '50%',
+    animDur: '30s',
     step1: 'done',
     step2: 'failed',
     step3: 'pending',
@@ -230,6 +233,7 @@ const stageToProps = {
   },
   'complete': {
     barWidth: '100%',
+    animDur: '50s',
     step1: 'done',
     step2: 'done',
     step3: 'done',
@@ -252,7 +256,8 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
       pos='absolute' top='50%' zIndex={0} style={{ transform: 'translate(0, -50%)' }} />
 
     <Box rounded='full' width={stageProps.barWidth} transition='all 0.5s' height={2} pos='absolute' top='50%' zIndex={0}
-      style={{ transform: 'translate(0, -50%)' }} className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`} />
+      style={{ transform: 'translate(0, -50%)', animationDuration: stageProps.animDur }}
+      className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`} />
 
     <ProgressPoint status={stageProps.step1} label='Audio Uploading' posX="15%" step='1' />
     <ProgressPoint status={stageProps.step2} label='Running Transcription' posX="50%" step='2' />

@@ -2,6 +2,35 @@ import React from 'react';
 import { SVGProps } from "react"
 
 
+export function CompleteIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M48 18.664L29.333 43.997 16 33.331"
+        stroke="#2B8279"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M32 62.664c16.937 0 30.667-13.73 30.667-30.667 0-16.936-13.73-30.666-30.667-30.666S1.333 15.06 1.333 31.997c0 16.937 13.73 30.667 30.667 30.667z"
+        stroke="#2B8279"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+
 export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
