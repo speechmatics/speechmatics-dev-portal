@@ -45,6 +45,7 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
         </Box>
         {paymentMethod && <Box fontSize="0.8em" pt='1em' >To delete your card, please{' '}
           <Text
+            data-qa="button-delete-card"
             onClick={deleteCard}
             as='span' color='var(--chakra-colors-smBlue-500)'
             cursor='pointer' _hover={{ textDecoration: 'underline' }}>click here.</Text>
