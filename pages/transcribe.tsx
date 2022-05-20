@@ -65,12 +65,12 @@ const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField label="Language" tooltip='Expected language of transcription' data={languagesData} onSelect={() => { }} />
-      <SelectField label="Separation" tooltip='Separation of transcription' data={separation} onSelect={() => { }} />
-      <SelectField label="Accuracy" tooltip="Accuracy model" data={accuracyModels} onSelect={() => { }} />
+      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Expected language of transcription' data={languagesData} onSelect={() => { }} />
+      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Separation of transcription' data={separation} onSelect={() => { }} />
+      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Accuracy model" data={accuracyModels} onSelect={() => { }} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
+      <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
     </Flex>
   </>
 })
@@ -136,10 +136,10 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
     {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
-      Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
+      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
   </Flex>
 }
 
