@@ -1,11 +1,13 @@
 import { Box, HStack, Tooltip, Select, Flex, Button, VStack, BoxProps } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
+import { Stage } from "../utils/transcribe-store";
 import { OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
 
-export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
+type FileUploadComponentProps = {
+  onFileSelect: (file: File) => void;
+}
 
-
-export const FileUploadComponent = ({ }) => {
+export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
 
@@ -24,7 +26,7 @@ export const FileUploadComponent = ({ }) => {
   }
 
   const selectFiles = (files: FileList | null | undefined) => {
-
+    onFileSelect(files[0]);
   }
 
   const dropClicked = () => {

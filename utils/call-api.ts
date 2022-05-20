@@ -13,13 +13,18 @@ export const callGetAccounts = async (idToken: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
-export const callGetUsage = async (idToken: string, contractId: number, projectId: number, dates: any) => {
+export const callGetUsage = async (
+  idToken: string,
+  contractId: number,
+  projectId: number,
+  dates: any
+) => {
   return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {
     contract_id: contractId,
     project_id: projectId,
     grouping: 'day',
     sort_order: 'asc',
-    ...dates
+    ...dates,
   });
 };
 
@@ -61,10 +66,18 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
+export const callFileTranscriptionSecret = async (idToken: string) => {
+  return call(idToken, `${ENDPOINT_API_URL}/jobs_key`, 'POST');
+};
+
+export const callRequestFileTranscription = async (idToken: string) => {
+  return call(idToken, `${ENDPOINT_API_URL}/jobs`, 'POST');
+};
+
 export const call = async (
   authToken: string,
   apiEndpoint: string,
-  method: string,
+  method: 'GET' | 'POST' | 'DELETE',
   body: any = null
 ) => {
   const headers = new Headers();

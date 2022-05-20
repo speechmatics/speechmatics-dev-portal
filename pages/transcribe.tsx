@@ -6,28 +6,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
-import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress, Stage } from "../components/transcribe-form";
+import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress } from "../components/transcribe-form";
+import { Stage, fileTranscrStore, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store";
 
-const languagesData = [
-  { label: 'English', value: 'en', selected: true },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-]
 
-const separation = [
-  { label: 'None', value: 'none', selected: true },
-  { label: 'Speaker', value: 'speaker' },
-]
-
-const accuracyModels = [
-  { label: 'Enhanced', value: 'enhanced', selected: true },
-  { label: 'Standard', value: 'standard' },
-
-]
 
 export default observer(function Transcribe({ }) {
 
-  const [stage, setStage] = useState<Stage>('form')
+  const { stage } = fileTranscrStore;
+
+  useEffect(() => {
+    fileTranscrStore.resetStore();
+  }, [])
+
 
   return (
     <Dashboard>
@@ -36,38 +27,45 @@ export default observer(function Transcribe({ }) {
         introduction="Upload and Transcribe an Audio File." />
 
       <SmPanel width='100%' maxWidth='900px'>
-        {stage == 'form' && <TranscribeForm onAdvance={() => setStage('pendingFile')} />}
+
+        {stage == 'form' && <TranscribeForm store={fileTranscrStore} />}
+
         {['pendingFile', 'pendingTranscription', 'failed', 'complete'].includes(stage) &&
-          <ProcessingTranscription stage={stage} onTranscribeAnotherFile={() => setStage('form')} />}
+          <ProcessingTranscription store={fileTranscrStore} />}
       </SmPanel>
     </Dashboard>
   );
 })
 
 type TranscribeFormProps = {
-  onAdvance: () => void;
+  store: FileTranscriptionStore;
 }
 
-const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
+const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
 
   const onGetTranscriptionClick = useCallback(() => {
-    onAdvance();
+    store.stage = 'pendingFile';
   }, [])
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
     <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
-      <FileUploadComponent />
+      <FileUploadComponent onFileSelect={file => store.file = file} />
     </Box>
 
     <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField label="Language" tooltip='Expected language of transcription' data={languagesData} onSelect={() => { }} />
-      <SelectField label="Separation" tooltip='Separation of transcription' data={separation} onSelect={() => { }} />
-      <SelectField label="Accuracy" tooltip="Accuracy model" data={accuracyModels} onSelect={() => { }} />
+      <SelectField label="Language" tooltip='Expected language of transcription'
+        data={languagesData} onSelect={val => store.language = val} />
+
+      <SelectField label="Separation" tooltip='Separation of transcription'
+        data={separation} onSelect={val => store.separation = val as any} />
+
+      <SelectField label="Accuracy" tooltip="Accuracy model"
+        data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
       <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
@@ -76,15 +74,13 @@ const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
 })
 
 type ProcessingTranscriptionProps = {
-  stage: Stage;
-  onTranscribeAnotherFile: () => void;
+  store: FileTranscriptionStore;
 }
 
-const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: ProcessingTranscriptionProps) {
+const ProcessingTranscription = function ({ store }: ProcessingTranscriptionProps) {
 
-  const fileSize = '1MB'; // get from files[]
-  const jobId = 'AABBCCDD'; // get from store after uploading a file
-  const fileName = 'alpha.mp3';
+  const { stage, fileName, fileSize, jobId } = store;
+
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
 
@@ -139,7 +135,7 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
       Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
+    <Button variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
   </Flex>
 }
 
