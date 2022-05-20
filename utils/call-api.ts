@@ -2,6 +2,7 @@ import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
+const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
 
@@ -21,6 +22,27 @@ export const callGetUsage = async (idToken: string, contractId: number, projectI
     sort_order: 'asc',
     ...dates
   });
+};
+
+export const callGetJobs = async (idToken: string, contractId: number, projectId: number, optionalQueries: any) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs`, 'GET', {
+    contract_id: contractId,
+    project_id: projectId,
+    ...optionalQueries
+  });
+};
+
+export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', {
+    force
+  });
+};
+
+export const callGetTranscript = async (idToken: string, jobId: string, format: string) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}/transcript`, 'GET', {
+    format
+  },
+  format === 'json-v2' ? 'json' : 'text');
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
@@ -65,7 +87,8 @@ export const call = async (
   authToken: string,
   apiEndpoint: string,
   method: string,
-  body: any = null
+  body: any = null,
+  format: string = 'json'
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
@@ -92,7 +115,7 @@ export const call = async (
         apiEndpoint,
         options,
         'is:',
-        await jsonCopy(response.clone()),
+        // await jsonCopy(response.clone()),
         response
       );
       if (response.status == 401) {
@@ -101,10 +124,17 @@ export const call = async (
       if (response.status != 200 && response.status != 201) {
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
-
-      return response.json();
+      if (response.body == null) {
+        return null
+      }
+      console.log(response.body)
+      if ( format === 'json') {
+        return response.json()
+      }
+      return response.text()
     })
     .catch((error) => {
+      console.log(error)
       errToast(`details: ${error}`);
     });
 };

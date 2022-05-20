@@ -1,12 +1,12 @@
-import { Box, BoxProps, Button, Divider, Flex, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import faker from "@faker-js/faker";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
+import { useCallback, useState } from "react";
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel, TranscriptionViewer } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
-import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress, Stage } from "../components/transcribe-form";
+import { CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
+import { FileUploadComponent, SelectField, FileProcessingProgress, Stage } from "../components/transcribe-form";
 
 const languagesData = [
   { label: 'English', value: 'en', selected: true },
@@ -154,55 +154,4 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
   <Box color='smNavy.400' fontSize='1.2em'>{subtitle}</Box>
   <Box textAlign='center' color='smBlack.300'>{subtitle2}</Box>
 </>
-)
-
-
-type TranscriptionViewerProps = {
-  transcriptionText: string;
-  date: string;
-  jobId: string;
-  accuracy: string;
-  language: string;
-  downloadLink: string;
-} & BoxProps
-
-const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
-  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
-    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
-      borderBottom='1px'
-      borderColor='smBlack.200'>
-      <Stat title='Submitted:' value={date} />
-      <Stat title='Job ID:' value={jobId} />
-      <Stat title='Accuracy:' value={accuracy} />
-      <Stat title='Language:' value={language} />
-    </HStack>
-    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
-      {transcriptionText}
-    </Box>
-    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
-      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
-      <Menu>
-        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
-          Download Transcription
-        </MenuButton>
-        <MenuList>
-          <MenuItem py={1}>Download as text</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as JSON</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as srt</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download audio</MenuItem>
-        </MenuList>
-      </Menu>
-    </HStack>
-  </VStack>
-)
-
-const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
-  </Box>
 )
