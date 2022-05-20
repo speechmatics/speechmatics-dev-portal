@@ -440,6 +440,7 @@ export const ConfirmRemoveModal = ({ isOpen, onClose, mainTitle, subTitle, onRem
       <ModalFooter justifyContent="center">
         <Flex alignItems="center">
           <Button
+            data-qa="button-confirm"
             variant="speechmatics"
             bg="smRed.500"
             _hover={{ bg: 'smRed.400' }}
@@ -450,6 +451,7 @@ export const ConfirmRemoveModal = ({ isOpen, onClose, mainTitle, subTitle, onRem
             {confirmLabel}
           </Button>
           <Button
+            data-qa="button-cancel"
             variant="speechmatics"
             bg="smBlack.200"
             color="smBlack.400"
