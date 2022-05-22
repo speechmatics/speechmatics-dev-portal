@@ -1,5 +1,6 @@
 import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
+import { Accuracy, Separation } from './transcribe-store';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 
@@ -70,8 +71,24 @@ export const callFileTranscriptionSecret = async (idToken: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/jobs_key`, 'POST');
 };
 
-export const callRequestFileTranscription = async (idToken: string) => {
-  return call(idToken, `${ENDPOINT_API_URL}/jobs`, 'POST');
+export const callRequestFileTranscription = async (
+  secretKey: string,
+  file: File,
+  language: string,
+  accuracy: Accuracy,
+  separation: Separation
+) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('language', language);
+  formData.append('accuracy', accuracy);
+  formData.append('separation', separation);
+
+  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData);
+};
+
+export const callRequestJobStatus = async (secretKey: string, jobId: string) => {
+  return call(secretKey, `${ENDPOINT_API_URL}/jobs/${jobId}`, 'GET');
 };
 
 export const call = async (
@@ -83,16 +100,18 @@ export const call = async (
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
 
+  const isGET = method.toLowerCase() != 'get';
+
   headers.append('Authorization', bearer);
   headers.append('Content-Type', 'application/json');
 
   const options = {
     method: method,
     headers: headers,
-    body: method.toLowerCase() != 'get' && body ? JSON.stringify(body) : undefined,
+    body: isGET && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
   };
 
-  if (method.toLowerCase() == 'get' && !!body) {
+  if (isGET && !!body) {
     apiEndpoint = `${apiEndpoint}?${getParams(body)}`;
   }
 
@@ -100,14 +119,7 @@ export const call = async (
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
-      console.log(
-        `response from`,
-        apiEndpoint,
-        options,
-        'is:',
-        await jsonCopy(response.clone()),
-        response
-      );
+      console.log(`response from`, apiEndpoint, options, 'is:', await jsonCopy(response), response);
       if (response.status == 401) {
         msalLogout(true);
       }
@@ -131,7 +143,7 @@ function getParams(paramsObj: { [key: string]: string | number }) {
 
 async function jsonCopy(response: Response) {
   try {
-    return response.json().catch(console.error);
+    return response.clone().json().catch(console.error);
   } catch (e) {
     return '';
   }

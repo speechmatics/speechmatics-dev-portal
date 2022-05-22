@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon, OkayIcon } from "../components/icons-library";
-import { FileUploadComponent, ChoiceButtons, SelectField, ProgressPoint, FileProcessingProgress } from "../components/transcribe-form";
+import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
+import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import { Stage, fileTranscrStore, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store";
 
 
@@ -68,7 +68,9 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
         data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
+      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>
+        Get Your Transcription
+      </Button>
     </Flex>
   </>
 })
