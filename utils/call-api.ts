@@ -91,6 +91,18 @@ export const callRequestJobStatus = async (secretKey: string, jobId: string) => 
   return call(secretKey, `${ENDPOINT_API_URL}/jobs/${jobId}`, 'GET');
 };
 
+export const callRequestJobTranscription = async (
+  secretKey: string,
+  jobId: string,
+  format: string = null
+) => {
+  return call(
+    secretKey,
+    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `/format?=${format}` : ''}`,
+    'GET'
+  );
+};
+
 export const call = async (
   authToken: string,
   apiEndpoint: string,
