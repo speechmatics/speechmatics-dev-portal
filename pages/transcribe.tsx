@@ -7,16 +7,16 @@ import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../component
 import Dashboard from "../components/dashboard";
 import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
-import { Stage, fileTranscrStore, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store";
+import { Stage, fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store";
 
 
 
 export default observer(function Transcribe({ }) {
 
-  const { stage } = fileTranscrStore;
+  const { stage } = flow.store;
 
   useEffect(() => {
-    fileTranscrStore.resetStore();
+    flow.reset();
   }, [])
 
 
@@ -28,10 +28,10 @@ export default observer(function Transcribe({ }) {
 
       <SmPanel width='100%' maxWidth='900px'>
 
-        {stage == 'form' && <TranscribeForm store={fileTranscrStore} />}
+        {stage == 'form' && <TranscribeForm store={flow.store} />}
 
         {['pendingFile', 'pendingTranscription', 'failed', 'complete'].includes(stage) &&
-          <ProcessingTranscription store={fileTranscrStore} />}
+          <ProcessingTranscription store={flow.store} />}
       </SmPanel>
     </Dashboard>
   );

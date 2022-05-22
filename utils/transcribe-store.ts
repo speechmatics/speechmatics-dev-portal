@@ -65,9 +65,9 @@ export class FileTranscriptionStore {
   }
 }
 
-export const fileTranscrStore = new FileTranscriptionStore();
-
 class FileTranscribeFlow {
+  store = new FileTranscriptionStore();
+
   async sendFile(
     secretKey: string,
     file: File,
@@ -83,7 +83,7 @@ class FileTranscribeFlow {
       throw new Error('file wrong type');
     }
 
-    fileTranscrStore.stage = 'pendingFile';
+    this.store.stage = 'pendingFile';
 
     const resp = await callRequestFileTranscription(
       secretKey,
@@ -95,7 +95,7 @@ class FileTranscribeFlow {
 
     const { id } = resp;
 
-    fileTranscrStore.stage = 'pendingTranscription';
+    this.store.stage = 'pendingTranscription';
 
     this.runStatusPooling(secretKey, id);
 
@@ -108,8 +108,28 @@ class FileTranscribeFlow {
     this.interv = window.setInterval(async () => {
       const resp = await callRequestJobStatus(secretKey, jobId);
       const { status } = resp;
-      fileTranscrStore.jobStatus = status;
-      if (status !== 'running') window.clearInterval(this.interv);
+      this.store.jobStatus = status;
+      if (status === 'done') {
+        this.store.stage = 'complete';
+        this.fetchTranscription(secretKey, jobId);
+      }
+      if (status === 'rejected') {
+        this.store.stage = 'failed';
+        //todo add display reason
+      }
+      if (status !== 'running') this.stopPooling();
     }, 5000);
   }
+
+  stopPooling() {
+    window.clearInterval(this.interv);
+  }
+
+  fetchTranscription(secretKey: string, jobId: string) {}
+
+  reset() {
+    this.store.resetStore();
+  }
 }
+
+export const fileTranscriptionFlow = new FileTranscribeFlow();
