@@ -33,6 +33,13 @@ export const accuracyModels: {
   { label: 'Standard', value: 'standard' },
 ];
 
+const enum FlowError {
+  FileTooBig,
+  FileWrongType,
+  ServerFileReceivedWrong,
+  ServerJobFailed,
+}
+
 export class FileTranscriptionStore {
   language: string = 'en';
   accuracy: Accuracy = 'enhanced';
@@ -44,6 +51,7 @@ export class FileTranscriptionStore {
   secretKey: string = '';
   transcriptionText: string = '';
   dateSubmitted: string = '';
+  error: FlowError | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -60,6 +68,7 @@ export class FileTranscriptionStore {
     this.secretKey = '';
     this.transcriptionText = '';
     this.dateSubmitted = '';
+    this.error = null;
   }
 
   get fileName() {
@@ -79,10 +88,15 @@ class FileTranscribeFlow {
     this.store.secretKey = json.key;
   }
 
-  async sendFile() {
+  addFile(file: File) {
+    this.store.file = file;
+  }
+
+  async attemptSendFile() {
     const { secretKey, file, language, accuracy, separation } = this.store;
 
     if (file.size > 1_000_000_000) {
+      //store error
       throw new Error('file size too large');
     }
 

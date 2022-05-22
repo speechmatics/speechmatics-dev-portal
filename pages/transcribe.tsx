@@ -8,7 +8,7 @@ import Dashboard from "../components/dashboard";
 import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
 import { FileUploadComponent, SelectField, FileProcessingProgress, TranscriptionViewer } from "../components/transcribe-form";
 import accountStoreContext from "../utils/account-store-context";
-import { Stage, fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store-flow";
+import { fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store-flow";
 
 
 
@@ -47,15 +47,11 @@ type TranscribeFormProps = {
 
 const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
 
-  const onGetTranscriptionClick = useCallback(() => {
-    flow.sendFile()
-  }, [])
-
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
     <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
-      <FileUploadComponent onFileSelect={file => store.file = file} />
+      <FileUploadComponent onFileSelect={flow.addFile} />
     </Box>
 
     <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>
@@ -73,8 +69,8 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
       <Button variant='speechmatics' fontSize='18' width='100%'
-        onClick={onGetTranscriptionClick}
-        disabled={!store.file}>
+        onClick={() => flow.attemptSendFile()}
+        disabled={!store.file || !store.secretKey}>
         Get Your Transcription
       </Button>
     </Flex>
