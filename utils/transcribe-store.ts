@@ -5,43 +5,6 @@ export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' |
 export type Accuracy = 'enhanced' | 'standard';
 export type Separation = 'none' | 'speaker';
 
-export class FileTranscriptionStore {
-  language: string = 'en';
-  accuracy: Accuracy = 'enhanced';
-  separation: Separation = 'none';
-
-  file: File = null;
-
-  jobId: string = '';
-
-  stage: Stage = 'form';
-
-  jobStatus: 'running' | 'done' | 'rejected';
-
-  constructor() {
-    makeAutoObservable(this);
-  }
-
-  resetStore() {
-    this.language = 'en';
-    this.accuracy = 'enhanced';
-    this.separation = 'none';
-    this.file = null;
-    this.jobId = '';
-    this.stage = 'form';
-  }
-
-  get fileName() {
-    return this.file?.name;
-  }
-
-  get fileSize() {
-    return this.file?.size;
-  }
-}
-
-export const fileTranscrStore = new FileTranscriptionStore();
-
 export const languagesData = [
   { label: 'English', value: 'en', selected: true },
   { label: 'French', value: 'fr' },
@@ -65,6 +28,44 @@ export const accuracyModels: {
   { label: 'Enhanced', value: 'enhanced', selected: true },
   { label: 'Standard', value: 'standard' },
 ];
+
+export class FileTranscriptionStore {
+  language: string = 'en';
+  accuracy: Accuracy = 'enhanced';
+  separation: Separation = 'none';
+
+  file: File = null;
+
+  jobId: string = '';
+
+  stage: Stage = 'form';
+
+  jobStatus: 'running' | 'done' | 'rejected' | '' = '';
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  resetStore() {
+    this.language = 'en';
+    this.accuracy = 'enhanced';
+    this.separation = 'none';
+    this.file = null;
+    this.jobId = '';
+    this.stage = 'form';
+    this.jobStatus = '';
+  }
+
+  get fileName() {
+    return this.file?.name;
+  }
+
+  get fileSize() {
+    return this.file?.size;
+  }
+}
+
+export const fileTranscrStore = new FileTranscriptionStore();
 
 class FileTranscribeFlow {
   async sendFile(
