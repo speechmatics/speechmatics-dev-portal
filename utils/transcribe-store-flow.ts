@@ -34,6 +34,7 @@ export const accuracyModels: {
 ];
 
 const enum FlowError {
+  CouldntFetchSecret,
   FileTooBig,
   FileWrongType,
   ServerFileReceivedWrong,
@@ -84,8 +85,12 @@ class FileTranscribeFlow {
   store = new FileTranscriptionStore();
 
   async fetchSecret(idToken: string) {
-    const json = await callFileTranscriptionSecret(idToken);
-    this.store.secretKey = json.key;
+    try {
+      const json = await callFileTranscriptionSecret(idToken);
+      this.store.secretKey = json.key;
+    } catch (err) {
+      this.store.error = FlowError.CouldntFetchSecret;
+    }
   }
 
   addFile(file: File) {
