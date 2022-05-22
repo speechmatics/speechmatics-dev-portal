@@ -89,20 +89,18 @@ class FileTranscribeFlow {
   }
 
   addFile(file: File) {
-    this.store.file = file;
+    if (file.size > 1_000_000_000) {
+      this.store.error = FlowError.FileTooBig;
+    } else if (!['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'application/ogg'].includes(file.type)) {
+      this.store.error = FlowError.FileWrongType;
+    } else {
+      this.store.error = null;
+      this.store.file = file;
+    }
   }
 
   async attemptSendFile() {
     const { secretKey, file, language, accuracy, separation } = this.store;
-
-    if (file.size > 1_000_000_000) {
-      //store error
-      throw new Error('file size too large');
-    }
-
-    if (!['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'application/ogg'].includes(file.type)) {
-      throw new Error('file wrong type');
-    }
 
     this.store.stage = 'pendingFile';
 
