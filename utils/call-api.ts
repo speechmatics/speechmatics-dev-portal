@@ -1,6 +1,6 @@
 import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
-import { Accuracy, Separation } from './transcribe-store';
+import { Accuracy, Separation } from './transcribe-store-flow';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 

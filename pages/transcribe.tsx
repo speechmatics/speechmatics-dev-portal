@@ -2,12 +2,13 @@ import { Box, BoxProps, Button, Divider, Flex, HStack, Menu, MenuButton, MenuDiv
 import faker from "@faker-js/faker";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
-import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
-import { Stage, fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store";
+import { FileUploadComponent, SelectField, FileProcessingProgress, TranscriptionViewer } from "../components/transcribe-form";
+import accountStoreContext from "../utils/account-store-context";
+import { Stage, fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store-flow";
 
 
 
@@ -15,8 +16,11 @@ export default observer(function Transcribe({ }) {
 
   const { stage } = flow.store;
 
+  const { tokenStore } = useContext(accountStoreContext);
+
   useEffect(() => {
     flow.reset();
+    flow.fetchSecret(tokenStore.tokenPayload.idToken);
   }, [])
 
 
@@ -28,10 +32,10 @@ export default observer(function Transcribe({ }) {
 
       <SmPanel width='100%' maxWidth='900px'>
 
-        {stage == 'form' && <TranscribeForm store={flow.store} />}
-
-        {['pendingFile', 'pendingTranscription', 'failed', 'complete'].includes(stage) &&
+        {stage === 'form' ?
+          <TranscribeForm store={flow.store} /> :
           <ProcessingTranscription store={flow.store} />}
+
       </SmPanel>
     </Dashboard>
   );
@@ -44,7 +48,7 @@ type TranscribeFormProps = {
 const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
 
   const onGetTranscriptionClick = useCallback(() => {
-    store.stage = 'pendingFile';
+    flow.sendFile()
   }, [])
 
   return <>
@@ -68,7 +72,9 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
         data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>
+      <Button variant='speechmatics' fontSize='18' width='100%'
+        onClick={onGetTranscriptionClick}
+        disabled={!store.file}>
         Get Your Transcription
       </Button>
     </Flex>
@@ -79,7 +85,7 @@ type ProcessingTranscriptionProps = {
   store: FileTranscriptionStore;
 }
 
-const ProcessingTranscription = function ({ store }: ProcessingTranscriptionProps) {
+const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
 
   const { stage, fileName, fileSize, jobId } = store;
 
@@ -112,8 +118,10 @@ const ProcessingTranscription = function ({ store }: ProcessingTranscriptionProp
       subtitle={<>Status of your job (ID: {jobId}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
       </>}
-      subtitle2={<>You have reached your monthly usage limit.{' '}
-        Please <Link href='/manage-billing'><a className="text_link">Add a Payment Card</a></Link> to increase your limit.</>}
+      subtitle2={<>You have reached your monthly usage limit. Please
+        {' '}<Link href='/manage-billing'>
+          <a className="text_link">Add a Payment Card</a>
+        </Link> to increase your limit.</>}
     />}
 
     {stage == 'complete' && <PendingLabelsSlots
@@ -126,9 +134,9 @@ const ProcessingTranscription = function ({ store }: ProcessingTranscriptionProp
     {stage != 'complete' && <FileProcessingProgress stage={stage} my={4} />}
 
     {stage == 'complete' &&
-      <TranscriptionViewer my={4} date='2 May 2022 4:18pm' jobId="ASDFZXCV"
-        accuracy="Enhanced" language="English" downloadLink="http://asdvcxv.fd"
-        transcriptionText={faker.lorem.sentences(20)} />}
+      <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
+        accuracy={store.accuracy} language={store.language} downloadLink="http://asdvcxv.fd"
+        transcriptionText={store.transcriptionText} />}
 
 
     {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
@@ -139,7 +147,7 @@ const ProcessingTranscription = function ({ store }: ProcessingTranscriptionProp
     </Box>
     <Button variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
   </Flex>
-}
+})
 
 const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
 
@@ -155,52 +163,3 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
 )
 
 
-type TranscriptionViewerProps = {
-  transcriptionText: string;
-  date: string;
-  jobId: string;
-  accuracy: string;
-  language: string;
-  downloadLink: string;
-} & BoxProps
-
-const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
-  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
-    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
-      borderBottom='1px'
-      borderColor='smBlack.200'>
-      <Stat title='Submitted:' value={date} />
-      <Stat title='Job ID:' value={jobId} />
-      <Stat title='Accuracy:' value={accuracy} />
-      <Stat title='Language:' value={language} />
-    </HStack>
-    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
-      {transcriptionText}
-    </Box>
-    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
-      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
-      <Menu>
-        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
-          Download Transcription
-        </MenuButton>
-        <MenuList>
-          <MenuItem py={1}>Download as text</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as JSON</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as srt</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download audio</MenuItem>
-        </MenuList>
-      </Menu>
-    </HStack>
-  </VStack>
-)
-
-const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
-  </Box>
-)

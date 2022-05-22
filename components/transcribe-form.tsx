@@ -1,7 +1,7 @@
-import { Box, HStack, Tooltip, Select, Flex, Button, VStack, BoxProps } from "@chakra-ui/react";
+import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
-import { Stage } from "../utils/transcribe-store";
-import { OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
+import { Stage } from "../utils/transcribe-store-flow";
+import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
@@ -267,3 +267,56 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
   </Box>
 }
 
+
+
+type TranscriptionViewerProps = {
+  transcriptionText: string;
+  date: string;
+  jobId: string;
+  accuracy: string;
+  language: string;
+  downloadLink: string;
+} & BoxProps
+
+export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
+  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
+    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
+      borderBottom='1px'
+      borderColor='smBlack.200'>
+      <Stat title='Submitted:' value={date} />
+      <Stat title='Job ID:' value={jobId} />
+      <Stat title='Accuracy:' value={accuracy} />
+      <Stat title='Language:' value={language} />
+    </HStack>
+    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
+      {transcriptionText}
+    </Box>
+    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
+      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
+      <Menu>
+        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
+          Download Transcription
+        </MenuButton>
+        <MenuList>
+          <MenuItem py={1}>Download as text</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as JSON</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as srt</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download audio</MenuItem>
+        </MenuList>
+      </Menu>
+    </HStack>
+  </VStack>
+)
+
+
+
+const Stat = ({ title, value, ...boxProps }) => (
+  <Box {...boxProps}>
+    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
+    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
+  </Box>
+)

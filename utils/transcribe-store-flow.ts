@@ -1,5 +1,9 @@
 import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
-import { callRequestFileTranscription, callRequestJobStatus } from './call-api';
+import {
+  callFileTranscriptionSecret,
+  callRequestFileTranscription,
+  callRequestJobStatus,
+} from './call-api';
 
 export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
 export type Accuracy = 'enhanced' | 'standard';
@@ -33,14 +37,13 @@ export class FileTranscriptionStore {
   language: string = 'en';
   accuracy: Accuracy = 'enhanced';
   separation: Separation = 'none';
-
   file: File = null;
-
   jobId: string = '';
-
   stage: Stage = 'form';
-
   jobStatus: 'running' | 'done' | 'rejected' | '' = '';
+  secretKey: string = '';
+  transcriptionText: string = '';
+  dateSubmitted: string = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -54,6 +57,9 @@ export class FileTranscriptionStore {
     this.jobId = '';
     this.stage = 'form';
     this.jobStatus = '';
+    this.secretKey = '';
+    this.transcriptionText = '';
+    this.dateSubmitted = '';
   }
 
   get fileName() {
@@ -68,13 +74,14 @@ export class FileTranscriptionStore {
 class FileTranscribeFlow {
   store = new FileTranscriptionStore();
 
-  async sendFile(
-    secretKey: string,
-    file: File,
-    language: string,
-    accuracy: Accuracy,
-    separation: Separation
-  ) {
+  async fetchSecret(idToken: string) {
+    const json = await callFileTranscriptionSecret(idToken);
+    this.store.secretKey = json.key;
+  }
+
+  async sendFile() {
+    const { secretKey, file, language, accuracy, separation } = this.store;
+
     if (file.size > 1_000_000_000) {
       throw new Error('file size too large');
     }
@@ -93,25 +100,25 @@ class FileTranscribeFlow {
       separation
     );
 
-    const { id } = resp;
-
+    this.store.jobId = resp.id;
     this.store.stage = 'pendingTranscription';
 
-    this.runStatusPooling(secretKey, id);
+    this.runStatusPooling();
 
     //check server response if all right, does it send 4xx when wrong?
   }
 
   interv = 0;
 
-  runStatusPooling(secretKey: string, jobId: string) {
+  runStatusPooling() {
+    const { secretKey, jobId } = this.store;
+
     this.interv = window.setInterval(async () => {
       const resp = await callRequestJobStatus(secretKey, jobId);
-      const { status } = resp;
-      this.store.jobStatus = status;
+      const status = (this.store.jobStatus = resp.status);
       if (status === 'done') {
         this.store.stage = 'complete';
-        this.fetchTranscription(secretKey, jobId);
+        this.fetchTranscription();
       }
       if (status === 'rejected') {
         this.store.stage = 'failed';
@@ -125,7 +132,7 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  fetchTranscription(secretKey: string, jobId: string) {}
+  fetchTranscription() {}
 
   reset() {
     this.store.resetStore();
