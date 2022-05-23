@@ -72,7 +72,7 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
     <Flex width='100%' justifyContent='center' py={2}>
       <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
         onClick={() => flow.attemptSendFile()}
-        disabled={!store.file || !store.secretKey}>
+        disabled={!store._file || !store.secretKey}>
         Get Your Transcription
       </Button>
     </Flex>
@@ -86,6 +86,12 @@ type ProcessingTranscriptionProps = {
 const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
 
   const { stage, fileName, fileSize, jobId } = store;
+
+  useEffect(() => {
+    return () => {
+      flow.stopPolling();
+    }
+  }, [])
 
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
@@ -143,7 +149,9 @@ const ProcessingTranscription = observer(function ({ store }: ProcessingTranscri
       Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
+
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
+
   </Flex>
 })
 

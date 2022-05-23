@@ -1,6 +1,8 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Stage } from "../utils/transcribe-store-flow";
+import { formatTimeDateFromString } from "../utils/date-utils";
+import { capitalizeFirstLetter } from "../utils/string-utils";
+import { getFullLanguageName, Stage } from "../utils/transcribe-store-flow";
 import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
@@ -145,54 +147,6 @@ export const ChoiceButtons = ({ label, tooltip, data, onSelect }: ChoiceButtonsP
 
 
 
-
-const filesMap = (files: FileList | undefined | null): File[] => {
-  const ret: File[] = [];
-  if (files && files.length > 0)
-    for (let i = 0; i < files.length; i++)
-      if (files[i]) {
-        ret.push(files[i]);
-      }
-  return ret;
-}
-
-
-export function onGridDragDropSetup(elem: HTMLElement | null,
-  filesDropped: (files: FileList | undefined) => void,
-  filesDraggedOver?: (v: boolean) => void,
-) {
-  if (!elem) return;
-  let callbackRefs = []
-  console.log('setting up drag drop', elem);
-  elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
-    ev.preventDefault();
-    filesDraggedOver?.(true);
-  });
-  elem.addEventListener('drop', callbackRefs[1] = (ev: DragEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    filesDropped(ev.dataTransfer?.files);
-    filesDraggedOver?.(false);
-  });
-  elem.addEventListener('dragleave', callbackRefs[2] = (ev: DragEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    filesDraggedOver?.(false);
-  });
-
-  return callbackRefs;
-}
-
-export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
-  if (!elem) return;
-  const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
-  elem.removeEventListener('dragover', dragOverCb);
-  elem.removeEventListener('drop', dropCb);
-  elem.removeEventListener('dragleave', dragLeaveCb);
-}
-
-
-
 type ProgressPointProps = {
   status: 'done' | 'running' | 'pending' | 'failed';
   label: string;
@@ -302,17 +256,19 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
     <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
       borderBottom='1px'
       borderColor='smBlack.200'>
-      <Stat title='Submitted:' value={date} />
+      <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
       <Stat title='Job ID:' value={jobId} />
-      <Stat title='Accuracy:' value={accuracy} />
-      <Stat title='Language:' value={language} />
+      <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
+      <Stat title='Language:' value={getFullLanguageName(language)} />
     </HStack>
     <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
       {transcriptionText}
     </Box>
     <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
-      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
+        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
+        Copy Transcription
+      </Button>
       <Menu>
         <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
           Download Transcription
@@ -335,7 +291,59 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
 
 const Stat = ({ title, value, ...boxProps }) => (
   <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
+    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.85em'>{title} </Text>
+    <Text as='span' color='smBlack.300' fontSize='0.85em'>{value}</Text>
   </Box>
 )
+
+
+
+
+
+
+
+
+const filesMap = (files: FileList | undefined | null): File[] => {
+  const ret: File[] = [];
+  if (files && files.length > 0)
+    for (let i = 0; i < files.length; i++)
+      if (files[i]) {
+        ret.push(files[i]);
+      }
+  return ret;
+}
+
+
+export function onGridDragDropSetup(elem: HTMLElement | null,
+  filesDropped: (files: FileList | undefined) => void,
+  filesDraggedOver?: (v: boolean) => void,
+) {
+  if (!elem) return;
+  let callbackRefs = []
+  console.log('setting up drag drop', elem);
+  elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
+    ev.preventDefault();
+    filesDraggedOver?.(true);
+  });
+  elem.addEventListener('drop', callbackRefs[1] = (ev: DragEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    filesDropped(ev.dataTransfer?.files);
+    filesDraggedOver?.(false);
+  });
+  elem.addEventListener('dragleave', callbackRefs[2] = (ev: DragEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    filesDraggedOver?.(false);
+  });
+
+  return callbackRefs;
+}
+
+export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
+  if (!elem) return;
+  const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
+  elem.removeEventListener('dragover', dragOverCb);
+  elem.removeEventListener('drop', dropCb);
+  elem.removeEventListener('dragleave', dragLeaveCb);
+}

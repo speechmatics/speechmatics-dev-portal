@@ -79,12 +79,13 @@ export const callRequestFileTranscription = async (
   separation: Separation
 ) => {
   const formData = new FormData();
+
   formData.append('file', file);
   formData.append('language', language);
   formData.append('accuracy', accuracy);
   formData.append('separation', separation);
 
-  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData);
+  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData, 'multipart/form-data');
 };
 
 export const callRequestJobStatus = async (secretKey: string, jobId: string) => {
@@ -98,8 +99,10 @@ export const callRequestJobTranscription = async (
 ) => {
   return call(
     secretKey,
-    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `/format?=${format}` : ''}`,
-    'GET'
+    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `?format=${format}` : ''}`,
+    'GET',
+    null,
+    'text/plain'
   );
 };
 
@@ -107,15 +110,17 @@ export const call = async (
   authToken: string,
   apiEndpoint: string,
   method: 'GET' | 'POST' | 'DELETE',
-  body: any = null
+  body: any = null,
+  contentType: string = null
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
 
   const isGET = method.toLowerCase() != 'get';
+  const isPlain = contentType === 'text/plain';
 
   headers.append('Authorization', bearer);
-  headers.append('Content-Type', 'application/json');
+  headers.append('Content-Type', contentType ? contentType : 'application/json');
 
   const options = {
     method: method,
@@ -131,7 +136,13 @@ export const call = async (
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
-      console.log(`response from`, apiEndpoint, options, 'is:', await jsonCopy(response), response);
+      console.log(
+        `response from`,
+        apiEndpoint,
+        options,
+        await responseCopy(response, isPlain),
+        response
+      );
       if (response.status == 401) {
         msalLogout(true);
       }
@@ -139,7 +150,7 @@ export const call = async (
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 
-      return response.json();
+      return isPlain ? response.text() : response.json();
     })
     .catch((error) => {
       errToast(`details: ${error}`);
@@ -153,9 +164,9 @@ function getParams(paramsObj: { [key: string]: string | number }) {
   );
 }
 
-async function jsonCopy(response: Response) {
+async function responseCopy(response: Response, isPlain: boolean) {
   try {
-    return response.clone().json().catch(console.error);
+    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
   } catch (e) {
     return '';
   }

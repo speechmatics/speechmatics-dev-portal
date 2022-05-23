@@ -208,3 +208,8 @@ button[role='tab']:not(:first-child) {
 .text_link:hover {
   color: var(--chakra-colors-smBlue-400);
 }
+
+.chakra-menu__menu-button > span {
+  flex: 0 0 auto;
+  display: flex;
+}
