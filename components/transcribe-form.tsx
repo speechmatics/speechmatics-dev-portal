@@ -265,7 +265,10 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
       {transcriptionText}
     </Box>
     <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'>Copy Transcription</Button>
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
+        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
+        Copy Transcription
+      </Button>
       <Menu>
         <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
           Download Transcription
@@ -288,8 +291,8 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
 
 const Stat = ({ title, value, ...boxProps }) => (
   <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.8em'>{value}</Text>
+    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.85em'>{title} </Text>
+    <Text as='span' color='smBlack.300' fontSize='0.85em'>{value}</Text>
   </Box>
 )
 

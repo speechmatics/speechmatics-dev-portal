@@ -117,6 +117,7 @@ export const call = async (
   const bearer = `Bearer ${authToken}`;
 
   const isGET = method.toLowerCase() != 'get';
+  const isPlain = contentType === 'text/plain';
 
   headers.append('Authorization', bearer);
   headers.append('Content-Type', contentType ? contentType : 'application/json');
@@ -135,7 +136,13 @@ export const call = async (
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
-      console.log(`response from`, apiEndpoint, options, 'is:', await jsonCopy(response), response);
+      console.log(
+        `response from`,
+        apiEndpoint,
+        options,
+        await responseCopy(response, isPlain),
+        response
+      );
       if (response.status == 401) {
         msalLogout(true);
       }
@@ -143,7 +150,7 @@ export const call = async (
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 
-      return contentType === 'text/plain' ? response.text() : response.json();
+      return isPlain ? response.text() : response.json();
     })
     .catch((error) => {
       errToast(`details: ${error}`);
@@ -157,9 +164,9 @@ function getParams(paramsObj: { [key: string]: string | number }) {
   );
 }
 
-async function jsonCopy(response: Response) {
+async function responseCopy(response: Response, isPlain: boolean) {
   try {
-    return response.clone().json().catch(console.error);
+    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
   } catch (e) {
     return '';
   }

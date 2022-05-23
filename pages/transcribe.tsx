@@ -149,7 +149,7 @@ const ProcessingTranscription = observer(function ({ store }: ProcessingTranscri
       Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
+    <Button variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
   </Flex>
 })
 
