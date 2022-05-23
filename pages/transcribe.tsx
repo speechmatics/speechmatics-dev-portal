@@ -60,17 +60,17 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField label="Language" tooltip='Expected language of transcription'
+      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Expected language of transcription'
         data={languagesData} onSelect={val => store.language = val} />
 
-      <SelectField label="Separation" tooltip='Separation of transcription'
+      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Separation of transcription'
         data={separation} onSelect={val => store.separation = val as any} />
 
-      <SelectField label="Accuracy" tooltip="Accuracy model"
+      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Accuracy model"
         data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%'
+      <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
         onClick={() => flow.attemptSendFile()}
         disabled={!store.file || !store.secretKey}>
         Get Your Transcription
@@ -140,10 +140,10 @@ const ProcessingTranscription = observer(function ({ store }: ProcessingTranscri
     {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
-      Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
+      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => store.resetStore()}>Transcribe Another File</Button>
   </Flex>
 })
 
