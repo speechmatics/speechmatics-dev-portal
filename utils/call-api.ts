@@ -79,12 +79,13 @@ export const callRequestFileTranscription = async (
   separation: Separation
 ) => {
   const formData = new FormData();
+
   formData.append('file', file);
   formData.append('language', language);
   formData.append('accuracy', accuracy);
   formData.append('separation', separation);
 
-  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData);
+  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData, 'multipart/form-data');
 };
 
 export const callRequestJobStatus = async (secretKey: string, jobId: string) => {
@@ -107,7 +108,8 @@ export const call = async (
   authToken: string,
   apiEndpoint: string,
   method: 'GET' | 'POST' | 'DELETE',
-  body: any = null
+  body: any = null,
+  contentType: string = null
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
@@ -115,7 +117,7 @@ export const call = async (
   const isGET = method.toLowerCase() != 'get';
 
   headers.append('Authorization', bearer);
-  headers.append('Content-Type', 'application/json');
+  headers.append('Content-Type', contentType ? contentType : 'application/json');
 
   const options = {
     method: method,

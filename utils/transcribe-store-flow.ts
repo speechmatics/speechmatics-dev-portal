@@ -1,9 +1,12 @@
+import { createStandaloneToast } from '@chakra-ui/react';
 import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
 import {
   callFileTranscriptionSecret,
   callRequestFileTranscription,
   callRequestJobStatus,
 } from './call-api';
+
+const toast = createStandaloneToast({});
 
 export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
 export type Accuracy = 'enhanced' | 'standard';
@@ -126,22 +129,27 @@ class FileTranscribeFlow {
       separation
     );
 
-    this.store.jobId = resp.id;
-    this.store.stage = 'pendingTranscription';
+    if (resp && 'id' in resp) {
+      this.store.jobId = resp.id;
+      this.store.stage = 'pendingTranscription';
 
-    this.runStatusPooling();
+      this.runStatusPolling();
+    } else {
+      //todo handle errors
+      toast({ description: 'error' });
+    }
 
     //check server response if all right, does it send 4xx when wrong?
   }
 
   interv = 0;
 
-  runStatusPooling() {
+  runStatusPolling() {
     const { secretKey, jobId } = this.store;
 
     this.interv = window.setInterval(async () => {
       const resp = await callRequestJobStatus(secretKey, jobId);
-      const status = (this.store.jobStatus = resp.status);
+      const status = (this.store.jobStatus = resp.job.status);
       if (status === 'done') {
         this.store.stage = 'complete';
         this.fetchTranscription();
@@ -150,11 +158,11 @@ class FileTranscribeFlow {
         this.store.stage = 'failed';
         //todo add display reason
       }
-      if (status !== 'running') this.stopPooling();
+      if (status !== 'running') this.stopPolling();
     }, 5000);
   }
 
-  stopPooling() {
+  stopPolling() {
     window.clearInterval(this.interv);
   }
 
