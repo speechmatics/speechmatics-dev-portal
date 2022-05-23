@@ -72,7 +72,7 @@ const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
     <Flex width='100%' justifyContent='center' py={2}>
       <Button variant='speechmatics' fontSize='18' width='100%'
         onClick={() => flow.attemptSendFile()}
-        disabled={!store.file || !store.secretKey}>
+        disabled={!store._file || !store.secretKey}>
         Get Your Transcription
       </Button>
     </Flex>

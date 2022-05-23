@@ -99,8 +99,10 @@ export const callRequestJobTranscription = async (
 ) => {
   return call(
     secretKey,
-    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `/format?=${format}` : ''}`,
-    'GET'
+    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `?format=${format}` : ''}`,
+    'GET',
+    null,
+    'text/plain'
   );
 };
 
@@ -141,7 +143,7 @@ export const call = async (
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 
-      return response.json();
+      return contentType === 'text/plain' ? response.text() : response.json();
     })
     .catch((error) => {
       errToast(`details: ${error}`);

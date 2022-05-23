@@ -4,6 +4,7 @@ import {
   callFileTranscriptionSecret,
   callRequestFileTranscription,
   callRequestJobStatus,
+  callRequestJobTranscription,
 } from './call-api';
 
 const toast = createStandaloneToast({});
@@ -11,6 +12,7 @@ const toast = createStandaloneToast({});
 export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
 export type Accuracy = 'enhanced' | 'standard';
 export type Separation = 'none' | 'speaker';
+type JobStatus = 'running' | 'done' | 'rejected' | '';
 
 export const languagesData = [
   { label: 'English', value: 'en', selected: true },
@@ -45,17 +47,93 @@ const enum FlowError {
 }
 
 export class FileTranscriptionStore {
-  language: string = 'en';
-  accuracy: Accuracy = 'enhanced';
-  separation: Separation = 'none';
-  file: File = null;
-  jobId: string = '';
-  stage: Stage = 'form';
-  jobStatus: 'running' | 'done' | 'rejected' | '' = '';
-  secretKey: string = '';
-  transcriptionText: string = '';
-  dateSubmitted: string = '';
-  error: FlowError | null = null;
+  _language: string = 'en';
+  set language(value: string) {
+    this._language = value;
+  }
+  get language(): string {
+    return this._language;
+  }
+
+  _accuracy: Accuracy = 'enhanced';
+  set accuracy(value: Accuracy) {
+    this._accuracy = value;
+  }
+  get accuracy(): Accuracy {
+    return this._accuracy;
+  }
+
+  _separation: Separation = 'none';
+  set separation(value: Separation) {
+    this._separation = value;
+  }
+  get separation(): Separation {
+    return this._separation;
+  }
+
+  _file: File = null;
+  setFile(file: File) {
+    this._file = file;
+  }
+  get file(): File {
+    return this._file;
+  }
+
+  _jobId: string = '';
+  set jobId(value: string) {
+    this._jobId = value;
+  }
+  get jobId(): string {
+    return this._jobId;
+  }
+
+  _stage: Stage = 'form';
+  set stage(value: Stage) {
+    this._stage = value;
+  }
+  get stage(): Stage {
+    return this._stage;
+  }
+
+  _jobStatus: JobStatus = '';
+  set jobStatus(value: JobStatus) {
+    this._jobStatus = value;
+  }
+  get jobStatus(): JobStatus {
+    return this._jobStatus;
+  }
+
+  _secretKey: string = '';
+  set secretKey(value: string) {
+    this._secretKey = value;
+  }
+  get secretKey(): string {
+    return this._secretKey;
+  }
+
+  _transcriptionText: string = '';
+  set transcriptionText(value: string) {
+    this._transcriptionText = value;
+  }
+  get transcriptionText(): string {
+    return this._transcriptionText;
+  }
+
+  _dateSubmitted: string = '';
+  set dateSubmitted(value: string) {
+    this._dateSubmitted = value;
+  }
+  get dateSubmitted(): string {
+    return this._dateSubmitted;
+  }
+
+  _error: FlowError | null = null;
+  set error(value: FlowError | null) {
+    this._error = value;
+  }
+  get error(): FlowError | null {
+    return this._error;
+  }
 
   constructor() {
     makeAutoObservable(this);
@@ -65,7 +143,7 @@ export class FileTranscriptionStore {
     this.language = 'en';
     this.accuracy = 'enhanced';
     this.separation = 'none';
-    this.file = null;
+    this._file = null;
     this.jobId = '';
     this.stage = 'form';
     this.jobStatus = '';
@@ -76,11 +154,11 @@ export class FileTranscriptionStore {
   }
 
   get fileName() {
-    return this.file?.name;
+    return this._file?.name;
   }
 
   get fileSize() {
-    return this.file?.size;
+    return this._file?.size;
   }
 }
 
@@ -98,7 +176,7 @@ class FileTranscribeFlow {
 
   assignFile(file: File) {
     if (file == null) {
-      this.store.file = null;
+      this.store.setFile(null);
       return;
     }
 
@@ -112,12 +190,12 @@ class FileTranscribeFlow {
       this.store.error = FlowError.FileWrongType;
     } else {
       this.store.error = null;
-      this.store.file = file;
+      this.store.setFile(file);
     }
   }
 
   async attemptSendFile() {
-    const { secretKey, file, language, accuracy, separation } = this.store;
+    const { secretKey, _file: file, language, accuracy, separation } = this.store;
 
     this.store.stage = 'pendingFile';
 
@@ -166,7 +244,13 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  fetchTranscription() {}
+  async fetchTranscription() {
+    const { secretKey, jobId } = this.store;
+
+    const transcr = await callRequestJobTranscription(secretKey, jobId, 'txt');
+
+    this.store.transcriptionText = transcr;
+  }
 
   reset() {
     this.store.resetStore();
