@@ -82,10 +82,11 @@ export type SelectFieldProps = {
   label: string,
   tooltip: string,
   data: { value: string, label: string, selected?: boolean }[],
-  onSelect: (value: string) => void
+  onSelect: (value: string) => void,
+  'data-qa': string
 }
 
-export const SelectField = ({ label, tooltip, data, onSelect }: SelectFieldProps) => {
+export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa }: SelectFieldProps) => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -103,7 +104,7 @@ export const SelectField = ({ label, tooltip, data, onSelect }: SelectFieldProps
       <Box color='smBlack.400'>{label}</Box>
       <Box><Tooltip label={tooltip} hasArrow placement="right"><Box><QuestionmarkInCircle /></Box></Tooltip></Box>
     </HStack>
-    <Select borderColor='smBlack.200' color='smBlack.300'
+    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
       {data.map(({ value, label }, i) => <option key={i} value={value} selected={i == selectedIndex}>{label}</option>)}
     </Select>
