@@ -1,7 +1,7 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Stage } from "../utils/transcribe-store-flow";
-import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
+import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
@@ -10,6 +10,7 @@ type FileUploadComponentProps = {
 export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
+  const [file, setFile] = useState<File>(null)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropAreaRef = useRef<HTMLInputElement>(null);
@@ -27,15 +28,22 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
 
   const selectFiles = (files: FileList | null | undefined) => {
     onFileSelect(files[0]);
+    setFile(files[0]);
   }
 
-  const dropClicked = () => {
+  const dropClicked = useCallback(() => {
     fileInputRef.current.click();
-  }
+  }, [])
+
+  const removeFileClick = useCallback(() => {
+    fileInputRef.current.value = '';
+    onFileSelect(null);
+    setFile(null);
+  }, [])
 
   return <Flex alignSelf='stretch'
-    bgColor={filesDragged ? 'smBlue.200' : 'smBlue.100'}
-    _hover={{ bgColor: 'smBlue.150' }}
+    bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
+    _hover={!file ? { bgColor: 'smBlue.150' } : {}}
     border='2px dashed' borderColor='#386DFB66'
     justifyContent='center' alignItems='center' position='relative'
     py={6} px={8}
@@ -44,15 +52,26 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
       style={{ display: 'none' }} onChange={onSelectFiles}
       // multiple 
       accept='audio/*' />
-    <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }}>
-      <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em'
-      />
-      <VStack alignItems='flex-start' spacing={0}>
-        <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
-        <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
-      </VStack>
+    <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
+      {!file ? <>
+        <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
+        <VStack alignItems='flex-start' spacing={0}>
+          <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+          <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
+        </VStack>
+      </> :
+        <Flex alignItems='center' justifyContent='space-between' width='100%'>
+          <Box color='smNavy.500' fontSize='1.2em' lineHeight={1.2}>
+            File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.
+          </Box>
+          <Box cursor='pointer' onClick={removeFileClick}>
+            <RemoveFileIcon width='3em' height='3em' />
+          </Box>
+        </Flex>}
+
     </Flex>
-    <Box position='absolute' height='100%' width='100%' ref={dropAreaRef} cursor='pointer' onClick={dropClicked} />
+    {<Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
+      ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />}
   </Flex>
 }
 
@@ -84,7 +103,7 @@ export const SelectField = ({ label, tooltip, data, onSelect }: SelectFieldProps
     </HStack>
     <Select borderColor='smBlack.200' color='smBlack.300'
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option value={value} selected={i == selectedIndex}>{label}</option>)}
+      {data.map(({ value, label }, i) => <option key={i} value={value} selected={i == selectedIndex}>{label}</option>)}
     </Select>
   </Box>
 }

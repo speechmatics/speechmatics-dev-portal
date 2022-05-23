@@ -93,10 +93,19 @@ class FileTranscribeFlow {
     }
   }
 
-  addFile(file: File) {
+  assignFile(file: File) {
+    if (file == null) {
+      this.store.file = null;
+      return;
+    }
+
     if (file.size > 1_000_000_000) {
       this.store.error = FlowError.FileTooBig;
-    } else if (!['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'application/ogg'].includes(file.type)) {
+    } else if (
+      !['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'audio/wav', 'application/ogg'].includes(
+        file.type
+      )
+    ) {
       this.store.error = FlowError.FileWrongType;
     } else {
       this.store.error = null;
