@@ -20,6 +20,9 @@ export const languagesData = [
   { label: 'German', value: 'de' },
 ];
 
+export const getFullLanguageName = (value: string) =>
+  languagesData.find((el) => el.value == value)?.label;
+
 export const separation: {
   label: string;
   value: Separation;
@@ -195,13 +198,13 @@ class FileTranscribeFlow {
   }
 
   async attemptSendFile() {
-    const { secretKey, _file: file, language, accuracy, separation } = this.store;
+    const { secretKey, _file, language, accuracy, separation } = this.store;
 
     this.store.stage = 'pendingFile';
 
     const resp = await callRequestFileTranscription(
       secretKey,
-      file,
+      _file,
       language,
       accuracy,
       separation
@@ -229,6 +232,7 @@ class FileTranscribeFlow {
       const resp = await callRequestJobStatus(secretKey, jobId);
       const status = (this.store.jobStatus = resp.job.status);
       if (status === 'done') {
+        this.store.dateSubmitted = resp.job.created_at;
         this.store.stage = 'complete';
         this.fetchTranscription();
       }
