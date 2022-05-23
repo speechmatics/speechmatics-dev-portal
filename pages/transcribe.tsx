@@ -87,6 +87,12 @@ const ProcessingTranscription = observer(function ({ store }: ProcessingTranscri
 
   const { stage, fileName, fileSize, jobId } = store;
 
+  useEffect(() => {
+    return () => {
+      flow.stopPolling();
+    }
+  }, [])
+
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
 
