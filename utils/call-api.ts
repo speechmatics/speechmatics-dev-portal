@@ -29,7 +29,7 @@ export const callGetJobs = async (idToken: string, contractId: number, projectId
     contract_id: contractId,
     project_id: projectId,
     ...optionalQueries
-  });
+  })
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
@@ -127,15 +127,14 @@ export const call = async (
       if (response.body == null) {
         return null
       }
-      console.log(response.body)
       if ( format === 'json') {
         return response.json()
       }
       return response.text()
     })
     .catch((error) => {
-      console.log(error)
       errToast(`details: ${error}`);
+      throw error
     });
 };
 

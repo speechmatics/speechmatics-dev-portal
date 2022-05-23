@@ -25,11 +25,12 @@ import {
   ErrorBanner,
   TranscriptionViewer,
   TranscriptionViewerProps,
-  ConfirmationModal,
+  ConfirmRemoveModal,
   TranscriptDownloadMenu,
 } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetJobs, callGetTranscript, callDeleteJob } from '../utils/call-api';
+import { useInterval } from '../utils/hooks';
 import accountContext from '../utils/account-store-context';
 import { useRouter } from 'next/router';
 
@@ -44,9 +45,10 @@ export const RecentJobs = observer(() => {
   const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [deleteJobId, setDeleteJobId] = useState<string>(null);
+  const [isPolling, setIsPolling] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const pageLimit = 201;
+  const pageLimit = 20;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
   const router = useRouter();
@@ -68,27 +70,60 @@ export const RecentJobs = observer(() => {
       }
       callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
         .then((respJson) => {
-          console.log(respJson)
-          if ( respJson?.jobs?.length === 0 ) {
+          if ( respJson?.jobs?.length === 0 ) { 
             setNoMoreJobs(true)
             loadingFunction(false);
           } else if (isActive && !!respJson && 'jobs' in respJson) {
-            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
             const formatted: RecentJobElementProps[] = formatJobs(respJson.jobs);
+            if (formatted.some(item => item.status === 'running')) {
+              setIsPolling(true)
+            }
             const combinedArrays = Array.from(new Set([...jobs, ...formatted]));
+            setCreatedBefore(respJson.jobs[respJson.jobs.length-1].created_at)
             setJobs(combinedArrays);
             loadingFunction(false);
+            isActive = false;
           }
         })
         .catch((err) => {
-          console.log(err)
           errorFunction(true);
           loadingFunction(false);
+          isActive = false;
         });
     }
-    return () => {
-      isActive = false;
-    };
+  };
+
+  const pollJobStatuses = () => {
+    let isActive = true;
+    if (idToken && accountStore.account && !noMoreJobs) {
+      const queries: any = {
+        limit: jobs.length,
+      };
+      callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
+        .then((respJson) => {
+          if (isActive && !!respJson && 'jobs' in respJson) {
+            const updatedJobs = jobs.map(item => {
+              const job = respJson.find(el => el.id == item.id)
+              let stat: any = {}
+              if (job?.status) {
+                stat.status = job?.status
+              }
+              return {
+                ...item,
+                ...stat
+              }
+            })
+            setJobs(updatedJobs);
+            if (updatedJobs.some(item => item.status === 'running')) {
+              setIsPolling(true)
+            }
+            isActive = false;
+          }
+        })
+        .catch((err) => {
+          isActive = false;
+        });
+    }
   };
 
   const downloadTranscript = (id, format) => {
@@ -159,6 +194,8 @@ export const RecentJobs = observer(() => {
     getJobs(setIsLoading, setErrorOnInit);
   }, [idToken, accountStore.account]);
 
+  useInterval(pollJobStatuses, 20000, isPolling)
+
   return (
     <>
       <DescriptionLabel>
@@ -183,7 +220,10 @@ export const RecentJobs = observer(() => {
             );
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
+        {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />
+        }
         <Button
+          hidden={errorOnInit}
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
           variant="speechmatics"
           onClick={(e) => {
@@ -196,7 +236,6 @@ export const RecentJobs = observer(() => {
           {isLoading || (isWaitingOnMore && <Spinner />)}
           {noMoreJobs && 'No More Jobs'}
         </Button>
-        {errorOnInit && <></>}
       </VStack>
       <Modal
         size="4xl"
@@ -207,7 +246,7 @@ export const RecentJobs = observer(() => {
         onClose={() => setTranscriptOpen(false)}
       >
         <ModalOverlay rounded="none" />
-        <ModalContent p={4} rounded="none">
+        <ModalContent p={4} rounded="none" h="70vh">
           <ModalHeader fontFamily="RMNeue-Regular" fontSize="2em" textAlign="center">
             Transcription of "{activeJob?.fileName}"
           </ModalHeader>
@@ -229,11 +268,16 @@ export const RecentJobs = observer(() => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <ConfirmationModal
-        text="Are you sure you want to delete this job?"
+      <ConfirmRemoveModal
         isOpen={isOpen}
         onClose={onClose}
-        execFunction={() => deleteJob(deleteJobId, true)}
+        mainTitle='Delete Job'
+        subTitle='Are you sure you want to delete this job?'
+        onRemoveConfirm={() => {
+          deleteJob(deleteJobId, true)
+          onClose()
+        }}
+        confirmLabel='Delete'
       />
     </>
   );

@@ -665,7 +665,7 @@ export const TranscriptionViewer = ({
       <Stat title="Accuracy:" value={accuracy} />
       <Stat title="Language:" value={language} />
     </HStack>
-    <Box flex="1" maxHeight={150} overflowY="auto" px={6} py={2} color="smBlack.300">
+    <Box flex="1" maxHeight={400} overflowY="auto" px={6} py={2} color="smBlack.300">
       {transcriptionText}
     </Box>
     <HStack width="100%" spacing={4} p={4} borderTop="1px" borderColor="smBlack.200">
@@ -704,53 +704,6 @@ const Stat = ({ title, value, ...boxProps }) => (
       {value}
     </Text>
   </Box>
-);
-
-export const ConfirmationModal = ({ isOpen, onClose, execFunction, text }) => (
-  <Modal
-    size="sm"
-    motionPreset="slideInBottom"
-    scrollBehavior="inside"
-    isCentered={true}
-    isOpen={isOpen}
-    onClose={onClose}
-  >
-    <ModalOverlay rounded="none" />
-    <ModalContent alignItems="center" rounded="none">
-      <ModalHeader fontFamily="RMNeue-Regular" fontSize="2em" textAlign="center">
-        Warning!
-      </ModalHeader>
-      <ModalCloseButton
-        _hover={{ bg: 'smBlack.200' }}
-        _focus={{}}
-        _active={{ bg: 'smBlack.300' }}
-        position="absolute"
-        rounded="full"
-        bg="smWhite.500"
-        border="2px solid"
-        borderColor="smBlack.300"
-        color="smBlack.300"
-        top={-4}
-        right={-4}
-      />
-      <ModalBody textAlign="center">
-        <Text>{text}</Text>
-      </ModalBody>
-      <ModalFooter width="100%" p={4} justifyContent={'space-between'}>
-        <Button
-          bg="smRed.500"
-          color="smWhite.500"
-          onClick={() => {
-            execFunction();
-            onClose();
-          }}
-        >
-          Confirm
-        </Button>
-        <Button onClick={onClose}>Close</Button>
-      </ModalFooter>
-    </ModalContent>
-  </Modal>
 );
 
 export const TranscriptDownloadMenu = ({ jobId, status }) => {
