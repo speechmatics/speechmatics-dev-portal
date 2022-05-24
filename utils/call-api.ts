@@ -41,8 +41,7 @@ export const callDeleteJob = async (idToken: string, jobId: string, force: boole
 export const callGetTranscript = async (idToken: string, jobId: string, format: string) => {
   return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}/transcript`, 'GET', {
     format
-  },
-  format === 'json-v2' ? 'json' : 'text');
+  }, format === 'json-v2' ? 'json' : 'text')
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {

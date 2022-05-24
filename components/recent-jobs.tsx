@@ -90,6 +90,9 @@ export const RecentJobs = observer(() => {
           loadingFunction(false);
           isActive = false;
         });
+      return () => {
+        isActive = false;
+      };
     }
   };
 
@@ -123,15 +126,17 @@ export const RecentJobs = observer(() => {
         .catch((err) => {
           isActive = false;
         });
+      return () => {
+        isActive = false;
+      };
     }
   };
 
   const downloadTranscript = (id, format) => {
-    let isActive = true;
     if (idToken && accountStore.account) {
       callGetTranscript(idToken, id, format)
         .then((response) => {
-          if (isActive && !!response) {
+          if (!!response) {
             const fileName = `${id}.transcript.${format === 'json-v2' ? 'json' : format}`;
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(new Blob([response], { type: 'text/plain' }));
@@ -139,19 +144,14 @@ export const RecentJobs = observer(() => {
             a.click();
           }
         })
-        .catch((err) => {});
     }
-    return () => {
-      isActive = false;
-    };
   };
 
   const openTranscript = (job, format: string) => {
-    let isActive = true;
     if (idToken && accountStore.account) {
       callGetTranscript(idToken, job.jobId, format)
         .then((response) => {
-          if (isActive && !!response) {
+          if (!!response) {
             setActiveJob({
               date: job.date,
               jobId: job.jobId,
@@ -164,11 +164,7 @@ export const RecentJobs = observer(() => {
             setTranscriptOpen(true);
           }
         })
-        .catch((err) => {});
     }
-    return () => {
-      isActive = false;
-    };
   };
 
   const openDeleteDialogue = (id) => {

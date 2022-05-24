@@ -709,20 +709,21 @@ const Stat = ({ title, value, ...boxProps }) => (
 export const TranscriptDownloadMenu = ({ jobId, status }) => {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
-  const downloadTranscript = (id, format) => {
+  const downloadTranscript = (format) => {
     let isActive = true;
     if (idToken && accountStore.account) {
-      callGetTranscript(idToken, id, format)
+      callGetTranscript(idToken, jobId, format)
         .then((response) => {
           if (isActive && !!response) {
-            const fileName = `${id}.transcript.${format === 'json-v2' ? 'json' : format}`;
+            const fileName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
+            const contentType = format === 'json-v2' ? 'application/json' : 'text/plain'
+            const output = format === 'json-v2' ? JSON.stringify(response) : response
             const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(new Blob([response], { type: 'text/plain' }));
+            a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
             a.download = fileName;
             a.click();
           }
         })
-        .catch((err) => {});
     }
     return () => {
       isActive = false;
@@ -744,7 +745,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
         <>
           <MenuItem
             onClick={(e) => {
-              downloadTranscript(jobId, 'txt');
+              downloadTranscript('txt');
             }}
             _focus={{ color: 'smBlue.500' }}
           >
@@ -757,7 +758,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
         <>
           <MenuItem
             onClick={(e) => {
-              downloadTranscript(jobId, 'json-v2');
+              downloadTranscript('json-v2');
             }}
             _focus={{ color: 'smBlue.500' }}
           >
@@ -770,7 +771,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
         <>
           <MenuItem
             onClick={(e) => {
-              downloadTranscript(jobId, 'srt');
+              downloadTranscript('srt');
             }}
             _focus={{ color: 'smBlue.500' }}
           >
