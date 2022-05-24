@@ -61,9 +61,8 @@ export const RecentJobs = observer(() => {
     if (idToken && accountStore.account && !noMoreJobs) {
       errorFunction(false);
       loadingFunction(true);
-      const queries: any = {
+      const queries: JobQuery = {
         limit: pageLimit,
-        include_config: true,
       };
       if (createdBefore != null) {
         queries.created_before = createdBefore;
@@ -99,7 +98,7 @@ export const RecentJobs = observer(() => {
   const pollJobStatuses = () => {
     let isActive = true;
     if (idToken && accountStore.account && !noMoreJobs) {
-      const queries: any = {
+      const queries: JobQuery = {
         limit: jobs.length,
       };
       callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
@@ -129,21 +128,6 @@ export const RecentJobs = observer(() => {
       return () => {
         isActive = false;
       };
-    }
-  };
-
-  const downloadTranscript = (id, format) => {
-    if (idToken && accountStore.account) {
-      callGetTranscript(idToken, id, format)
-        .then((response) => {
-          if (!!response) {
-            const fileName = `${id}.transcript.${format === 'json-v2' ? 'json' : format}`;
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(new Blob([response], { type: 'text/plain' }));
-            a.download = fileName;
-            a.click();
-          }
-        })
     }
   };
 
@@ -208,8 +192,6 @@ export const RecentJobs = observer(() => {
                 setRef={el.id === router.query.job ? executeScroll : () => {}}
                 key={el.id}
                 {...el}
-                downloadTranscript={downloadTranscript}
-                deleteJob={deleteJob}
                 openTranscript={openTranscript}
                 startDelete={openDeleteDialogue}
               />
@@ -292,7 +274,7 @@ const RecentJobElement = observer(
     active,
     openTranscript,
     startDelete,
-  }: RecentJobElementProps) => {
+  }: RecentJobElementProps & JobModalProps) => {
     return (
       <HStack
         id={id}
@@ -512,8 +494,6 @@ const formatDate = (date) => {
 
 
 type RecentJobElementProps = {
-  setRef?: any;
-  active?: boolean;
   status: 'running' | 'completed';
   fileName: string;
   date: Date;
@@ -521,10 +501,6 @@ type RecentJobElementProps = {
   duration: string;
   language?: string;
   id: string;
-  downloadTranscript?: any;
-  deleteJob?: any;
-  openTranscript?: any;
-  startDelete?: any;
 };
 
 type JobsResponse = {
@@ -540,6 +516,18 @@ type JobConfig = {
   type: 'transcription' | 'alignment';
   transcription_config: {
     language: string;
-    operating_point: 'standard' | 'enhanced';
+    operating_point?: 'standard' | 'enhanced';
   };
 };
+
+type JobModalProps = {
+  active?: boolean;
+  setRef?: any;
+  openTranscript?: Function;
+  startDelete?: Function;
+};
+
+type JobQuery = {
+  limit?: number;
+  created_before?: string;
+}
