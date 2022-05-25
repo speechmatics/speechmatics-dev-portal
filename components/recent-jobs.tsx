@@ -45,10 +45,11 @@ export const RecentJobs = observer(() => {
   const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [deleteJobId, setDeleteJobId] = useState<string>(null);
-  const [isPolling, setIsPolling] = useState<boolean>(false);
+  const [isPolling, setIsPolling] = useState<boolean>(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const pageLimit = 20;
+  const maxPageLimit = 100;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
   const router = useRouter();
@@ -76,6 +77,8 @@ export const RecentJobs = observer(() => {
             const formatted: RecentJobElementProps[] = formatJobs(respJson.jobs);
             if (formatted.some(item => item.status === 'running')) {
               setIsPolling(true)
+            } else {
+              setIsPolling(true)
             }
             const combinedArrays = Array.from(new Set([...jobs, ...formatted]));
             setCreatedBefore(respJson.jobs[respJson.jobs.length-1].created_at)
@@ -98,40 +101,44 @@ export const RecentJobs = observer(() => {
   const pollJobStatuses = () => {
     let isActive = true;
     if (idToken && accountStore.account && !noMoreJobs) {
-      const queries: JobQuery = {
-        limit: jobs.length,
-      };
-      callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
-        .then((respJson) => {
-          if (isActive && !!respJson && 'jobs' in respJson) {
-            const updatedJobs = jobs.map(item => {
-              const job = respJson.find(el => el.id == item.id)
-              let stat: any = {}
-              if (job?.status) {
-                stat.status = job?.status
-              }
-              return {
-                ...item,
-                ...stat
-              }
-            })
-            setJobs(updatedJobs);
-            if (updatedJobs.some(item => item.status === 'running')) {
-              setIsPolling(true)
-            }
-            isActive = false;
+      let newJobs = []
+      const requests = []
+      const requestNo = Math.ceil(jobs.length/maxPageLimit)
+      if ( requestNo !== 1 ) {
+        for ( let i = 0; i < requestNo; i++ ) {
+          console.log(i)
+          let createdBeforeTime = jobs[maxPageLimit*i]?.date?.toISOString();
+          let query = {limit: maxPageLimit, created_before: createdBeforeTime}
+          requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
+        }
+      } else {
+        let createdBeforeTime = jobs[0]?.date?.toISOString();
+        let query = {limit: jobs.length, created_before: createdBeforeTime}
+        requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
+      }
+      Promise.all(requests).then(result => {
+        for ( const res of result ) {
+          if (isActive && !!res && 'jobs' in res) {
+            newJobs = [...newJobs, ...res.jobs]
           }
-        })
-        .catch((err) => {
-          isActive = false;
-        });
+        }
+        if (isActive) {
+          const formatted = formatJobs(newJobs)
+          setJobs(formatted)
+          if (newJobs.some(item => item.status === 'running')) {
+            setIsPolling(true)
+          } else {
+            setIsPolling(true)
+          }
+        }
+      })
       return () => {
         isActive = false;
       };
     }
   };
 
-  const openTranscript = (job, format: string) => {
+  const onOpenTranscript = (job, format: string) => {
     if (idToken && accountStore.account) {
       callGetTranscript(idToken, job.jobId, format)
         .then((response) => {
@@ -151,12 +158,12 @@ export const RecentJobs = observer(() => {
     }
   };
 
-  const openDeleteDialogue = (id) => {
+  const onOpenDeleteDialogue = (id) => {
     setDeleteJobId(id)
     onOpen()
   }
 
-  const deleteJob = (id, force) => {
+  const onDeleteJob = (id, force) => {
     if (idToken && accountStore.account) {
       callDeleteJob(idToken, id, force)
         .then((response) => {
@@ -189,11 +196,11 @@ export const RecentJobs = observer(() => {
             return (
               <RecentJobElement
                 active={el.id === router.query.job}
-                setRef={el.id === router.query.job ? executeScroll : () => {}}
+                onSetRef={el.id === router.query.job ? executeScroll : () => {}}
                 key={el.id}
                 {...el}
-                openTranscript={openTranscript}
-                startDelete={openDeleteDialogue}
+                onOpenTranscript={onOpenTranscript}
+                onStartDelete={onOpenDeleteDialogue}
               />
             );
           })}
@@ -252,7 +259,7 @@ export const RecentJobs = observer(() => {
         mainTitle='Delete Job'
         subTitle='Are you sure you want to delete this job?'
         onRemoveConfirm={() => {
-          deleteJob(deleteJobId, true)
+          onDeleteJob(deleteJobId, true)
           onClose()
         }}
         confirmLabel='Delete'
@@ -270,15 +277,15 @@ const RecentJobElement = observer(
     duration,
     language,
     id,
-    setRef,
+    onSetRef,
     active,
-    openTranscript,
-    startDelete,
+    onOpenTranscript,
+    onStartDelete,
   }: RecentJobElementProps & JobModalProps) => {
     return (
       <HStack
         id={id}
-        ref={setRef}
+        ref={onSetRef}
         border="1px solid"
         borderColor={active ? 'smGreen.300' : 'smBlack.200'}
         bg={active ? 'smGreen.200' : null}
@@ -348,7 +355,7 @@ const RecentJobElement = observer(
               variant="unstyled"
               aria-label="stop-or-delete"
               onClick={(e) =>
-                openTranscript(
+                onOpenTranscript(
                   {
                     jobId: id,
                     language,
@@ -366,7 +373,7 @@ const RecentJobElement = observer(
           <IconButton
             variant="unstyled"
             aria-label="stop-or-delete"
-            onClick={(e) => startDelete(id)}
+            onClick={(e) => onStartDelete(id)}
             flex={1}
             icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
           />
@@ -522,9 +529,9 @@ type JobConfig = {
 
 type JobModalProps = {
   active?: boolean;
-  setRef?: any;
-  openTranscript?: Function;
-  startDelete?: Function;
+  onSetRef?: any;
+  onOpenTranscript?: Function;
+  onStartDelete?: Function;
 };
 
 type JobQuery = {
