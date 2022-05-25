@@ -1,15 +1,14 @@
-import { Box, BoxProps, Button, Divider, Flex, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, VStack } from "@chakra-ui/react";
-import faker from "@faker-js/faker";
+import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { CompleteIcon, CopyIcon, DownloadIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
+import { CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
 import { FileUploadComponent, SelectField, FileProcessingProgress, TranscriptionViewer } from "../components/transcribe-form";
 import accountStoreContext from "../utils/account-store-context";
-import { fileTranscriptionFlow as flow, FileTranscriptionStore, accuracyModels, languagesData, separation } from "../utils/transcribe-store-flow";
-
+import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
+import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
 
 
 export default observer(function Transcribe({ }) {
@@ -47,7 +46,7 @@ type TranscribeFormProps = {
   store: FileTranscriptionStore;
 }
 
-const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
+export const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
@@ -83,7 +82,7 @@ type ProcessingTranscriptionProps = {
   store: FileTranscriptionStore;
 }
 
-const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
+export const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
 
   const { stage, fileName, fileSize, jobId } = store;
 
@@ -139,7 +138,7 @@ const ProcessingTranscription = observer(function ({ store }: ProcessingTranscri
 
     {stage == 'complete' &&
       <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
-        accuracy={store.accuracy} language={store.language} downloadLink="http://asdvcxv.fd"
+        accuracy={store.accuracy} language={store.language} downloadLink=""
         transcriptionText={store.transcriptionText} />}
 
 

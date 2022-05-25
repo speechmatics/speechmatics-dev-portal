@@ -2,7 +2,7 @@ import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Men
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
-import { getFullLanguageName, Stage } from "../utils/transcribe-store-flow";
+import { getFullLanguageName, Stage } from "../utils/transcribe-elements";
 import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
@@ -102,11 +102,15 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
       <Box color='smBlack.400'>{label}</Box>
-      <Box><Tooltip label={tooltip} hasArrow placement="right"><Box><QuestionmarkInCircle /></Box></Tooltip></Box>
+      <Box>
+        <Tooltip label={tooltip} hasArrow placement="right">
+          <Box><QuestionmarkInCircle /></Box>
+        </Tooltip>
+      </Box>
     </HStack>
-    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa}
+    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa} defaultValue={selectedIndex}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option key={i} value={value} selected={i == selectedIndex}>{label}</option>)}
+      {data.map(({ value, label }, i) => <option key={i} value={value}>{label}</option>)}
     </Select>
   </Box>
 }
