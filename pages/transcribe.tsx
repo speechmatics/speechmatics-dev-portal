@@ -1,33 +1,31 @@
 import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
-import faker from "@faker-js/faker";
+
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { useCallback, useState } from "react";
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel, TranscriptionViewer } from "../components/common";
+import { useContext, useEffect } from "react";
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
-import { FileUploadComponent, SelectField, FileProcessingProgress, Stage } from "../components/transcribe-form";
+import { FileUploadComponent, SelectField, FileProcessingProgress, TranscriptionViewer } from "../components/transcribe-form";
+import accountStoreContext from "../utils/account-store-context";
+import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
+import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
 
-const languagesData = [
-  { label: 'English', value: 'en', selected: true },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-]
 
-const separation = [
-  { label: 'None', value: 'none', selected: true },
-  { label: 'Speaker', value: 'speaker' },
-]
-
-const accuracyModels = [
-  { label: 'Enhanced', value: 'enhanced', selected: true },
-  { label: 'Standard', value: 'standard' },
-
-]
 
 export default observer(function Transcribe({ }) {
 
-  const [stage, setStage] = useState<Stage>('form')
+  const { stage } = flow.store;
+
+  const { tokenStore } = useContext(accountStoreContext);
+
+  useEffect(() => {
+    flow.reset();
+    if (tokenStore.tokenPayload?.idToken)
+      flow.fetchSecret(tokenStore.tokenPayload.idToken);
+
+  }, [tokenStore.tokenPayload?.idToken])
+
 
   return (
     <Dashboard>
@@ -36,55 +34,66 @@ export default observer(function Transcribe({ }) {
         introduction="Upload and Transcribe an Audio File." />
 
       <SmPanel width='100%' maxWidth='900px'>
-        {stage == 'form' && <TranscribeForm onAdvance={() => setStage('pendingFile')} />}
-        {['pendingFile', 'pendingTranscription', 'failed', 'complete'].includes(stage) &&
-          <ProcessingTranscription stage={stage} onTranscribeAnotherFile={() => setStage('form')} />}
+
+        {stage === 'form' ?
+          <TranscribeForm store={flow.store} /> :
+          <ProcessingTranscription store={flow.store} />}
+
       </SmPanel>
     </Dashboard>
   );
 })
 
 type TranscribeFormProps = {
-  onAdvance: () => void;
+  store: FileTranscriptionStore;
 }
 
-const TranscribeForm = observer(function ({ onAdvance }: TranscribeFormProps) {
-
-  const onGetTranscriptionClick = useCallback(() => {
-    onAdvance();
-  }, [])
+export const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
     <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
-      <FileUploadComponent />
+      <FileUploadComponent onFileSelect={file => flow.assignFile(file)} />
     </Box>
 
     <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField label="Language" tooltip='Expected language of transcription' data={languagesData} onSelect={() => { }} />
-      <SelectField label="Separation" tooltip='Separation of transcription' data={separation} onSelect={() => { }} />
-      <SelectField label="Accuracy" tooltip="Accuracy model" data={accuracyModels} onSelect={() => { }} />
+      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Expected language of transcription'
+        data={languagesData} onSelect={val => store.language = val} />
+
+      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Separation of transcription'
+        data={separation} onSelect={val => store.separation = val as any} />
+
+      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Accuracy model"
+        data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>
-      <Button variant='speechmatics' fontSize='18' width='100%' onClick={onGetTranscriptionClick}>Get Your Transcription</Button>
+      <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
+        onClick={() => flow.attemptSendFile()}
+        disabled={!store._file || !store.secretKey}>
+        Get Your Transcription
+      </Button>
     </Flex>
   </>
 })
 
 type ProcessingTranscriptionProps = {
-  stage: Stage;
-  onTranscribeAnotherFile: () => void;
+  store: FileTranscriptionStore;
 }
 
-const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: ProcessingTranscriptionProps) {
+export const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
 
-  const fileSize = '1MB'; // get from files[]
-  const jobId = 'AABBCCDD'; // get from store after uploading a file
-  const fileName = 'alpha.mp3';
+  const { stage, fileName, fileSize, jobId } = store;
+
+  useEffect(() => {
+    return () => {
+      flow.stopPolling();
+    }
+  }, [])
+
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
 
@@ -114,8 +123,10 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
       subtitle={<>Status of your job (ID: {jobId}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
       </>}
-      subtitle2={<>You have reached your monthly usage limit.{' '}
-        Please <Link href='/manage-billing'><a className="text_link">Add a Payment Card</a></Link> to increase your limit.</>}
+      subtitle2={<>You have reached your monthly usage limit. Please
+        {' '}<Link href='/manage-billing'>
+          <a className="text_link">Add a Payment Card</a>
+        </Link> to increase your limit.</>}
     />}
 
     {stage == 'complete' && <PendingLabelsSlots
@@ -128,20 +139,22 @@ const ProcessingTranscription = function ({ stage, onTranscribeAnotherFile }: Pr
     {stage != 'complete' && <FileProcessingProgress stage={stage} my={4} />}
 
     {stage == 'complete' &&
-      <TranscriptionViewer my={4} date='2 May 2022 4:18pm' jobId="ASDFZXCV"
-        accuracy="Enhanced" language="English" downloadLink="http://asdvcxv.fd"
-        transcriptionText={faker.lorem.sentences(20)} />}
+      <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
+        accuracy={store.accuracy} language={store.language} downloadLink=""
+        transcriptionText={store.transcriptionText} />}
 
 
     {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
-      Go to the <Link href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
+      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
-    <Button variant='speechmaticsOutline' onClick={onTranscribeAnotherFile}>Transcribe Another File</Button>
+
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
+
   </Flex>
-}
+})
 
 const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
 

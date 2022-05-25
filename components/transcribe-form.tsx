@@ -1,13 +1,18 @@
-import { Box, HStack, Tooltip, Select, Flex, Button, VStack, BoxProps } from "@chakra-ui/react";
-import { useState, useEffect, useRef } from "react";
-import { OkayIcon, QuestionmarkInCircle, UploadFileIcon } from "./icons-library";
+import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { formatTimeDateFromString } from "../utils/date-utils";
+import { capitalizeFirstLetter } from "../utils/string-utils";
+import { getFullLanguageName, Stage } from "../utils/transcribe-elements";
+import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, UploadFileIcon } from "./icons-library";
 
-export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' | 'complete';
+type FileUploadComponentProps = {
+  onFileSelect: (file: File) => void;
+}
 
-
-export const FileUploadComponent = ({ }) => {
+export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
+  const [file, setFile] = useState<File>(null)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropAreaRef = useRef<HTMLInputElement>(null);
@@ -24,16 +29,23 @@ export const FileUploadComponent = ({ }) => {
   }
 
   const selectFiles = (files: FileList | null | undefined) => {
-
+    onFileSelect(files[0]);
+    setFile(files[0]);
   }
 
-  const dropClicked = () => {
+  const dropClicked = useCallback(() => {
     fileInputRef.current.click();
-  }
+  }, [])
+
+  const removeFileClick = useCallback(() => {
+    fileInputRef.current.value = '';
+    onFileSelect(null);
+    setFile(null);
+  }, [])
 
   return <Flex alignSelf='stretch'
-    bgColor={filesDragged ? 'smBlue.200' : 'smBlue.100'}
-    _hover={{ bgColor: 'smBlue.150' }}
+    bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
+    _hover={!file ? { bgColor: 'smBlue.150' } : {}}
     border='2px dashed' borderColor='#386DFB66'
     justifyContent='center' alignItems='center' position='relative'
     py={6} px={8}
@@ -42,15 +54,26 @@ export const FileUploadComponent = ({ }) => {
       style={{ display: 'none' }} onChange={onSelectFiles}
       // multiple 
       accept='audio/*' />
-    <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }}>
-      <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em'
-      />
-      <VStack alignItems='flex-start' spacing={0}>
-        <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
-        <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
-      </VStack>
+    <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
+      {!file ? <>
+        <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
+        <VStack alignItems='flex-start' spacing={0}>
+          <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+          <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
+        </VStack>
+      </> :
+        <Flex alignItems='center' justifyContent='space-between' width='100%'>
+          <Box color='smNavy.500' fontSize='1.2em' lineHeight={1.2}>
+            File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.
+          </Box>
+          <Box cursor='pointer' onClick={removeFileClick}>
+            <RemoveFileIcon width='3em' height='3em' />
+          </Box>
+        </Flex>}
+
     </Flex>
-    <Box position='absolute' height='100%' width='100%' ref={dropAreaRef} cursor='pointer' onClick={dropClicked} />
+    {<Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
+      ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />}
   </Flex>
 }
 
@@ -59,10 +82,11 @@ export type SelectFieldProps = {
   label: string,
   tooltip: string,
   data: { value: string, label: string, selected?: boolean }[],
-  onSelect: (value: string) => void
+  onSelect: (value: string) => void,
+  'data-qa': string
 }
 
-export const SelectField = ({ label, tooltip, data, onSelect }: SelectFieldProps) => {
+export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa }: SelectFieldProps) => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -78,11 +102,15 @@ export const SelectField = ({ label, tooltip, data, onSelect }: SelectFieldProps
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
       <Box color='smBlack.400'>{label}</Box>
-      <Box><Tooltip label={tooltip} hasArrow placement="right"><Box><QuestionmarkInCircle /></Box></Tooltip></Box>
+      <Box>
+        <Tooltip label={tooltip} hasArrow placement="right">
+          <Box><QuestionmarkInCircle /></Box>
+        </Tooltip>
+      </Box>
     </HStack>
-    <Select borderColor='smBlack.200' color='smBlack.300'
+    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa} defaultValue={selectedIndex}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option value={value} selected={i == selectedIndex}>{label}</option>)}
+      {data.map(({ value, label }, i) => <option key={i} value={value}>{label}</option>)}
     </Select>
   </Box>
 }
@@ -120,54 +148,6 @@ export const ChoiceButtons = ({ label, tooltip, data, onSelect }: ChoiceButtonsP
       })}
     </Flex>
   </Box>
-}
-
-
-
-
-const filesMap = (files: FileList | undefined | null): File[] => {
-  const ret: File[] = [];
-  if (files && files.length > 0)
-    for (let i = 0; i < files.length; i++)
-      if (files[i]) {
-        ret.push(files[i]);
-      }
-  return ret;
-}
-
-
-export function onGridDragDropSetup(elem: HTMLElement | null,
-  filesDropped: (files: FileList | undefined) => void,
-  filesDraggedOver?: (v: boolean) => void,
-) {
-  if (!elem) return;
-  let callbackRefs = []
-  console.log('setting up drag drop', elem);
-  elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
-    ev.preventDefault();
-    filesDraggedOver?.(true);
-  });
-  elem.addEventListener('drop', callbackRefs[1] = (ev: DragEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    filesDropped(ev.dataTransfer?.files);
-    filesDraggedOver?.(false);
-  });
-  elem.addEventListener('dragleave', callbackRefs[2] = (ev: DragEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    filesDraggedOver?.(false);
-  });
-
-  return callbackRefs;
-}
-
-export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
-  if (!elem) return;
-  const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
-  elem.removeEventListener('dragover', dragOverCb);
-  elem.removeEventListener('drop', dropCb);
-  elem.removeEventListener('dragleave', dragLeaveCb);
 }
 
 
@@ -265,3 +245,110 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
   </Box>
 }
 
+
+
+type TranscriptionViewerProps = {
+  transcriptionText: string;
+  date: string;
+  jobId: string;
+  accuracy: string;
+  language: string;
+  downloadLink: string;
+} & BoxProps
+
+export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
+  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
+    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
+      borderBottom='1px'
+      borderColor='smBlack.200'>
+      <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
+      <Stat title='Job ID:' value={jobId} />
+      <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
+      <Stat title='Language:' value={getFullLanguageName(language)} />
+    </HStack>
+    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
+      {transcriptionText}
+    </Box>
+    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
+        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
+        Copy Transcription
+      </Button>
+      <Menu>
+        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
+          Download Transcription
+        </MenuButton>
+        <MenuList>
+          <MenuItem py={1}>Download as text</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as JSON</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download as srt</MenuItem>
+          <MenuDivider color='smNavy.270' />
+          <MenuItem py={1}>Download audio</MenuItem>
+        </MenuList>
+      </Menu>
+    </HStack>
+  </VStack>
+)
+
+
+
+const Stat = ({ title, value, ...boxProps }) => (
+  <Box {...boxProps}>
+    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.85em'>{title} </Text>
+    <Text as='span' color='smBlack.300' fontSize='0.85em'>{value}</Text>
+  </Box>
+)
+
+
+
+
+
+
+
+
+const filesMap = (files: FileList | undefined | null): File[] => {
+  const ret: File[] = [];
+  if (files && files.length > 0)
+    for (let i = 0; i < files.length; i++)
+      if (files[i]) {
+        ret.push(files[i]);
+      }
+  return ret;
+}
+
+
+export function onGridDragDropSetup(elem: HTMLElement | null,
+  filesDropped: (files: FileList | undefined) => void,
+  filesDraggedOver?: (v: boolean) => void,
+) {
+  if (!elem) return;
+  let callbackRefs = []
+  console.log('setting up drag drop', elem);
+  elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
+    ev.preventDefault();
+    filesDraggedOver?.(true);
+  });
+  elem.addEventListener('drop', callbackRefs[1] = (ev: DragEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    filesDropped(ev.dataTransfer?.files);
+    filesDraggedOver?.(false);
+  });
+  elem.addEventListener('dragleave', callbackRefs[2] = (ev: DragEvent) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    filesDraggedOver?.(false);
+  });
+
+  return callbackRefs;
+}
+
+export function removeListenersOnDropZone(elem: HTMLElement, callbackRefs: Array<(ev: DragEvent) => void>) {
+  if (!elem) return;
+  const [dragOverCb, dropCb, dragLeaveCb] = callbackRefs;
+  elem.removeEventListener('dragover', dragOverCb);
+  elem.removeEventListener('drop', dropCb);
+  elem.removeEventListener('dragleave', dragLeaveCb);
+}

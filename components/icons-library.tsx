@@ -1,6 +1,36 @@
 import React from 'react';
 import { SVGProps } from 'react';
 
+export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 46 46"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <circle
+        cx={23}
+        cy={23}
+        r={15.513}
+        transform="rotate(-45 23 23)"
+        fill="#fff"
+        stroke="#D82C2C"
+        strokeWidth={1.5}
+      />
+      <path
+        d="M17.479 17.9l11.04 10.098M28.518 17.9l-11.04 10.098"
+        stroke="#D82C2C"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function ViewEyeIcon(props) {
   return (
     <svg
