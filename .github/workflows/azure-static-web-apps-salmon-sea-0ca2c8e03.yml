@@ -29,19 +29,15 @@ jobs:
       CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'
       CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Set up node
+
+      - name: Set up node and test
         uses: actions/setup-node@v3
-          with:
-            node-version: 16
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Tests
-        run: npm test
+        with:
+          node-version: 14
+        run: npm ci && npm test
 
       - name: Build And Deploy
         id: builddeploy
