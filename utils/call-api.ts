@@ -3,6 +3,7 @@ import { msalLogout } from './msal-utils';
 import { Accuracy, Separation } from './transcribe-store-flow';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
+const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
 
@@ -27,6 +28,26 @@ export const callGetUsage = async (
     sort_order: 'asc',
     ...dates,
   });
+};
+
+export const callGetJobs = async (idToken: string, contractId: number, projectId: number, optionalQueries: any) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs`, 'GET', {
+    contract_id: contractId,
+    project_id: projectId,
+    ...optionalQueries
+  })
+};
+
+export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', {
+    force
+  });
+};
+
+export const callGetTranscript = async (idToken: string, jobId: string, format: string) => {
+  return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}/transcript`, 'GET', {
+    format
+  }, format === 'json-v2' ? 'json' : 'text')
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
@@ -150,10 +171,16 @@ export const call = async (
         throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
       }
 
+      if (response.body == null) {
+        return null
+      }
+
       return isPlain ? response.text() : response.json();
+
     })
     .catch((error) => {
       errToast(`details: ${error}`);
+      throw error
     });
 };
 

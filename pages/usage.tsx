@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Dashboard from '../components/dashboard';
 import {
   Box,
@@ -34,12 +35,21 @@ import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
+  const [defaultIndex, setDefaultIndex] = useState(0)
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
+  const { job } = useRouter().query
+  
+  useEffect(() => {
+    if ( job ) {
+      setDefaultIndex(3)
+    }
+  }, [job])
+
 
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
+      <Tabs defaultIndex={defaultIndex} size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>

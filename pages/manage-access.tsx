@@ -7,12 +7,6 @@ import {
   VStack,
   Text,
   useDisclosure,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalOverlay,
   Input,
   Grid,
   GridItem,
@@ -40,7 +34,7 @@ import {
   positiveToast,
   SmPanel,
 } from '../components/common';
-import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
+import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 

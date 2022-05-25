@@ -1,4 +1,5 @@
 import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
+
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
@@ -9,6 +10,7 @@ import { FileUploadComponent, SelectField, FileProcessingProgress, Transcription
 import accountStoreContext from "../utils/account-store-context";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
+
 
 
 export default observer(function Transcribe({ }) {
@@ -166,5 +168,3 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
   <Box textAlign='center' color='smBlack.300'>{subtitle2}</Box>
 </>
 )
-
-
