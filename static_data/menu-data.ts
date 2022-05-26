@@ -5,6 +5,7 @@ import {
   MenuHouseIcon,
   MenuGettingStartedIcon,
   MenuTrackUsageIcon,
+  TranscribeIcon,
 } from '../components/icons-library';
 
 const menuData = [
@@ -21,7 +22,7 @@ const menuData = [
   {
     path: '/transcribe/',
     title: 'Transcribe',
-    icon: MenuGettingStartedIcon,
+    icon: TranscribeIcon,
   },
   {
     path: '/manage-access/',

@@ -2,7 +2,8 @@ import React from 'react';
 import { SVGProps } from 'react';
 
 
-export function TranscribeIcon(props: React.SVGProps<SVGSVGElement>) {
+
+export function TranscribeIcon({ mono, ...props }: { mono: boolean } & React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -14,22 +15,22 @@ export function TranscribeIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <path
         d="M19.887 27.967H.78v-27h14.602l4.505 4.48v22.52z"
-        fill="#A7D0CD"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
       />
-      <path d="M15.382 5.447h4.505L15.382.967v4.48z" fill="#4FA9A2" />
+      <path d="M15.382 5.447h4.505L15.382.967v4.48z" fill={mono ? "#4FA9A2" : "#5E6673"} />
       <path
         d="M11.878 25.473c0-4.142 3.377-7.5 7.542-7.5 4.166 0 7.543 3.358 7.543 7.5 0 4.142-3.377 7.5-7.543 7.5-4.165 0-7.542-3.358-7.542-7.5zM3.833 9h13.073v1H3.833V9zM3.833 12h13.073v1H3.833v-1zM3.833 15h9.05v1h-9.05v-1z"
-        fill="#36817E"
+        fill={mono ? "#36817E" : "#263243"}
       />
       <path
         d="M21.742 21.674a2.318 2.318 0 00-2.321-2.308 2.317 2.317 0 00-2.32 2.308v3.407a2.316 2.316 0 002.32 2.307 2.317 2.317 0 002.32-2.307v-3.407z"
-        fill="#fff"
+        fill={mono ? "#fff" : "#FC3"}
       />
       <path
         d="M19.42 29.618c-2.516 0-4.564-2.036-4.564-4.538h1.006c0 1.95 1.596 3.538 3.558 3.538 1.962 0 3.558-1.587 3.558-3.538h1.006c0 2.502-2.048 4.538-4.564 4.538z"
-        fill="#fff"
+        fill={mono ? "#fff" : "#FC3"}
       />
-      <path d="M18.918 29.118h1.005v2.462h-1.005v-2.462z" fill="#fff" />
+      <path d="M18.918 29.118h1.005v2.462h-1.005v-2.462z" fill={mono ? "#fff" : "#FC3"} />
     </svg>
   );
 }
