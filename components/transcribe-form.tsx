@@ -59,7 +59,7 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
         <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
         <VStack alignItems='flex-start' spacing={0}>
           <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
-          <Box color='smBlack.250' fontSize='.85em' pt={1}>Maximum file size 1GB or 2 hours of audio.</Box>
+          <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
         </VStack>
       </> :
         <Flex alignItems='center' justifyContent='space-between' width='100%'>

@@ -21,7 +21,7 @@ const menuData = [
   },
   {
     path: '/transcribe/',
-    title: 'Transcribe',
+    title: 'Upload & Transcribe',
     icon: TranscribeIcon,
   },
   {

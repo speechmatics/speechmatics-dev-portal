@@ -18,20 +18,20 @@ export default function Home({ }) {
       <VStack spacing='2em' width='100%' maxWidth='900px'>
         <HStack alignItems="flex-start" spacing="2em">
           <HomeBox
-            bgColor="smBlue.500"
-            icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
-            text="Transcribe an audio file with code"
-            buttonLabel="Get Started"
-            hrefUrl="/getting-started/"
-            iconPadding='1.5em 0em 0em 0.8em'
-          />
-          <HomeBox
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
             iconPadding="22px"
             text="Upload and transcribe an audio file"
             buttonLabel="Transcribe Now"
             hrefUrl="/transcribe/"
+          />
+          <HomeBox
+            bgColor="smBlue.500"
+            icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
+            text="Start using our API"
+            buttonLabel="Get Started"
+            hrefUrl="/getting-started/"
+            iconPadding='1.5em 0em 0em 0.8em'
           />
         </HStack>
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>

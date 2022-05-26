@@ -104,23 +104,23 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
         subtitle={<>Your file size is:
           <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
         </>}
-        subtitle2={'This page will automatically fetch and show you the results.'}
+        subtitle2={'This page will automatically refresh and show your results.'}
       />}
 
     {stage == 'pendingTranscription' && <PendingLabelsSlots
       icon={FileProcessingIcon}
-      title={'Your Transcription File Is Being Sent.'}
+      title={'Your Transcription Has Been Submitted.'}
       subtitle={<>Status of your job (ID: {jobId}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> Running</Text>.
       </>}
-      subtitle2={'This page will automatically fetch and show you the results.'}
+      subtitle2={'This page will automatically refresh and show your results.'}
     />}
 
 
     {stage == 'failed' && <PendingLabelsSlots
       icon={FileProcessingFailedIcon}
       title='Your Transcription Has Failed.'
-      subtitle={<>Status of your job (ID: {jobId}) is:
+      subtitle={<>Status of your job (ID: {jobId.toLowerCase()}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
       </>}
       subtitle2={<>You have reached your monthly usage limit. Please
