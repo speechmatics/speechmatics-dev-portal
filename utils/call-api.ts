@@ -57,7 +57,7 @@ export const callGetTranscript = async (idToken: string, jobId: string, format: 
     {
       format,
     },
-    format === 'json-v2' ? 'json' : 'text'
+    format === 'json-v2' ? 'application/json' : 'text/plain'
   );
 };
 
