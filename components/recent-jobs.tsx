@@ -70,7 +70,7 @@ export const RecentJobs = observer(() => {
       }
       callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
         .then((respJson) => {
-          if ( respJson?.jobs?.length === 0 ) { 
+          if (respJson?.jobs?.length === 0) {
             setNoMoreJobs(true)
             loadingFunction(false);
           } else if (isActive && !!respJson && 'jobs' in respJson) {
@@ -81,7 +81,7 @@ export const RecentJobs = observer(() => {
               setIsPolling(true)
             }
             const combinedArrays = Array.from(new Set([...jobs, ...formatted]));
-            setCreatedBefore(respJson.jobs[respJson.jobs.length-1].created_at)
+            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at)
             setJobs(combinedArrays);
             loadingFunction(false);
             isActive = false;
@@ -103,21 +103,21 @@ export const RecentJobs = observer(() => {
     if (idToken && accountStore.account && !noMoreJobs) {
       let newJobs = []
       const requests = []
-      const requestNo = Math.ceil(jobs.length/maxPageLimit)
-      if ( requestNo !== 1 ) {
-        for ( let i = 0; i < requestNo; i++ ) {
+      const requestNo = Math.ceil(jobs.length / maxPageLimit)
+      if (requestNo !== 1) {
+        for (let i = 0; i < requestNo; i++) {
           console.log(i)
-          let createdBeforeTime = jobs[maxPageLimit*i]?.date?.toISOString();
-          let query = {limit: maxPageLimit, created_before: createdBeforeTime}
+          let createdBeforeTime = jobs[maxPageLimit * i]?.date?.toISOString();
+          let query = { limit: maxPageLimit, created_before: createdBeforeTime }
           requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
         }
       } else {
         let createdBeforeTime = jobs[0]?.date?.toISOString();
-        let query = {limit: jobs.length, created_before: createdBeforeTime}
+        let query = { limit: jobs.length, created_before: createdBeforeTime }
         requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
       }
       Promise.all(requests).then(result => {
-        for ( const res of result ) {
+        for (const res of result) {
           if (isActive && !!res && 'jobs' in res) {
             newJobs = [...newJobs, ...res.jobs]
           }
@@ -196,7 +196,7 @@ export const RecentJobs = observer(() => {
             return (
               <RecentJobElement
                 active={el.id === router.query.job}
-                onSetRef={el.id === router.query.job ? executeScroll : () => {}}
+                onSetRef={el.id === router.query.job ? executeScroll : () => { }}
                 key={el.id}
                 {...el}
                 onOpenTranscript={onOpenTranscript}
@@ -236,7 +236,7 @@ export const RecentJobs = observer(() => {
             Transcription of "{activeJob?.fileName}"
           </ModalHeader>
           <ModalCloseButton
-            _hover={{ bg: "smBlack.200"}}
+            _hover={{ bg: "smBlack.200" }}
             _focus={{}}
             _active={{ bg: "smBlack.300" }}
             position="absolute"
@@ -246,7 +246,7 @@ export const RecentJobs = observer(() => {
             borderColor="smBlack.300"
             color="smBlack.300"
             top={-4}
-            right={-4} 
+            right={-4}
           />
           <ModalBody>
             <TranscriptionViewer {...activeJob} />
@@ -268,120 +268,119 @@ export const RecentJobs = observer(() => {
   );
 });
 
-const RecentJobElement = observer(
-  ({
-    status,
-    fileName,
-    date,
-    accuracy,
-    duration,
-    language,
-    id,
-    onSetRef,
-    active,
-    onOpenTranscript,
-    onStartDelete,
-  }: RecentJobElementProps & JobModalProps) => {
-    return (
-      <HStack
-        id={id}
-        ref={onSetRef}
-        border="1px solid"
-        borderColor={active ? 'smGreen.300' : 'smBlack.200'}
-        bg={active ? 'smGreen.200' : null}
-        borderLeft="3px solid"
-        borderLeftColor={statusColour[status]}
-        width="100%"
-        _hover={{ bg: 'smBlack.100' }}
-      >
-        <VStack alignItems="flex-start" p={4} flex={2}>
-          <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
-            {fileName}
+const RecentJobElement = ({
+  status,
+  fileName,
+  date,
+  accuracy,
+  duration,
+  language,
+  id,
+  onSetRef,
+  active,
+  onOpenTranscript,
+  onStartDelete,
+}: RecentJobElementProps & JobModalProps) => {
+  return (
+    <HStack
+      id={id}
+      ref={onSetRef}
+      border="1px solid"
+      borderColor={active ? 'smGreen.300' : 'smBlack.200'}
+      bg={active ? 'smGreen.200' : null}
+      borderLeft="3px solid"
+      borderLeftColor={statusColour[status]}
+      width="100%"
+      _hover={{ bg: 'smBlack.100' }}
+    >
+      <VStack alignItems="flex-start" p={4} flex={2}>
+        <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
+          {fileName}
+        </Box>
+        <HStack
+          fontSize="0.8em"
+          color="smNavy.350"
+          width="90%"
+          spacing={4}
+          justifyContent="space-between"
+        >
+          <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="date submitted">
+              {formatDate(date)}
+            </Tooltip>
           </Box>
-          <HStack
-            fontSize="0.8em"
-            color="smNavy.350"
-            width="90%"
-            spacing={4}
-            justifyContent="space-between"
-          >
-            <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
-              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="date submitted">
-                {formatDate(date)}
-              </Tooltip>
-            </Box>
-            <Box flex={1}>
-              <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="model accuracy level">
-                {accuracy}
-              </Tooltip>
-            </Box>
-            <Box flex={1}>
-              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="job running time">
-                {duration}
-              </Tooltip>
-            </Box>
-            <Box flex={1}>
-              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="audio language">
-                {language}
-              </Tooltip>
-            </Box>
-            <Box flex={1}>
-              <Tooltip
-                placement="bottom"
-                hasArrow
-                color="smWhite.500"
-                label="unique job identifier"
-              >
-                {'(' + id + ')'}
-              </Tooltip>
-            </Box>
-          </HStack>
-        </VStack>
-        <HStack flex={1} spacing={2} marginLeft={4} justifyContent="space-evenly">
-          <HStack flex={2}>
-            <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
-            <Box color={statusColour[status]}>{status}</Box>
-          </HStack>
           <Box flex={1}>
-            <Menu isLazy>
-              <MenuButton>
-                <DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />
-              </MenuButton>
-              <TranscriptDownloadMenu jobId={id} status={status} />
-            </Menu>
+            <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="model accuracy level">
+              {accuracy}
+            </Tooltip>
           </Box>
-          {status === ('done' || 'completed') && (
-            <IconButton
-              variant="unstyled"
-              aria-label="stop-or-delete"
-              onClick={(e) =>
-                onOpenTranscript(
-                  {
-                    jobId: id,
-                    language,
-                    accuracy,
-                    date: formatDate(date),
-                    fileName,
-                  },
-                  true
-                )
-              }
-              flex={1}
-              icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
-            />
-          )}
+          <Box flex={1}>
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="job running time">
+              {duration}
+            </Tooltip>
+          </Box>
+          <Box flex={1}>
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="audio language">
+              {language}
+            </Tooltip>
+          </Box>
+          <Box flex={1}>
+            <Tooltip
+              placement="bottom"
+              hasArrow
+              color="smWhite.500"
+              label="unique job identifier"
+            >
+              {'(' + id + ')'}
+            </Tooltip>
+          </Box>
+        </HStack>
+      </VStack>
+      <HStack flex={1} spacing={2} marginLeft={4} justifyContent="space-evenly">
+        <HStack flex={2}>
+          <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
+          <Box color={statusColour[status]}>{status}</Box>
+        </HStack>
+        <Box flex={1}>
+          <Menu isLazy>
+            <MenuButton>
+              <DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />
+            </MenuButton>
+            <TranscriptDownloadMenu jobId={id} status={status} />
+          </Menu>
+        </Box>
+        {status === ('done' || 'completed') && (
           <IconButton
             variant="unstyled"
             aria-label="stop-or-delete"
-            onClick={(e) => onStartDelete(id)}
+            onClick={(e) =>
+              onOpenTranscript(
+                {
+                  jobId: id,
+                  language,
+                  accuracy,
+                  date: formatDate(date),
+                  fileName,
+                },
+                true
+              )
+            }
             flex={1}
-            icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
+            icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
           />
-        </HStack>
+        )}
+        <IconButton
+          variant="unstyled"
+          aria-label="stop-or-delete"
+          onClick={(e) => onStartDelete(id)}
+          flex={1}
+          icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
+        />
       </HStack>
-    );
-  }
-);
+    </HStack>
+  );
+};
+
 
 const LoadingJobsSkeleton = () => {
   return (
