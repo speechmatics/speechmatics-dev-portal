@@ -3,7 +3,7 @@ import { SVGProps } from 'react';
 
 
 
-export function TranscribeIcon({ mono, ...props }: { mono: boolean } & React.SVGProps<SVGSVGElement>) {
+export function TranscribeIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
