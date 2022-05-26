@@ -91,6 +91,7 @@ export default observer(function ManageBilling({ }) {
         introduction="Manage Your Payments and Usage Limits."
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
+        data-qa="modal-delete-card-confirm"
         mainTitle={`Are you sure want to remove your card?`}
         subTitle=''
         onRemoveConfirm={onRemoveConfirm}
@@ -120,7 +121,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="Hours used is reported on a UTC calendar-day basis and updated every 5 minutes. Total cost excludes usage for the current day." />
+            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." />
           </TabPanel>
         </TabPanels>
       </Tabs>

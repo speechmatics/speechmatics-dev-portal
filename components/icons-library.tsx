@@ -1,6 +1,81 @@
 import React from 'react';
 import { SVGProps } from 'react';
 
+
+export function TranscribeIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 27 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M19.887 27.967H.78v-27h14.602l4.505 4.48v22.52z"
+        fill="#A7D0CD"
+      />
+      <path d="M15.382 5.447h4.505L15.382.967v4.48z" fill="#4FA9A2" />
+      <path
+        d="M11.878 25.473c0-4.142 3.377-7.5 7.542-7.5 4.166 0 7.543 3.358 7.543 7.5 0 4.142-3.377 7.5-7.543 7.5-4.165 0-7.542-3.358-7.542-7.5zM3.833 9h13.073v1H3.833V9zM3.833 12h13.073v1H3.833v-1zM3.833 15h9.05v1h-9.05v-1z"
+        fill="#36817E"
+      />
+      <path
+        d="M21.742 21.674a2.318 2.318 0 00-2.321-2.308 2.317 2.317 0 00-2.32 2.308v3.407a2.316 2.316 0 002.32 2.307 2.317 2.317 0 002.32-2.307v-3.407z"
+        fill="#fff"
+      />
+      <path
+        d="M19.42 29.618c-2.516 0-4.564-2.036-4.564-4.538h1.006c0 1.95 1.596 3.538 3.558 3.538 1.962 0 3.558-1.587 3.558-3.538h1.006c0 2.502-2.048 4.538-4.564 4.538z"
+        fill="#fff"
+      />
+      <path d="M18.918 29.118h1.005v2.462h-1.005v-2.462z" fill="#fff" />
+    </svg>
+  );
+}
+
+export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g
+        opacity={0.7}
+        stroke="#B52626"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M21.094 7.031l-1.4 13.464a1.562 1.562 0 01-1.552 1.38H6.858a1.562 1.562 0 01-1.551-1.38l-1.4-13.464M22.656 3.125H2.344a.781.781 0 00-.781.781V6.25c0 .431.35.781.78.781h20.313c.432 0 .782-.35.782-.781V3.906a.781.781 0 00-.782-.781zM15.234 17.188l-5.468-5.47m5.468 0l-5.468 5.47 5.468-5.47z" />
+      </g>
+    </svg>
+  );
+}
+
+export function StopIcon(props) {
+  return (
+    <svg
+      width={props.width || "1em"}
+      height={props.width || "1em"}
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g opacity={0.74} fill="#D82C2C">
+        <path d="M12.5 2.083C6.756 2.083 2.083 6.756 2.083 12.5S6.756 22.917 12.5 22.917 22.917 18.244 22.917 12.5 18.244 2.083 12.5 2.083zm0 18.75c-4.595 0-8.333-3.738-8.333-8.333 0-4.595 3.738-8.333 8.333-8.333 4.595 0 8.333 3.738 8.333 8.333 0 4.595-3.738 8.333-8.333 8.333z" />
+        <path d="M9.375 9.375h6.25v6.25h-6.25v-6.25z" />
+      </g>
+    </svg>
+  );
+}
+
+
 export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -243,10 +318,7 @@ export const QuestionmarkInCircle = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const DownloadInvoice = ({
-  mono,
-  ...props
-}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={25}
     height={31}
@@ -255,23 +327,28 @@ export const DownloadInvoice = ({
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path d="M18.18 25.636H.138V0h13.786l4.254 4.254v21.382Z" fill={mono ? '#A7D0CD' : '#AEB2B8'} />
-    <path d="M13.926 4.254h4.254L13.926 0v4.254Z" fill={mono ? '#4FA9A2' : '#5E6673'} />
+    <path
+      d="M18.18 25.636H.138V0h13.786l4.254 4.254v21.382Z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path d="M13.926 4.254h4.254L13.926 0v4.254Z" fill={mono ? "#4FA9A2" : "#5E6673"} />
     <path
       d="M10.204 15.653c1.196-.098 1.878-.598 1.878-1.572 0-.807-.431-1.196-1.878-1.53v3.102Zm-1.071-4.674V8.086c-1.113.07-1.724.529-1.724 1.377 0 .807.389 1.196 1.724 1.516Zm1.071 5.898v1.098H9.147v-1.113c-2.017-.166-3.269-1.223-3.366-3.142h1.35c.069 1.112.722 1.766 2.016 1.92v-3.326l-.306-.07c-2.003-.472-2.782-1.237-2.782-2.683 0-1.502 1.071-2.588 3.074-2.699V5.764h1.058V6.89c1.695.181 2.795 1.113 2.961 2.88h-1.348c-.112-.989-.668-1.49-1.613-1.642v3.088l.347.083c2.072.487 2.893 1.266 2.893 2.726 0 1.726-1.266 2.713-3.227 2.852ZM11.566 23.768a6.646 6.646 0 1 1 13.293 0 6.646 6.646 0 0 1-13.293 0Z"
-      fill={mono ? '#36817E' : '#263243'}
+      fill={mono ? "#36817E" : "#263243"}
     />
     <path
       d="m20.648 23.222-1.44 1.355v-5.556h-1.99v5.556l-1.438-1.355-1.364 1.449 3.797 3.575 3.798-3.575-1.363-1.449Z"
-      fill={mono ? '#fff' : '#FC3'}
+      fill={mono ? "#fff" : "#FC3"}
     />
+
   </svg>
-);
+)
+
 
 export const SubmitAJobIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '1em'}
-    height={props.height || '1em'}
+    width={props.width || "1em"}
+    height={props.height || "1em"}
     viewBox="0 0 26 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -306,19 +383,26 @@ export const SubmitAJobIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#263243"
     />
   </svg>
-);
+)
+
 
 export const CalendarIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '1em'}
-    height={props.height || '1em'}
+    width={props.width || "1em"}
+    height={props.height || "1em"}
     viewBox="0 0 26 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path d="M0.130653 1.68646H25.4671V23.8559H0.130653V1.68646Z" fill="#CC3333" />
-    <path d="M0.130653 6.43704H25.4671V23.8559H0.130653V6.43704Z" fill="#D1D7DC" />
+    <path
+      d="M0.130653 1.68646H25.4671V23.8559H0.130653V1.68646Z"
+      fill="#CC3333"
+    />
+    <path
+      d="M0.130653 6.43704H25.4671V23.8559H0.130653V6.43704Z"
+      fill="#D1D7DC"
+    />
     <path
       d="M4.88124 5.64529C4.00634 5.64529 3.29771 4.93666 3.29771 4.06175C3.29771 3.18685 4.00634 2.47821 4.88124 2.47821C5.75614 2.47821 6.46478 3.18685 6.46478 4.06175C6.46478 4.93666 5.75614 5.64529 4.88124 5.64529Z"
       fill="#992626"
@@ -344,12 +428,12 @@ export const CalendarIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="white"
     />
   </svg>
-);
+)
 
 export const ViewPricingIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '3em'}
-    height={props.height || '3em'}
+    width={props.width || "3em"}
+    height={props.height || "3em"}
     viewBox="0 0 24 23"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -372,12 +456,12 @@ export const ViewPricingIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#386DFB"
     />
   </svg>
-);
+)
 
 export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '4em'}
-    height={props.height || '4em'}
+    width={props.width || "4em"}
+    height={props.height || "4em"}
     viewBox="0 0 18 26"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -407,7 +491,10 @@ export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M15.2352 22.8939C15.2352 21.3634 13.9945 20.1227 12.464 20.1227C10.9335 20.1227 9.69279 21.3634 9.69279 22.8939C9.69279 24.4244 10.9335 25.6651 12.464 25.6651C13.9945 25.6651 15.2352 24.4244 15.2352 22.8939Z"
       fill="#D1D7DC"
     />
-    <path d="M1.77513 23.2898H16.0269V25.6651H1.77513V23.2898Z" fill="#D1D7DC" />
+    <path
+      d="M1.77513 23.2898H16.0269V25.6651H1.77513V23.2898Z"
+      fill="#D1D7DC"
+    />
     <path
       d="M8.90104 0.328583C1.77514 5.07918 5.73397 14.5804 7.31751 17.7474H10.4846C12.0681 14.5804 16.0269 5.07918 8.90104 0.328583Z"
       fill="#CC3333"
@@ -416,14 +503,17 @@ export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M6.52573 7.45448C6.52573 6.14253 7.58906 5.07919 8.90102 5.07919C10.213 5.07919 11.2763 6.14253 11.2763 7.45448C11.2763 8.76643 10.213 9.82977 8.90102 9.82977C7.58906 9.82977 6.52573 8.76643 6.52573 7.45448Z"
       fill="#BFD8FE"
     />
-    <path d="M7.31747 17.7474H10.4846V25.6651H7.31747V17.7474Z" fill="#D1D7DC" />
+    <path
+      d="M7.31747 17.7474H10.4846V25.6651H7.31747V17.7474Z"
+      fill="#D1D7DC"
+    />
   </svg>
-);
+)
 
 export const BaloonIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '4em'}
-    height={props.height || '4em'}
+    width={props.width || "4em"}
+    height={props.height || "4em"}
     viewBox="0 0 25 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -445,7 +535,10 @@ export const BaloonIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M17.3129 12.2409L14.3886 16.1737L11.2247 16.1518L8.35857 12.1774L17.3129 12.2409Z"
       fill="#386DFB"
     />
-    <path d="M11.2486 17.7474H14.4157V20.9145H11.2486V17.7474Z" fill="#CC6633" />
+    <path
+      d="M11.2486 17.7474H14.4157V20.9145H11.2486V17.7474Z"
+      fill="#CC6633"
+    />
     <path
       d="M12.8322 21.9224C12.8322 20.73 13.7989 19.7625 14.9921 19.7625C16.1845 19.7625 17.152 20.73 17.152 21.9224C17.152 23.1148 16.1845 24.0815 14.9921 24.0815C13.7989 24.0815 12.8322 23.1148 12.8322 21.9224Z"
       fill="#BFD8FE"
@@ -458,7 +551,10 @@ export const BaloonIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M16.0713 20.8424C16.0713 19.0538 17.5218 17.6033 19.3104 17.6033C21.099 17.6033 22.5495 19.0538 22.5495 20.8424C22.5495 22.631 21.099 24.0815 19.3104 24.0815C17.5218 24.0815 16.0713 22.631 16.0713 20.8424Z"
       fill="#BFD8FE"
     />
-    <path d="M14.9913 21.9224H23.6287V24.0815H14.9913V21.9224Z" fill="#BFD8FE" />
+    <path
+      d="M14.9913 21.9224H23.6287V24.0815H14.9913V21.9224Z"
+      fill="#BFD8FE"
+    />
     <path
       d="M11.2486 5.15121C11.2486 4.03799 10.346 3.13617 9.23356 3.13617C8.12035 3.13617 7.21695 4.03799 7.21695 5.15121C7.21695 6.26444 8.12035 7.16626 9.23356 7.16626C10.346 7.16626 11.2486 6.26444 11.2486 5.15121Z"
       fill="#BFD8FE"
@@ -471,14 +567,18 @@ export const BaloonIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M8.22568 4.1433C8.22568 2.47346 6.87255 1.12033 5.20271 1.12033C3.53288 1.12033 2.17975 2.47346 2.17975 4.1433C2.17975 5.81313 3.53288 7.16626 5.20271 7.16626C6.87255 7.16626 8.22568 5.81313 8.22568 4.1433Z"
       fill="#BFD8FE"
     />
-    <path d="M9.23352 5.15121H1.17181V7.16626H9.23352V5.15121Z" fill="#BFD8FE" />
+    <path
+      d="M9.23352 5.15121H1.17181V7.16626H9.23352V5.15121Z"
+      fill="#BFD8FE"
+    />
   </svg>
-);
+)
+
 
 export const CustomPricingIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '2em'}
-    height={props.height || '2em'}
+    width={props.width || "2em"}
+    height={props.height || "2em"}
     viewBox="0 0 27 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -488,7 +588,10 @@ export const CustomPricingIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M19.6215 14.5392H2.64845C1.65083 14.5392 0.841644 13.7308 0.841644 12.7332V2.09343C0.841644 1.09581 1.65083 0.287415 2.64845 0.287415H19.6215C20.6192 0.287415 21.4276 1.09581 21.4276 2.09343V12.7332C21.4276 13.7308 20.6192 14.5392 19.6215 14.5392Z"
       fill="#5398FC"
     />
-    <path d="M0.841644 2.66269H21.4276V5.03799H0.841644V2.66269Z" fill="#263243" />
+    <path
+      d="M0.841644 2.66269H21.4276V5.03799H0.841644V2.66269Z"
+      fill="#263243"
+    />
     <path
       d="M15.0934 16.1227C15.0934 13.0617 17.5748 10.5804 20.6358 10.5804C23.6968 10.5804 26.1782 13.0617 26.1782 16.1227C26.1782 19.1837 23.6968 21.6651 20.6358 21.6651C17.5748 21.6651 15.0934 19.1837 15.0934 16.1227Z"
       fill="#FFCC33"
@@ -497,16 +600,22 @@ export const CustomPricingIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M19.4482 19.2217L16.5131 16.2866L17.6326 15.167L19.4482 16.9826L23.639 12.7917L24.7585 13.9113L19.4482 19.2217Z"
       fill="#386DFB"
     />
-    <path d="M8.75931 12.1639H4.0087V8.99683H7.20427L8.75931 10.4624V12.1639Z" fill="#FFCC33" />
-    <path d="M11.9263 7.41333H19.0523V8.20508H11.9263V7.41333Z" fill="#BFD8FE" />
+    <path
+      d="M8.75931 12.1639H4.0087V8.99683H7.20427L8.75931 10.4624V12.1639Z"
+      fill="#FFCC33"
+    />
+    <path
+      d="M11.9263 7.41333H19.0523V8.20508H11.9263V7.41333Z"
+      fill="#BFD8FE"
+    />
     <path d="M11.9263 9.7886H16.6769V10.5804H11.9263V9.7886Z" fill="#BFD8FE" />
   </svg>
-);
+)
 
 export const TranscribeAudioIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={props.width || '2em'}
-    height={props.height || '2em'}
+    width={props.width || "2em"}
+    height={props.height || "2em"}
     viewBox="0 0 27 21"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -537,212 +646,182 @@ export const TranscribeAudioIcon = (props: SVGProps<SVGSVGElement>) => (
       fill="#386DFB"
     />
   </svg>
-);
+)
 
-export const MenuGettingStartedIcon = ({
-  mono,
-  ...props
-}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+
+export const MenuGettingStartedIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
-    viewBox="0 0 14 26"
+    width="1em"
+    height="1em"
+    viewBox="0 0 18 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
+    <path d="M2.218 24h9.05v6h-9.05v-6z" fill={mono ? "#A7D0CD" : "#AEB2B8"} />
     <path
-      d="M2.63184 6.07834C2.63184 3.01739 5.11323 0.536011 8.1742 0.536011C11.2352 0.536011 13.7166 3.01739 13.7166 6.07834C13.7166 9.13929 11.2352 11.6207 8.1742 11.6207C5.11323 11.6207 2.63184 9.13929 2.63184 6.07834Z"
-      fill={mono ? '#A7D0CD' : '#FFCC33'}
+      d="M12.274 15H3.191a2.977 2.977 0 00-2.984 2.968v5.026A3.015 3.015 0 003.229 26h6.022a3.015 3.015 0 003.023-3.006V15z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
     <path
-      d="M6.98654 9.17731L4.05147 6.24226L5.17102 5.12271L6.98654 6.93821L11.1773 2.74744L12.2969 3.86698L6.98654 9.17731Z"
-      fill={mono ? '#36817E' : '#386DFB'}
+      d="M10.418 6a1.851 1.851 0 00-1.856 1.846V18h3.712V7.846c0-1.019-.83-1.846-1.856-1.846zM10.518 25.21a1.495 1.495 0 01-.384-2.087l4.572-6.582a1.514 1.514 0 012.099-.382c.686.47.858 1.405.384 2.086l-4.572 6.583a1.514 1.514 0 01-2.099.382z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
+    <path d="M1.212 28h11.062v4H1.212v-4z" fill={mono ? "#36817E" : "#263243"} />
     <path
-      d="M1.84007 21.1219H8.96596V25.8725H1.84007V21.1219Z"
-      fill={mono ? '#4FA9A2' : '#F08F63'}
-    />
-    <path
-      d="M9.75772 13.996H2.60649C1.30879 13.996 0.256531 15.0482 0.256531 16.3459V20.3254C0.256531 21.6397 1.32225 22.7054 2.63658 22.7054H7.37768C8.69201 22.7054 9.75772 21.6397 9.75772 20.3254V13.996Z"
-      fill={mono ? '#4FA9A2' : '#F08F63'}
-    />
-    <path
-      d="M8.17419 8.45367C7.29929 8.45367 6.59066 9.1623 6.59066 10.0372V18.7465H9.75773V10.0372C9.75773 9.1623 9.0491 8.45367 8.17419 8.45367Z"
-      fill={mono ? '#4FA9A2' : '#F08F63'}
-    />
-    <path
-      d="M8.89929 22.3546C8.28172 22.1345 7.95947 21.4552 8.17958 20.8368L10.3063 14.871C10.5264 14.2534 11.2065 13.9311 11.8241 14.1512C12.4416 14.3714 12.7639 15.0507 12.5438 15.6682L10.4171 21.6349C10.1962 22.2525 9.51687 22.5747 8.89929 22.3546Z"
-      fill={mono ? '#4FA9A2' : '#F08F63'}
+      d="M17.768 7.5c0-.276-.225-.5-.503-.5h-3.017a.502.502 0 00-.502.5c0 .276.225.5.502.5h3.017a.502.502 0 00.503-.5zM15.534 2.589a.505.505 0 00-.711 0l-2.133 2.12a.497.497 0 000 .708.503.503 0 00.71 0l2.134-2.121a.498.498 0 000-.707zM5.291 2.578a.505.505 0 01.711 0l2.133 2.12a.497.497 0 010 .708.503.503 0 01-.71 0L5.29 3.285a.498.498 0 010-.707zM10.548.51c.277 0 .503.224.503.5v3c0 .276-.226.5-.503.5a.502.502 0 01-.503-.5v-3c0-.276.225-.5.503-.5zM3.04 7.5c0-.276.225-.5.502-.5H6.56c.278 0 .503.224.503.5s-.225.5-.503.5H3.542a.502.502 0 01-.502-.5z"
+      fill={mono ? "#4FA9A2" : "#FC3"}
     />
   </svg>
-);
+)
 
 export const MenuLearnIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
-    viewBox="0 0 18 27"
+    width="1em"
+    height="1em"
+    viewBox="0 0 23 33"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M2.53371 0.888123H17.9731V23.0576H0.554291V2.86754C0.554291 1.77411 1.44028 0.888123 2.53371 0.888123Z"
-      fill={mono ? '#4FA9A2' : '#5398FC'}
+      d="M3.19.018H22.8V28H1.232a.555.555 0 01-.556-.553V2.518c0-1.38 1.125-2.5 2.514-2.5z"
+      fill={mono ? "#4FA9A2" : "#263243"}
     />
     <path
-      d="M2.53371 20.6823H17.9731V24.6411H2.53371C1.44028 24.6411 0.554291 23.7551 0.554291 22.6617C0.554291 21.5683 1.44028 20.6823 2.53371 20.6823Z"
-      fill={mono ? '#A7D0CD' : '#D1D7DC'}
+      d="M3.19 25.018H22.8v5H3.19a2.507 2.507 0 01-2.514-2.5c0-1.38 1.125-2.5 2.514-2.5z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
+    <path d="M9.727 27.018H3.693v5l3.017-2 3.017 2v-5z" fill={mono ? "#36817E" : "#FC3"} />
+    <path d="M3.696.018h19.107v25H3.696v-25z" fill={mono ? "#36817E" : "#5E6673"} />
     <path
-      d="M7.68015 22.2658H2.92957V26.2246L5.30486 24.6411L7.68015 26.2246V22.2658Z"
-      fill={mono ? '#36817E' : '#CC3333'}
+      d="M13.752 12.018h6.034v2h-6.034v-2zM11.738 12.018l-4.022 4-.001 2 4.023-4v-2z"
+      fill="#fff"
     />
-    <path
-      d="M2.93112 0.888412H17.9746V20.6825H2.93112V0.888412Z"
-      fill={mono ? '#36817E' : '#386DFB'}
-    />
-    <path d="M10.8488 10.3895H15.5993V11.9731H10.8488V10.3895Z" fill="white" />
-    <path
-      d="M9.26385 10.3891L6.09674 13.5562L6.09618 15.1401L9.2633 11.9729L9.26385 10.3891Z"
-      fill="white"
-    />
-    <path
-      d="M9.26389 11.9731L6.09674 8.80592L6.09618 7.22207L9.26333 10.3892L9.26389 11.9731Z"
-      fill="white"
-    />
+    <path d="M11.738 14.018l-4.023-4v-2l4.023 4v2z" fill="#fff" />
   </svg>
-);
+)
 
-export const MenuBillingIcon = ({
-  mono,
-  ...props
-}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
-  <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
-    viewBox="0 0 26 19"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path
-      d="M23.6928 18.365H1.9723C0.973884 18.365 0.16391 17.5558 0.16391 16.5574V2.75377C0.16391 1.75535 0.973884 0.946167 1.9723 0.946167H23.6928C24.6912 0.946167 25.5004 1.75535 25.5004 2.75377V16.5574C25.5004 17.5558 24.6912 18.365 23.6928 18.365Z"
-      fill={mono ? '#4FA9A2' : '#5398FC'}
-    />
-    <path
-      d="M0.16391 4.11325H25.5004V7.2803H0.16391V4.11325Z"
-      fill={mono ? '#36817E' : '#BFD8FE'}
-    />
-    <path
-      d="M9.12907 15.198H4.65795C4.36262 15.198 4.12271 14.958 4.12271 14.6619V11.7751C4.12271 11.479 4.36262 11.2391 4.65795 11.2391H7.71497C7.84403 11.2391 7.96834 11.2858 8.06573 11.3697L9.47983 12.5954C9.59701 12.6968 9.6651 12.8448 9.6651 13V14.6619C9.6651 14.958 9.42519 15.198 9.12907 15.198Z"
-      fill={mono ? '#A7D0CD' : '#FFCC33'}
-    />
-    <path
-      d="M13.6239 9.65556H23.1251V10.4473H13.6239V9.65556Z"
-      fill={mono ? '#A7D0CD' : '#BFD8FE'}
-    />
-    <path
-      d="M13.6239 12.0309H19.1663V12.8226H13.6239V12.0309Z"
-      fill={mono ? '#A7D0CD' : '#BFD8FE'}
-    />
-  </svg>
-);
 
-export const MenuTrackUsageIcon = ({
-  mono,
-  ...props
-}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
-  <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
-    fill="none"
-    viewBox="0 0 26 26"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path
-      d="m10.511 13.087 1.68-1.68 10.637 10.638-1.68 1.68-10.637-10.638Z"
-      fill={mono ? '#4FA9A2' : '#5E6673'}
-    />
-    <path
-      d="m15.55 19.245 2.8-2.799 6.717 6.719-2.799 2.799-6.718-6.718Z"
-      fill={mono ? '#36817E' : '#263243'}
-    />
-    <path
-      d="m15.549 19.246 2.8-2.8 1.119 1.12-2.8 2.8-1.12-1.12ZM21.148 24.845l2.799-2.8 1.12 1.12-2.8 2.8-1.12-1.12Z"
-      fill={mono ? '#A7D0CD' : '#AEB2B8'}
-    />
-    <path
-      d="M.486 9.697a8.71 8.71 0 1 1 17.42 0 8.71 8.71 0 0 1-17.42 0Z"
-      fill={mono ? '#4FA9A2' : '#5E6673'}
-    />
-    <path
-      d="M2.07 9.697A7.125 7.125 0 0 1 9.196 2.57a7.126 7.126 0 1 1 0 14.252A7.125 7.125 0 0 1 2.07 9.697Z"
-      fill={mono ? '#CAE3E1' : '#D8E8FE'}
-    />
-    <path
-      d="M5.237 8.113H6.82v5.543H5.237V8.113ZM8.404 6.53h1.583v7.125H8.404V6.53ZM11.57 4.946h1.584v8.71h-1.583v-8.71Z"
-      fill={mono ? '#36817E' : '#386DFB'}
-    />
-  </svg>
-);
 
-export const MenuPadlockIcon = ({
-  mono,
-  ...props
-}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const MenuBillingIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
+    width="1em"
+    height="1em"
+    viewBox="0 0 33 22"
     fill="none"
-    viewBox="0 0 17 27"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M15.1 13.61H12.65V7.48a4.09 4.09 0 0 0-4.087-4.086A4.09 4.09 0 0 0 4.476 7.48H2.024A6.546 6.546 0 0 1 8.562.94a6.546 6.546 0 0 1 6.539 6.539v6.13Z"
-      fill={mono ? '#4FA9A2' : '#5E6673'}
+      d="M30.299 22H2.71a2.29 2.29 0 01-2.297-2.283V2.283A2.29 2.29 0 012.711 0h27.588a2.29 2.29 0 012.296 2.283v17.434A2.29 2.29 0 0130.299 22z"
+      fill={mono ? "#4FA9A2" : "#AEB2B8"}
     />
-    <path d="M2.024 7.071h2.452V8.86H2.024V7.071Z" fill={mono ? '#4FA9A2' : '#5E6673'} />
+    <path d="M.414 4h32.18v4H.414V4z" fill={mono ? "#36817E" : "#263243"} />
     <path
-      d="M8.754 26.278a8.195 8.195 0 0 1-8.195-8.195V13.15c0-1.058.857-1.916 1.915-1.916h12.56c1.057 0 1.914.858 1.914 1.916v4.933a8.195 8.195 0 0 1-8.194 8.195Z"
-      fill={mono ? '#A7D0CD' : '#AEB2B8'}
-    />
-    <path
-      d="M8.754 22.32a1.188 1.188 0 0 1-1.188-1.189v-4.354h2.375v4.354c0 .656-.532 1.188-1.187 1.188Z"
-      fill={mono ? '#36817E' : '#263243'}
+      d="M11.8 18H6.123a.679.679 0 01-.68-.677v-3.646c0-.374.305-.677.68-.677h3.883c.163 0 .321.059.445.165l1.796 1.548a.676.676 0 01.235.511v2.099a.679.679 0 01-.68.677z"
+      fill={mono ? "#A7D0CD" : "#FC3"}
     />
     <path
-      d="M6.774 15.59a1.98 1.98 0 1 1 3.958-.002 1.98 1.98 0 0 1-3.958.001Z"
-      fill={mono ? '#36817E' : '#263243'}
+      d="M17.51 11h12.067v1H17.51v-1zM17.51 14h7.04v1h-7.04v-1z"
+      fill={mono ? "#A7D0CD" : "#5E6673"}
     />
   </svg>
-);
+)
+
+
+export const MenuTrackUsageIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 33 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M13.698 15.502l2.164-2.152 13.705 13.63-2.163 2.15-13.706-13.628z"
+      fill={mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path
+      d="M20.19 23.393l3.606-3.587 8.656 8.608L28.845 32l-8.656-8.607z"
+      fill={mono ? "#36817E" : "#263243"}
+    />
+    <path
+      d="M20.19 23.393l3.607-3.586 1.443 1.434-3.606 3.587-1.443-1.435zM27.404 30.566l3.607-3.586 1.443 1.434-3.607 3.587-1.443-1.435z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path
+      d="M.782 11.159C.782 4.996 5.806 0 12.003 0c6.198 0 11.223 4.995 11.223 11.158 0 6.163-5.025 11.158-11.223 11.158-6.197 0-11.22-4.995-11.22-11.158z"
+      fill={mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path
+      d="M2.821 11.159c0-5.042 4.11-9.13 9.182-9.13 5.071 0 9.181 4.088 9.181 9.13 0 5.042-4.11 9.13-9.181 9.13-5.072 0-9.182-4.088-9.182-9.13z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path
+      d="M6.902 9.13h2.04v7.101h-2.04v-7.1zM10.983 7.101h2.04v9.13h-2.04v-9.13zM15.063 5.072h2.04V16.23h-2.04V5.072z"
+      fill={mono ? "#36817E" : "#FC3"}
+    />
+  </svg>
+)
+
+
+export const MenuPadlockIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 21 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M18.654 16h-3.115V8.258c0-2.846-2.328-5.161-5.19-5.161-2.862 0-5.19 2.315-5.19 5.161H2.044C2.044 3.705 5.77 0 10.35 0s8.305 3.705 8.305 8.258V16z"
+      fill={mono ? "#4FA9A2" : "#5E6673"}
+    />
+    <path d="M2.045 7.742h3.114V10H2.045V7.742z" fill={mono ? "#4FA9A2" : "#5E6673"} />
+    <path
+      d="M10.592 32C4.844 32 .184 27.366.184 21.65v-6.231A2.426 2.426 0 012.617 13h15.951a2.426 2.426 0 012.433 2.419v6.231C21 27.366 16.34 32 10.592 32z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
+    />
+    <path
+      d="M10.592 27a1.505 1.505 0 01-1.508-1.5V20h3.017v5.5c0 .828-.676 1.5-1.509 1.5z"
+      fill={mono ? "#36817E" : "#263243"}
+    />
+    <path
+      d="M8.078 18.5c0-1.381 1.125-2.5 2.514-2.5a2.507 2.507 0 012.514 2.5c0 1.381-1.125 2.5-2.514 2.5a2.507 2.507 0 01-2.514-2.5z"
+      fill={mono ? "#36817E" : "#263243"}
+    />
+  </svg>
+)
+
 
 export const MenuHouseIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
-    width={props.width || '1.3em'}
-    height={props.height || '1.3em'}
+    width="1em"
+    height="1em"
+    viewBox="0 0 33 32"
     fill="none"
-    viewBox="0 0 26 27"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
-      d="M2.506 26.324V11.967L12.799 1.832l10.293 10.135v14.357H2.506Z"
-      fill={mono ? '#DFEEED' : '#FFEDB6'}
+      d="M3.535 32V13.867l13.073-12.8 13.074 12.8V32H3.535z"
+      fill={mono ? "#A7D0CD" : "#AEB2B8"}
     />
-    <path d="M13.59 17.614h7.127v5.543H13.59v-5.543Z" fill={mono ? '#4FA9A2' : '#BFD8FE'} />
-    <path d="M5.673 17.614h4.75v8.71h-4.75v-8.71Z" fill={mono ? '#36817E' : '#C63'} />
-    <path d="M6.465 18.406h3.167v3.167H6.465v-3.167Z" fill={mono ? '#4FA9A2' : '#BFD8FE'} />
+    <path d="M17.614 21h9.051v7h-9.05v-7z" fill={mono ? "#4FA9A2" : "#5E6673"} />
+    <path d="M7.558 21h6.034v11H7.558V21z" fill={mono ? "#36817E" : "#263243"} />
+    <path d="M8.563 22h4.023v4H8.563v-4z" fill={mono ? "#4FA9A2" : "#FC3"} />
     <path
-      d="M23.884 14.447 12.799 4.221 1.714 14.447.131 12.811 12.799.987l12.668 11.824-1.583 1.636Z"
-      fill={mono ? '#36817E' : '#C33'}
+      d="M30.688 17L16.608 4.084 2.53 17 .519 14.933 16.609 0l16.09 14.933L30.688 17z"
+      fill={mono ? "#36817E" : "#5E6673"}
     />
   </svg>
-);
+)
+
+
+
 
 export const JobSubmitIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg width={56} height={56} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -845,8 +924,8 @@ export const ExclamationIcon = (props) => (
 
 export const CallSupportIcon = (props) => (
   <svg
-    width={props.width || '4em'}
-    height={props.height || '3.5em'}
+    width={props.width || "4em"}
+    height={props.height || "3.5em"}
     viewBox="0 0 27 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -856,7 +935,10 @@ export const CallSupportIcon = (props) => (
       d="M19.6215 14.5392H2.64845C1.65083 14.5392 0.841644 13.7308 0.841644 12.7332V2.09343C0.841644 1.09581 1.65083 0.287415 2.64845 0.287415H19.6215C20.6192 0.287415 21.4276 1.09581 21.4276 2.09343V12.7332C21.4276 13.7308 20.6192 14.5392 19.6215 14.5392Z"
       fill="#5398FC"
     />
-    <path d="M0.841644 2.66269H21.4276V5.03799H0.841644V2.66269Z" fill="#263243" />
+    <path
+      d="M0.841644 2.66269H21.4276V5.03799H0.841644V2.66269Z"
+      fill="#263243"
+    />
     <path
       d="M15.0934 16.1227C15.0934 13.0617 17.5748 10.5804 20.6358 10.5804C23.6968 10.5804 26.1782 13.0617 26.1782 16.1227C26.1782 19.1837 23.6968 21.6651 20.6358 21.6651C17.5748 21.6651 15.0934 19.1837 15.0934 16.1227Z"
       fill="#FFCC33"
@@ -865,8 +947,14 @@ export const CallSupportIcon = (props) => (
       d="M19.4482 19.2217L16.5131 16.2866L17.6326 15.167L19.4482 16.9826L23.639 12.7917L24.7585 13.9113L19.4482 19.2217Z"
       fill="#386DFB"
     />
-    <path d="M8.75931 12.1639H4.0087V8.99683H7.20427L8.75931 10.4624V12.1639Z" fill="#FFCC33" />
-    <path d="M11.9263 7.41333H19.0523V8.20508H11.9263V7.41333Z" fill="#BFD8FE" />
+    <path
+      d="M8.75931 12.1639H4.0087V8.99683H7.20427L8.75931 10.4624V12.1639Z"
+      fill="#FFCC33"
+    />
+    <path
+      d="M11.9263 7.41333H19.0523V8.20508H11.9263V7.41333Z"
+      fill="#BFD8FE"
+    />
     <path d="M11.9263 9.7886H16.6769V10.5804H11.9263V9.7886Z" fill="#BFD8FE" />
   </svg>
 );
@@ -891,31 +979,24 @@ export const UsageLimitsIcon = (props) => (
 );
 
 export const PricingTags = (props) => (
-  <svg
-    width={props.width || 56}
-    height={props.height || 56}
-    viewBox="0 0 58 58"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+  <svg width={props.width || 56} height={props.height || 56} viewBox='0 0 58 58' fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       d="m38.598 21.114 4.2-4.286a6.589 6.589 0 0 0 1.633-4V3.496a2.333 2.333 0 0 0-2.333-2.333l-9.935.016A6.507 6.507 0 0 0 28.18 2.83L2.914 28.096a2.333 2.333 0 0 0 0 3.3l11.284 11.283a2.31 2.31 0 0 0 3.283-.016l2.45-2.502"
-      stroke={props.color || '#fff'}
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M36.265 12.829a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM43.265 33.833H38.52a3.131 3.131 0 0 0-1.166 6.039l4.813 1.925a3.128 3.128 0 0 1-1.166 6.036h-4.737M39.765 50.162v-2.333M39.765 33.829v-2.334"
-      stroke={props.color || '#fff'}
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M39.765 54.829c7.732 0 14-6.268 14-14s-6.268-14-14-14-14 6.268-14 14 6.268 14 14 14Z"
-      stroke={props.color || '#fff'}
+      stroke={props.color || "#fff"}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -1200,6 +1281,7 @@ export function SpeechmaticsLogoHorizontalWhite({ w = 400, h = 150 }) {
   );
 }
 
+
 export function AccountIcon({ w = 20, h = 20, color = '#2E3A59' }) {
   return (
     <svg width={w} height={h} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1222,6 +1304,8 @@ export function ExternalLink({ w = 16, h = 16, color = '#2E3A59' }) {
   );
 }
 
+
+
 export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
   return (
     <svg width={w} height={h} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1232,6 +1316,7 @@ export function LogoutIcon({ w = 18, h = 18, color = '#2E3A59' }) {
     </svg>
   );
 }
+
 
 export const CardImage = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -1331,14 +1416,10 @@ export const CardImage = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const CardGreyImage = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    width={props.width || 244}
+  <svg width={props.width || 244}
     height={props.height || 168}
     viewBox="0 0 244 168"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+    fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -1415,43 +1496,3 @@ export const CardGreyImage = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      width="1em"
-      height="1em"
-      viewBox="0 0 25 25"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g
-        opacity={0.7}
-        stroke="#B52626"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21.094 7.031l-1.4 13.464a1.562 1.562 0 01-1.552 1.38H6.858a1.562 1.562 0 01-1.551-1.38l-1.4-13.464M22.656 3.125H2.344a.781.781 0 00-.781.781V6.25c0 .431.35.781.78.781h20.313c.432 0 .782-.35.782-.781V3.906a.781.781 0 00-.782-.781zM15.234 17.188l-5.468-5.47m5.468 0l-5.468 5.47 5.468-5.47z" />
-      </g>
-    </svg>
-  );
-}
-
-export function StopIcon(props) {
-  return (
-    <svg
-      width={props.width || "1em"}
-      height={props.width || "1em"}
-      viewBox="0 0 25 25"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g opacity={0.74} fill="#D82C2C">
-        <path d="M12.5 2.083C6.756 2.083 2.083 6.756 2.083 12.5S6.756 22.917 12.5 22.917 22.917 18.244 22.917 12.5 18.244 2.083 12.5 2.083zm0 18.75c-4.595 0-8.333-3.738-8.333-8.333 0-4.595 3.738-8.333 8.333-8.333 4.595 0 8.333 3.738 8.333 8.333 0 4.595-3.738 8.333-8.333 8.333z" />
-        <path d="M9.375 9.375h6.25v6.25h-6.25v-6.25z" />
-      </g>
-    </svg>
-  );
-}

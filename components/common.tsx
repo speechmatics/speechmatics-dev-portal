@@ -366,8 +366,6 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
 
-  console.log(`DataGridComponent ${pagesCount} ${data?.length} ${itemsPerPage}`);
-
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
@@ -537,6 +535,7 @@ export const ConfirmRemoveModal = ({
       <ModalFooter justifyContent="center">
         <Flex alignItems="center">
           <Button
+            data-qa="button-confirm"
             variant="speechmatics"
             bg="smRed.500"
             _hover={{ bg: 'smRed.400' }}
@@ -547,6 +546,7 @@ export const ConfirmRemoveModal = ({
             {confirmLabel}
           </Button>
           <Button
+            data-qa="button-cancel"
             variant="speechmatics"
             bg="smBlack.200"
             color="smBlack.400"
