@@ -140,7 +140,7 @@ export const UsageSummary = observer(function Usage() {
           </>
         )}
       </Grid>
-      <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+      <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
     </>
   );
 });

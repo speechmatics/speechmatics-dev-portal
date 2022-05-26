@@ -62,11 +62,11 @@ import {
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
 
-export const UsageInfoBanner = ({ text }) => (
-  <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
-    <Box>
+export const UsageInfoBanner = ({ text, ...props }) => (
+  <Flex width="100%" bg="smBlue.150" p="1em"  {...props}>
+    <Flex alignItems='center'>
       <CalendarIcon width="1.5em" height="1.5em" />
-    </Box>
+    </Flex>
     <Text width="100%" color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
       {text}
     </Text>
@@ -92,29 +92,29 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-            <HStack
-              width="100%"
-              bg={bgColor}
-              justifyContent="space-between"
-              alignItems="center"
-              padding="1.5em 1.5em"
-              {...props}
-            >
-              {children}
-            </HStack>
-          )
+          <HStack
+            width="100%"
+            bg={bgColor}
+            justifyContent="space-between"
+            alignItems="center"
+            padding="1.5em 1.5em"
+            {...props}
+          >
+            {children}
+          </HStack>
+        )
         : ({ children }) => (
-            <VStack
-              width="100%"
-              bg={bgColor}
-              justifyContent="space-between"
-              padding="1.2em 0.5em"
-              spacing="1em"
-              {...props}
-            >
-              {children}
-            </VStack>
-          ),
+          <VStack
+            width="100%"
+            bg={bgColor}
+            justifyContent="space-between"
+            padding="1.2em 0.5em"
+            spacing="1em"
+            {...props}
+          >
+            {children}
+          </VStack>
+        ),
     [breakVal]
   );
 
@@ -149,7 +149,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -226,22 +226,18 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
               data_qa={'code-post-job-standard'}
-              code={`curl.exe -L -X POST ${
-                accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/ -H "Authorization: Bearer ${
-                token || `Ex4MPl370k3n`
-              }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
+              code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
+                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt="2em">
               Get a transcript using the job ID returned by the POST request above:
             </DescriptionLabel>
             <CodeHighlight
               data_qa={'code-get-job-standard'}
-              code={`curl.exe -L -X GET ${
-                accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${
-                token || `Ex4MPl370k3n`
-              }"`}
+              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'
+                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+                }"`}
             />
             <DescriptionLabel pt="2em">
               To get output in JSON format, remove the format=txt query parameter from the GET
@@ -253,11 +249,9 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 
             <CodeHighlight
               data_qa={'code-post-job-enhanced'}
-              code={`curl -L -X POST ${
-                accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/ -H "Authorization: Bearer ${
-                token || `Ex4MPl370k3n`
-              }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
+              code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
+                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+                }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
             />
 
             <DescriptionLabel pt="2em">
@@ -265,11 +259,9 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             </DescriptionLabel>
             <CodeHighlight
               data_qa={'code-get-job-enhanced'}
-              code={`curl -L -X GET "${
-                accountStore.getRuntimeURL() || '$HOST'
-              }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${
-                token || `Ex4MPl370k3n`
-              }"`}
+              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'
+                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
+                }"`}
             />
             <DescriptionLabel pt="2em">
               To get output in JSON format, remove the format=txt query parameter from the GET
@@ -288,7 +280,7 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
         >
           <a>examples and guidance</a>
         </Link>{' '}
-        on using the Speechmatics SaaS.​
+        on using the Speechmatics SaaS.
       </DescriptionLabel>
     </>
   );
@@ -689,7 +681,7 @@ export const TranscriptionViewer = ({
         >
           Download Transcription
         </MenuButton>
-        <TranscriptDownloadMenu jobId={jobId} status='done'/>
+        <TranscriptDownloadMenu jobId={jobId} status='done' />
       </Menu>
     </HStack>
   </VStack>

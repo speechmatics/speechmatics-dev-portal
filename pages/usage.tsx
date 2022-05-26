@@ -38,9 +38,9 @@ export default observer(function Usage() {
   const [defaultIndex, setDefaultIndex] = useState(0)
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
   const { job } = useRouter().query
-  
+
   useEffect(() => {
-    if ( job ) {
+    if (job) {
       setDefaultIndex(3)
     }
   }, [job])
@@ -105,11 +105,10 @@ export default observer(function Usage() {
 
             <UsageBreakdown />
 
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
 
           </TabPanel>
           <TabPanel>
-            <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
             <RecentJobs />
           </TabPanel>
         </TabPanels>

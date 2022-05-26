@@ -17,6 +17,7 @@ import {
   ModalHeader,
   ModalBody,
   useDisclosure,
+  Flex,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback } from 'react';
@@ -27,6 +28,9 @@ import {
   TranscriptionViewerProps,
   ConfirmRemoveModal,
   TranscriptDownloadMenu,
+  AttentionBar,
+  HeaderLabel,
+  UsageInfoBanner,
 } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetJobs, callGetTranscript, callDeleteJob } from '../utils/call-api';
@@ -185,19 +189,27 @@ export const RecentJobs = observer(() => {
 
   return (
     <>
-      <DescriptionLabel>
-        Check the status of your transcriptions from 01 February 2022 to 08 February 2022.
-      </DescriptionLabel>
-      <VStack spacing={6}>
+      <Flex width='100%' justifyContent='space-between'>
+        <Box>
+          <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
+          <DescriptionLabel>
+            Check the status of your transcriptions.
+          </DescriptionLabel>
+        </Box>
+        <Box>
+          <UsageInfoBanner text="Transcripts are removed after 7 days." width='16em' bg='smBlue.100' />
+        </Box>
+      </Flex>
+      <VStack spacing={6} mt={6}>
         {isLoading && new Array(pageLimit).fill(LoadingJobsSkeleton())}
         {!errorOnInit &&
           !isLoading &&
-          jobs?.map((el) => {
+          jobs?.map((el, i) => {
             return (
               <RecentJobElement
                 active={el.id === router.query.job}
                 onSetRef={el.id === router.query.job ? executeScroll : () => { }}
-                key={el.id}
+                key={el.id + i}
                 {...el}
                 onOpenTranscript={onOpenTranscript}
                 onStartDelete={onOpenDeleteDialogue}
