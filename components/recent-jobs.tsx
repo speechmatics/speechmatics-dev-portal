@@ -37,6 +37,7 @@ import { callGetJobs, callGetTranscript, callDeleteJob } from '../utils/call-api
 import { useInterval } from '../utils/hooks';
 import accountContext from '../utils/account-store-context';
 import { useRouter } from 'next/router';
+import { capitalizeFirstLetter } from '../utils/string-utils';
 
 export const RecentJobs = observer(() => {
   const [jobs, setJobs] = useState<RecentJobElementProps[]>([]);
@@ -165,7 +166,6 @@ export const RecentJobs = observer(() => {
               jobId: job.jobId,
               accuracy: job.accuracy,
               language: job.language,
-              downloadLink: 'null',
               transcriptionText: response,
               fileName: job.fileName,
             });
@@ -204,17 +204,8 @@ export const RecentJobs = observer(() => {
 
   return (
     <>
-      <Flex width='100%' justifyContent='space-between'>
-        <Box>
-          <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
-          <DescriptionLabel>
-            Check the status of your transcriptions.
-          </DescriptionLabel>
-        </Box>
-        <Box>
-          <UsageInfoBanner text="Transcripts are removed after 7 days." width='16em' bg='smBlue.100' />
-        </Box>
-      </Flex>
+      <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
+      <UsageInfoBanner text="Transcripts are removed after 7 days." width='100%' bg='smBlue.100' centered />
       <VStack spacing={6} mt={6}>
         {isLoading && new Array(pageLimit).fill(LoadingJobsSkeleton())}
         {!errorOnInit &&
@@ -276,7 +267,7 @@ export const RecentJobs = observer(() => {
             right={-4}
           />
           <ModalBody>
-            <TranscriptionViewer {...activeJob} />
+            <TranscriptionViewer {...activeJob} transcMaxHeight='38vh' />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -340,7 +331,7 @@ const RecentJobElement = ({
           </Box>
           <Box flex={1}>
             <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="Model Accuracy">
-              {accuracy}
+              {capitalizeFirstLetter(accuracy)}
             </Tooltip>
           </Box>
           <Box flex={1}>
@@ -354,12 +345,7 @@ const RecentJobElement = ({
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip
-              placement="bottom"
-              hasArrow
-              color="smWhite.500"
-              label="Unique Job Identifier"
-            >
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job Identifier">
               {id}
             </Tooltip>
           </Box>
@@ -368,7 +354,7 @@ const RecentJobElement = ({
       <HStack flex={1} spacing={2} marginLeft={4} justifyContent="space-evenly">
         <HStack flex={2}>
           <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
-          <Box color={statusColour[status]}>{status}</Box>
+          <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
         </HStack>
         <Box flex={1}>
           <Menu isLazy>

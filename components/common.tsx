@@ -61,13 +61,16 @@ import {
   PaginationNext,
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
+import { formatTimeDateFromString } from '../utils/date-utils';
+import { capitalizeFirstLetter } from '../utils/string-utils';
+import { getFullLanguageName } from '../utils/transcribe-elements';
 
-export const UsageInfoBanner = ({ text, ...props }) => (
-  <Flex width="100%" bg="smBlue.150" p="1em"  {...props}>
+export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
+  <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
     <Flex alignItems='center'>
       <CalendarIcon width="1.5em" height="1.5em" />
     </Flex>
-    <Text width="100%" color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
       {text}
     </Text>
   </Flex>
@@ -630,63 +633,37 @@ export type TranscriptionViewerProps = {
   jobId: string;
   accuracy: string;
   language: string;
-  downloadLink: string;
+  transcMaxHeight?: string;
 } & BoxProps;
 
-export const TranscriptionViewer = ({
-  transcriptionText,
-  date,
-  jobId,
-  accuracy,
-  language,
-  downloadLink,
-  ...boxProps
-}: TranscriptionViewerProps) => {
-  console.log(jobId)
-  return <VStack border="1px" borderColor="smBlack.200" width="100%" {...boxProps}>
-    <HStack
-      justifyContent="space-between"
-      width="100%"
-      px={6}
-      py={3}
-      bgColor="smNavy.200"
-      borderBottom="1px"
-      borderColor="smBlack.200"
-    >
-      <Stat title="Submitted:" value={date} />
-      <Stat title="Job ID:" value={jobId} />
-      <Stat title="Accuracy:" value={accuracy} />
-      <Stat title="Language:" value={language} />
+export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => (
+  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
+    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
+      borderBottom='1px'
+      borderColor='smBlack.200'>
+      <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
+      <Stat title='Job ID:' value={jobId} />
+      <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
+      <Stat title='Language:' value={getFullLanguageName(language)} />
     </HStack>
-    <Box flex="1" maxHeight={400} overflowY="auto" px={6} py={2} color="smBlack.300">
+    <Box flex='1' maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300'>
       {transcriptionText}
     </Box>
-    <HStack width="100%" spacing={4} p={4} borderTop="1px" borderColor="smBlack.200">
-      <Button
-        variant="speechmatics"
-        onClick={(e) => navigator.clipboard.writeText(transcriptionText)}
-        flex="1"
-        leftIcon={<CopyIcon />}
-        fontSize="1em"
-      >
+    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
+      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
+        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
         Copy Transcription
       </Button>
-      {/* <Button variant='speechmaticsGreen' flex='1' leftIcon={<DownloadIcon />} fontSize='1em'>Download Transcription</Button> */}
       <Menu>
-        <MenuButton
-          as={Button}
-          flex="1"
-          variant="speechmaticsGreen"
-          leftIcon={<DownloadIcon />}
-          fontSize="1em"
-        >
+        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
           Download Transcription
         </MenuButton>
-        <TranscriptDownloadMenu jobId={jobId} status='done' />
+        <TranscriptDownloadMenu jobId={jobId} status={'done'} />
       </Menu>
     </HStack>
   </VStack>
-};
+)
+
 
 const Stat = ({ title, value, ...boxProps }) => (
   <Box {...boxProps}>

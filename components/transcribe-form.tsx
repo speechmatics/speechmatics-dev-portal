@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
 import { checkIfFileCorrectType, getFullLanguageName, Stage } from "../utils/transcribe-elements";
-import { AttentionBar } from "./common";
+import { AttentionBar, TranscriptDownloadMenu } from "./common";
 import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
@@ -275,50 +275,6 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
 
 
 
-type TranscriptionViewerProps = {
-  transcriptionText: string;
-  date: string;
-  jobId: string;
-  accuracy: string;
-  language: string;
-  downloadLink: string;
-} & BoxProps
-
-export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, downloadLink, ...boxProps }: TranscriptionViewerProps) => (
-  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
-    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
-      borderBottom='1px'
-      borderColor='smBlack.200'>
-      <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
-      <Stat title='Job ID:' value={jobId} />
-      <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
-      <Stat title='Language:' value={getFullLanguageName(language)} />
-    </HStack>
-    <Box flex='1' maxHeight="10em" height='10em' overflowY='auto' px={6} py={2} color='smBlack.300'>
-      {transcriptionText}
-    </Box>
-    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
-        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
-        Copy Transcription
-      </Button>
-      <Menu>
-        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
-          Download Transcription
-        </MenuButton>
-        <MenuList>
-          <MenuItem py={1}>Download as text</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as JSON</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download as srt</MenuItem>
-          <MenuDivider color='smNavy.270' />
-          <MenuItem py={1}>Download audio</MenuItem>
-        </MenuList>
-      </Menu>
-    </HStack>
-  </VStack>
-)
 
 
 

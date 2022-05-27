@@ -3,10 +3,10 @@ import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel, TranscriptionViewer } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
-import { FileUploadComponent, SelectField, FileProcessingProgress, TranscriptionViewer } from "../components/transcribe-form";
+import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import accountStoreContext from "../utils/account-store-context";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
@@ -142,7 +142,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
 
     {stageDelayed == 'complete' &&
       <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
-        accuracy={store.accuracy} language={store.language} downloadLink=""
+        accuracy={store.accuracy} language={store.language}
         transcriptionText={store.transcriptionText} className="fadeIn" />}
 
 
