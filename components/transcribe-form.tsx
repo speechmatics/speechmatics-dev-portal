@@ -127,8 +127,6 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
     setSelectedIndex(data.findIndex(el => el.selected))
   }, [])
 
-  console.log('SelectField', label, selectedIndex)
-
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
       <Box color='smBlack.400'>{label}</Box>
