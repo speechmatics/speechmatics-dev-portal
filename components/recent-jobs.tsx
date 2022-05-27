@@ -334,22 +334,22 @@ const RecentJobElement = ({
           justifyContent="space-between"
         >
           <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="date submitted">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Date Submitted">
               {formatDate(date)}
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="model accuracy level">
+            <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="Model Accuracy">
               {accuracy}
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="job running time">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Job Running Time">
               {duration}
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="audio language">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
               {language}
             </Tooltip>
           </Box>
@@ -358,9 +358,9 @@ const RecentJobElement = ({
               placement="bottom"
               hasArrow
               color="smWhite.500"
-              label="unique job identifier"
+              label="Unique Job Identifier"
             >
-              {'(' + id + ')'}
+              {id}
             </Tooltip>
           </Box>
         </HStack>
