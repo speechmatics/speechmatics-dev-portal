@@ -37,3 +37,6 @@ export const enum FlowError {
   ServerFileReceivedWrong,
   ServerJobFailed,
 }
+
+export const checkIfFileCorrectType = (file: File) =>
+  ['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'audio/wav', 'application/ogg'].includes(file.type);

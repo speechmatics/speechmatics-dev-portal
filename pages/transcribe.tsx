@@ -85,7 +85,7 @@ type ProcessingTranscriptionProps = {
 
 export const ProcessingTranscription = observer(function ({ store }: ProcessingTranscriptionProps) {
 
-  const { stage, fileName, fileSize, jobId } = store;
+  const { stage, stageDelayed, fileName, fileSize, jobId } = store;
 
   useEffect(() => {
     return () => {
@@ -94,7 +94,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
   }, [])
 
 
-  return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4}>
+  return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4} className="fadeIn">
 
     {stage == 'pendingFile' &&
       <PendingLabelsSlots
@@ -135,18 +135,20 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       subtitle2={<></>}
     />}
 
-    {stage != 'complete' && <FileProcessingProgress stage={stage} my={4} />}
+    {stageDelayed != 'complete' && <>
+      <FileProcessingProgress stage={stage} my={4} />
+      <Divider my={8} color='smBlack.200' />
+    </>}
 
-    {stage == 'complete' &&
+    {stageDelayed == 'complete' &&
       <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
         accuracy={store.accuracy} language={store.language} downloadLink=""
-        transcriptionText={store.transcriptionText} />}
+        transcriptionText={store.transcriptionText} className="fadeIn" />}
 
-
-    {stage != 'complete' && <Divider my={8} color='smBlack.200' />}
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
-      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'><a className="text_link">Recent Jobs</a></Link>
+      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'>
+        <a className="text_link">Recent Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
 

@@ -6,7 +6,14 @@ import {
   callRequestJobStatus,
   callRequestJobTranscription,
 } from './call-api';
-import { Accuracy, Separation, Stage, JobStatus, FlowError } from './transcribe-elements';
+import {
+  Accuracy,
+  Separation,
+  Stage,
+  JobStatus,
+  FlowError,
+  checkIfFileCorrectType,
+} from './transcribe-elements';
 
 const toast = createStandaloneToast({});
 
@@ -54,9 +61,16 @@ export class FileTranscriptionStore {
   _stage: Stage = 'form';
   set stage(value: Stage) {
     this._stage = value;
+    setTimeout(() => (this._stageDelayed = value), 500);
   }
   get stage(): Stage {
     return this._stage;
+  }
+
+  _stageDelayed: Stage = 'form';
+
+  get stageDelayed(): Stage {
+    return this._stageDelayed;
   }
 
   _jobStatus: JobStatus = '';
@@ -146,11 +160,7 @@ class FileTranscribeFlow {
 
     if (file.size > 1_000_000_000) {
       this.store.error = FlowError.FileTooBig;
-    } else if (
-      !['audio/mp4', 'audio/mpeg', 'audio/x-wav', 'audio/wav', 'application/ogg'].includes(
-        file.type
-      )
-    ) {
+    } else if (!checkIfFileCorrectType(file)) {
       this.store.error = FlowError.FileWrongType;
     } else {
       this.store.error = null;

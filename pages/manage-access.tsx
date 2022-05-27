@@ -72,8 +72,6 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
       base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
     });
 
-
-
     const { accountStore, tokenStore } = useContext(accountContext);
 
     const [genTokenStage, setGenTokenStageOnState] = useState<TokenGenStages>('init');

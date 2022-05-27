@@ -1,10 +1,12 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
-import { getFullLanguageName, Stage } from "../utils/transcribe-elements";
-import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, UploadFileIcon } from "./icons-library";
+import { checkIfFileCorrectType, getFullLanguageName, Stage } from "../utils/transcribe-elements";
+import { AttentionBar } from "./common";
+import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
@@ -13,7 +15,9 @@ type FileUploadComponentProps = {
 export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
-  const [file, setFile] = useState<File>(null)
+  const [file, setFile] = useState<File>(null);
+  const [isFileTooBigError, setIsFileTooBigError] = useState(false);
+  const [isFileWrongTypeError, setIsWrongTypeError] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropAreaRef = useRef<HTMLInputElement>(null);
@@ -30,8 +34,21 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
   }
 
   const selectFiles = (files: FileList | null | undefined) => {
-    onFileSelect(files[0]);
-    setFile(files[0]);
+    const file = files[0];
+    if (file.size > 1_000_000_000) { //1_000_000_000
+      setIsFileTooBigError(true);
+      return;
+    }
+
+    if (!checkIfFileCorrectType(file)) {
+      setIsWrongTypeError(true);
+      return;
+    }
+
+    setIsFileTooBigError(false);
+    onFileSelect(file);
+    setFile(file);
+
   }
 
   const dropClicked = useCallback(() => {
@@ -44,38 +61,48 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
     setFile(null);
   }, [])
 
-  return <Flex alignSelf='stretch'
-    bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
-    _hover={!file ? { bgColor: 'smBlue.150' } : {}}
-    border='2px dashed' borderColor='#386DFB66'
-    justifyContent='center' alignItems='center' position='relative'
-    py={6} px={8}
-  >
-    <input type='file' ref={fileInputRef}
-      style={{ display: 'none' }} onChange={onSelectFiles}
-      // multiple 
-      accept='audio/*' />
-    <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
-      {!file ? <>
-        <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
-        <VStack alignItems='flex-start' spacing={0}>
-          <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
-          <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
-        </VStack>
-      </> :
-        <Flex alignItems='center' justifyContent='space-between' width='100%'>
-          <Box color='smNavy.500' fontSize='1.2em' lineHeight={1.2}>
-            File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.
-          </Box>
-          <Box cursor='pointer' onClick={removeFileClick}>
-            <RemoveFileIcon width='3em' height='3em' />
-          </Box>
-        </Flex>}
+  return <VStack>
+    <Flex alignSelf='stretch'
+      bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
+      _hover={!file ? { bgColor: 'smBlue.150' } : {}}
+      border='2px dashed' borderColor='#386DFB66'
+      justifyContent='center' alignItems='center' position='relative'
+      py={6} px={8}
+    >
+      <input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={onSelectFiles} accept='audio/*' />
 
+      <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
+        {!file ? <>
+          <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
+          <VStack alignItems='flex-start' spacing={0}>
+            <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+            <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
+          </VStack>
+        </> :
+          <Flex alignItems='center' justifyContent='space-between' width='100%' className="fadeIn">
+            <Flex color='smNavy.500' fontSize='1.2em' alignItems='center' gap={2}>
+              <Box><TranscribeIcon width='2em' height='2em' mono /></Box>
+              <Box>File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.</Box>
+            </Flex>
+            <Box cursor='pointer' onClick={removeFileClick}>
+              <RemoveFileIcon width='3em' height='3em' />
+            </Box>
+          </Flex>}
+      </Flex>
+
+      {
+        <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
+          ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />
+      }
     </Flex>
-    {<Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
-      ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />}
-  </Flex>
+    {isFileTooBigError &&
+      <AttentionBar data_qa='message-file-too-big' centered
+        description='This file size exceeds the 1GB file size limit. Please upload another file.' />}
+
+    {isFileWrongTypeError &&
+      <AttentionBar data_qa='message-file-too-big' centered
+        description='This file is the wrong type. Please upload another file.' />}
+  </VStack>
 });
 
 
@@ -267,7 +294,7 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
       <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
       <Stat title='Language:' value={getFullLanguageName(language)} />
     </HStack>
-    <Box flex='1' maxHeight={150} overflowY='auto' px={6} py={2} color='smBlack.300'>
+    <Box flex='1' maxHeight="10em" height='10em' overflowY='auto' px={6} py={2} color='smBlack.300'>
       {transcriptionText}
     </Box>
     <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
