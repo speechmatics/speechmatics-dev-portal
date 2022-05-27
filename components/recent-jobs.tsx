@@ -61,6 +61,10 @@ export const RecentJobs = observer(() => {
     node?.scrollIntoView({ behaviour: 'smooth', block: 'center' });
   }, []);
 
+
+  //can that be declared as an external function of the component?
+  //possible to make a custom hook of it, including the relevant states and returning them
+
   const getJobs = (loadingFunction, errorFunction) => {
     let isActive = true;
     if (idToken && accountStore.account && !noMoreJobs) {
@@ -96,12 +100,17 @@ export const RecentJobs = observer(() => {
           loadingFunction(false);
           isActive = false;
         });
+
+      //michal: it wont work as effect clean up
       return () => {
         isActive = false;
       };
     }
   };
 
+  //same here, perhaps it's worth to create a custom hook instead of declaring a lenghty function here 
+  // inside of component, remember component function is being rerun every time something change (state / props)
+  // if it's too complex to create refactor it out of this scope, it's worth to use useCallback
   const pollJobStatuses = () => {
     let isActive = true;
     if (idToken && accountStore.account && !noMoreJobs) {
@@ -136,14 +145,18 @@ export const RecentJobs = observer(() => {
           }
         }
       })
+      //michal: it wont work as effect clean up, the function is being called inside of effect
       return () => {
         isActive = false;
       };
     }
   };
 
+  //useCallback could be helpful here
   const onOpenTranscript = (job, format: string) => {
     if (idToken && accountStore.account) {
+
+      //what if we'd have to wait for a longer time for the response? case not handled
       callGetTranscript(idToken, job.jobId, format)
         .then((response) => {
           if (!!response) {
@@ -162,6 +175,7 @@ export const RecentJobs = observer(() => {
     }
   };
 
+  //useCallback could be helpful here
   const onOpenDeleteDialogue = (id) => {
     setDeleteJobId(id)
     onOpen()
@@ -183,6 +197,7 @@ export const RecentJobs = observer(() => {
 
   useEffect(() => {
     getJobs(setIsLoading, setErrorOnInit);
+    //return, for unmounting, should be here to not affect the stage while gone
   }, [idToken, accountStore.account]);
 
   useInterval(pollJobStatuses, 20000, isPolling)
@@ -280,6 +295,8 @@ export const RecentJobs = observer(() => {
   );
 });
 
+//I removed observer here a while ago, the component render relies only on props, 
+// observer is only used when it relies also on the mobx store.
 const RecentJobElement = ({
   status,
   fileName,

@@ -601,6 +601,7 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar' }) => (
   </HStack>
 );
 
+//michal: let's not use default chakra colours
 export const ErrorBanner = ({ text }) => (
   <Flex
     flexDir="column"
