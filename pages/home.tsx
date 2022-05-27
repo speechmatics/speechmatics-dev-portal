@@ -16,7 +16,7 @@ export default function Home({ }) {
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
       <VStack spacing='2em' width='100%' maxWidth='900px'>
-        <HStack alignItems="flex-start" spacing="2em">
+        <HStack alignItems="stretch" spacing="2em">
           <HomeBox
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
