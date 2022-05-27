@@ -17,16 +17,6 @@ export default observer(function Transcribe({ }) {
 
   const { stage } = flow.store;
 
-  const { tokenStore } = useContext(accountStoreContext);
-
-  useEffect(() => {
-    flow.reset();
-    if (tokenStore.tokenPayload?.idToken)
-      flow.fetchSecret(tokenStore.tokenPayload.idToken);
-
-  }, [tokenStore.tokenPayload?.idToken])
-
-
   return (
     <Dashboard>
       <PageHeader
@@ -49,6 +39,15 @@ type TranscribeFormProps = {
 }
 
 export const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
+
+  const { tokenStore } = useContext(accountStoreContext);
+
+  useEffect(() => {
+    flow.reset();
+    if (tokenStore.tokenPayload?.idToken)
+      flow.fetchSecret(tokenStore.tokenPayload.idToken);
+
+  }, [tokenStore.tokenPayload?.idToken])
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>

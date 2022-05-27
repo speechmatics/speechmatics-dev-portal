@@ -1,4 +1,5 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
@@ -9,7 +10,7 @@ type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
 }
 
-export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) => {
+export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
   const [file, setFile] = useState<File>(null)
@@ -75,7 +76,7 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
     {<Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
       ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />}
   </Flex>
-}
+});
 
 
 export type SelectFieldProps = {
