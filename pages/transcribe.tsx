@@ -60,13 +60,13 @@ export const TranscribeForm = observer(function ({ store }: TranscribeFormProps)
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Expected language of transcription'
+      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
         data={languagesData} onSelect={val => store.language = val} />
 
-      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Separation of transcription'
+      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
         data={separation} onSelect={val => store.separation = val as any} />
 
-      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Accuracy model"
+      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy."
         data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={2}>

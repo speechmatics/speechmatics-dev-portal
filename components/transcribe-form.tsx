@@ -127,6 +127,8 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
     setSelectedIndex(data.findIndex(el => el.selected))
   }, [])
 
+  console.log('SelectField', label, selectedIndex)
+
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
       <Box color='smBlack.400'>{label}</Box>
@@ -136,9 +138,9 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
         </Tooltip>
       </Box>
     </HStack>
-    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa} defaultValue={selectedIndex}
+    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa} defaultValue={data[selectedIndex].value}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option key={i} value={value}>{label}</option>)}
+      {data.map(({ value, label }, i) => <option key={i} value={value} selected={i == selectedIndex}>{label}</option>)}
     </Select>
   </Box>
 }

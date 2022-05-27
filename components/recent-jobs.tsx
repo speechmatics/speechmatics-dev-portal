@@ -250,7 +250,7 @@ export const RecentJobs = observer(() => {
       >
         <ModalOverlay rounded="none" />
         <ModalContent p={4} rounded="none" h="70vh">
-          <ModalHeader fontFamily="RMNeue-Regular" fontSize="2em" textAlign="center">
+          <ModalHeader fontSize="2em" textAlign="center">
             Transcription of "{activeJob?.fileName}"
           </ModalHeader>
           <ModalCloseButton
@@ -364,7 +364,7 @@ const RecentJobElement = ({
             <TranscriptDownloadMenu jobId={id} status={status} />
           </Menu>
         </Box>
-        {status === ('done' || 'completed') && (
+        {status === ('done' || 'completed') ? (
           <IconButton
             variant="unstyled"
             aria-label="stop-or-delete"
@@ -380,10 +380,11 @@ const RecentJobElement = ({
                 true
               )
             }
+            _focus={{ boxShadow: 'none' }}
             flex={1}
             icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
           />
-        )}
+        ) : <Box flex={1} ><ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" /> </Box>}
         <IconButton
           variant="unstyled"
           aria-label="stop-or-delete"
