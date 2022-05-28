@@ -37,7 +37,7 @@ jobs:
       - name: Set up node and test
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - run: npm ci && npm test
 
       - name: Build And Deploy
