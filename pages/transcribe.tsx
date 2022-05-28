@@ -17,6 +17,10 @@ export default observer(function Transcribe({ }) {
 
   const { stage } = flow.store;
 
+  useEffect(() => {
+    flow.reset();
+  }, [])
+
   return (
     <Dashboard>
       <PageHeader
