@@ -12,36 +12,22 @@ import {
   ResponsiveValue,
   Spinner,
   StackProps,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Text,
   Tooltip,
   VStack,
   createStandaloneToast,
   useBreakpointValue,
   Menu,
-  MenuList,
   MenuButton,
-  MenuItem,
-  MenuDivider,
   BoxProps,
   Modal,
   ModalContent,
   ModalCloseButton,
   ModalOverlay,
-  ModalHeader,
   ModalBody,
   ModalFooter,
 } from '@chakra-ui/react';
-import { observer } from 'mobx-react-lite';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import accountContext from '../utils/account-store-context';
-import { callGetTranscript } from '../utils/call-api';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   CalendarIcon,
   ExclamationIcon,
@@ -64,6 +50,7 @@ import { Limits } from './pagination/lib/hooks/usePagination';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import { capitalizeFirstLetter } from '../utils/string-utils';
 import { getFullLanguageName } from '../utils/transcribe-elements';
+import { TranscriptDownloadMenu } from './transcript-download-menu';
 
 export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
   <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
@@ -208,105 +195,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </Box>
   );
 };
-export const CodeExamples = observer(({ token }: { token?: string }) => {
-  const { accountStore } = useContext(accountContext);
 
-  return (
-    <>
-      <Tabs size="lg" pt="1em" variant="speechmaticsCode" width="100%">
-        <TabList marginBottom="-1px">
-          <Tab data-qa={'tab-windows-cmd'}>Windows CMD</Tab>
-          <Tab data-qa={'tab-mac-and-linux'}>Mac and Linux</Tab>
-        </TabList>
-        <TabPanels
-          border="0px"
-          borderTop="1px"
-          borderTopColor="var(--chakra-colors-smBlack-180)"
-          boxShadow="none"
-          pt="1.5em"
-        >
-          <TabPanel width="100%">
-            <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
-            <CodeHighlight
-              data_qa={'code-post-job-standard'}
-              code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
-            />
-            <DescriptionLabel pt="2em">
-              Get a transcript using the job ID returned by the POST request above:
-            </DescriptionLabel>
-            <CodeHighlight
-              data_qa={'code-get-job-standard'}
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }"`}
-            />
-            <DescriptionLabel pt="2em">
-              To get output in JSON format, remove the format=txt query parameter from the GET
-              request.
-            </DescriptionLabel>
-          </TabPanel>
-          <TabPanel width="100%">
-            <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
-
-            <CodeHighlight
-              data_qa={'code-post-job-enhanced'}
-              code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
-            />
-
-            <DescriptionLabel pt="2em">
-              Get a transcript using the job ID returned by the POST request above:
-            </DescriptionLabel>
-            <CodeHighlight
-              data_qa={'code-get-job-enhanced'}
-              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }"`}
-            />
-            <DescriptionLabel pt="2em">
-              To get output in JSON format, remove the format=txt query parameter from the GET
-              request.
-            </DescriptionLabel>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      <DescriptionLabel pt="1em">
-        See our{' '}
-        <Link
-          href="https://docs.speechmatics.com/en/cloud/howto/"
-          style={{ cursor: 'pointer', textDecoration: 'underline' }}
-          _hover={{ color: 'smBlue.500' }}
-          target="_blank"
-        >
-          <a>examples and guidance</a>
-        </Link>{' '}
-        on using the Speechmatics SaaS.
-      </DescriptionLabel>
-    </>
-  );
-});
-
-export const CodeHighlight = ({ code, data_qa }) => {
-  return (
-    <Box position="relative" width="100%" height="50px">
-      <CopyButton copyContent={code} position="absolute" top="12px" />
-      <Box position="absolute" width="100%">
-        <SyntaxHighlighter
-          language="bash"
-          style={{ ...codeTheme }}
-          className="code_block"
-          data-qa={data_qa}
-          aria-label={code}
-        >
-          {code}
-        </SyntaxHighlighter>
-      </Box>
-    </Box>
-  );
-};
 
 export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
   const [isTTOpen, setIsTTOpen] = useState(false);
@@ -626,133 +515,3 @@ export const ErrorBanner = ({ text }) => (
     </Flex>
   </Flex>
 );
-
-export type TranscriptionViewerProps = {
-  transcriptionText: string;
-  date: string;
-  jobId: string;
-  accuracy: string;
-  language: string;
-  transcMaxHeight?: string;
-} & BoxProps;
-
-export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => (
-  <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
-    <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
-      borderBottom='1px'
-      borderColor='smBlack.200'>
-      <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
-      <Stat title='Job ID:' value={jobId} />
-      <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
-      <Stat title='Language:' value={getFullLanguageName(language)} />
-    </HStack>
-    <Box flex='1' maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300'>
-      {transcriptionText}
-    </Box>
-    <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
-      <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
-        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
-        Copy Transcription
-      </Button>
-      <Menu>
-        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
-          Download Transcription
-        </MenuButton>
-        <TranscriptDownloadMenu jobId={jobId} status={'done'} />
-      </Menu>
-    </HStack>
-  </VStack>
-)
-
-
-const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
-    <Text as="span" color="smBlack.300" fontFamily="RMNeue-Bold" fontSize="0.8em">
-      {title}{' '}
-    </Text>
-    <Text as="span" color="smBlack.300" fontSize="0.8em">
-      {value}
-    </Text>
-  </Box>
-);
-
-export const TranscriptDownloadMenu = ({ jobId, status }) => {
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
-  const downloadTranscript = (format) => {
-    let isActive = true;
-    if (idToken && accountStore.account) {
-      callGetTranscript(idToken, jobId, format)
-        .then((response) => {
-          if (isActive && !!response) {
-            const fileName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
-            const contentType = format === 'json-v2' ? 'application/json' : 'text/plain'
-            const output = format === 'json-v2' ? JSON.stringify(response) : response
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
-            a.download = fileName;
-            a.click();
-          }
-        })
-    }
-    return () => {
-      isActive = false;
-    };
-  };
-  return <>
-    <MenuList
-      color="smNavy.400"
-      border="1px solid"
-      rounded="none"
-      shadow="lg"
-      fontSize={14}
-      borderColor="smBlack.200"
-      minW="0px"
-      maxW={'180px'}
-      p={2}
-    >
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('txt');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as text
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('json-v2');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as JSON
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('srt');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as SRT
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      <MenuItem as="a" href="../public/favicon.ico" download _focus={{ color: 'smBlue.500' }}>
-        Download audio file
-      </MenuItem>
-    </MenuList>
-  </>
-};

@@ -38,6 +38,11 @@ export const getFullLanguageName = (value: string) =>
 
 export const languagesData = [
   {
+    label: 'English',
+    value: 'en',
+    selected: true,
+  },
+  {
     label: 'Arabic',
     value: 'ar',
   },
@@ -60,11 +65,6 @@ export const languagesData = [
   {
     label: 'German',
     value: 'de',
-  },
-  {
-    label: 'English',
-    value: 'en',
-    selected: true,
   },
   {
     label: 'Hindi',

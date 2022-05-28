@@ -22,13 +22,8 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback } from 'react';
 import {
-  DescriptionLabel,
   ErrorBanner,
-  TranscriptionViewer,
-  TranscriptionViewerProps,
   ConfirmRemoveModal,
-  TranscriptDownloadMenu,
-  AttentionBar,
   HeaderLabel,
   UsageInfoBanner,
 } from './common';
@@ -38,6 +33,8 @@ import { useInterval } from '../utils/hooks';
 import accountContext from '../utils/account-store-context';
 import { useRouter } from 'next/router';
 import { capitalizeFirstLetter } from '../utils/string-utils';
+import { TranscriptDownloadMenu } from './transcript-download-menu';
+import { TranscriptionViewerProps, TranscriptionViewer } from './transcription-viewer';
 
 export const RecentJobs = observer(() => {
   const [jobs, setJobs] = useState<RecentJobElementProps[]>([]);

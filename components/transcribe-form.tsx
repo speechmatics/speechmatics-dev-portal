@@ -1,12 +1,8 @@
-import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { observer } from "mobx-react-lite";
+import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps } from "@chakra-ui/react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { formatTimeDateFromString } from "../utils/date-utils";
-import { capitalizeFirstLetter } from "../utils/string-utils";
-import { checkIfFileCorrectType, getFullLanguageName, Stage } from "../utils/transcribe-elements";
-import { AttentionBar, TranscriptDownloadMenu } from "./common";
-import { CopyIcon, DownloadIcon, OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
+import { checkIfFileCorrectType, Stage } from "../utils/transcribe-elements";
+import { AttentionBar } from "./common";
+import { OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
@@ -136,9 +132,10 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
         </Tooltip>
       </Box>
     </HStack>
-    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa} defaultValue={data[selectedIndex].value}
+    <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa}
+      defaultValue={data[selectedIndex].value}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option key={i} value={value} selected={i == selectedIndex}>{label}</option>)}
+      {data.map(({ value, label }, i) => <option key={i} value={value}>{label}</option>)}
     </Select>
   </Box>
 }

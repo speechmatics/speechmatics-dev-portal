@@ -24,7 +24,6 @@ import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
   AttentionBar,
-  CodeExamples,
   ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
@@ -37,6 +36,7 @@ import {
 import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import { CodeExamples } from '../components/code-examples';
 
 //accountStore.getRuntimeURL()
 
