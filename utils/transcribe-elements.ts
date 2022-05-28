@@ -3,12 +3,14 @@ export type Accuracy = 'enhanced' | 'standard';
 export type Separation = 'none' | 'speaker' | 'channel';
 export type JobStatus = 'running' | 'done' | 'rejected' | '';
 
+export type Language = { label: string; value: string; default?: boolean };
+
 export const separation: {
   label: string;
   value: Separation;
-  selected?: boolean;
+  default?: boolean;
 }[] = [
-  { label: 'None', value: 'none', selected: true },
+  { label: 'None', value: 'none', default: true },
   { label: 'Speaker', value: 'speaker' },
   { label: 'Channel', value: 'channel' },
 ];
@@ -16,9 +18,9 @@ export const separation: {
 export const accuracyModels: {
   label: string;
   value: Accuracy;
-  selected?: boolean;
+  default?: boolean;
 }[] = [
-  { label: 'Enhanced', value: 'enhanced', selected: true },
+  { label: 'Enhanced', value: 'enhanced', default: true },
   { label: 'Standard', value: 'standard' },
 ];
 
@@ -36,12 +38,7 @@ export const checkIfFileCorrectType = (file: File) =>
 export const getFullLanguageName = (value: string) =>
   languagesData.find((el) => el.value == value)?.label;
 
-export const languagesData = [
-  {
-    label: 'English',
-    value: 'en',
-    selected: true,
-  },
+export const languagesData: Language[] = [
   {
     label: 'Arabic',
     value: 'ar',
@@ -57,6 +54,11 @@ export const languagesData = [
   {
     label: 'Danish',
     value: 'da',
+  },
+  {
+    label: 'English',
+    value: 'en',
+    default: true,
   },
   {
     label: 'French',

@@ -1,5 +1,5 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps } from "@chakra-ui/react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { checkIfFileCorrectType, Stage } from "../utils/transcribe-elements";
 import { AttentionBar } from "./common";
 import { OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
@@ -105,23 +105,18 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
 export type SelectFieldProps = {
   label: string,
   tooltip: string,
-  data: { value: string, label: string, selected?: boolean }[],
+  data: { value: string, label: string, default?: boolean }[],
   onSelect: (value: string) => void,
   'data-qa': string
 }
 
 export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa }: SelectFieldProps) => {
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const select = (value: number) => {
-    setSelectedIndex(value);
+  const select = useCallback((value: number) => {
     onSelect(data[value].value);
-  }
-
-  useEffect(() => {
-    setSelectedIndex(data.findIndex(el => el.selected))
   }, [])
+
+  const defaultValue = useMemo(() => data.find(el => el.default)?.value, [data]);
 
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
@@ -133,9 +128,9 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
       </Box>
     </HStack>
     <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa}
-      defaultValue={data[selectedIndex].value}
+      defaultValue={defaultValue}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }, i) => <option key={i} value={value}>{label}</option>)}
+      {data.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
     </Select>
   </Box>
 }

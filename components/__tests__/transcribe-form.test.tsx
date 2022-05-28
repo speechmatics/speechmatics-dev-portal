@@ -10,7 +10,7 @@ describe('transcribe form and flow tests', () => {
   test('SelectField doing what it should', () => {
 
     const data = [
-      { label: 'English', value: 'en', selected: true },
+      { label: 'English', value: 'en', default: true },
       { label: 'French', value: 'fr' },
       { label: 'German', value: 'de' },
     ];
