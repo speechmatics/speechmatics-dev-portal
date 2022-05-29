@@ -1497,3 +1497,31 @@ export const CardGreyImage = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+
+export function ClockIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 26 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M12.999 24.501c6.351 0 11.5-5.149 11.5-11.5s-5.149-11.5-11.5-11.5-11.5 5.149-11.5 11.5 5.149 11.5 11.5 11.5z"
+        stroke="#386DFB"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13 7.501v5.5l6 5.5"
+        stroke="#386DFB"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

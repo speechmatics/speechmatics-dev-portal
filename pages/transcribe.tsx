@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
 import Dashboard from "../components/dashboard";
-import { CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
+import { ClockIcon, CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
@@ -73,12 +73,16 @@ export const TranscribeForm = observer(function ({ store }: TranscribeFormProps)
       <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy."
         data={accuracyModels} onSelect={val => store.accuracy = val as any} />
     </Flex>
-    <Flex width='100%' justifyContent='center' py={2}>
+    <Flex width='100%' justifyContent='center' py={3}>
       <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
         onClick={() => flow.attemptSendFile()}
         disabled={!store._file || !store.secretKey}>
         Get Your Transcription
       </Button>
+    </Flex>
+    <Flex justifyContent='center' alignItems='center' width='100%'>
+      <Box mr={2}><ClockIcon /></Box>
+      <Box fontSize='0.85em' color='smNavy.300'>A one hour file will return your transcript in 30 minutes or less.</Box>
     </Flex>
   </>
 })
