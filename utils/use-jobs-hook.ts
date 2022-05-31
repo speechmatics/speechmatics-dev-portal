@@ -27,7 +27,7 @@ export const useJobs = (limit, page) => {
         limit: limit,
       };
       if (createdBefore != null) {
-        queries.created_before = createdBefore;
+        queries.created_before = addMicroSecond(createdBefore);
       }
       callGetJobs(idToken, queries)
         .then((respJson) => {
@@ -66,12 +66,12 @@ export const useJobs = (limit, page) => {
       if (requestNo !== 1) {
         for (let i = 0; i < requestNo; i++) {
           let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
-          let query = { limit: maxlimit, created_before: createdBeforeTime }
+          let query = { limit: maxlimit, created_before: addMicroSecond(createdBeforeTime) }
           requests.push(callGetJobs(idToken, query))
         }
       } else {
         let createdBeforeTime = jobs[0]?.date?.toISOString();
-        let query = { limit: jobs.length, created_before: createdBeforeTime }
+        let query = { limit: jobs.length, created_before: addMicroSecond(createdBeforeTime) }
         requests.push(callGetJobs(idToken, query))
       }
       Promise.all(requests).then(result => {
@@ -208,4 +208,10 @@ type JobConfig = {
 type JobQuery = {
   limit?: number;
   created_before?: string;
+}
+
+const addMicroSecond = (created) => {
+  let tempTime = new Date(created).getTime()
+  tempTime += 1
+  return new Date(tempTime).toLocaleString("se-SE")
 }
