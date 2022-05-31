@@ -60,9 +60,11 @@ class RuntimeAuthFlow {
   async refreshToken(idToken: string) {
     try {
       this.restoreToken()
-      const token = await callGetRuntimeSecret(idToken)
-      const timeout = new Date().getTime() + 1000 * 3600
-      this.storeRuntimeSecret({ ...token, timeout })
+      if ( ! this.store.secretKey ) {
+        const token = await callGetRuntimeSecret(idToken)
+        const timeout = new Date().getTime() + 1000 * 3600
+        this.storeRuntimeSecret({ ...token, timeout })
+      }
     } catch (err) {
       this.store.error = err
     }

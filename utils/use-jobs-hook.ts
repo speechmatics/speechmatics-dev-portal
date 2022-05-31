@@ -45,13 +45,11 @@ export const useJobs = (limit, page) => {
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at)
             setJobs(combinedArrays);
             loadingFunction(false);
-            isActive = false;
           }
         })
         .catch((err) => {
           errorFunction(true);
           loadingFunction(false);
-          isActive = false;
         });
     }
     return () => {
@@ -61,7 +59,7 @@ export const useJobs = (limit, page) => {
 
   const pollJobStatuses = () => {
     let isActive = true;
-    if (idToken) {
+    if (idToken && isPolling) {
       let newJobs = []
       const requests = []
       const requestNo = Math.ceil(jobs.length / maxlimit)

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Ref, useEffect, useRef } from 'react';
 
 export const useInterval = (callback, delay, isPolling) => {
   const savedCallback: any = useRef();
