@@ -29,19 +29,21 @@ export const useJobs = (limit, page) => {
       if (createdBefore != null) {
         queries.created_before = addMicroSecond(createdBefore);
       }
+      console.log(queries)
       callGetJobs(idToken, queries)
         .then((respJson) => {
-          if (respJson?.jobs?.length === 0) {
-            setNoMoreJobs(true)
-            loadingFunction(false);
-          } else if (isActive && !!respJson && 'jobs' in respJson) {
+          if (isActive && !!respJson && 'jobs' in respJson) {
+            if (respJson?.jobs?.length < limit) {
+              setNoMoreJobs(true)
+              loadingFunction(false);
+            }
             const formatted: JobElementProps[] = formatJobs(respJson.jobs);
             if (formatted.some(item => item.status === 'running')) {
               setIsPolling(true)
             } else {
               setIsPolling(false)
             }
-            const combinedArrays = Array.from(new Set([...jobs, ...formatted]));
+            const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at)
             setJobs(combinedArrays);
             loadingFunction(false);
@@ -82,7 +84,8 @@ export const useJobs = (limit, page) => {
         }
         if (isActive) {
           const formatted = formatJobs(newJobs)
-          setJobs(formatted)
+          const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
+          setJobs(combinedArrays)
           if (newJobs.some(item => item.status === 'running')) {
             setIsPolling(true)
           } else {
@@ -103,10 +106,10 @@ export const useJobs = (limit, page) => {
       throw new Error("Limit cannot be more than " + maxlimit)
     }
     getJobs(setIsLoading, setErrorOnInit)
-  }, [idToken, accountStore.account])
+  }, [idToken])
   
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && page > 0) {
       getJobs(setIsWaitingOnMore, setErrorGettingMore)
     }
   }, [page])
@@ -178,6 +181,25 @@ const mapLanguages = (lang) => {
   return languagesData.find((item) => item.value == lang).label;
 };
 
+const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
+  for (const item of second) {
+    const index = first.findIndex(el => el.id === item.id)
+    if ( index === -1 && add) {
+      first.push(item)
+    } else {
+      first[index] = item
+    }
+  }
+  return first
+}
+
+const addMicroSecond = (created) => {
+  console.log(created)
+  let tempTime = new Date(created).getTime()
+  tempTime += 1
+  return new Date(tempTime).toISOString()
+}
+
 export type JobElementProps = {
   status: 'running' | 'completed';
   fileName: string;
@@ -208,10 +230,4 @@ type JobConfig = {
 type JobQuery = {
   limit?: number;
   created_before?: string;
-}
-
-const addMicroSecond = (created) => {
-  let tempTime = new Date(created).getTime()
-  tempTime += 1
-  return new Date(tempTime).toLocaleString("se-SE")
 }
