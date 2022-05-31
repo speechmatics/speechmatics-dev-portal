@@ -184,9 +184,9 @@ const mapLanguages = (lang) => {
 const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
   for (const item of second) {
     const index = first.findIndex(el => el.id === item.id)
-    if ( index === -1 && add) {
+    if ( index === -1 && add ) {
       first.push(item)
-    } else {
+    } else if ( index !== -1 ) {
       first[index] = item
     }
   }
