@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalBody,
   useDisclosure,
-  Flex,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback } from 'react';
@@ -28,30 +27,23 @@ import {
   UsageInfoBanner,
 } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
-import { callGetJobs, callGetTranscript, callDeleteJob } from '../utils/call-api';
-import { useInterval } from '../utils/hooks';
+import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
 import { useRouter } from 'next/router';
 import { capitalizeFirstLetter } from '../utils/string-utils';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
 import { TranscriptionViewerProps, TranscriptionViewer } from './transcription-viewer';
+import { TranscriptFormat } from '../utils/transcribe-elements'
+import { JobElementProps, useJobs } from '../utils/use-jobs-hook'
+import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 
 export const RecentJobs = observer(() => {
-  const [jobs, setJobs] = useState<RecentJobElementProps[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [noMoreJobs, setNoMoreJobs] = useState<boolean>(false);
-  const [isWaitingOnMore, setIsWaitingOnMore] = useState<boolean>(false);
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
-  const [errorOnInit, setErrorOnInit] = useState<boolean>(false);
-  const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
-  const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [deleteJobId, setDeleteJobId] = useState<string>(null);
-  const [isPolling, setIsPolling] = useState<boolean>(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const [page, setPage] = useState<number>(0)
   const pageLimit = 20;
-  const maxPageLimit = 100;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
   const router = useRouter();
@@ -59,105 +51,23 @@ export const RecentJobs = observer(() => {
     node?.scrollIntoView({ behaviour: 'smooth', block: 'center' });
   }, []);
 
+  const {
+    jobs,
+    isLoading,
+    isPolling,
+    isWaitingOnMore,
+    errorGettingMore,
+    errorOnInit,
+    noMoreJobs,
+    onDeleteJob
+  } = useJobs(pageLimit, page)
 
-  //can that be declared as an external function of the component?
-  //possible to make a custom hook of it, including the relevant states and returning them
-
-  const getJobs = (loadingFunction, errorFunction) => {
-    let isActive = true;
-    if (idToken && accountStore.account && !noMoreJobs) {
-      errorFunction(false);
-      loadingFunction(true);
-      const queries: JobQuery = {
-        limit: pageLimit,
-      };
-      if (createdBefore != null) {
-        queries.created_before = createdBefore;
-      }
-      callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), queries)
-        .then((respJson) => {
-          if (respJson?.jobs?.length === 0) {
-            setNoMoreJobs(true)
-            loadingFunction(false);
-          } else if (isActive && !!respJson && 'jobs' in respJson) {
-            const formatted: RecentJobElementProps[] = formatJobs(respJson.jobs);
-            if (formatted.some(item => item.status === 'running')) {
-              setIsPolling(true)
-            } else {
-              setIsPolling(true)
-            }
-            const combinedArrays = Array.from(new Set([...jobs, ...formatted]));
-            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at)
-            setJobs(combinedArrays);
-            loadingFunction(false);
-            isActive = false;
-          }
-        })
-        .catch((err) => {
-          errorFunction(true);
-          loadingFunction(false);
-          isActive = false;
-        });
-
-      //michal: it wont work as effect clean up
-      return () => {
-        isActive = false;
-      };
-    }
-  };
-
-  //same here, perhaps it's worth to create a custom hook instead of declaring a lenghty function here 
-  // inside of component, remember component function is being rerun every time something change (state / props)
-  // if it's too complex to create refactor it out of this scope, it's worth to use useCallback
-  const pollJobStatuses = () => {
-    let isActive = true;
-    if (idToken && accountStore.account && !noMoreJobs) {
-      let newJobs = []
-      const requests = []
-      const requestNo = Math.ceil(jobs.length / maxPageLimit)
-      if (requestNo !== 1) {
-        for (let i = 0; i < requestNo; i++) {
-          console.log(i)
-          let createdBeforeTime = jobs[maxPageLimit * i]?.date?.toISOString();
-          let query = { limit: maxPageLimit, created_before: createdBeforeTime }
-          requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
-        }
-      } else {
-        let createdBeforeTime = jobs[0]?.date?.toISOString();
-        let query = { limit: jobs.length, created_before: createdBeforeTime }
-        requests.push(callGetJobs(idToken, accountStore.getContractId(), accountStore.getProjectId(), query))
-      }
-      Promise.all(requests).then(result => {
-        for (const res of result) {
-          if (isActive && !!res && 'jobs' in res) {
-            newJobs = [...newJobs, ...res.jobs]
-          }
-        }
-        if (isActive) {
-          const formatted = formatJobs(newJobs)
-          setJobs(formatted)
-          if (newJobs.some(item => item.status === 'running')) {
-            setIsPolling(true)
-          } else {
-            setIsPolling(true)
-          }
-        }
-      })
-      //michal: it wont work as effect clean up, the function is being called inside of effect
-      return () => {
-        isActive = false;
-      };
-    }
-  };
-
-  //useCallback could be helpful here
-  const onOpenTranscript = (job, format: string) => {
-    if (idToken && accountStore.account) {
-
-      //what if we'd have to wait for a longer time for the response? case not handled
+  const onOpenTranscript = (job, format: TranscriptFormat) => {
+    let isActive = true
+    if (idToken) {
       callGetTranscript(idToken, job.jobId, format)
         .then((response) => {
-          if (!!response) {
+          if (!!response && isActive) {
             setActiveJob({
               date: job.date,
               jobId: job.jobId,
@@ -170,34 +80,19 @@ export const RecentJobs = observer(() => {
           }
         })
     }
-  };
-
-  //useCallback could be helpful here
-  const onOpenDeleteDialogue = (id) => {
-    setDeleteJobId(id)
-    onOpen()
-  }
-
-  const onDeleteJob = (id, force) => {
-    if (idToken && accountStore.account) {
-      callDeleteJob(idToken, id, force)
-        .then((response) => {
-          if (!!response) {
-            setJobs((oldJobs) => oldJobs.filter((item) => item.id !== id));
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    return () => {
+      isActive = false
     }
   };
 
-  useEffect(() => {
-    getJobs(setIsLoading, setErrorOnInit);
-    //return, for unmounting, should be here to not affect the stage while gone
-  }, [idToken, accountStore.account]);
+  const onOpenDeleteDialogueCallback = useCallback((id) => {
+    setDeleteJobId(id)
+    onOpen()
+  }, [setDeleteJobId])
 
-  useInterval(pollJobStatuses, 20000, isPolling)
+  useEffect(() => {
+    authFlow.restoreToken()
+  }, [idToken, accountStore.account]);
 
   return (
     <>
@@ -215,7 +110,7 @@ export const RecentJobs = observer(() => {
                 key={el.id + i}
                 {...el}
                 onOpenTranscript={onOpenTranscript}
-                onStartDelete={onOpenDeleteDialogue}
+                onStartDelete={onOpenDeleteDialogueCallback}
               />
             );
           })}
@@ -227,8 +122,8 @@ export const RecentJobs = observer(() => {
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
           variant="speechmatics"
           onClick={(e) => {
-            e.preventDefault();
-            getJobs(setIsWaitingOnMore, setErrorGettingMore);
+            setPage(page + 1)
+            // getJobs(setIsWaitingOnMore, setErrorGettingMore);
           }}
           width="100%"
         >
@@ -283,8 +178,6 @@ export const RecentJobs = observer(() => {
   );
 });
 
-//I removed observer here a while ago, the component render relies only on props, 
-// observer is only used when it relies also on the mobx store.
 const RecentJobElement = ({
   status,
   fileName,
@@ -297,7 +190,7 @@ const RecentJobElement = ({
   active,
   onOpenTranscript,
   onStartDelete,
-}: RecentJobElementProps & JobModalProps) => {
+}: JobElementProps & JobModalProps) => {
   return (
     <HStack
       id={id}
@@ -374,7 +267,7 @@ const RecentJobElement = ({
                   date: formatDate(date),
                   fileName,
                 },
-                true
+                'txt'
               )
             }
             _focus={{ boxShadow: 'none' }}
@@ -441,58 +334,11 @@ const LoadingJobsSkeleton = () => {
   );
 };
 
-const mapLanguages = (lang) => {
-  const languages: any[] = [
-    {
-      code: 'en',
-      language: 'English',
-    },
-  ];
-  return languages.find((item) => item.code == lang).language;
-};
-
 const statusColour = {
   rejected: 'smRed.500',
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400',
-};
-
-const formatJobs = (jobsResponse: JobsResponse[]) => {
-  const formattedJobs: RecentJobElementProps[] = jobsResponse.map((item) => {
-    const newItem: RecentJobElementProps = {
-      id: item.id,
-      status: item.status,
-      date: new Date(item.created_at),
-      duration: formatDuration(item.duration),
-      fileName: item.data_name,
-    };
-    if (item?.config?.transcription_config != null) {
-      newItem.language = mapLanguages(item?.config?.transcription_config?.language);
-    }
-    if (item?.config?.transcription_config?.operating_point != null) {
-      newItem.accuracy = item.config.transcription_config.operating_point;
-    } else {
-      newItem.accuracy = 'standard';
-    }
-    return newItem;
-  });
-  return formattedJobs;
-};
-
-const formatDuration = (duration) => {
-  const seconds = parseInt(duration);
-  if (seconds < 60) {
-    return `${seconds} seconds`;
-  }
-  const minutes = seconds / 60;
-  if (minutes < 60) {
-    return `${Math.round(minutes)} minutes`;
-  }
-  const hours = (seconds / 60) * 60;
-  if (hours < 24) {
-    return `${Math.round(10 * hours) / 10} hours`;
-  }
 };
 
 const formatDate = (date) => {
@@ -511,42 +357,9 @@ const formatDate = (date) => {
   return (string += minutes);
 };
 
-
-type RecentJobElementProps = {
-  status: 'running' | 'completed';
-  fileName: string;
-  date: Date;
-  accuracy?: string;
-  duration: string;
-  language?: string;
-  id: string;
-};
-
-type JobsResponse = {
-  created_at: string;
-  data_name: string;
-  status: 'running' | 'completed';
-  duration: string;
-  id: string;
-  config?: JobConfig;
-};
-
-type JobConfig = {
-  type: 'transcription' | 'alignment';
-  transcription_config: {
-    language: string;
-    operating_point?: 'standard' | 'enhanced';
-  };
-};
-
 type JobModalProps = {
   active?: boolean;
   onSetRef?: any;
   onOpenTranscript?: Function;
   onStartDelete?: Function;
 };
-
-type JobQuery = {
-  limit?: number;
-  created_before?: string;
-}

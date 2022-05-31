@@ -3,15 +3,13 @@ import { useContext } from "react";
 import { callGetTranscript } from "../utils/call-api";
 import accountContext from '../utils/account-store-context';
 
-
-
-
 export const TranscriptDownloadMenu = ({ jobId, status }) => {
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
+
   const downloadTranscript = (format) => {
     let isActive = true;
-    if (idToken && accountStore.account) {
+    if (idToken) {
       callGetTranscript(idToken, jobId, format)
         .then((response) => {
           if (isActive && !!response) {

@@ -1,10 +1,9 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 import { makeAutoObservable } from 'mobx';
 import {
-  callFileTranscriptionSecret,
+  callGetTranscript,
   callRequestFileTranscription,
   callRequestJobStatus,
-  callRequestJobTranscription,
 } from './call-api';
 import {
   Accuracy,
@@ -143,21 +142,12 @@ export class FileTranscriptionStore {
 class FileTranscribeFlow {
   store = new FileTranscriptionStore();
 
-  async fetchSecret(idToken: string) {
-    try {
-      const json = await callFileTranscriptionSecret(idToken);
-      this.store.secretKey = json.key;
-    } catch (err) {
-      this.store.error = FlowError.CouldntFetchSecret;
-    }
-  }
-
   assignFile(file: File) {
     if (file == null) {
       this.store.setFile(null);
       return;
     }
-
+    console.log(file.type)
     if (file.size > 1_000_000_000) {
       this.store.error = FlowError.FileTooBig;
     } else if (!checkIfFileCorrectType(file)) {
@@ -168,13 +158,12 @@ class FileTranscribeFlow {
     }
   }
 
-  async attemptSendFile() {
-    const { secretKey, _file, language, accuracy, separation } = this.store;
-
+  async attemptSendFile(idToken) {
+    const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
 
     const resp = await callRequestFileTranscription(
-      secretKey,
+      idToken,
       _file,
       language,
       accuracy,
@@ -185,7 +174,7 @@ class FileTranscribeFlow {
       this.store.jobId = resp.id;
       this.store.stage = 'pendingTranscription';
 
-      this.runStatusPolling();
+      this.runStatusPolling(idToken);
     } else {
       //todo handle errors
       toast({ description: 'error' });
@@ -196,16 +185,16 @@ class FileTranscribeFlow {
 
   interv = 0;
 
-  runStatusPolling() {
-    const { secretKey, jobId } = this.store;
+  runStatusPolling(idToken) {
+    const { jobId } = this.store;
 
     this.interv = window.setInterval(async () => {
-      const resp = await callRequestJobStatus(secretKey, jobId);
+      const resp = await callRequestJobStatus(idToken, jobId);
       const status = (this.store.jobStatus = resp.job.status);
       if (status === 'done') {
         this.store.dateSubmitted = resp.job.created_at;
         this.store.stage = 'complete';
-        this.fetchTranscription();
+        this.fetchTranscription(idToken);
       }
       if (status === 'rejected') {
         this.store.stage = 'failed';
@@ -219,10 +208,10 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  async fetchTranscription() {
-    const { secretKey, jobId } = this.store;
+  async fetchTranscription(idToken) {
+    const { jobId } = this.store;
 
-    const transcr = await callRequestJobTranscription(secretKey, jobId, 'txt');
+    const transcr = await callGetTranscript(idToken, jobId, 'text');
 
     this.store.transcriptionText = transcr;
   }

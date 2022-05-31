@@ -1,6 +1,7 @@
 import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
-import { Accuracy, Separation } from './transcribe-elements';
+import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
+import { runtimeAuthFlow as runtime } from './runtime-auth-flow'
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
@@ -21,7 +22,7 @@ export const callGetUsage = async (
   projectId: number,
   dates: any
 ) => {
-  return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {
+  return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {}, {
     contract_id: contractId,
     project_id: projectId,
     grouping: 'day',
@@ -32,31 +33,27 @@ export const callGetUsage = async (
 
 export const callGetJobs = async (
   idToken: string,
-  contractId: number,
-  projectId: number,
   optionalQueries: any
 ) => {
-  return call(idToken, `${RUNTIME_API_URL}/jobs`, 'GET', {
-    contract_id: contractId,
-    project_id: projectId,
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs`, 'GET', {}, {
     ...optionalQueries,
   });
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
-  return call(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', {
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', {},
+  {
     force,
   });
 };
 
-export const callGetTranscript = async (idToken: string, jobId: string, format: string) => {
-  return call(
+export const callGetTranscript = async (idToken:string, jobId: string, format: TranscriptFormat) => {
+  return callRuntime(
     idToken,
     `${RUNTIME_API_URL}/jobs/${jobId}/transcript`,
     'GET',
-    {
-      format,
-    },
+    {},
+    {format},
     format === 'json-v2' ? 'application/json' : 'text/plain'
   );
 };
@@ -83,7 +80,6 @@ export const callPostApiKey = async (
   idToken: string,
   name: string,
   projectId: number,
-  clientRef: string
 ) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
@@ -99,12 +95,14 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
-export const callFileTranscriptionSecret = async (idToken: string) => {
-  return call(idToken, `${ENDPOINT_API_URL}/jobs_key`, 'POST');
+export const callGetRuntimeSecret = async (idToken: string) => {
+  return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
+    ttl: 60
+  });
 };
 
 export const callRequestFileTranscription = async (
-  secretKey: string,
+  idToken: string, 
   file: File,
   language: string,
   accuracy: Accuracy,
@@ -112,85 +110,92 @@ export const callRequestFileTranscription = async (
 ) => {
   const formData = new FormData();
 
-  formData.append('file', file);
-  formData.append('language', language);
-  formData.append('accuracy', accuracy);
-  formData.append('separation', separation);
+  formData.append('data_file', file);
+  const config = {
+    type: 'transcription',
+    transcription_config: {
+      language,
+      operating_point: accuracy,
+      diarization: separation
+    }
+  }
+  formData.append('config', JSON.stringify(config));
 
-  return call(secretKey, `${ENDPOINT_API_URL}/jobs`, 'POST', formData, 'multipart/form-data');
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs`, 'POST', formData, null, 'multipart/form-data');
 };
 
-export const callRequestJobStatus = async (secretKey: string, jobId: string) => {
-  return call(secretKey, `${ENDPOINT_API_URL}/jobs/${jobId}`, 'GET');
+export const callRequestJobStatus = async (idToken: string, jobId: string) => {
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'GET');
 };
 
-export const callRequestJobTranscription = async (
-  secretKey: string,
-  jobId: string,
-  format: string = null
+export const callRuntime = async (
+  authToken: string,
+  apiEndpoint: string,
+  method: 'GET' | 'POST' | 'DELETE',
+  body: any = null,
+  query: any = null,
+  contentType: string = null
 ) => {
+  await runtime.refreshToken(authToken)
   return call(
-    secretKey,
-    `${ENDPOINT_API_URL}/jobs/${jobId}/transcript${format ? `?format=${format}` : ''}`,
-    'GET',
-    null,
-    'text/plain'
-  );
-};
+    runtime.store.secretKey,
+    apiEndpoint,
+    method,
+    body,
+    query,
+    contentType
+  )
+}
 
 export const call = async (
   authToken: string,
   apiEndpoint: string,
   method: 'GET' | 'POST' | 'DELETE',
   body: any = null,
+  query: any = null,
   contentType: string = null
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
 
-  const isGET = method.toLowerCase() != 'get';
+  const useBODY = method.toLowerCase() != 'get';
   const isPlain = contentType === 'text/plain';
 
   headers.append('Authorization', bearer);
-  headers.append('Content-Type', contentType ? contentType : 'application/json');
+  if ( contentType != 'multipart/form-data') {
+    headers.append('Content-Type', contentType ? contentType : 'application/json');
+  }
 
   const options = {
     method: method,
     headers: headers,
-    body: isGET && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
+    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
   };
 
-  if (isGET && !!body) {
-    apiEndpoint = `${apiEndpoint}?${getParams(body)}`;
+  if (!!query) {
+    apiEndpoint = `${apiEndpoint}?${getParams(query)}`;
   }
-
-  console.log('fetching', apiEndpoint, options);
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
-      console.log(
-        `response from`,
-        apiEndpoint,
-        options,
-        await responseCopy(response, isPlain),
-        response
-      );
-      if (response.status == 401) {
+      if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
+      } else if (response.status == 401) {
+        throw  { status: 'error', error: { type: 'runtime-auth' } }
       }
       if (response.status != 200 && response.status != 201) {
-        throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
+        throw { status: 'error', error: { type: '', status: response.status } }
       }
 
       if (response.body == null) {
-        return null;
+        return null
       }
-
-      return isPlain ? response.text() : response.json();
+      return isPlain ? response.text() : response.json()
     })
     .catch((error) => {
+      console.log(error)
       errToast(`details: ${error}`);
-      throw error;
+      return { status: 'error', error: { type: error.type } }
     });
 };
 

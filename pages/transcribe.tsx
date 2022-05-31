@@ -11,6 +11,7 @@ import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
+import { runtimeAuthFlow as authFlow, RuntimeAuthStore } from "../utils/runtime-auth-flow";
 
 
 export default observer(function Transcribe({ }) {
@@ -30,7 +31,7 @@ export default observer(function Transcribe({ }) {
       <SmPanel width='100%' maxWidth='900px'>
 
         {stage === 'form' ?
-          <TranscribeForm store={flow.store} /> :
+          <TranscribeForm store={flow.store} auth={authFlow.store} /> :
           <ProcessingTranscription store={flow.store} />}
 
       </SmPanel>
@@ -40,16 +41,17 @@ export default observer(function Transcribe({ }) {
 
 type TranscribeFormProps = {
   store: FileTranscriptionStore;
+  auth: RuntimeAuthStore;
 }
 
-export const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
+export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
 
   const { tokenStore } = useContext(accountStoreContext);
 
   useEffect(() => {
-    flow.reset();
+    authFlow.restoreToken()
     if (tokenStore.tokenPayload?.idToken)
-      flow.fetchSecret(tokenStore.tokenPayload.idToken);
+      authFlow.refreshToken(tokenStore.tokenPayload.idToken);
 
   }, [tokenStore.tokenPayload?.idToken])
 
@@ -75,8 +77,10 @@ export const TranscribeForm = observer(function ({ store }: TranscribeFormProps)
     </Flex>
     <Flex width='100%' justifyContent='center' py={3}>
       <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
-        onClick={() => flow.attemptSendFile()}
-        disabled={!store._file || !store.secretKey}>
+        onClick={() => {
+          flow.attemptSendFile(tokenStore.tokenPayload?.idToken)
+        }}
+        disabled={!store._file || !auth.secretKey}>
         Get Your Transcription
       </Button>
     </Flex>
