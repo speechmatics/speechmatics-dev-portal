@@ -194,7 +194,6 @@ const createSet = (first: JobElementProps[], second: JobElementProps[], add: boo
 }
 
 const addMicroSecond = (created) => {
-  console.log(created)
   let tempTime = new Date(created).getTime()
   tempTime += 1
   return new Date(tempTime).toISOString()

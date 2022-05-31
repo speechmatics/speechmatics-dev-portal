@@ -345,7 +345,7 @@ const formatDate = (date) => {
   let string = `${date.getUTCDate()} ${date.toLocaleString('default', {
     month: 'short',
   })} ${date.getFullYear()}`;
-  let hours = date.getUTCHours();
+  let hours = date.getHours();
   if (hours < 10) {
     hours = `0${hours}`;
   }
