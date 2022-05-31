@@ -1,6 +1,6 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps } from "@chakra-ui/react";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { checkIfFileCorrectType, Stage } from "../utils/transcribe-elements";
+import { checkIfFileCorrectType, Language, Stage } from "../utils/transcribe-elements";
 import { AttentionBar } from "./common";
 import { OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
 
@@ -114,9 +114,13 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
 
   const select = useCallback((value: number) => {
     onSelect(data[value].value);
-  }, [])
+  }, []);
 
   const defaultValue = useMemo(() => data.find(el => el.default)?.value, [data]);
+
+  const sortedData = useMemo(() => data.sort((a: Language, b: Language) => {
+    return (a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1);
+  }), [data]);
 
   return <Box flex='1 0 auto'>
     <HStack alignItems='center' pb={2}>
@@ -130,7 +134,7 @@ export const SelectField = ({ label, tooltip, data, onSelect, 'data-qa': dataQa 
     <Select borderColor='smBlack.200' color='smBlack.300' data-qa={dataQa}
       defaultValue={defaultValue}
       borderRadius='2px' size='lg' onChange={(event) => select(event.target.selectedIndex)}>
-      {data.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+      {sortedData.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
     </Select>
   </Box>
 }

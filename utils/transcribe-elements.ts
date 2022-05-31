@@ -160,4 +160,7 @@ export const languagesData: Language[] = [
     label: 'Malay',
     value: 'ms',
   },
+  { label: 'Ukrainian', value: 'uk' },
+  { label: 'Cantonese', value: 'yue' },
+  { label: 'Greek', value: 'el' },
 ];
