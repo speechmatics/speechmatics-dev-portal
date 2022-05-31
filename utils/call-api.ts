@@ -95,9 +95,9 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
-export const callGetRuntimeSecret = async (idToken: string) => {
+export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
-    ttl: 60
+    ttl
   });
 };
 

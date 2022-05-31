@@ -1,7 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import { callGetRuntimeSecret } from './call-api';
 
+const RUNTIME_AUTH_TTL: number = parseInt(process.env.RUNTIME_AUTH_TTL) || 60;
+
 export class RuntimeAuthStore {
+  _ttl: number = RUNTIME_AUTH_TTL
+  get ttl(): number {
+    return this._ttl
+  }
   _secretKey: string = '';
   set secretKey(value: string) {
     this._secretKey = value;
@@ -49,7 +55,7 @@ class RuntimeAuthFlow {
       return
     }
     let token = JSON.parse(sessionStorage.getItem('runtime_token'));
-    if (!!token && token?.timeout < new Date().getTime()) {
+    if (!!token) {
       this.store.secretKey = token?.key_value
       this.store.timeout = token?.timeout
       return
@@ -60,9 +66,9 @@ class RuntimeAuthFlow {
   async refreshToken(idToken: string) {
     try {
       this.restoreToken()
-      if ( ! this.store.secretKey ) {
-        const token = await callGetRuntimeSecret(idToken)
-        const timeout = new Date().getTime() + 1000 * 3600
+      if ( !this.store.secretKey || this.store.timeout < new Date().getTime() ) {
+        const token = await callGetRuntimeSecret(idToken, this.store.ttl)
+        const timeout = new Date().getTime() + 1000 * this.store.ttl
         this.storeRuntimeSecret({ ...token, timeout })
       }
     } catch (err) {
