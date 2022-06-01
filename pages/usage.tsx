@@ -35,15 +35,10 @@ import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
-  const [defaultIndex, setDefaultIndex] = useState(0)
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
-  const { job } = useRouter().query
-
-  useEffect(() => {
-    if (job) {
-      setDefaultIndex(3)
-    }
-  }, [job])
+  const router = useRouter();
+  let defaultIndex = 0;
+  if (router.asPath.endsWith('#recent-jobs')) defaultIndex = 3;
 
 
   return (
