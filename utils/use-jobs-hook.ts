@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
-import { languagesData } from '../utils/transcribe-elements'
+import { languagesData } from '../utils/transcribe-elements';
 
 export const useJobs = (limit, page) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
@@ -15,104 +15,51 @@ export const useJobs = (limit, page) => {
   const [isPolling, setIsPolling] = useState<boolean>(true);
 
   const maxlimit = 100;
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
 
-  const getJobs = (loadingFunction, errorFunction) => {
-    let isActive = true;
-    if (idToken && !noMoreJobs) {
-      errorFunction(false);
-      loadingFunction(true);
-      const queries: JobQuery = {
-        limit: limit,
-      };
-      if (createdBefore != null) {
-        queries.created_before = addMicroSecond(createdBefore);
-      }
-      console.log(queries)
-      callGetJobs(idToken, queries)
-        .then((respJson) => {
-          if (isActive && !!respJson && 'jobs' in respJson) {
-            if (respJson?.jobs?.length < limit) {
-              setNoMoreJobs(true)
-              loadingFunction(false);
-            }
-            const formatted: JobElementProps[] = formatJobs(respJson.jobs);
-            if (formatted.some(item => item.status === 'running')) {
-              setIsPolling(true)
-            } else {
-              setIsPolling(false)
-            }
-            const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
-            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at)
-            setJobs(combinedArrays);
-            loadingFunction(false);
-          }
-        })
-        .catch((err) => {
-          errorFunction(true);
-          loadingFunction(false);
-        });
-    }
-    return () => {
-      isActive = false;
-    };
-  };
+  const pollingCallback = useCallback(() => {
+    pollJobStatuses(idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit);
+  }, [idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit]);
 
-  const pollJobStatuses = () => {
-    let isActive = true;
-    if (idToken && isPolling) {
-      let newJobs = []
-      const requests = []
-      const requestNo = Math.ceil(jobs.length / maxlimit)
-      if (requestNo !== 1) {
-        for (let i = 0; i < requestNo; i++) {
-          let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
-          let query = { limit: maxlimit, created_before: addMicroSecond(createdBeforeTime) }
-          requests.push(callGetJobs(idToken, query))
-        }
-      } else {
-        let createdBeforeTime = jobs[0]?.date?.toISOString();
-        let query = { limit: jobs.length, created_before: addMicroSecond(createdBeforeTime) }
-        requests.push(callGetJobs(idToken, query))
-      }
-      Promise.all(requests).then(result => {
-        for (const res of result) {
-          if (isActive && !!res && 'jobs' in res) {
-            newJobs = [...newJobs, ...res.jobs]
-          }
-        }
-        if (isActive) {
-          const formatted = formatJobs(newJobs)
-          const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
-          setJobs(combinedArrays)
-          if (newJobs.some(item => item.status === 'running')) {
-            setIsPolling(true)
-          } else {
-            setIsPolling(false)
-          }
-        }
-      })
-    }
-    return () => {
-      isActive = false;
-    };
-  };
-  
-  useInterval(pollJobStatuses, 20000, isPolling)
+  useInterval(pollingCallback, 20000, isPolling);
 
   useEffect(() => {
     if (limit > maxlimit) {
-      throw new Error("Limit cannot be more than " + maxlimit)
+      throw new Error('Limit cannot be more than ' + maxlimit);
     }
-    getJobs(setIsLoading, setErrorOnInit)
-  }, [idToken])
-  
+    return getJobs(
+      idToken,
+      jobs,
+      setJobs,
+      createdBefore,
+      setCreatedBefore,
+      limit,
+      noMoreJobs,
+      setNoMoreJobs,
+      setIsPolling,
+      setIsLoading,
+      setErrorOnInit
+    );
+  }, [idToken]);
+
   useEffect(() => {
     if (!isLoading && page > 0) {
-      getJobs(setIsWaitingOnMore, setErrorGettingMore)
+      return getJobs(
+        idToken,
+        jobs,
+        setJobs,
+        createdBefore,
+        setCreatedBefore,
+        limit,
+        noMoreJobs,
+        setNoMoreJobs,
+        setIsPolling,
+        setIsWaitingOnMore,
+        setErrorGettingMore
+      );
     }
-  }, [page])
+  }, [page]);
 
   const onDeleteJob = (id, force) => {
     if (idToken) {
@@ -136,9 +83,101 @@ export const useJobs = (limit, page) => {
     errorGettingMore,
     errorOnInit,
     noMoreJobs,
-    onDeleteJob
+    onDeleteJob,
+  };
+};
+
+const getJobs = (
+  idToken,
+  jobs,
+  setJobs,
+  createdBefore,
+  setCreatedBefore,
+  limit,
+  noMoreJobs,
+  setNoMoreJobs,
+  setIsPolling,
+  loadingFunction,
+  errorFunction
+) => {
+  let isActive = true;
+  if (idToken && !noMoreJobs) {
+    errorFunction(false);
+    loadingFunction(true);
+    const queries: JobQuery = {
+      limit: limit,
+    };
+    if (createdBefore != null) {
+      queries.created_before = addMicroSecond(createdBefore);
+    }
+    callGetJobs(idToken, queries)
+      .then((respJson) => {
+        if (isActive && !!respJson && 'jobs' in respJson) {
+          if (respJson?.jobs?.length < limit) {
+            setNoMoreJobs(true);
+            loadingFunction(false);
+          }
+          const formatted: JobElementProps[] = formatJobs(respJson.jobs);
+          if (formatted.some((item) => item.status === 'running')) {
+            setIsPolling(true);
+          } else {
+            setIsPolling(false);
+          }
+          const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
+          setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
+          setJobs(combinedArrays);
+          loadingFunction(false);
+        }
+      })
+      .catch((err) => {
+        errorFunction(true);
+        loadingFunction(false);
+      });
   }
-}
+  return () => {
+    isActive = false;
+  };
+};
+
+const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
+  let isActive = true;
+  if (idToken && isPolling) {
+    let newJobs = [];
+    const requests = [];
+    const requestNo = Math.ceil(jobs.length / maxlimit);
+    if (requestNo !== 1) {
+      for (let i = 0; i < requestNo; i++) {
+        let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
+        let query = { limit: maxlimit, created_before: addMicroSecond(createdBeforeTime) };
+        requests.push(callGetJobs(idToken, query));
+      }
+    } else {
+      let createdBeforeTime = jobs[0]?.date?.toISOString();
+      let query = { limit: jobs.length, created_before: addMicroSecond(createdBeforeTime) };
+      requests.push(callGetJobs(idToken, query));
+    }
+    Promise.all(requests).then((result) => {
+      for (const res of result) {
+        if (isActive && !!res && 'jobs' in res) {
+          newJobs = [...newJobs, ...res.jobs];
+        }
+      }
+      if (isActive) {
+        const formatted = formatJobs(newJobs);
+        const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
+        setJobs(combinedArrays);
+        if (newJobs.some((item) => item.status === 'running')) {
+          setIsPolling(true);
+        } else {
+          setIsPolling(false);
+        }
+      }
+    });
+  }
+  return () => {
+    isActive = false;
+  };
+};
 
 const formatJobs = (jobsResponse: JobsResponse[]) => {
   const formattedJobs: JobElementProps[] = jobsResponse.map((item) => {
@@ -183,21 +222,21 @@ const mapLanguages = (lang) => {
 
 const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
   for (const item of second) {
-    const index = first.findIndex(el => el.id === item.id)
-    if ( index === -1 && add ) {
-      first.push(item)
-    } else if ( index !== -1 ) {
-      first[index] = item
+    const index = first.findIndex((el) => el.id === item.id);
+    if (index === -1 && add) {
+      first.push(item);
+    } else if (index !== -1) {
+      first[index] = item;
     }
   }
-  return first
-}
+  return first;
+};
 
 const addMicroSecond = (created) => {
-  let tempTime = new Date(created).getTime()
-  tempTime += 1
-  return new Date(tempTime).toISOString()
-}
+  let tempTime = new Date(created).getTime();
+  tempTime += 1;
+  return new Date(tempTime).toISOString();
+};
 
 export type JobElementProps = {
   status: 'running' | 'completed';
@@ -229,4 +268,4 @@ type JobConfig = {
 type JobQuery = {
   limit?: number;
   created_before?: string;
-}
+};

@@ -20,12 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback } from 'react';
-import {
-  ErrorBanner,
-  ConfirmRemoveModal,
-  HeaderLabel,
-  UsageInfoBanner,
-} from './common';
+import { ErrorBanner, ConfirmRemoveModal, HeaderLabel, UsageInfoBanner } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
@@ -33,8 +28,8 @@ import { useRouter } from 'next/router';
 import { capitalizeFirstLetter } from '../utils/string-utils';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
 import { TranscriptionViewerProps, TranscriptionViewer } from './transcription-viewer';
-import { TranscriptFormat } from '../utils/transcribe-elements'
-import { JobElementProps, useJobs } from '../utils/use-jobs-hook'
+import { TranscriptFormat } from '../utils/transcribe-elements';
+import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 
 export const RecentJobs = observer(() => {
@@ -42,7 +37,7 @@ export const RecentJobs = observer(() => {
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
   const [deleteJobId, setDeleteJobId] = useState<string>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [page, setPage] = useState<number>(0)
+  const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
@@ -59,15 +54,14 @@ export const RecentJobs = observer(() => {
     errorGettingMore,
     errorOnInit,
     noMoreJobs,
-    onDeleteJob
-  } = useJobs(pageLimit, page)
+    onDeleteJob,
+  } = useJobs(pageLimit, page);
 
-  const onOpenTranscript = (job, format: TranscriptFormat) => {
-    let isActive = true
-    if (idToken) {
-      callGetTranscript(idToken, job.jobId, format)
-        .then((response) => {
-          if (!!response && isActive) {
+  const onOpenTranscript = useCallback(
+    (job, format: TranscriptFormat) => {
+      if (idToken) {
+        callGetTranscript(idToken, job.jobId, format).then((response) => {
+          if (!!response) {
             setActiveJob({
               date: job.date,
               jobId: job.jobId,
@@ -78,26 +72,33 @@ export const RecentJobs = observer(() => {
             });
             setTranscriptOpen(true);
           }
-        })
-    }
-    return () => {
-      isActive = false
-    }
-  };
+        });
+      }
+    },
+    [idToken]
+  );
 
-  const onOpenDeleteDialogueCallback = useCallback((id) => {
-    setDeleteJobId(id)
-    onOpen()
-  }, [setDeleteJobId])
+  const onOpenDeleteDialogue = useCallback(
+    (id) => {
+      setDeleteJobId(id);
+      onOpen();
+    },
+    [setDeleteJobId]
+  );
 
   useEffect(() => {
-    authFlow.restoreToken()
+    authFlow.restoreToken();
   }, [idToken, accountStore.account]);
 
   return (
     <>
       <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
-      <UsageInfoBanner text="Transcripts are removed after 7 days." width='100%' bg='smBlue.100' centered />
+      <UsageInfoBanner
+        text="Transcripts are removed after 7 days."
+        width="100%"
+        bg="smBlue.100"
+        centered
+      />
       <VStack spacing={6} mt={6}>
         {isLoading && new Array(pageLimit).fill(LoadingJobsSkeleton())}
         {!errorOnInit &&
@@ -106,23 +107,22 @@ export const RecentJobs = observer(() => {
             return (
               <RecentJobElement
                 active={el.id === router.query.job}
-                onSetRef={el.id === router.query.job ? executeScroll : () => { }}
+                onSetRef={el.id === router.query.job ? executeScroll : () => {}}
                 key={el.id + i}
                 {...el}
                 onOpenTranscript={onOpenTranscript}
-                onStartDelete={onOpenDeleteDialogueCallback}
+                onStartDelete={onOpenDeleteDialogue}
               />
             );
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
-        {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />
-        }
+        {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
         <Button
           hidden={errorOnInit}
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
           variant="speechmatics"
           onClick={(e) => {
-            setPage(page + 1)
+            setPage(page + 1);
             // getJobs(setIsWaitingOnMore, setErrorGettingMore);
           }}
           width="100%"
@@ -146,9 +146,9 @@ export const RecentJobs = observer(() => {
             Transcription of "{activeJob?.fileName}"
           </ModalHeader>
           <ModalCloseButton
-            _hover={{ bg: "smBlack.200" }}
+            _hover={{ bg: 'smBlack.200' }}
             _focus={{}}
-            _active={{ bg: "smBlack.300" }}
+            _active={{ bg: 'smBlack.300' }}
             position="absolute"
             rounded="full"
             bg="smWhite.500"
@@ -159,20 +159,20 @@ export const RecentJobs = observer(() => {
             right={-4}
           />
           <ModalBody>
-            <TranscriptionViewer {...activeJob} transcMaxHeight='38vh' />
+            <TranscriptionViewer {...activeJob} transcMaxHeight="38vh" />
           </ModalBody>
         </ModalContent>
       </Modal>
       <ConfirmRemoveModal
         isOpen={isOpen}
         onClose={onClose}
-        mainTitle='Delete Job'
-        subTitle='Are you sure you want to delete this job?'
+        mainTitle="Delete Job"
+        subTitle="Are you sure you want to delete this job?"
         onRemoveConfirm={() => {
-          onDeleteJob(deleteJobId, true)
-          onClose()
+          onDeleteJob(deleteJobId, true);
+          onClose();
         }}
-        confirmLabel='Delete'
+        confirmLabel="Delete"
       />
     </>
   );
@@ -220,7 +220,13 @@ const RecentJobElement = ({
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="Model Accuracy">
+            <Tooltip
+              flex={1}
+              placement="bottom"
+              hasArrow
+              color="smWhite.500"
+              label="Model Accuracy"
+            >
               {capitalizeFirstLetter(accuracy)}
             </Tooltip>
           </Box>
@@ -274,7 +280,11 @@ const RecentJobElement = ({
             flex={1}
             icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
           />
-        ) : <Box flex={1} ><ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" /> </Box>}
+        ) : (
+          <Box flex={1}>
+            <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />{' '}
+          </Box>
+        )}
         <IconButton
           variant="unstyled"
           aria-label="stop-or-delete"
@@ -286,7 +296,6 @@ const RecentJobElement = ({
     </HStack>
   );
 };
-
 
 const LoadingJobsSkeleton = () => {
   return (

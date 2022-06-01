@@ -3,7 +3,7 @@ import Link from "next/link";
 import { HeaderLabel, DescriptionLabel, pad } from "./common";
 import { CardImage, CardGreyImage, DownloadInvoice } from "./icons-library";
 import { Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 
 export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
