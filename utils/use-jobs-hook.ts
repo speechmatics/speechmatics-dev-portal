@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
-import { languagesData } from '../utils/transcribe-elements';
 
 export const useJobs = (limit, page) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
@@ -196,10 +195,8 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
       date: new Date(item.created_at),
       duration: formatDuration(item.duration),
       fileName: item.data_name,
+      language: item.config?.transcription_config?.language
     };
-    if (item?.config?.transcription_config != null) {
-      newItem.language = mapLanguages(item?.config?.transcription_config?.language);
-    }
     if (item?.config?.transcription_config?.operating_point != null) {
       newItem.accuracy = item.config.transcription_config.operating_point;
     } else {
@@ -223,10 +220,6 @@ const formatDuration = (duration) => {
   if (hours < 24) {
     return `${Math.round(10 * hours) / 10} hours`;
   }
-};
-
-const mapLanguages = (lang) => {
-  return languagesData.find((item) => item.value == lang).label;
 };
 
 // JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set

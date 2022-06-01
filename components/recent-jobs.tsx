@@ -30,6 +30,7 @@ import { TranscriptionViewerProps, TranscriptionViewer } from './transcription-v
 import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
+import { languagesData } from '../utils/transcribe-elements';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -228,7 +229,7 @@ const RecentJobElement = ({
           </Box>
           <Box flex={1}>
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
-              {language}
+              {mapLanguages(language)}
             </Tooltip>
           </Box>
           <Box flex={1}>
@@ -355,6 +356,10 @@ const formatDate = (date) => {
     minutes = `0${minutes}`;
   }
   return (string += minutes);
+};
+
+const mapLanguages = (lang) => {
+  return languagesData.find((item) => item.value == lang).label;
 };
 
 type JobModalProps = {
