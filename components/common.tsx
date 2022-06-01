@@ -505,7 +505,7 @@ export const ErrorBanner = ({ text }) => (
       <Box>
         <ExclamationIcon width="1.5em" height="1.5em" />
       </Box>
-      <Text width="100%" color="white" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+      <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
         {text}
       </Text>
     </Flex>
