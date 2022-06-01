@@ -128,6 +128,10 @@ export const callRequestJobStatus = async (idToken: string, jobId: string) => {
   return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'GET');
 };
 
+// Used to check if the secretKey is still valid (i.e. hasn't timed out)
+// If secret key has timed out, refresh the store
+// Use the secret key from the store to make the request
+// If something goes wrong updating the token, the store should update to tell the component something is wrong
 export const callRuntime = async (
   authToken: string,
   apiEndpoint: string,
@@ -136,15 +140,19 @@ export const callRuntime = async (
   query: any = null,
   contentType: string = null
 ) => {
-  await runtime.refreshToken(authToken)
-  return call(
-    runtime.store.secretKey,
-    apiEndpoint,
-    method,
-    body,
-    query,
-    contentType
-  )
+  try {
+    await runtime.refreshToken(authToken)
+    return call(
+      runtime.store.secretKey,
+      apiEndpoint,
+      method,
+      body,
+      query,
+      contentType
+    )
+  } catch (error) {
+    throw error
+  }
 }
 
 export const call = async (

@@ -25,9 +25,11 @@ export const useJobs = (limit, page) => {
   useInterval(pollingCallback, 20000, isPolling);
 
   useEffect(() => {
+    // Check page size is lower than AP pagination max size
     if (limit > maxlimit) {
       throw new Error('Limit cannot be more than ' + maxlimit);
     }
+    // return useEffect cleanup function from get Jobs
     return getJobs(
       idToken,
       jobs,
@@ -44,7 +46,9 @@ export const useJobs = (limit, page) => {
   }, [idToken]);
 
   useEffect(() => {
+    // only use this hook after the initial load
     if (!isLoading && page > 0) {
+      // return useEffect cleanup function from get Jobs
       return getJobs(
         idToken,
         jobs,
@@ -61,6 +65,7 @@ export const useJobs = (limit, page) => {
     }
   }, [page]);
 
+  // could/should this be memoized? Not sure
   const onDeleteJob = (id, force) => {
     if (idToken) {
       callDeleteJob(idToken, id, force)
@@ -87,6 +92,7 @@ export const useJobs = (limit, page) => {
   };
 };
 
+// This is mostly unchanged except it uses inputs rather than hooks
 const getJobs = (
   idToken,
   jobs,
@@ -108,7 +114,7 @@ const getJobs = (
       limit: limit,
     };
     if (createdBefore != null) {
-      queries.created_before = addMicroSecond(createdBefore);
+      queries.created_before = addMillisecond(createdBefore);
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
@@ -139,6 +145,9 @@ const getJobs = (
   };
 };
 
+// This is mostly unchanged except it uses inputs rather than hooks
+// I added addMillisecond to get round the milli second precision in the polling endpoint. 
+// Should be deprecated soon as the API fix will be coming
 const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
   let isActive = true;
   if (idToken && isPolling) {
@@ -148,12 +157,12 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
     if (requestNo !== 1) {
       for (let i = 0; i < requestNo; i++) {
         let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
-        let query = { limit: maxlimit, created_before: addMicroSecond(createdBeforeTime) };
+        let query = { limit: maxlimit, created_before: addMillisecond(createdBeforeTime) };
         requests.push(callGetJobs(idToken, query));
       }
     } else {
       let createdBeforeTime = jobs[0]?.date?.toISOString();
-      let query = { limit: jobs.length, created_before: addMicroSecond(createdBeforeTime) };
+      let query = { limit: jobs.length, created_before: addMillisecond(createdBeforeTime) };
       requests.push(callGetJobs(idToken, query));
     }
     Promise.all(requests).then((result) => {
@@ -220,6 +229,9 @@ const mapLanguages = (lang) => {
   return languagesData.find((item) => item.value == lang).label;
 };
 
+// JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set
+// Therefore, I created a custom function to return a set of job objects
+// The add arg allows us to combine arrays when getting jobs and only update current jobs for polling
 const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
   for (const item of second) {
     const index = first.findIndex((el) => el.id === item.id);
@@ -232,7 +244,8 @@ const createSet = (first: JobElementProps[], second: JobElementProps[], add: boo
   return first;
 };
 
-const addMicroSecond = (created) => {
+// See above
+const addMillisecond = (created) => {
   let tempTime = new Date(created).getTime();
   tempTime += 1;
   return new Date(tempTime).toISOString();

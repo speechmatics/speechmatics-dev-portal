@@ -80,7 +80,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
         onClick={() => {
           flow.attemptSendFile(tokenStore.tokenPayload?.idToken)
         }}
-        disabled={!store._file || !auth.secretKey}>
+        disabled={!store._file || !auth.isLoggedIn}>
         Get Your Transcription
       </Button>
     </Flex>

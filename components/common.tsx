@@ -494,7 +494,7 @@ export const ErrorBanner = ({ text }) => (
   <Flex
     flexDir="column"
     width="100%"
-    bg="red.300"
+    bg="smRed.100"
     p="1em"
     mt="2em"
     align="center"

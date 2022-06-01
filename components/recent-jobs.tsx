@@ -24,7 +24,6 @@ import { ErrorBanner, ConfirmRemoveModal, HeaderLabel, UsageInfoBanner } from '.
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
-import { useRouter } from 'next/router';
 import { capitalizeFirstLetter } from '../utils/string-utils';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
 import { TranscriptionViewerProps, TranscriptionViewer } from './transcription-viewer';
@@ -41,10 +40,6 @@ export const RecentJobs = observer(() => {
   const pageLimit = 20;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
-  const router = useRouter();
-  const executeScroll = useCallback((node) => {
-    node?.scrollIntoView({ behaviour: 'smooth', block: 'center' });
-  }, []);
 
   const {
     jobs,
@@ -57,6 +52,7 @@ export const RecentJobs = observer(() => {
     onDeleteJob,
   } = useJobs(pageLimit, page);
 
+  // converted to callback to avoid rerendering when useJobs hook state changes
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
       if (idToken) {
@@ -70,14 +66,16 @@ export const RecentJobs = observer(() => {
               transcriptionText: response,
               fileName: job.fileName,
             });
+            console.log(activeJob)
             setTranscriptOpen(true);
           }
         });
       }
     },
-    [idToken]
+    [idToken, activeJob]
   );
 
+  // converted to callback to avoid rerendering when useJobs hook state changes
   const onOpenDeleteDialogue = useCallback(
     (id) => {
       setDeleteJobId(id);
@@ -106,8 +104,6 @@ export const RecentJobs = observer(() => {
           jobs?.map((el, i) => {
             return (
               <RecentJobElement
-                active={el.id === router.query.job}
-                onSetRef={el.id === router.query.job ? executeScroll : () => {}}
                 key={el.id + i}
                 {...el}
                 onOpenTranscript={onOpenTranscript}
@@ -123,7 +119,6 @@ export const RecentJobs = observer(() => {
           variant="speechmatics"
           onClick={(e) => {
             setPage(page + 1);
-            // getJobs(setIsWaitingOnMore, setErrorGettingMore);
           }}
           width="100%"
         >
@@ -186,18 +181,14 @@ const RecentJobElement = ({
   duration,
   language,
   id,
-  onSetRef,
-  active,
   onOpenTranscript,
   onStartDelete,
 }: JobElementProps & JobModalProps) => {
   return (
     <HStack
       id={id}
-      ref={onSetRef}
       border="1px solid"
-      borderColor={active ? 'smGreen.300' : 'smBlack.200'}
-      bg={active ? 'smGreen.200' : null}
+      borderColor='smBlack.200'
       borderLeft="3px solid"
       borderLeftColor={statusColour[status]}
       width="100%"
@@ -367,8 +358,6 @@ const formatDate = (date) => {
 };
 
 type JobModalProps = {
-  active?: boolean;
-  onSetRef?: any;
   onOpenTranscript?: Function;
   onStartDelete?: Function;
 };
