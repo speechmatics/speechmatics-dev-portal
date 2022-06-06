@@ -199,7 +199,7 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
       id: item.id,
       status: item.status,
       date: new Date(item.created_at),
-      duration: formatDuration(item.duration),
+      duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
       language: item.config?.transcription_config?.language,
     };
