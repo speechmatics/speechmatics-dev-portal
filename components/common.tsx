@@ -1,41 +1,42 @@
-import { theme as baseTheme } from '@chakra-ui/theme';
+import { theme as baseTheme } from "@chakra-ui/theme"
 
 import {
   Box,
   Button,
   ChakraComponent,
   ComponentWithAs,
+  Divider,
   Flex,
   FlexProps,
   HStack,
+  IconButton,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
   ResponsiveValue,
   Spinner,
   StackProps,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   Tooltip,
   VStack,
   createStandaloneToast,
-  useBreakpointValue,
-  Menu,
-  MenuButton,
-  BoxProps,
-  Modal,
-  ModalContent,
-  ModalCloseButton,
-  ModalOverlay,
-  ModalBody,
-  ModalFooter,
+  useBreakpointValue
 } from '@chakra-ui/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  CalendarIcon,
-  ExclamationIcon,
-  ExclamationIconLarge,
-  ViewPricingIcon,
-  CopyIcon,
-  DownloadIcon,
-} from './icons-library';
+import { observer } from 'mobx-react-lite';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import accountContext from '../utils/account-store-context';
+import { CalendarIcon, ExclamationIcon, ExclamationIconLarge, PricingTags, UsageInfoIcon, ViewPricingIcon } from './icons-library';
 
 import {
   usePagination,
@@ -46,22 +47,20 @@ import {
   PaginationPage,
   PaginationNext,
 } from './pagination';
-import { Limits } from './pagination/lib/hooks/usePagination';
-import { formatTimeDateFromString } from '../utils/date-utils';
-import { capitalizeFirstLetter } from '../utils/string-utils';
-import { getFullLanguageName } from '../utils/transcribe-elements';
-import { TranscriptDownloadMenu } from './transcript-download-menu';
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { Limits } from "./pagination/lib/hooks/usePagination";
 
-export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
-  <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
-    <Flex alignItems='center'>
-      <CalendarIcon width="1.5em" height="1.5em" />
-    </Flex>
-    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-      {text}
-    </Text>
-  </Flex>
-);
+
+
+export const UsageInfoBanner = ({ text }) => <Flex width="100%" bg="smBlue.150" p="1em" mt="2em">
+  <Box>
+    <CalendarIcon width='1.5em' height='1.5em' />
+  </Box>
+  <Text width="100%" color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    {text}
+  </Text>
+</Flex>
+
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',
@@ -73,70 +72,56 @@ export const InfoBarbox = ({
   setStateUp = null,
   ...props
 }) => {
+
   const breakVal = useBreakpointValue({
     xs: false,
     sm: true,
-  });
+  })
 
   const Containter = useMemo(
-    () =>
-      breakVal
-        ? ({ children }) => (
-          <HStack
-            width="100%"
-            bg={bgColor}
-            justifyContent="space-between"
-            alignItems="center"
-            padding="1.5em 1.5em"
-            {...props}
-          >
-            {children}
-          </HStack>
-        )
-        : ({ children }) => (
-          <VStack
-            width="100%"
-            bg={bgColor}
-            justifyContent="space-between"
-            padding="1.2em 0.5em"
-            spacing="1em"
-            {...props}
-          >
-            {children}
-          </VStack>
-        ),
-    [breakVal]
-  );
+    () => (breakVal ?
+      ({ children }) => <HStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        alignItems='center'
+        padding="1.5em 1.5em"
+        {...props}
+      >{children}</HStack>
+      :
+      ({ children }) => <VStack
+        width="100%"
+        bg={bgColor}
+        justifyContent="space-between"
+        padding="1.2em 0.5em"
+        spacing='1em'
+        {...props}
+      >{children}</VStack>
+    ), [breakVal]);
 
-  return (
-    <Containter>
-      <Box flex="0 0 auto">{icon}</Box>
-      <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-        <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
-          {title}
-        </Text>
-        <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
-          {description}
-        </Text>
-      </VStack>
-      {hrefUrl && (
-        <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
-          <Button
-            variant="speechmaticsWhite"
-            mt="0px"
-            data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}
-          >
-            {buttonLabel}
-          </Button>
-        </Link>
-      )}
-      {setStateUp && (
-        <Button variant="speechmaticsWhite" onClick={setStateUp}>
+  return <Containter>
+    <Box flex="0 0 auto">{icon}</Box>
+    <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
+      <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+        {title}
+      </Text>
+      <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500">
+        {description}
+      </Text>
+    </VStack>
+    {hrefUrl && (
+      <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
+        <Button variant="speechmaticsWhite" mt='0px' data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
           {buttonLabel}
         </Button>
-      )}
-    </Containter>
-  );
+      </Link>
+    )}
+    {setStateUp && (
+      <Button variant="speechmaticsWhite" onClick={setStateUp}>
+        {buttonLabel}
+      </Button>
+    )}
+  </Containter>
 };
 
 export const ViewUsageBox = ({ }) => (
@@ -181,7 +166,7 @@ export const DescriptionLabel = ({ children, ...props }) => (
 
 export const PageHeader = ({ headerLabel, introduction }) => {
   return (
-    <Box width="100%" maxWidth="900px" className="page_header">
+    <Box width='100%' maxWidth='900px' className='page_header'>
       <PageHeaderLabel>{headerLabel}</PageHeaderLabel>
       <PageIntroduction>{introduction}</PageIntroduction>
       <hr
@@ -195,7 +180,6 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </Box>
   );
 };
-
 export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
 
@@ -246,55 +230,61 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   );
 });
 
-
+export const CodeHighlight = ({ code, data_qa }) => {
+  return (
+    <Box position="relative" width='100%' height='50px' >
+      <CopyButton copyContent={code} position="absolute" top='12px' />
+      <Box position='absolute' width='100%'>
+        <SyntaxHighlighter language="bash" style={{ ...codeTheme }} className="code_block" data-qa={data_qa} aria-label={code}>
+          {code}
+        </SyntaxHighlighter>
+      </Box>
+    </Box>
+  );
+};
 
 export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
+
   const [isTTOpen, setIsTTOpen] = useState(false);
 
   useEffect(() => {
     let st: number;
 
-    if (isTTOpen)
-      setTimeout(() => {
-        setIsTTOpen(false);
-      }, 3000);
+    if (isTTOpen) setTimeout(() => {
+      setIsTTOpen(false)
+    }, 3000);
 
     return () => clearTimeout(st);
-  }, [isTTOpen]);
 
-  return (
-    <Tooltip
-      label="copied"
-      isOpen={isTTOpen}
-      placement="top"
-      hasArrow
-      bg="smNavy.400"
-      color="smWhite.500"
+  }, [isTTOpen])
+
+  return <Tooltip label='copied' isOpen={isTTOpen}
+    placement='top' hasArrow
+    bg='smNavy.400' color='smWhite.500'>
+    <Button
+      _focus={{ boxShadow: 'none' }}
+      top={top}
+      right="9px"
+      position={position as ResponsiveValue<any>}
+      alignSelf="flex-start"
+      fontSize="0.8rem"
+      aria-label="copy"
+      color="smNavy.500"
+      backgroundColor="#fff"
+      size="sm"
+      borderRadius="2px"
+      zIndex={99}
+      onClick={() => {
+        setIsTTOpen(true)
+        navigator?.clipboard?.writeText(copyContent);
+      }}
+      _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
     >
-      <Button
-        _focus={{ boxShadow: 'none' }}
-        top={top}
-        right="9px"
-        position={position as ResponsiveValue<any>}
-        alignSelf="flex-start"
-        fontSize="0.8rem"
-        aria-label="copy"
-        color="smNavy.500"
-        backgroundColor="#fff"
-        size="sm"
-        borderRadius="2px"
-        zIndex={99}
-        onClick={() => {
-          setIsTTOpen(true);
-          navigator?.clipboard?.writeText(copyContent);
-        }}
-        _hover={{ color: '#fff', backgroundColor: 'smNavy.400' }}
-      >
-        COPY
-      </Button>
-    </Tooltip>
-  );
+      COPY
+    </Button>
+  </Tooltip >
 };
+
 
 export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
   const [page, setPage] = useState(0);
@@ -316,11 +306,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
       />
 
       {data?.length > itemsPerPage && (
-        <GridPagination
-          onSelectPage={onSelectPage}
-          pagesCountInitial={pagesCount}
-          limits={{ inner: 1, outer: 1 }}
-        />
+        <GridPagination onSelectPage={onSelectPage} pagesCountInitial={pagesCount} limits={{ inner: 1, outer: 1 }} />
       )}
     </>
   );
@@ -341,7 +327,7 @@ export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
     pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
-    limits: limits,
+    limits: limits
   });
 
   const onPageChange = useCallback(
@@ -401,48 +387,32 @@ export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
 
 export const pad = (n: number) => n.toString().padStart(2, '0');
 
-export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
+
+
+export const ViewPricingBar: ComponentWithAs<"div", FlexProps> = (props) => {
+
   const breakVal = useBreakpointValue({
     xs: false,
     sm: true,
   });
 
-  return (
-    <Flex
-      justifyContent="center"
-      p="1em"
-      alignItems="center"
-      direction={breakVal ? 'row' : 'column'}
-      {...props}
-      {...{ [breakVal ? 'columnGap' : 'rowGap']: '1em' }}
-    >
-      <ViewPricingIcon />
-      <Text fontFamily="RMNeue-Bold" fontSize="20px">
-        View our Pricing
-      </Text>
-      <Link
-        href="https://www.speechmatics.com/our-technology/pricing"
-        target="_blank"
-        style={{ textDecoration: 'none' }}
-      >
-        <Button variant="speechmaticsOutline" mt="0em">
-          View Pricing
-        </Button>
-      </Link>
-    </Flex>
-  );
-};
+  return <Flex justifyContent='center' p='1em' alignItems='center' direction={breakVal ? 'row' : 'column'} {...props}
+    {...{ [breakVal ? 'columnGap' : 'rowGap']: '1em' }}>
+    <ViewPricingIcon />
+    <Text fontFamily='RMNeue-Bold' fontSize='20px'>View our Pricing</Text>
+    <Link href='https://www.speechmatics.com/our-technology/pricing' target='_blank' style={{ textDecoration: 'none' }}>
+      <Button variant='speechmaticsOutline' mt='0em'>
+        View Pricing
+      </Button>
+    </Link>
+  </Flex>
+}
 
-export const GridSpinner = () => <Spinner size="sm" style={{ padding: '0px', marginTop: '2px' }} />;
 
-export const ConfirmRemoveModal = ({
-  isOpen,
-  onClose,
-  mainTitle,
-  subTitle,
-  onRemoveConfirm,
-  confirmLabel,
-}) => (
+export const GridSpinner = () => <Spinner size='sm' style={{ padding: '0px', marginTop: '2px' }} />
+
+
+export const ConfirmRemoveModal = ({ isOpen, onClose, mainTitle, subTitle, onRemoveConfirm, confirmLabel }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent borderRadius="2px">
@@ -494,18 +464,19 @@ export const ConfirmRemoveModal = ({
         </Flex>
       </ModalFooter>
     </ModalContent>
-  </Modal>
-);
+  </Modal>)
+
+
 
 const toast = createStandaloneToast({
   theme: {
     ...baseTheme,
     colors: {
       red: {
-        500: 'var(--chakra-colors-smRed-500)',
+        500: "var(--chakra-colors-smRed-500)"
       },
       green: {
-        500: 'var(--chakra-colors-smGreen-500)',
+        500: "var(--chakra-colors-smGreen-500)",
       },
     },
   },
@@ -519,8 +490,8 @@ export const errToast = (descr: string | any) =>
     position: 'bottom-right',
     isClosable: true,
     containerStyle: {
-      fontFamily: 'RMNeue-Regular',
-    },
+      fontFamily: 'RMNeue-Regular'
+    }
   });
 
 export const positiveToast = (descr: string) =>
@@ -531,38 +502,16 @@ export const positiveToast = (descr: string) =>
     position: 'bottom-right',
     isClosable: true,
     containerStyle: {
-      fontFamily: 'RMNeue-Regular',
-    },
+      fontFamily: 'RMNeue-Regular'
+    }
   });
 
-export const AttentionBar = ({ description, data_qa = 'attentionBar', centered = false }) => (
-  <HStack width="100%" bg="smRed.100" p="1em" spacing="1em" justifyContent={centered ? 'center' : ''}>
+
+export const AttentionBar = ({ description, data_qa = 'attentionBar' }) => (
+  <HStack width="100%" bg="smRed.100" p="1em" spacing="1em">
     <ExclamationIcon />
-    <Text as='span' data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex={centered ? "" : "1"} >
+    <Text data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex='1'>
       {description}
     </Text>
-  </HStack>
-);
+  </HStack>)
 
-//michal: let's not use default chakra colours
-export const ErrorBanner = ({ text }) => (
-  <Flex
-    flexDir="column"
-    width="100%"
-    bg="red.300"
-    p="1em"
-    mt="2em"
-    align="center"
-    justify="center"
-    alignItems="center"
-  >
-    <Flex>
-      <Box>
-        <ExclamationIcon width="1.5em" height="1.5em" />
-      </Box>
-      <Text width="100%" color="white" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-        {text}
-      </Text>
-    </Flex>
-  </Flex>
-);

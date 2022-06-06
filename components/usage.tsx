@@ -16,7 +16,7 @@ import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './common';
-import { ExclamationIcon } from './icons-library';
+import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 
 export const UsageSummary = observer(function Usage() {
@@ -140,7 +140,7 @@ export const UsageSummary = observer(function Usage() {
           </>
         )}
       </Grid>
-      <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
+      <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
     </>
   );
 });

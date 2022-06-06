@@ -7,6 +7,12 @@ import {
   VStack,
   Text,
   useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
   Input,
   Grid,
   GridItem,
@@ -24,6 +30,7 @@ import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
   AttentionBar,
+  CodeExamples,
   ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
@@ -33,10 +40,9 @@ import {
   positiveToast,
   SmPanel,
 } from '../components/common';
-import { ExclamationIcon } from '../components/icons-library';
+import { ExclamationIcon, ExclamationIconLarge } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
-import { CodeExamples } from '../components/code-examples';
 
 //accountStore.getRuntimeURL()
 
@@ -71,6 +77,8 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
     const breakVal = useBreakpointValue({
       base: 0, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, '2xl': 6
     });
+
+
 
     const { accountStore, tokenStore } = useContext(accountContext);
 

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { makeObservable, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
 import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api';
 import {
   AccountInfo,
