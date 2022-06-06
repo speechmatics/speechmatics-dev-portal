@@ -37,6 +37,7 @@ import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
+import { trackEvent } from '../utils/analytics';
 
 //accountStore.getRuntimeURL()
 
@@ -115,6 +116,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             setGenTokenStage('error');
           });
       }
+      trackEvent('GenerateAPIKey', 'Actions', 'ManageAccess', 'Button')
     }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
 
     const generatedApikeyonClick = useCallback(() => {
