@@ -208,7 +208,7 @@ const RecentJobElement = ({
         >
           <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Date Submitted">
-              {formatDate(date)}
+              {date ? formatDate(date) : 'Unknown'}
             </Tooltip>
           </Box>
           <Box flex={1}>
@@ -219,22 +219,22 @@ const RecentJobElement = ({
               color="smWhite.500"
               label="Model Accuracy"
             >
-              {capitalizeFirstLetter(accuracy)}
+              {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
             </Tooltip>
           </Box>
           <Box flex={1}>
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Job Running Time">
-              {duration || "unknown"}
+              {duration || "Unknown"}
             </Tooltip>
           </Box>
           <Box flex={1}>
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
-              {mapLanguages(language)}
+              {language ? mapLanguages(language) : 'Unknown'}
             </Tooltip>
           </Box>
           <Box flex={1}>
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job Identifier">
-              {id}
+              {id ? id : 'Unknown'}
             </Tooltip>
           </Box>
         </HStack>

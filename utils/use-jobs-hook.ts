@@ -199,7 +199,7 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
       id: item.id,
       status: item.status,
       date: new Date(item.created_at),
-      duration: formatDuration(item.duration),
+      duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
       language: item.config?.transcription_config?.language,
     };
@@ -222,10 +222,12 @@ const formatDuration = (duration) => {
   if (minutes < 60) {
     return `${Math.round(minutes)} minutes`;
   }
-  const hours = (seconds / 60) * 60;
+  const hours = (seconds / ( 60 * 60 ));
   if (hours < 24) {
     return `${Math.round(10 * hours) / 10} hours`;
-  }
+  } 
+  const days = (seconds / ( 60 * 60 * 24 ) );
+  return `${Math.round(10 * days) / 10} days`;
 };
 
 // JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set
@@ -251,7 +253,7 @@ const addMillisecond = (created) => {
 };
 
 export type JobElementProps = {
-  status: 'running' | 'completed';
+  status: 'running' | 'completed' | 'done' | 'rejected';
   fileName: string;
   date: Date;
   accuracy?: string;
@@ -263,7 +265,7 @@ export type JobElementProps = {
 type JobsResponse = {
   created_at: string;
   data_name: string;
-  status: 'running' | 'completed';
+  status: 'running' | 'completed' | 'done' | 'rejected';
   duration: string;
   id: string;
   config?: JobConfig;
