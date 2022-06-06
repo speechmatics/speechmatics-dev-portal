@@ -121,7 +121,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." />
+            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." mt="2em" />
           </TabPanel>
         </TabPanels>
       </Tabs>
