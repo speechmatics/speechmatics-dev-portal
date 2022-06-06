@@ -91,6 +91,7 @@ export default observer(function ManageBilling({ }) {
         introduction="Manage Your Payments and Usage Limits."
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
+        data-qa="modal-delete-card-confirm"
         mainTitle={`Are you sure want to remove your card?`}
         subTitle=''
         onRemoveConfirm={onRemoveConfirm}
@@ -157,7 +158,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
         <GridItem data-qa={`payments-download-invoice-${i}`}>
-          {false && el.url && <Link href={el.url}>
+          {el.url && <Link href={el.url}>
             <a target='_blank' download><DownloadInvoiceHoverable /></a>
           </Link>}
         </GridItem>
