@@ -100,7 +100,7 @@ export const RecentJobs = observer(() => {
         width="100%"
         centered
       />}
-      <VStack spacing={6} mt={6}>
+      <VStack spacing={6} pt={6} width='100%'>
         {isLoading && skeletons}
         {!errorOnInit &&
           !isLoading &&

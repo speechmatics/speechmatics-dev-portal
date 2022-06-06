@@ -21,14 +21,14 @@ export default function Home({ }) {
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
             iconPadding="22px"
-            text="Upload and transcribe an audio file"
+            text="Upload and Transcribe an Audio File"
             buttonLabel="Transcribe Now"
             hrefUrl="/transcribe/"
           />
           <HomeBox
             bgColor="smBlue.500"
             icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
-            text="Start using our API"
+            text="Start Using our API"
             buttonLabel="Get Started"
             hrefUrl="/getting-started/"
             iconPadding='1.5em 0em 0em 0.8em'
