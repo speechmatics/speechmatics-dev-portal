@@ -2,11 +2,13 @@ import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
 import Link from 'next/link';
 import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
+import { HomeBox } from '../components/home-elements';
 import {
   MenuLearnIcon,
   MenuPadlockIcon,
   MenuTrackUsageIcon,
   TranscribeAudioIcon,
+  TranscribeIcon
 } from '../components/icons-library';
 
 export default function Home({ }) {
@@ -14,15 +16,24 @@ export default function Home({ }) {
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
       <VStack spacing='2em' width='100%' maxWidth='900px'>
-        <InfoBarbox
-          width="100%"
-          bgColor="smBlue.500"
-          icon={<TranscribeAudioIcon width='4em' height='3em' />}
-          title="Transcribe an Audio File"
-          description=""
-          buttonLabel="Get Started"
-          hrefUrl="/getting-started/"
-        />
+        <HStack alignItems="stretch" spacing="2em">
+          <HomeBox
+            bgColor="smGreen.500"
+            icon={<TranscribeIcon width='3em' height='3em' />}
+            iconPadding="22px"
+            text="Upload and transcribe an audio file"
+            buttonLabel="Transcribe Now"
+            hrefUrl="/transcribe/"
+          />
+          <HomeBox
+            bgColor="smBlue.500"
+            icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
+            text="Start using our API"
+            buttonLabel="Get Started"
+            hrefUrl="/getting-started/"
+            iconPadding='1.5em 0em 0em 0.8em'
+          />
+        </HStack>
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
@@ -56,11 +67,7 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
     <VStack
       className="sm_panel"
       width="100%"
-      // minWidth='10em'
-      // maxWidth='16em'
-      height="278px"
       alignItems="center"
-      padding="2em"
       justifyContent="space-between"
     >
       <VStack>
@@ -86,3 +93,6 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
     </VStack>
   );
 };
+
+
+
