@@ -1,6 +1,323 @@
 import React from 'react';
-import { SVGProps } from "react"
+import { SVGProps } from 'react';
 
+
+
+export function TranscribeIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 27 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M19.887 27.967H.78v-27h14.602l4.505 4.48v22.52z"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
+      />
+      <path d="M15.382 5.447h4.505L15.382.967v4.48z" fill={mono ? "#4FA9A2" : "#5E6673"} />
+      <path
+        d="M11.878 25.473c0-4.142 3.377-7.5 7.542-7.5 4.166 0 7.543 3.358 7.543 7.5 0 4.142-3.377 7.5-7.543 7.5-4.165 0-7.542-3.358-7.542-7.5zM3.833 9h13.073v1H3.833V9zM3.833 12h13.073v1H3.833v-1zM3.833 15h9.05v1h-9.05v-1z"
+        fill={mono ? "#36817E" : "#263243"}
+      />
+      <path
+        d="M21.742 21.674a2.318 2.318 0 00-2.321-2.308 2.317 2.317 0 00-2.32 2.308v3.407a2.316 2.316 0 002.32 2.307 2.317 2.317 0 002.32-2.307v-3.407z"
+        fill={mono ? "#fff" : "#FC3"}
+      />
+      <path
+        d="M19.42 29.618c-2.516 0-4.564-2.036-4.564-4.538h1.006c0 1.95 1.596 3.538 3.558 3.538 1.962 0 3.558-1.587 3.558-3.538h1.006c0 2.502-2.048 4.538-4.564 4.538z"
+        fill={mono ? "#fff" : "#FC3"}
+      />
+      <path d="M18.918 29.118h1.005v2.462h-1.005v-2.462z" fill={mono ? "#fff" : "#FC3"} />
+    </svg>
+  );
+}
+
+export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g
+        opacity={0.7}
+        stroke="#B52626"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M21.094 7.031l-1.4 13.464a1.562 1.562 0 01-1.552 1.38H6.858a1.562 1.562 0 01-1.551-1.38l-1.4-13.464M22.656 3.125H2.344a.781.781 0 00-.781.781V6.25c0 .431.35.781.78.781h20.313c.432 0 .782-.35.782-.781V3.906a.781.781 0 00-.782-.781zM15.234 17.188l-5.468-5.47m5.468 0l-5.468 5.47 5.468-5.47z" />
+      </g>
+    </svg>
+  );
+}
+
+export function StopIcon(props) {
+  return (
+    <svg
+      width={props.width || "1em"}
+      height={props.width || "1em"}
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g opacity={0.74} fill="#D82C2C">
+        <path d="M12.5 2.083C6.756 2.083 2.083 6.756 2.083 12.5S6.756 22.917 12.5 22.917 22.917 18.244 22.917 12.5 18.244 2.083 12.5 2.083zm0 18.75c-4.595 0-8.333-3.738-8.333-8.333 0-4.595 3.738-8.333 8.333-8.333 4.595 0 8.333 3.738 8.333 8.333 0 4.595-3.738 8.333-8.333 8.333z" />
+        <path d="M9.375 9.375h6.25v6.25h-6.25v-6.25z" />
+      </g>
+    </svg>
+  );
+}
+
+
+export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 46 46"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <circle
+        cx={23}
+        cy={23}
+        r={15.513}
+        transform="rotate(-45 23 23)"
+        fill="#fff"
+        stroke="#D82C2C"
+        strokeWidth={1.5}
+      />
+      <path
+        d="M17.479 17.9l11.04 10.098M28.518 17.9l-11.04 10.098"
+        stroke="#D82C2C"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function ViewEyeIcon(props) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 22 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M14.042 8.816a3.156 3.156 0 11-6.312 0 3.156 3.156 0 016.312 0v0z"
+        stroke={props.color || '#5E6673'}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M.828 8.818c1.34-4.268 5.328-7.363 10.038-7.363s8.697 3.095 10.038 7.363c-1.34 4.268-5.328 7.364-10.038 7.364S2.168 13.086.828 8.818v0z"
+        stroke={props.color || '#5E6673'}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function CompleteIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M48 18.664L29.333 43.997 16 33.331"
+        stroke="#2B8279"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M32 62.664c16.937 0 30.667-13.73 30.667-30.667 0-16.936-13.73-30.666-30.667-30.666S1.333 15.06 1.333 31.997c0 16.937 13.73 30.667 30.667 30.667z"
+        stroke="#2B8279"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function DownloadIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M23 18.218v1.913A2.87 2.87 0 0120.131 23H3.869A2.87 2.87 0 011 20.131v-1.913M12 18.108V1M19 11.108l-7 7-7-7"
+        stroke={props.color || '#fff'}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function CopyIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g clipPath="url(#prefix__clip0_0_486)">
+        <path
+          d="M17.5 20.5v3h-14v-20h3m14 17h-14V.5h8l6 6v14zm-6-20v6h6l-6-6z"
+          stroke="#fff"
+          strokeWidth={1.5}
+          strokeMiterlimit={10}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="prefix__clip0_0_486">
+          <path fill="#fff" d="M0 0h24v24H0z" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function OkayIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 13 11"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.4 1.5l-6.067 8L1 6.132"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function FileProcessingFailedIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M1.333 46.685v-40 40zm5.334-29.333v18.667-18.667zM12 14.685v24-24zm5.333-2.666v29.333-29.333zm5.334-2.667v34.667V9.352zm32 17.333v-20 20zm-5.334-9.333v8-8zM44 14.685v10.667-10.667zm-5.333-2.666v14.666-14.666zm-5.334-2.667v20-20zm-5.333-8v34.667V1.352zm18.667 61.315c8.836 0 16-7.164 16-16 0-8.837-7.164-16-16-16-8.837 0-16 7.163-16 16 0 8.836 7.163 16 16 16zM41 41l12 12M53 41L41 53"
+        stroke="#D82C2C"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export const FileProcessingIcon = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M1.333 46.685v-40M6.667 17.352v18.667M12 14.685v24M17.333 12.019v29.333M22.667 9.352v34.667M54.667 26.685v-20M49.333 17.352v8M44 14.685v10.667M38.667 12.019v14.666M33.333 9.352v20M28 1.352v34.667M46.667 62.667c8.836 0 16-7.164 16-16 0-8.837-7.164-16-16-16-8.837 0-16 7.163-16 16 0 8.836 7.163 16 16 16z"
+        stroke="#2B8279"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M53.797 42.016l-7.746 10.328a2.004 2.004 0 01-3.014.216l-4-4"
+        stroke="#2B8279"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const UploadFileIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    width={39}
+    height={39}
+    viewBox="0 0 39 39"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M26.488 25.823h3.9s6.987-.912 6.987-7.773a7.755 7.755 0 0 0-8.052-7.756A10.863 10.863 0 0 0 8.652 14.29a5.827 5.827 0 0 0-7.027 5.697c0 5.923 6.217 5.83 6.217 5.83h4.653M19.5 16.885V34.76"
+      stroke={props.color || '#AAA'}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M24.375 21.76 19.5 16.885l-4.875 4.875"
+      stroke={props.color || '#AAA'}
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const QuestionmarkInCircle = (props: SVGProps<SVGSVGElement>) => (
+  <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <rect width={20} height={20} rx={10} fill="#E7E7E7" />
+    <path
+      d="M10.888 11.828v-1.5c1.152-.132 2.136-1.02 2.136-2.46 0-1.5-1.116-2.4-2.628-2.4-1.488 0-2.628 1.02-2.676 2.652h1.128c.048-.996.648-1.668 1.536-1.668.9 0 1.5.54 1.5 1.452 0 .972-.732 1.596-1.8 1.596h-.288v2.328h1.092ZM10.924 14v-1.38H9.712V14h1.212Z"
+      fill="#5E6673"
+    />
+  </svg>
+);
 
 export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
@@ -1179,3 +1496,60 @@ export const CardGreyImage = (props: SVGProps<SVGSVGElement>) => (
     </defs>
   </svg>
 );
+
+
+export function ClockIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 26 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M12.999 24.501c6.351 0 11.5-5.149 11.5-11.5s-5.149-11.5-11.5-11.5-11.5 5.149-11.5 11.5 5.149 11.5 11.5 11.5z"
+        stroke="#386DFB"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13 7.501v5.5l6 5.5"
+        stroke="#386DFB"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.27 1.792l-9.586 9.585a1 1 0 000 1.414l9.585 9.586a1 1 0 001.414 0l9.586-9.585a1 1 0 000-1.415l-9.586-9.585a1 1 0 00-1.414 0zM12 13V7"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.987 16.11a.244.244 0 00-.237.255.254.254 0 00.25.245h.01a.248.248 0 00.221-.16.253.253 0 00-.23-.34M12 16.11h-.009"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

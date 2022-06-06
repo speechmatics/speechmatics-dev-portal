@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { makeObservable, observable, computed, action, makeAutoObservable } from 'mobx';
+import { makeObservable, observable, computed, action } from 'mobx';
 import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api';
 import {
   AccountInfo,
@@ -84,7 +84,6 @@ class AccountContext {
   }
 
   async fetchServerState(idToken: string) {
-    console.log('fetchServerState');
     this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
@@ -108,29 +107,23 @@ class AccountContext {
 
     if (!this._account && 'account_id' in response) this._account = response as any;
 
-    console.log(
-      'AccountContext assignServerState',
-      this._account,
-      response,
-      response.accounts,
-      response.accounts?.filter((acc) => !!acc)
-    );
   }
 
   async accountsFetchFlow(
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
-    console.log('accountsFetchFlow');
     this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
+
         if (
           jsonResp &&
           jsonResp.accounts &&
           Array.isArray(jsonResp.accounts) &&
           jsonResp.accounts.length == 0
         ) {
+          console.log(jsonResp)
           console.log(
             'no account on management platform, sending a request to create with POST /accounts'
           );
@@ -141,6 +134,7 @@ class AccountContext {
             return jsonPostResp;
           });
         } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
+          console.log(jsonResp)
           this.isLoading = false;
           return jsonResp;
         }
@@ -148,6 +142,7 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
+        console.log(err)
         errToast(`while fetching account: ${err}`);
         this.isLoading = false;
         console.error(err);

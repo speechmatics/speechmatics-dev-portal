@@ -5,6 +5,8 @@ import {
   MenuHouseIcon,
   MenuGettingStartedIcon,
   MenuTrackUsageIcon,
+  TranscribeIcon,
+  SubmitAJobIcon,
 } from '../components/icons-library';
 
 const menuData = [
@@ -14,14 +16,24 @@ const menuData = [
     icon: MenuHouseIcon,
   },
   {
+    path: '/transcribe/',
+    title: 'Upload & Transcribe',
+    icon: TranscribeIcon,
+  },
+  {
     path: '/getting-started/',
-    title: 'Get Started',
+    title: 'Start with API',
     icon: MenuGettingStartedIcon,
   },
   {
     path: '/manage-access/',
     title: 'Manage Access',
     icon: MenuPadlockIcon,
+  },
+  {
+    path: '/view-jobs/',
+    title: 'View Jobs',
+    icon: SubmitAJobIcon,
   },
   {
     path: '/usage/',

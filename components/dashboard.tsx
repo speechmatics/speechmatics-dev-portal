@@ -1,13 +1,12 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   Box,
   useDisclosure,
   Spinner,
   Button,
   VStack,
-  IconButton,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -26,7 +25,6 @@ import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { FiMenu } from 'react-icons/fi';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },

@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Dashboard from '../components/dashboard';
 import {
   Box,
@@ -24,16 +25,18 @@ import {
   UsageBreakdown,
   GetInTouchBox,
   UsageSummary
-} from '../components/usage';
+} from '../components/usage-elements';
 import {
   BaloonIcon,
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
+import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
+
 
   return (
     <Dashboard>
@@ -93,7 +96,7 @@ export default observer(function Usage() {
 
             <UsageBreakdown />
 
-            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." />
+            <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
 
           </TabPanel>
         </TabPanels>
