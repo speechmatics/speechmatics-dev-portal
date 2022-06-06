@@ -10,6 +10,7 @@ import { FileUploadComponent, SelectField, FileProcessingProgress } from "../com
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-auth-flow";
+import { humanFileSize } from "../utils/string-utils";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
 
@@ -113,7 +114,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
         icon={FileProcessingIcon}
         title={'Your Transcription File Is Being Sent.'}
         subtitle={<>Your file size is:
-          <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
+          <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {humanFileSize(fileSize, true)}</Text>.
         </>}
         subtitle2={'This page will automatically refresh and show your results.'}
       />}
@@ -121,7 +122,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     {stage == 'pendingTranscription' && <PendingLabelsSlots
       icon={FileProcessingIcon}
       title={'Your Transcription Has Been Submitted.'}
-      subtitle={<>Status of your job (ID: {jobId}) is:
+      subtitle={<>Status of your job (ID: {jobId.toLowerCase()}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> Running</Text>.
       </>}
       subtitle2={'This page will automatically refresh and show your results.'}
