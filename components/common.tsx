@@ -32,9 +32,7 @@ import {
   CalendarIcon,
   ExclamationIcon,
   ExclamationIconLarge,
-  ViewPricingIcon,
-  CopyIcon,
-  DownloadIcon,
+  ViewPricingIcon
 } from './icons-library';
 
 import {
