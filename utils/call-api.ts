@@ -50,15 +50,9 @@ export const callGetJobs = async (idToken: string, optionalQueries: any) => {
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
-  return callRuntime(
-    idToken,
-    `${RUNTIME_API_URL}/jobs/${jobId}`,
-    'DELETE',
-    {},
-    {
-      force,
-    }
-  );
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
+    force,
+  });
 };
 
 export const callGetTranscript = async (
