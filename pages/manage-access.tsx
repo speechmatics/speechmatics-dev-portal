@@ -104,9 +104,8 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
       } else {
         setNoNameError(false);
         setGenTokenStage('waiting');
-        callPostApiKey(idToken, nameInputRef?.current?.value, accountStore.getProjectId(), '')
+        callPostApiKey(idToken, nameInputRef?.current?.value, accountStore.getProjectId())
           .then((resp) => {
-            console.log('callPostApiKey resp', resp);
             setGeneratedToken(resp.key_value);
             setGenTokenStage('generated');
             accountStore.fetchServerState(idToken);

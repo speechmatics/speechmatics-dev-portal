@@ -47,10 +47,6 @@ import {
   PaginationNext,
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
-import { formatTimeDateFromString } from '../utils/date-utils';
-import { capitalizeFirstLetter } from '../utils/string-utils';
-import { getFullLanguageName } from '../utils/transcribe-elements';
-import { TranscriptDownloadMenu } from './transcript-download-menu';
 
 export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
   <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
@@ -549,7 +545,7 @@ export const ErrorBanner = ({ text }) => (
   <Flex
     flexDir="column"
     width="100%"
-    bg="red.300"
+    bg="smRed.100"
     p="1em"
     mt="2em"
     align="center"
@@ -560,7 +556,7 @@ export const ErrorBanner = ({ text }) => (
       <Box>
         <ExclamationIcon width="1.5em" height="1.5em" />
       </Box>
-      <Text width="100%" color="white" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+      <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
         {text}
       </Text>
     </Flex>

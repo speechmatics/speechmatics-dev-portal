@@ -35,7 +35,6 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
       setIsFileTooBigError(true);
       return;
     }
-
     if (!checkIfFileCorrectType(file)) {
       setIsWrongTypeError(true);
       return;
