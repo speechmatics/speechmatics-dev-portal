@@ -1,8 +1,7 @@
 import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
-import Link from 'next/link';
 import { InfoBarbox, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { HomeBox } from '../components/home-elements';
+import { HomeBox, HomeWhiteBox } from '../components/home-elements';
 import {
   MenuLearnIcon,
   MenuPadlockIcon,
@@ -10,7 +9,6 @@ import {
   TranscribeAudioIcon,
   TranscribeIcon
 } from '../components/icons-library';
-import { trackEvent } from '../utils/analytics';
 
 export default function Home({ }) {
   return (
@@ -63,39 +61,7 @@ export default function Home({ }) {
   );
 }
 
-const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
 
-  return (
-    <VStack
-      className="sm_panel"
-      width="100%"
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <VStack>
-        <Box>{icon}</Box>
-        <Text as="div" fontFamily="RMNeue-Bold" fontSize="1.1em" textAlign="center">
-          {title}
-        </Text>
-        <Text
-          as="div"
-          fontFamily="RMNeue-Regular"
-          fontSize="0.8em"
-          color="smBlack.400"
-          textAlign="center"
-        >
-          {description}
-        </Text>
-      </VStack>
-      <Link href={hrefUrl}>
-        <Button variant="speechmaticsOutline" width="100%"
-          onClick={() => { trackEvent('Navigation', 'CTAs', 'HomeBox', title) }}>
-          {buttonLabel}
-        </Button>
-      </Link>
-    </VStack>
-  );
-};
 
 
 

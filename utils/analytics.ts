@@ -11,12 +11,12 @@ export const trackPageview = (url: string) => {
   }
 };
 
-export const trackEvent = (action: string, category: string, label: string, value: string) => {
+export const trackEvent = (action: string, category: string, label: string, value: any = {}) => {
   try {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
-      value,
+      ...value,
     });
   } catch (err) {
     console.error('Failed sending metrics', err);

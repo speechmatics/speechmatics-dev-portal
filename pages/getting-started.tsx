@@ -41,7 +41,9 @@ export default observer(function GettingStarted({ }) {
             Download our{' '}
             <a href='/example.wav'
               download='example.wav' title='Download an example file'
-              onClick={() => { trackEvent('Action', 'Links', 'DownloadExample', 'example.wav') }}
+              onClick={() => {
+                trackEvent('download_example', 'Actions', 'example.wav')
+              }}
             >
               <Text color="smBlue.500" as="span">
                 sample audio file
@@ -57,7 +59,9 @@ export default observer(function GettingStarted({ }) {
             <>You've already created 5 API Keys.{' '}
               Before generating a new API key, you need to <Link href='/manage-access/'>
                 <a style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  onClick={() => { trackEvent('Navigation', 'Links', 'RemoveExistingLink', 'GenerateKey') }}>
+                  onClick={() => {
+                    trackEvent('link_to_manage_access', 'Navigation', 'link_in_start_in_api')
+                  }}>
                   remove an existing key</a></Link>{'.'}
             </>} /> :
             <VStack alignItems='flex-start'>
