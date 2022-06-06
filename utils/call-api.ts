@@ -194,6 +194,7 @@ export const call = async (
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
+      console.log('response from', apiEndpoint, options, responseCopy(response, isPlain));
       if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
       } else if (response.status == 401) {

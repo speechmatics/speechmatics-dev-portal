@@ -129,6 +129,12 @@ const getJobs = (
             setIsPolling(false);
           }
           const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
+          console.log(
+            'callGetJobs',
+            respJson.jobs,
+            respJson.jobs.length,
+            respJson.jobs[respJson.jobs.length - 1].created_at
+          );
           setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
           setJobs(combinedArrays);
           loadingFunction(false);
@@ -145,7 +151,7 @@ const getJobs = (
 };
 
 // This is mostly unchanged except it uses inputs rather than hooks
-// I added addMillisecond to get round the milli second precision in the polling endpoint. 
+// I added addMillisecond to get round the milli second precision in the polling endpoint.
 // Should be deprecated soon as the API fix will be coming
 const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
   let isActive = true;
@@ -195,7 +201,7 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
       date: new Date(item.created_at),
       duration: formatDuration(item.duration),
       fileName: item.data_name,
-      language: item.config?.transcription_config?.language
+      language: item.config?.transcription_config?.language,
     };
     if (item?.config?.transcription_config?.operating_point != null) {
       newItem.accuracy = item.config.transcription_config.operating_point;
