@@ -161,7 +161,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
       Go to the <Link data-qa="link-recent-jobs" href='/view-jobs/'>
-        <a className="text_link">Recent Jobs</a></Link>
+        <a className="text_link">View Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
 
