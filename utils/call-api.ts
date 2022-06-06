@@ -71,7 +71,7 @@ export const callGetTranscript = async (
     `${RUNTIME_API_URL}/jobs/${jobId}/transcript`,
     'GET',
     {},
-    { format },
+    { format: format == 'text' ? 'txt' : format },
     format === 'json-v2' ? 'application/json' : 'text/plain'
   );
 };
