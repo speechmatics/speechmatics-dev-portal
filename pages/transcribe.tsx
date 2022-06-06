@@ -26,7 +26,7 @@ export default observer(function Transcribe({ }) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Transcribe"
+        headerLabel="Upload & Transcribe"
         introduction="Upload and Transcribe an Audio File." />
 
       <SmPanel width='100%' maxWidth='900px'>
