@@ -23,10 +23,44 @@ export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel
       </VStack>
       <Link href={hrefUrl}>
         <Button variant="speechmaticsWhite" color={bgColor}
-          onClick={() => { trackEvent('Navigation', 'CTAs', 'HomeBox', buttonLabel) }}>
+          onClick={() => { trackEvent('home_box_click', 'CTAs', buttonLabel) }}>
           {buttonLabel}
         </Button>
       </Link>
     </VStack>
   )
 }
+
+export const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
+
+  return (
+    <VStack
+      className="sm_panel"
+      width="100%"
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      <VStack>
+        <Box>{icon}</Box>
+        <Text as="div" fontFamily="RMNeue-Bold" fontSize="1.1em" textAlign="center">
+          {title}
+        </Text>
+        <Text
+          as="div"
+          fontFamily="RMNeue-Regular"
+          fontSize="0.8em"
+          color="smBlack.400"
+          textAlign="center"
+        >
+          {description}
+        </Text>
+      </VStack>
+      <Link href={hrefUrl}>
+        <Button variant="speechmaticsOutline" width="100%"
+          onClick={() => { trackEvent('home_white_box_click', 'CTAs', title) }}>
+          {buttonLabel}
+        </Button>
+      </Link>
+    </VStack>
+  );
+};

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import menuData from "../static_data/menu-data";
+import { trackEvent } from "../utils/analytics";
 
 
 export function MenuContainer() {
@@ -67,8 +68,12 @@ function MenuElem({ item, selected, ...props }) {
 
   return (
     <Link href={item.path}>
-      <Box className={`menu_elem ${selected ? 'selected' : ''}`} {...props}
-        onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <Box className={`menu_elem ${selected ? 'selected' : ''}`}
+        {...props}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => { trackEvent('main_nav_click', 'Navigation', item.title) }}
+      >
         <Box>
           {item.icon({
             mono: Boolean(selected) || isHovered,
