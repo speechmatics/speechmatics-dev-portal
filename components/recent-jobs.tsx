@@ -224,7 +224,7 @@ const RecentJobElement = ({
           </Box>
           <Box flex={1}>
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Job Running Time">
-              {duration}
+              {duration || "unknown"}
             </Tooltip>
           </Box>
           <Box flex={1}>
