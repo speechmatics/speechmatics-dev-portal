@@ -17,10 +17,11 @@ import {
   ModalHeader,
   ModalBody,
   useDisclosure,
+  Flex,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState, useContext, useCallback } from 'react';
-import { ErrorBanner, ConfirmRemoveModal, HeaderLabel, UsageInfoBanner } from './common';
+import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
+import { ErrorBanner, ConfirmRemoveModal, HeaderLabel, UsageInfoBanner, WarningBanner, NoSomethingBanner } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
@@ -89,17 +90,18 @@ export const RecentJobs = observer(() => {
     authFlow.restoreToken();
   }, [idToken, accountStore.account]);
 
+  const skeletons = useMemo(() => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i)), [])
+
   return (
     <>
       <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
-      <UsageInfoBanner
-        text="Transcripts are removed after 7 days."
+      {!isLoading && jobs?.length !== 0 && <WarningBanner
+        text="Transcriptions and audio files are automatically deleted after 7 days."
         width="100%"
-        bg="smBlue.100"
         centered
-      />
+      />}
       <VStack spacing={6} mt={6}>
-        {isLoading && new Array(pageLimit).fill(LoadingJobsSkeleton())}
+        {isLoading && skeletons}
         {!errorOnInit &&
           !isLoading &&
           jobs?.map((el, i) => {
@@ -114,7 +116,7 @@ export const RecentJobs = observer(() => {
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
-        <Button
+        {!noMoreJobs && <Button
           hidden={errorOnInit}
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
           variant="speechmatics"
@@ -127,6 +129,8 @@ export const RecentJobs = observer(() => {
           {isLoading || (isWaitingOnMore && <Spinner />)}
           {noMoreJobs && 'No More Jobs'}
         </Button>
+        }
+        {jobs?.length === 0 && noMoreJobs && <NoSomethingBanner>Currently you don't have any transcription jobs.</NoSomethingBanner>}
       </VStack>
       <Modal
         size="4xl"
@@ -193,7 +197,6 @@ const RecentJobElement = ({
       borderLeft="3px solid"
       borderLeftColor={statusColour[status]}
       width="100%"
-      _hover={{ bg: 'smBlack.100' }}
     >
       <VStack alignItems="flex-start" p={4} flex={2}>
         <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
@@ -207,7 +210,7 @@ const RecentJobElement = ({
           justifyContent="space-between"
         >
           <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Date Submitted">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
               {date ? formatDate(date) : 'Unknown'}
             </Tooltip>
           </Box>
@@ -217,13 +220,13 @@ const RecentJobElement = ({
               placement="bottom"
               hasArrow
               color="smWhite.500"
-              label="Model Accuracy"
+              label="Accuracy"
             >
               {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Job Running Time">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
               {duration || "Unknown"}
             </Tooltip>
           </Box>
@@ -233,7 +236,7 @@ const RecentJobElement = ({
             </Tooltip>
           </Box>
           <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job Identifier">
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job ID">
               {id ? id : 'Unknown'}
             </Tooltip>
           </Box>
@@ -246,52 +249,66 @@ const RecentJobElement = ({
         </HStack>
         <Box flex={1}>
           <Menu isLazy>
-            <MenuButton>
-              <DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />
-            </MenuButton>
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
+              <MenuButton as={IconButton} variant="ghost"
+                aria-label="view" icon={<DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />}>
+              </MenuButton>
+            </Tooltip>
             <TranscriptDownloadMenu jobId={id} status={status} />
           </Menu>
         </Box>
         {status === ('done' || 'completed') ? (
-          <IconButton
-            variant="unstyled"
-            aria-label="stop-or-delete"
-            onClick={(e) =>
-              onOpenTranscript(
-                {
-                  jobId: id,
-                  language,
-                  accuracy,
-                  date: formatDate(date),
-                  fileName,
-                },
-                'txt'
-              )
-            }
-            _focus={{ boxShadow: 'none' }}
-            flex={1}
-            icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
-          />
-        ) : (
           <Box flex={1}>
-            <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />{' '}
+            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
+              <IconButton
+                variant="ghost"
+                aria-label="view"
+                onClick={(e) =>
+                  onOpenTranscript(
+                    {
+                      jobId: id,
+                      language,
+                      accuracy,
+                      date: formatDate(date),
+                      fileName,
+                    },
+                    'txt'
+                  )
+                }
+                _focus={{ boxShadow: 'none' }}
+                icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
+              />
+            </Tooltip>
           </Box>
+
+        ) : (
+          <Flex flex={1} >
+            <Box pl={2}>
+              <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />
+            </Box>
+          </Flex>
         )}
-        <IconButton
-          variant="unstyled"
-          aria-label="stop-or-delete"
-          onClick={(e) => onStartDelete(id)}
-          flex={1}
-          icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
-        />
+        <Box flex={1}>
+          <Tooltip placement="bottom" hasArrow color="smWhite.500"
+            label={status === 'running' ? 'Cancel' : 'Delete'}>
+            <IconButton
+              variant="ghost"
+              aria-label="stop-or-delete"
+              onClick={(e) => onStartDelete(id)}
+              flex={1}
+              icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
+            />
+          </Tooltip>
+        </Box>
       </HStack>
     </HStack>
   );
 };
 
-const LoadingJobsSkeleton = () => {
+const LoadingJobsSkeleton = (key: any) => {
   return (
     <HStack
+      key={key}
       border="1px solid"
       borderColor="smBlack.200"
       borderLeft="3px solid"

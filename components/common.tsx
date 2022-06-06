@@ -32,7 +32,8 @@ import {
   CalendarIcon,
   ExclamationIcon,
   ExclamationIconLarge,
-  ViewPricingIcon
+  ViewPricingIcon,
+  WarningIcon
 } from './icons-library';
 
 import {
@@ -56,6 +57,24 @@ export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
     </Text>
   </Flex>
 );
+
+export const WarningBanner = ({ text, centered = false, ...props }) => (
+  <Flex width="100%" bg="smOrange.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
+    <Flex alignItems='center'>
+      <WarningIcon width="1.5em" height="1.5em" />
+    </Flex>
+    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+      {text}
+    </Text>
+  </Flex>
+);
+
+export const NoSomethingBanner = ({ children }) => (
+  <Flex width="100%" justifyContent="center">
+    <ExclamationIcon />
+    <Text ml="1em">{children}</Text>
+  </Flex>
+)
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',

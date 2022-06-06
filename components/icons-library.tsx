@@ -1525,3 +1525,31 @@ export function ClockIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.27 1.792l-9.586 9.585a1 1 0 000 1.414l9.585 9.586a1 1 0 001.414 0l9.586-9.585a1 1 0 000-1.415l-9.586-9.585a1 1 0 00-1.414 0zM12 13V7"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.987 16.11a.244.244 0 00-.237.255.254.254 0 00.25.245h.01a.248.248 0 00.221-.16.253.253 0 00-.23-.34M12 16.11h-.009"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
