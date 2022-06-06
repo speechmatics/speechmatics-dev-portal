@@ -216,7 +216,7 @@ export const call = async (
     })
     .catch((error) => {
       console.log(error);
-      errToast(`details: ${JSON.stringify(error)}`);
+      errToast(`fetch error on ${apiEndpoint} occured`);
       return { status: 'error', error: { type: error.type } };
     });
 };
