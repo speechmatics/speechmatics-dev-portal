@@ -1,7 +1,7 @@
 import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
 import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
-import { runtimeAuthFlow as runtime } from './runtime-auth-flow'
+import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
@@ -22,38 +22,56 @@ export const callGetUsage = async (
   projectId: number,
   dates: any
 ) => {
-  return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {}, {
-    contract_id: contractId,
-    project_id: projectId,
-    grouping: 'day',
-    sort_order: 'asc',
-    ...dates,
-  });
+  return call(
+    idToken,
+    `${ENDPOINT_API_URL}/usage`,
+    'GET',
+    {},
+    {
+      contract_id: contractId,
+      project_id: projectId,
+      grouping: 'day',
+      sort_order: 'asc',
+      ...dates,
+    }
+  );
 };
 
-export const callGetJobs = async (
-  idToken: string,
-  optionalQueries: any
-) => {
-  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs`, 'GET', {}, {
-    ...optionalQueries,
-  });
+export const callGetJobs = async (idToken: string, optionalQueries: any) => {
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs`,
+    'GET',
+    {},
+    {
+      ...optionalQueries,
+    }
+  );
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
-  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', {},
-  {
-    force,
-  });
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs/${jobId}`,
+    'DELETE',
+    {},
+    {
+      force,
+    }
+  );
 };
 
-export const callGetTranscript = async (idToken:string, jobId: string, format: TranscriptFormat) => {
+export const callGetTranscript = async (
+  idToken: string,
+  jobId: string,
+  format: TranscriptFormat
+) => {
   return callRuntime(
     idToken,
     `${RUNTIME_API_URL}/jobs/${jobId}/transcript`,
     'GET',
     {},
-    {format},
+    { format },
     format === 'json-v2' ? 'application/json' : 'text/plain'
   );
 };
@@ -76,11 +94,7 @@ export const callPostRequestTokenChargify = async (
   });
 };
 
-export const callPostApiKey = async (
-  idToken: string,
-  name: string,
-  projectId: number,
-) => {
+export const callPostApiKey = async (idToken: string, name: string, projectId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
     name,
@@ -97,12 +111,12 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
 
 export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
-    ttl
+    ttl,
   });
 };
 
 export const callRequestFileTranscription = async (
-  idToken: string, 
+  idToken: string,
   file: File,
   language: string,
   accuracy: Accuracy,
@@ -116,12 +130,19 @@ export const callRequestFileTranscription = async (
     transcription_config: {
       language,
       operating_point: accuracy,
-      diarization: separation
-    }
-  }
+      diarization: separation,
+    },
+  };
   formData.append('config', JSON.stringify(config));
 
-  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs`, 'POST', formData, null, 'multipart/form-data');
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs`,
+    'POST',
+    formData,
+    null,
+    'multipart/form-data'
+  );
 };
 
 export const callRequestJobStatus = async (idToken: string, jobId: string) => {
@@ -141,19 +162,12 @@ export const callRuntime = async (
   contentType: string = null
 ) => {
   try {
-    await runtime.refreshToken(authToken)
-    return call(
-      runtime.store.secretKey,
-      apiEndpoint,
-      method,
-      body,
-      query,
-      contentType
-    )
+    await runtime.refreshToken(authToken);
+    return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType);
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 export const call = async (
   authToken: string,
@@ -170,7 +184,7 @@ export const call = async (
   const isPlain = contentType === 'text/plain';
 
   headers.append('Authorization', bearer);
-  if ( contentType != 'multipart/form-data') {
+  if (contentType != 'multipart/form-data') {
     headers.append('Content-Type', contentType ? contentType : 'application/json');
   }
 
@@ -189,21 +203,21 @@ export const call = async (
       if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
       } else if (response.status == 401) {
-        throw  { status: 'error', error: { type: 'runtime-auth' } }
+        throw { status: 'error', error: { type: 'runtime-auth' } };
       }
       if (response.status != 200 && response.status != 201) {
-        throw { status: 'error', error: { type: '', status: response.status } }
+        throw { status: 'error', error: { type: '', status: response.status } };
       }
 
       if (response.body == null) {
-        return null
+        return null;
       }
-      return isPlain ? response.text() : response.json()
+      return isPlain ? response.text() : response.json();
     })
     .catch((error) => {
-      console.log(error)
-      errToast(`details: ${error}`);
-      return { status: 'error', error: { type: error.type } }
+      console.log(error);
+      errToast(`details: ${JSON.stringify(error)}`);
+      return { status: 'error', error: { type: error.type } };
     });
 };
 
