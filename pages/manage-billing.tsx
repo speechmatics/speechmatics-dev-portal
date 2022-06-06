@@ -24,7 +24,7 @@ import {
   ViewPricingBar,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { ExclamationIcon,  } from '../components/icons-library';
+import { ExclamationIcon, } from '../components/icons-library';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
@@ -147,7 +147,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
         <GridItem data-qa={`payments-download-invoice-${i}`}>
-          {el.url && <Link href={el.url}>
+          {false && el.url && <Link href={el.url}>
             <a target='_blank' download><DownloadInvoiceHoverable /></a>
           </Link>}
         </GridItem>
