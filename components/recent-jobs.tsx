@@ -94,7 +94,6 @@ export const RecentJobs = observer(() => {
 
   return (
     <>
-      <HeaderLabel>Recent Transcription Jobs</HeaderLabel>
       {!isLoading && jobs?.length !== 0 && <WarningBanner
         text="Transcriptions and audio files are automatically deleted after 7 days."
         width="100%"
