@@ -1,6 +1,7 @@
-export const GA_TRACKING_ID = 'G-WSYQJ34RYV';
+export const GA_TRACKING_ID = process.env.GTAG || 'G-WSYQJ34RYV';
 
-export const trackPageview = (url) => {
+export const trackPageview = (url: string) => {
+  console.log('trackPageview', url);
   try {
     window.gtag('config', GA_TRACKING_ID, {
       page_location: url,
@@ -10,7 +11,7 @@ export const trackPageview = (url) => {
   }
 };
 
-export const trackEvent = ({ action, category, label, value }) => {
+export const trackEvent = (action: string, category: string, label: string, value: string) => {
   try {
     window.gtag('event', action, {
       event_category: category,

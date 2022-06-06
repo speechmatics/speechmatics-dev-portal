@@ -10,6 +10,7 @@ import {
   TranscribeAudioIcon,
   TranscribeIcon
 } from '../components/icons-library';
+import { trackEvent } from '../utils/analytics';
 
 export default function Home({ }) {
   return (
@@ -63,6 +64,7 @@ export default function Home({ }) {
 }
 
 const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
+
   return (
     <VStack
       className="sm_panel"
@@ -86,7 +88,8 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
         </Text>
       </VStack>
       <Link href={hrefUrl}>
-        <Button variant="speechmaticsOutline" width="100%">
+        <Button variant="speechmaticsOutline" width="100%"
+          onClick={() => { trackEvent('Navigation', 'CTAs', 'HomeBox', title) }}>
           {buttonLabel}
         </Button>
       </Link>
