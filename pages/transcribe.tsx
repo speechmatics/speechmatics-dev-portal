@@ -9,9 +9,9 @@ import { ClockIcon, CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon }
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
+import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-auth-flow";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
-import { runtimeAuthFlow as authFlow, RuntimeAuthStore } from "../utils/runtime-auth-flow";
 
 
 export default observer(function Transcribe({ }) {
