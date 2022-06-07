@@ -151,7 +151,7 @@ export const RecentJobs = observer(() => {
         onClose={() => setTranscriptOpen(false)}
       >
         <ModalOverlay rounded="none" />
-        <ModalContent p={4} rounded="none" h="70vh">
+        <ModalContent p={4} rounded="none">
           <ModalHeader fontSize="2em" textAlign="center">
             Transcription of "{activeJob?.fileName}"
           </ModalHeader>
@@ -169,7 +169,7 @@ export const RecentJobs = observer(() => {
             right={-4}
           />
           <ModalBody>
-            <TranscriptionViewer {...activeJob} transcMaxHeight="38vh" />
+            <TranscriptionViewer {...activeJob} transcMaxHeight="25vh" />
           </ModalBody>
         </ModalContent>
       </Modal>
