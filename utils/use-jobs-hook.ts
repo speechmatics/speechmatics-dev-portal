@@ -11,7 +11,7 @@ export const useJobs = (limit, page) => {
   const [errorOnInit, setErrorOnInit] = useState<boolean>(false);
   const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
-  const [isPolling, setIsPolling] = useState<boolean>(true);
+  const [isPolling, setIsPolling] = useState<boolean>(false);
 
   const maxlimit = 100;
   const { tokenStore } = useContext(accountContext);
@@ -24,7 +24,7 @@ export const useJobs = (limit, page) => {
   useInterval(pollingCallback, 20000, isPolling);
 
   useEffect(() => {
-    // Check page size is lower than AP pagination max size
+    // Check page size is lower than API pagination max size
     if (limit > maxlimit) {
       throw new Error('Limit cannot be more than ' + maxlimit);
     }
@@ -117,36 +117,35 @@ const getJobs = (
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
-        // if ( !!respJson && !('jobs' in respJson) ) {
-        //   throw "error geting jobs"
-        // }
-        if (isActive && !!respJson && 'jobs' in respJson) {
-          if (respJson.jobs == null || respJson?.jobs?.length < limit) {
+        if ( !respJson || !('jobs' in respJson) || respJson.jobs == null ) {
+          throw "error geting jobs"
+        }
+        if (isActive) {
+          if (respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
-            loadingFunction(false);
-            // return
           }
-          const formatted: JobElementProps[] = formatJobs(respJson.jobs);
-          if (formatted.some((item) => item.status === 'running')) {
-            setIsPolling(true);
-          } else {
-            setIsPolling(false);
+          if (respJson.jobs.length !== 0 ) {
+            const formatted: JobElementProps[] = formatJobs(respJson.jobs);
+            const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
+            console.log(
+              'callGetJobs',
+              respJson.jobs,
+              respJson.jobs.length,
+              respJson.jobs[respJson.jobs.length - 1].created_at
+            );
+            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
+            setJobs(combinedArrays);
+            if (combinedArrays.some((item) => item.status === 'running')) {
+              setIsPolling(true);
+            } else {
+              setIsPolling(false);
+            }
           }
-          const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
-          console.log(
-            'callGetJobs',
-            respJson.jobs,
-            respJson.jobs.length,
-            respJson.jobs[respJson.jobs.length - 1].created_at
-          );
-          setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
-          setJobs(combinedArrays);
-          loadingFunction(false);
-        } else {
           loadingFunction(false);
         }
       })
       .catch((err) => {
+        console.log(err)
         errorFunction(true);
         loadingFunction(false);
       });

@@ -346,7 +346,7 @@ export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { 
 )
 
 
-export const SubmitAJobIcon = (props: SVGProps<SVGSVGElement>) => (
+export const SubmitAJobIcon = ({ mono, ...props}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1em"}
     height={props.height || "1em"}
