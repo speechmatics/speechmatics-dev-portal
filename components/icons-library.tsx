@@ -1526,7 +1526,7 @@ export function ClockIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
+export function WarningIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
