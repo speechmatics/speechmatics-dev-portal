@@ -134,7 +134,7 @@ export const RecentJobs = observer(() => {
           <NoSomethingBanner>No jobs found.</NoSomethingBanner>
           <Box>
             {/* Text inside button is underlined on hover, needs to be altered */}
-            <Link href="/subscribe/">
+            <Link href="/transcribe/">
               <Button variant="speechmatics" alignSelf="flex-start">
                 Transcribe Now
               </Button>
