@@ -92,7 +92,7 @@ class RuntimeAuthFlow {
 
   reset(error: string = null) {
     this.store.resetStore(error);
-    sessionStorage.setItem('runtime_token', null);
+    sessionStorage.removeItem('runtime_token');
   }
 }
 
