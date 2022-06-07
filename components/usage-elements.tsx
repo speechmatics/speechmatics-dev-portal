@@ -15,7 +15,7 @@ import {
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
-import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './common';
+import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner, ErrorInTable } from './common';
 import { ExclamationIcon } from './icons-library';
 import { formatDate } from '../utils/date-utils';
 
@@ -198,10 +198,7 @@ export const UsageBreakdown = observer(function Usage() {
           <GridItem className="grid_header">Day</GridItem>
           <GridItem className="grid_header">Hours Used</GridItem>
           <GridItem colSpan={2}>
-            <Flex width="100%" justifyContent="center">
-              <ExclamationIcon />
-              <Text ml="1em">We couldn't get your usage details.</Text>
-            </Flex>
+            <ErrorInTable text="We couldn't get your usage details." />
           </GridItem>
         </Grid>
       )}
@@ -225,10 +222,7 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
     })}
     {!isLoading && (!data || data?.length == 0) && (
       <GridItem colSpan={2}>
-        <Flex width="100%" justifyContent="center">
-          <ExclamationIcon />
-          <Text ml="1em">You don't currently have any usage data.</Text>
-        </Flex>
+        <ErrorInTable text="You don't currently have any usage data." />
       </GridItem>
     )}
     {isLoading && (

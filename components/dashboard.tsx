@@ -6,7 +6,12 @@ import {
   useDisclosure,
   Spinner,
   Button,
+  Text,
+  Flex,
+  OrderedList,
+  ListItem,
   VStack,
+  HStack,
 } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -22,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogo } from './icons-library';
+import { SpeechmaticsLogo, ExclamationIcon } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
 
@@ -107,6 +112,41 @@ export default observer(function Dashboard({ children }) {
             exit="exit" // Exit state (used later) to variants.exit
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
           >
+            {accountStore.error && 
+              <Flex
+                flexDir="column"
+                width={["70%", "80%", "100%"]}
+                bg="smRed.100"
+                p={["2em","2em", "1em"]}
+                mt="2em"
+                ml={[2,2,0]}
+                align="center"
+                justify="center"
+                alignItems="center"
+              >
+                <VStack color="smRed.500">
+                  <HStack>
+                    <Box>
+                      <ExclamationIcon width="1.5em" height="1.5em" />
+                    </Box>
+                    <Text fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+                      We were unable to get your account. Many of the app features will be disabled. To fix this problem, you should try:
+                    </Text>
+                  </HStack>
+                  <OrderedList alignItems="center" >
+                    <ListItem>Refreshing the browser</ListItem>
+                    <ListItem>Logging out and logging back in</ListItem>
+                    <ListItem>Visiting our <span style={{textDecorationLine: "underline"}}>
+                      <Link href="https://docs.speechmatics.com/en/cloud/troubleshooting/">troubleshooting</Link>
+                      </span> page</ListItem>
+                    <ListItem>Contacting <span style={{textDecorationLine: "underline"}}>
+                      <Link href="https://www.speechmatics.com/about-us/contact">support</Link>
+                      </span> if all else fails
+                    </ListItem>
+                  </OrderedList>
+                </VStack>
+              </Flex>
+            }
             {children}
           </motion.main>
         </Box>
@@ -114,10 +154,6 @@ export default observer(function Dashboard({ children }) {
     </Box>
   );
 });
-
-
-
-
 
 function UserCreationModal({ isModalOpen, onModalClose }) {
   return (

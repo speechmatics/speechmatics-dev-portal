@@ -27,6 +27,7 @@ import {
   ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
+  ErrorInTable,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -277,12 +278,13 @@ const PreviousTokens = observer(() => {
             </GridItem>
           </React.Fragment>
         ))}
-        {!accountStore.isLoading && (!apiKeys || apiKeys?.length == 0) && (
+        {accountStore.error &&
           <GridItem colSpan={3}>
-            <Flex width="100%" justifyContent="center">
-              <ExclamationIcon />
-              <Text ml="1em">You don’t currently have any API keys.</Text>
-            </Flex>
+            <ErrorInTable text="We couldn't get your account." />
+          </GridItem> }
+        {!accountStore.isLoading && !accountStore.error && (!apiKeys || apiKeys?.length == 0) && (
+          <GridItem colSpan={3}>
+            <ErrorInTable text="You don’t currently have any API keys." />
           </GridItem>
         )}
         {accountStore.isLoading && (

@@ -3,7 +3,7 @@ import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from "../components/common";
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel, ErrorBanner } from "../components/common";
 import Dashboard from "../components/dashboard";
 import { ClockIcon, CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon } from "../components/icons-library";
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
@@ -13,11 +13,12 @@ import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-
 import { humanFileSize } from "../utils/string-utils";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
-
+import { runtimeAuthFlow } from '../utils/runtime-auth-flow'
 
 export default observer(function Transcribe({ }) {
 
   const { stage } = flow.store;
+  const { error } = runtimeAuthFlow.store
 
   useEffect(() => {
     flow.reset();
@@ -34,6 +35,7 @@ export default observer(function Transcribe({ }) {
         {stage === 'form' ?
           <TranscribeForm store={flow.store} auth={authFlow.store} /> :
           <ProcessingTranscription store={flow.store} />}
+        { error && <ErrorBanner text={error} />}
 
       </SmPanel>
     </Dashboard>
@@ -60,7 +62,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
     <HeaderLabel>Upload a File</HeaderLabel>
     <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
-      <FileUploadComponent onFileSelect={file => flow.assignFile(file)} />
+      <FileUploadComponent auth={auth} onFileSelect={file => flow.assignFile(file)} />
     </Box>
 
     <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>

@@ -18,6 +18,7 @@ class AccountContext {
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
+  error: boolean = false
 
   constructor() {
     makeObservable(this, {
@@ -29,6 +30,7 @@ class AccountContext {
       fetchServerState: action,
       getUsageLimit: action,
       keyJustRemoved: observable,
+      error: observable
     });
   }
 
@@ -95,7 +97,7 @@ class AccountContext {
         }
       })
       .catch((err) => {
-        console.error('fetchServerState', err);
+        this.error = true
         this.isLoading = false;
       });
   }
@@ -134,7 +136,6 @@ class AccountContext {
             return jsonPostResp;
           });
         } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
-          console.log(jsonResp)
           this.isLoading = false;
           return jsonResp;
         }
@@ -142,10 +143,9 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        console.log(err)
+        this.error = true
         errToast(`while fetching account: ${err}`);
         this.isLoading = false;
-        console.error(err);
       });
   }
 }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useContext, useState } from 'react';
 import {
   DescriptionLabel,
+  ErrorBanner,
   HeaderLabel,
   PageHeader,
   SmPanel,
@@ -50,16 +51,21 @@ export default observer(function GettingStarted({ }) {
         </Box>
         <PanelDivider />
         <Box paddingTop="1.5em" paddingBottom="2em" width='100%'>
-          {accountStore.account ? <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
+          {accountStore.account && <GenerateTokenComponent raiseTokenStage={tokenGenerationStage} tokensFullDescr={
             <>You've already created 5 API Keys.{' '}
               Before generating a new API key, you need to <Link href='/manage-access/'>
                 <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>remove an existing key</a></Link>{'.'}
-            </>} /> :
+            </>} /> }
+          {accountStore.isLoading &&
             <VStack alignItems='flex-start'>
               <Box className="skeleton" height="2em" width="15em" />
               <Box className="skeleton" height="1em" width="28em" />
               <Box className="skeleton" height="6em" width="100%" />
-            </VStack>}
+            </VStack>
+            }
+            {!accountStore.account && !accountStore.isLoading &&
+              <ErrorBanner text="We couldn't get your account. Try logging out and logging back in." />
+            }
         </Box>
         {showDefaultCodeExample && <>
           <PanelDivider />

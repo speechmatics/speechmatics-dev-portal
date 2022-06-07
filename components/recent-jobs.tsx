@@ -69,7 +69,6 @@ export const RecentJobs = observer(() => {
               transcriptionText: response,
               fileName: job.fileName,
             });
-            console.log(activeJob)
             setTranscriptOpen(true);
           }
         });
@@ -93,6 +92,12 @@ export const RecentJobs = observer(() => {
 
   const skeletons = useMemo(() => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i)), [])
 
+  if (authFlow.store.error) {
+    return <ErrorBanner text={authFlow.store.error} />
+  }
+  if (errorOnInit) {
+    return <ErrorBanner text="We couldn't get your jobs" />
+  }
   return (
     <>
       {!isLoading && jobs?.length !== 0 && <WarningBanner
@@ -115,7 +120,6 @@ export const RecentJobs = observer(() => {
             );
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
-        {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
         {jobs?.length !== 0 && <Button
           hidden={errorOnInit}
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
@@ -130,7 +134,7 @@ export const RecentJobs = observer(() => {
           {noMoreJobs && 'No More Jobs'}
         </Button>
         }
-        {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
+        {jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
           <NoSomethingBanner>No jobs found.</NoSomethingBanner>
           <Box>
             {/* Text inside button is underlined on hover, needs to be altered */}

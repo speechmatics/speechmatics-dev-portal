@@ -17,6 +17,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   ConfirmRemoveModal,
   DataGridComponent,
+  ErrorBanner,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -104,13 +105,17 @@ export default observer(function ManageBilling({ }) {
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
 
-            <DataGridComponent
-              data={paymentsData}
-              DataDisplayComponent={PaymentsGrid}
-              isLoading={isLoading}
-            />
+            {error && <ErrorBanner text="We couldn't get your payment details." />}
+            {!error && <>
+              <DataGridComponent
+                data={paymentsData}
+                DataDisplayComponent={PaymentsGrid}
+                isLoading={isLoading}
+              />
+              <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." mt="2em" />
+            </>
+            }
 
-            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." mt="2em" />
           </TabPanel>
         </TabPanels>
       </Tabs>

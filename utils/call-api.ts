@@ -40,7 +40,7 @@ export const callGetUsage = async (
 export const callGetJobs = async (idToken: string, optionalQueries: any) => {
   return callRuntime(
     idToken,
-    `${RUNTIME_API_URL}/jobs`,
+    `${RUNTIME_API_URL}/jobsers`,
     'GET',
     {},
     {
@@ -155,12 +155,8 @@ export const callRuntime = async (
   query: any = null,
   contentType: string = null
 ) => {
-  try {
-    await runtime.refreshToken(authToken);
-    return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType);
-  } catch (error) {
-    throw error;
-  }
+  return runtime.refreshToken(authToken)
+    .then(() => call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType))
 };
 
 export const call = async (
@@ -194,26 +190,23 @@ export const call = async (
 
   return fetch(apiEndpoint, options)
     .then(async (response) => {
-      console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
       if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
       } else if (response.status == 401) {
-        throw { status: 'error', error: { type: 'runtime-auth' } };
+        throw { status: 401, message: 'Error authenticating against runtime. Try again later or contact support.' }
       }
       if (response.status != 200 && response.status != 201) {
-        throw { status: 'error', error: { type: '', status: response.status } };
+        throw response.body
       }
+      // if (response.status == 200 && apiEndpoint.includes(RUNTIME_API_URL)) {
+      //   throw { status: response.status, message: "Fake Error" }
+      // }
 
       if (response.body == null) {
         return null;
       }
       return isPlain ? response.text() : response.json();
     })
-    .catch((error) => {
-      console.log(error);
-      errToast(`fetch error on ${apiEndpoint} occured`);
-      return { status: 'error', error: { type: error.type } };
-    });
 };
 
 function getParams(paramsObj: { [key: string]: string | number }) {

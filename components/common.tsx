@@ -529,3 +529,11 @@ export const ErrorBanner = ({ text }) => (
     </Flex>
   </Flex>
 );
+
+export const ErrorInTable = ({ text }) => (
+  <Flex width="100%" justifyContent="center">
+    <ExclamationIcon />
+    <Text ml="1em">{text}</Text>
+  </Flex>
+
+)

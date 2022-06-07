@@ -1,23 +1,24 @@
 import { Box, HStack, Tooltip, Select, Flex, Text, Button, VStack, BoxProps } from "@chakra-ui/react";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { checkIfFileCorrectType, Language, Stage } from "../utils/transcribe-elements";
-import { AttentionBar } from "./common";
+import { RuntimeAuthStore } from "../utils/runtime-auth-flow";
+import { AttentionBar, ErrorBanner } from "./common";
 import { OkayIcon, QuestionmarkInCircle, RemoveFileIcon, TranscribeIcon, UploadFileIcon } from "./icons-library";
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
+  auth: RuntimeAuthStore
 }
 
-export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps) => {
+export const FileUploadComponent = (({ onFileSelect, auth }: FileUploadComponentProps) => {
 
   const [filesDragged, setFilesDragged] = useState(false);
   const [file, setFile] = useState<File>(null);
   const [isFileTooBigError, setIsFileTooBigError] = useState(false);
   const [isFileWrongTypeError, setIsWrongTypeError] = useState(false);
-
+  const { error } = auth
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropAreaRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const callbacksRefs = onGridDragDropSetup(dropAreaRef.current, selectFiles, setFilesDragged);
     return () => {
@@ -64,7 +65,7 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
       justifyContent='center' alignItems='center' position='relative'
       py={6} px={8}
     >
-      <input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={onSelectFiles} accept='audio/*' />
+      <input type='file' disabled={Boolean(error)} ref={fileInputRef} style={{ display: 'none' }} onChange={onSelectFiles} accept='audio/*' />
 
       <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
         {!file ? <>
