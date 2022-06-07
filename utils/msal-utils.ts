@@ -1,6 +1,7 @@
 import { EventType, PublicClientApplication } from '@azure/msal-browser';
 import { makeAutoObservable, makeObservable } from 'mobx';
 import { accountStore, tokenStore } from './account-store-context';
+import { runtimeAuthFlow } from './runtime-auth-flow';
 import { msalConfig } from './auth-config';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
@@ -29,7 +30,7 @@ export function msalLogout(inactive: boolean = false) {
   const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
     (account?.idTokenClaims as any)?.acr
   }`;
-
+  runtimeAuthFlow.reset()
   accountStore.clear();
   msalInstance.logoutRedirect({
     account: account,
