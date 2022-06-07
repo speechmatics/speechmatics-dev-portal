@@ -1,5 +1,6 @@
 import { Box, HStack, Divider, Tooltip, Text, useBreakpointValue, IconButton, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import { trackEvent } from "../utils/analytics";
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
 
 
@@ -36,7 +37,8 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
     <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
       {breakValue > 1 && <>
         <Link href="https://docs.speechmatics.com" >
-          <a target="_blank">
+          <a target="_blank"
+            onClick={() => trackEvent('Dashboard_documentation_click', 'LinkOut', 'Selected Documentation link')}>
             <Box
               color="smNavy.270"
               _hover={{ color: 'smNavy.200' }}>
@@ -63,19 +65,10 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
         <Box
           style={{ cursor: 'pointer', marginLeft: '1em' }}
           data-qa="logout"
-          onClick={() => logout()}
+          onClick={() => (trackEvent('Dashboard_logout_click', 'B2C_Flow', 'Manual logout'), logout())}
         ><LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
         </Box>
       </Tooltip>
     </HStack>
   );
 }
-
-
-{/* <Link href="/account/" passHref>
-        <ChakraLink>
-          <Tooltip label="Account" placement="bottom"> */}
-
-{/* </Tooltip>
-        </ChakraLink>
-      </Link> */}

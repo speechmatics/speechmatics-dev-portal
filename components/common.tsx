@@ -209,9 +209,15 @@ export const PageHeader = ({ headerLabel, introduction }) => {
   );
 };
 
+interface CopyButtonProps {
+  copyContent: string;
+  position: string;
+  top: string;
+  additionalOnClick?: () => void;
+}
 
 
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
+export const CopyButton = ({ copyContent, position = 'initial', top = '9px', additionalOnClick = null }: CopyButtonProps) => {
   const [isTTOpen, setIsTTOpen] = useState(false);
 
   useEffect(() => {

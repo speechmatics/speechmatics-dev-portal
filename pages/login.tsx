@@ -5,6 +5,7 @@ import { useMsal } from '@azure/msal-react';
 import { Box, Button, Spinner } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
 import { RedirectRequest } from '@azure/msal-browser';
+import { trackEvent } from '../utils/analytics';
 
 export default function Login() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function Login() {
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
+    trackEvent('post_password_change', 'B2C_Flow', 'User coming back from password change');
   }
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function Login() {
 
     if (!loggedManualy && !loggedExpired && !postPassChange && !passwordChangeFlow &&
       inProgress == 'none' && (!accounts || accounts.length == 0) && authority == process.env.SIGNIN_POLICY) {
+      trackEvent('pre_regular_login', 'B2C_Flow', 'User logged in change');
       loginHandler();
     }
 
@@ -62,6 +65,8 @@ export default function Login() {
 
     if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
+      trackEvent('post_regular_login', 'B2C_Flow', 'User logged in change');
+
     }
 
     return () => window.clearTimeout(st);

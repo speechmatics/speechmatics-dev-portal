@@ -5,6 +5,7 @@ import { DescriptionLabel, CopyButton } from "./common";
 import accountContext from '../utils/account-store-context';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { trackEvent } from "../utils/analytics";
 
 
 export const CodeExamples = observer(({ token }: { token?: string }) => {
@@ -14,8 +15,8 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
     <>
       <Tabs size="lg" pt="1em" variant="speechmaticsCode" width="100%">
         <TabList marginBottom="-1px">
-          <Tab data-qa={'tab-windows-cmd'}>Windows CMD</Tab>
-          <Tab data-qa={'tab-mac-and-linux'}>Mac and Linux</Tab>
+          <Tab data-qa='tab-windows-cmd'>Windows CMD</Tab>
+          <Tab data-qa='tab-mac-and-linux'>Mac and Linux</Tab>
         </TabList>
         <TabPanels
           border="0px"
@@ -27,7 +28,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
           <TabPanel width="100%">
             <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
             <CodeHighlight
-              data_qa={'code-post-job-standard'}
+              data_qa='code-post-job-standard'
+              copyButtonExtraOnClick={() =>
+                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', { os: 'win' })
+              }
               code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
@@ -36,7 +40,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
               Get a transcript using the job ID returned by the POST request above:
             </DescriptionLabel>
             <CodeHighlight
-              data_qa={'code-get-job-standard'}
+              data_qa='code-get-job-standard'
+              copyButtonExtraOnClick={() =>
+                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', { os: 'win' })
+              }
               code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
@@ -47,10 +54,13 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             </DescriptionLabel>
           </TabPanel>
           <TabPanel width="100%">
-            <DescriptionLabel>Submit a transcription job:​</DescriptionLabel>
+            <DescriptionLabel>Submit a transcription job: </DescriptionLabel>
 
             <CodeHighlight
-              data_qa={'code-post-job-enhanced'}
+              data_qa='code-post-job-enhanced'
+              copyButtonExtraOnClick={() =>
+                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', { os: 'linux/macos' })
+              }
               code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
@@ -60,7 +70,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
               Get a transcript using the job ID returned by the POST request above:
             </DescriptionLabel>
             <CodeHighlight
-              data_qa={'code-get-job-enhanced'}
+              data_qa='code-get-job-enhanced'
+              copyButtonExtraOnClick={() =>
+                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', { os: 'linux/macos' })
+              }
               code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'
                 }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
                 }"`}
@@ -88,10 +101,10 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
   );
 });
 
-export const CodeHighlight = ({ code, data_qa }) => {
+export const CodeHighlight = ({ code, data_qa, copyButtonExtraOnClick = null }) => {
   return (
     <Box position="relative" width="100%" height="50px">
-      <CopyButton copyContent={code} position="absolute" top="12px" />
+      <CopyButton copyContent={code} position="absolute" top="12px" additionalOnClick={copyButtonExtraOnClick} />
       <Box position="absolute" width="100%">
         <SyntaxHighlighter
           language="bash"
