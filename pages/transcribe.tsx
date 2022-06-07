@@ -9,6 +9,7 @@ import { ClockIcon, CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon }
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
+import { trackEvent } from "../utils/analytics";
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-auth-flow";
 import { humanFileSize } from "../utils/string-utils";
 import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
@@ -60,26 +61,42 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
     <HeaderLabel>Upload a File</HeaderLabel>
     <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
-      <FileUploadComponent onFileSelect={file => flow.assignFile(file)} />
+      <FileUploadComponent onFileSelect={file => {
+        trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
+        flow.assignFile(file)
+      }} />
     </Box>
 
     <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>
     <DescriptionLabel>Choose the best features to suit your transcription requirements.</DescriptionLabel>
 
     <Flex width='100%' wrap='wrap' gap={6} pt={4}>
-      <SelectField data-qa="select-transcribe-language" label="Language" tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
-        data={languagesData} onSelect={val => store.language = val} />
+      <SelectField data-qa="select-transcribe-language" label="Language"
+        tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
+        data={languagesData} onSelect={val => {
+          store.language = val;
+          trackEvent('language_select', 'Action', 'Changed the language', { value: val });
+        }} />
 
-      <SelectField data-qa="select-transcribe-separation" label="Separation" tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
-        data={separation} onSelect={val => store.separation = val as any} />
+      <SelectField data-qa="select-transcribe-separation" label="Separation"
+        tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
+        data={separation} onSelect={val => {
+          store.separation = val as any;
+          trackEvent('separation_select', 'Action', 'Changed the separation', { value: val });
+        }} />
 
-      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy" tooltip="Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy."
-        data={accuracyModels} onSelect={val => store.accuracy = val as any} />
+      <SelectField data-qa="select-transcribe-accuracy" label="Accuracy"
+        tooltip="Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy."
+        data={accuracyModels} onSelect={val => {
+          store.accuracy = val as any;
+          trackEvent('accuracy_select', 'Action', 'Changed the Accuracy', { value: val });
+        }} />
     </Flex>
     <Flex width='100%' justifyContent='center' py={3}>
       <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
         onClick={() => {
-          flow.attemptSendFile(tokenStore.tokenPayload?.idToken)
+          flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
+          trackEvent('get_transcripion_click', 'Action', 'Submitted transcription');
         }}
         disabled={!store._file || !auth.isLoggedIn}>
         Get Your Transcription
@@ -105,6 +122,12 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       flow.stopPolling();
     }
   }, [])
+
+  useEffect(() => {
+    if (stageDelayed == 'complete') {
+      trackEvent('transcription_complete', 'Event', 'transcription has been shown')
+    }
+  }, [stageDelayed]);
 
 
   return <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4} className="fadeIn">
@@ -137,7 +160,9 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       </>}
       subtitle2={<>You have reached your monthly usage limit. Please
         {' '}<Link href='/manage-billing'>
-          <a className="text_link">Add a Payment Card</a>
+          <a className="text_link" onClick={() => {
+            trackEvent('file_transcr_error_add_payment_card', 'Navigation', 'Clicked when gotten an transcription error', { reason: 'unsufficient funds' })
+          }}>Add a Payment Card</a>
         </Link> to increase your limit.</>}
     />}
 
@@ -161,11 +186,20 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
       Go to the <Link data-qa="link-recent-jobs" href='/view-jobs/'>
-        <a className="text_link">View Jobs</a></Link>
+        <a className="text_link"
+          onClick={() => trackEvent('view_jobs_click', 'Navigation', 'Clicked to view jobs from the transcription status', { stage })}>
+          View Jobs
+        </a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
 
-    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline'
+      onClick={() => {
+        flow.reset()
+        trackEvent('transcribe_another_file_click', 'Navigation', 'Clicked to go to file new add. from the transcription status', { stage })
+      }}>
+      Transcribe Another File
+    </Button>
 
   </Flex>
 })
