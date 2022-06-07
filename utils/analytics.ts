@@ -38,6 +38,7 @@ export function dataDogInit() {
     premiumSampleRate: 100,
     trackInteractions: true,
     defaultPrivacyLevel: 'mask-user-input',
+    env: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   });
 
   datadogRum.startSessionReplayRecording();
