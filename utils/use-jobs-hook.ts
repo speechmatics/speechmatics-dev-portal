@@ -222,18 +222,21 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
 const formatDuration = (duration) => {
   const seconds = parseInt(duration);
   if (seconds < 60) {
-    return `${seconds} seconds`;
+    return `${seconds} second${seconds !== 1 ? 's' : ''}`;
   }
   const minutes = seconds / 60;
   if (minutes < 60) {
-    return `${Math.round(minutes)} minutes`;
+    let roundedMinutes = Math.round(minutes)
+    return `${roundedMinutes} minute${roundedMinutes !== 1 ? 's' : ''}`;
   }
   const hours = (seconds / ( 60 * 60 ));
   if (hours < 24) {
-    return `${Math.round(10 * hours) / 10} hours`;
+    let roundedHours = Math.round(10 * hours) / 10
+    return `${roundedHours} hour${roundedHours !== 1 ? 's' : ''}`;
   } 
   const days = (seconds / ( 60 * 60 * 24 ) );
-  return `${Math.round(10 * days) / 10} days`;
+  let roundedDays = Math.round(10 * days) / 10
+  return `${roundedDays} day${roundedDays !== 1 ? 's' : ''}`;
 };
 
 // JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set
