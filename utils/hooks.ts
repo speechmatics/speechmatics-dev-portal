@@ -2,7 +2,7 @@ import React, { Ref, useEffect, useRef } from 'react';
 
 export const useInterval = (callback, delay, isPolling) => {
   const savedCallback: any = useRef();
-
+  
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
@@ -17,5 +17,5 @@ export const useInterval = (callback, delay, isPolling) => {
       const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, [delay, isPolling]);
 };

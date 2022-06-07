@@ -113,7 +113,7 @@ const getJobs = (
       limit: limit,
     };
     if (createdBefore != null) {
-      queries.created_before = addMillisecond(createdBefore);
+      queries.created_before = createdBefore;
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
@@ -160,6 +160,7 @@ const getJobs = (
 // Should be deprecated soon as the API fix will be coming
 const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
   let isActive = true;
+  console.log('is calling polll function')
   if (idToken && isPolling) {
     let newJobs = [];
     const requests = [];
@@ -167,12 +168,12 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
     if (requestNo !== 1) {
       for (let i = 0; i < requestNo; i++) {
         let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
-        let query = { limit: maxlimit, created_before: addMillisecond(createdBeforeTime) };
+        let query = { limit: maxlimit, created_before: createdBeforeTime };
         requests.push(callGetJobs(idToken, query));
       }
     } else {
       let createdBeforeTime = jobs[0]?.date?.toISOString();
-      let query = { limit: jobs.length, created_before: addMillisecond(createdBeforeTime) };
+      let query = { limit: jobs.length, created_before: createdBeforeTime };
       requests.push(callGetJobs(idToken, query));
     }
     Promise.all(requests).then((result) => {
@@ -185,7 +186,7 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
         const formatted = formatJobs(newJobs);
         const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
         setJobs(combinedArrays);
-        if (newJobs.some((item) => item.status === 'running')) {
+        if (combinedArrays.some((item) => item.status === 'running')) {
           setIsPolling(true);
         } else {
           setIsPolling(false);
@@ -251,13 +252,6 @@ const createSet = (first: JobElementProps[], second: JobElementProps[], add: boo
     }
   }
   return first;
-};
-
-// See above
-const addMillisecond = (created) => {
-  let tempTime = new Date(created).getTime();
-  tempTime += 1;
-  return new Date(tempTime).toISOString();
 };
 
 export type JobElementProps = {
