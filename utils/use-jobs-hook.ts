@@ -117,10 +117,14 @@ const getJobs = (
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
+        if ( !!respJson && !('jobs' in respJson) ) {
+          throw "error geting jobs"
+        }
         if (isActive && !!respJson && 'jobs' in respJson) {
-          if (respJson?.jobs?.length < limit) {
+          if (respJson.jobs == null || respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
             loadingFunction(false);
+            return
           }
           const formatted: JobElementProps[] = formatJobs(respJson.jobs);
           if (formatted.some((item) => item.status === 'running')) {
@@ -137,6 +141,8 @@ const getJobs = (
           );
           setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
           setJobs(combinedArrays);
+          loadingFunction(false);
+        } else {
           loadingFunction(false);
         }
       })
