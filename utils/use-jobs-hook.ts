@@ -160,7 +160,6 @@ const getJobs = (
 // Should be deprecated soon as the API fix will be coming
 const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
   let isActive = true;
-  console.log('is calling polll function')
   if (idToken && isPolling) {
     let newJobs = [];
     const requests = [];
@@ -182,7 +181,7 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
           newJobs = [...newJobs, ...res.jobs];
         }
       }
-      if (isActive) {
+      if (isActive && isPolling) {
         const formatted = formatJobs(newJobs);
         const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
         setJobs(combinedArrays);
