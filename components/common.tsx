@@ -84,6 +84,7 @@ export const InfoBarbox = ({
   buttonLabel,
   hrefUrl = null,
   setStateUp = null,
+  buttonOnClick = null,
   ...props
 }) => {
   const breakVal = useBreakpointValue({
@@ -137,7 +138,8 @@ export const InfoBarbox = ({
           <Button
             variant="speechmaticsWhite"
             mt="0px"
-            data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}
+            data-qa={`button-${buttonLabel.toLowerCase().replace(/\ /g, '-')}`}
+            onClick={() => buttonOnClick?.()}
           >
             {buttonLabel}
           </Button>
