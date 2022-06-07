@@ -130,7 +130,7 @@ export const RecentJobs = observer(() => {
           {noMoreJobs && 'No More Jobs'}
         </Button>
         }
-        {jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
+        {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
           <NoSomethingBanner>No jobs found.</NoSomethingBanner>
           <Box>
             {/* Text inside button is underlined on hover, needs to be altered */}
