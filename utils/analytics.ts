@@ -32,8 +32,7 @@ export function dataDogInit() {
     site: 'datadoghq.eu',
     service: 'speechmatics-self-service-portal',
 
-    // Specify a version number to identify the deployed version of your application in Datadog
-    // version: '1.0.0',
+    version: process.env.npm_package_version,
     sampleRate: 100,
     premiumSampleRate: 100,
     trackInteractions: true,
