@@ -117,9 +117,9 @@ const getJobs = (
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
-        if ( !!respJson && !('jobs' in respJson) ) {
-          throw "error geting jobs"
-        }
+        // if ( !!respJson && !('jobs' in respJson) ) {
+        //   throw "error geting jobs"
+        // }
         if (isActive && !!respJson && 'jobs' in respJson) {
           if (respJson.jobs == null || respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
