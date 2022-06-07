@@ -116,7 +116,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
             setGenTokenStage('error');
           });
       }
-      trackEvent('GenerateAPIKey', 'Actions', 'ManageAccess', 'Button')
+      trackEvent('GenerateAPIKey', 'Actions', 'ManageAccess')
     }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
 
     const generatedApikeyonClick = useCallback(() => {
@@ -229,9 +229,9 @@ const PreviousTokens = observer(() => {
   const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
-    console.log('aboutToRemoveOne', el, el.apikey_id);
     setApiKeyToRemove([el.apikey_id, el.name]);
     onOpen();
+    trackEvent('delete_apikey_click', 'Action', '');
   };
 
   const onRemoveConfirm = () => {
@@ -242,6 +242,7 @@ const PreviousTokens = observer(() => {
     });
     onClose();
     accountStore.keyJustRemoved = true;
+    trackEvent('delete_apikey_confirm', 'Action', '');
   };
 
   return (
