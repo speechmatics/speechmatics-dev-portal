@@ -18,10 +18,11 @@ import {
   ModalBody,
   useDisclosure,
   Flex,
+  Link,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { ErrorBanner, ConfirmRemoveModal, HeaderLabel, UsageInfoBanner, WarningBanner, NoSomethingBanner } from './common';
+import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
@@ -115,7 +116,7 @@ export const RecentJobs = observer(() => {
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
-        {!noMoreJobs && <Button
+        {jobs?.length !== 0 && <Button
           hidden={errorOnInit}
           disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
           variant="speechmatics"
@@ -129,7 +130,17 @@ export const RecentJobs = observer(() => {
           {noMoreJobs && 'No More Jobs'}
         </Button>
         }
-        {jobs?.length === 0 && noMoreJobs && <NoSomethingBanner>Currently you don't have any transcription jobs.</NoSomethingBanner>}
+        {jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
+          <NoSomethingBanner>No jobs found.</NoSomethingBanner>
+          <Box>
+            {/* Text inside button is underlined on hover, needs to be altered */}
+            <Link href="/transcribe/">
+              <Button variant="speechmatics" alignSelf="flex-start">
+                Transcribe Now
+              </Button>
+            </Link>
+          </Box>
+        </VStack>}
       </VStack>
       <Modal
         size="4xl"

@@ -31,7 +31,6 @@ import {
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
-import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
