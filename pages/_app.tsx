@@ -12,18 +12,21 @@ import theme from '../static_data/theme';
 import AccountContext, { accountStore, tokenStore } from '../utils/account-store-context';
 import Head from 'next/head';
 import { msalInstance } from '../utils/msal-utils';
-import { trackPageview } from '../utils/analytics';
+import { dataDogInit, trackPageview } from '../utils/analytics';
 
 
 Router.events.on('routeChangeComplete', url => {
   trackPageview(url);
 });
 
+
+
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const navigationClient = new CustomNavigationClient(router);
   msalInstance.setNavigationClient(navigationClient);
+  dataDogInit();
 
   return (
     <AccountContext.Provider value={{ accountStore, tokenStore }}>
