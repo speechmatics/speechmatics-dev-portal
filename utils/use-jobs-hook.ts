@@ -124,7 +124,7 @@ const getJobs = (
           if (respJson.jobs == null || respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
             loadingFunction(false);
-            return
+            // return
           }
           const formatted: JobElementProps[] = formatJobs(respJson.jobs);
           if (formatted.some((item) => item.status === 'running')) {
