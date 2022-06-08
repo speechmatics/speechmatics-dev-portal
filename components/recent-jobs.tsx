@@ -45,6 +45,10 @@ export const RecentJobs = observer(() => {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
 
+  const breakVal = useBreakpointValue({
+    base: false, xl: true
+  });
+
   const {
     jobs,
     isLoading,
@@ -92,7 +96,7 @@ export const RecentJobs = observer(() => {
     authFlow.restoreToken();
   }, [idToken, accountStore.account]);
 
-  const skeletons = useMemo(() => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i)), [])
+  const skeletons = useMemo(() => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)), [breakVal])
 
   return (
     <>
@@ -226,7 +230,7 @@ const RecentJobElement = ({
             spacing={4}
             justifyContent="space-between"
           >
-            { breakVal ? <>
+            {breakVal && <>
             <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
               <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
                 {date ? formatDate(date) : 'Unknown'}
@@ -258,8 +262,7 @@ const RecentJobElement = ({
                 {id ? id : 'Unknown'}
               </Tooltip>
             </Box>
-            </> :
-            <></>}
+            </>}
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={"space-evenly"}>
@@ -306,50 +309,77 @@ const RecentJobElement = ({
   );
 };
 
-const LoadingJobsSkeleton = (key: any) => {
+const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
   return (
-    <HStack
+    <VStack
       key={key}
       border="1px solid"
       borderColor="smBlack.200"
       borderLeft="3px solid"
       borderLeftColor="smBlack.200"
       width="100%"
-    >
-      <VStack alignItems="flex-start" p={4} flex={2}>
-        <SkeletonText
-          noOfLines={1}
-          spacing={6}
-          height="6"
-          as="span"
-          width="90%"
-          paddingRight="4px"
-          color="smNavy.400"
-        />
-        <HStack
-          fontSize="0.8em"
-          color="smNavy.350"
-          width="100%"
-          spacing={4}
-          justifyContent="space-between"
-        >
-          <SkeletonText height="4" noOfLines={1} flex={2} whiteSpace="nowrap" />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
+      p={4}>
+      <HStack width="100%">
+        <VStack alignItems="flex-start"  flex={2}>
+          <SkeletonText
+            noOfLines={1}
+            spacing={6}
+            height="6"
+            as="span"
+            width="90%"
+            paddingRight="4px"
+            color="smNavy.400"
+          />
+          {breakVal &&
+            <HStack
+              fontSize="0.8em"
+              color="smNavy.350"
+              width="100%"
+              spacing={4}
+              justifyContent="space-between"
+            >
+              <SkeletonText height="4" noOfLines={1} flex={2} whiteSpace="nowrap" />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+            </HStack>
+          }
+        </VStack>
+        {!breakVal &&
+          <SkeletonText height="6" noOfLines={1} flex={1} spacing={4} paddingRight={4} />}
+
+        {breakVal &&
+        <HStack flex={1} justifyContent="space-evenly" spacing={4}>
+          <SkeletonText noOfLines={1} flex={3} spacing={6} paddingRight={4} />
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
         </HStack>
-      </VStack>
-      <HStack flex={1} justifyContent="space-evenly" spacing={4}>
-        <SkeletonText noOfLines={1} flex={3} spacing={6} paddingRight={4} />
-        <Box flex={1}>
-          <SkeletonCircle />
-        </Box>
-        <Box flex={1}>
-          <SkeletonCircle />
-        </Box>
+        }
       </HStack>
-    </HStack>
+      {!breakVal &&
+      <HStack spacing={4} width="100%"  justifyContent="space-between">
+        <Box width="150px">
+          <SkeletonText noOfLines={1} flex={3} spacing={6}  />
+        </Box>
+        <HStack width="150px">
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+        </HStack>
+      </HStack>
+      }
+    </VStack>
   );
 };
 
