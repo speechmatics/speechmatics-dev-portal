@@ -2,7 +2,7 @@ export type Stage = 'form' | 'pendingFile' | 'pendingTranscription' | 'failed' |
 export type Accuracy = 'enhanced' | 'standard';
 export type Separation = 'none' | 'speaker' | 'channel';
 export type JobStatus = 'running' | 'done' | 'rejected' | '';
-export type TranscriptFormat = 'json-v2' | 'text' | 'srv'
+export type TranscriptFormat = 'json-v2' | 'text' | 'srv';
 export type Language = { label: string; value: string; default?: boolean };
 
 export const separation: {
@@ -33,7 +33,21 @@ export const enum FlowError {
 }
 
 export const checkIfFileCorrectType = (file: File) =>
-  ['audio/mp4','audio/m4a', 'audio/mpeg', 'audio/x-wav', 'audio/wav', 'application/ogg', 'audio/x-m4a'].includes(file.type);
+  [
+    'audio/mp4',
+    'audio/m4a',
+    'audio/mpeg',
+    'audio/x-wav',
+    'audio/wav',
+    'application/ogg',
+    'audio/x-m4a',
+    'audio/ogg',
+    'audio/flac',
+    'audio/aac',
+    'audio/amr',
+    'video/mpeg',
+    'video/mp4',
+  ].includes(file.type);
 
 export const getFullLanguageName = (value: string) =>
   languagesData.find((el) => el.value == value)?.label;
