@@ -9,8 +9,8 @@ export default function ViewJobs() {
       <PageHeader headerLabel="View Jobs" introduction="See Your Recent Jobs." />
       <SmPanel
         alignSelf="center"
-        mx={{ base: '2vw', sm: 0, md: 0 }}
-        width={{ base: '96vw', sm: '100%', md: '100%', lg: '100%' }}
+        mx={{ base: '1vw', sm: 0, md: 0 }}
+        width={{ base: '94vw', sm: '100%', md: '100%', lg: '100%' }}
         maxWidth={{ sm: '450px', md: '480px', lg: '700px', xl: '900px' }}
       >
         <RecentJobs />
