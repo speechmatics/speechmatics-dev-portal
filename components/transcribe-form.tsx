@@ -304,7 +304,6 @@ export function onGridDragDropSetup(elem: HTMLElement | null,
 ) {
   if (!elem) return;
   let callbackRefs = []
-  console.log('setting up drag drop', elem);
   elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
     ev.preventDefault();
     filesDraggedOver?.(true);
