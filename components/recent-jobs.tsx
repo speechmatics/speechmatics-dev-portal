@@ -264,7 +264,7 @@ const RecentJobElement = ({
                 aria-label="view" icon={<DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />}>
               </MenuButton>
             </Tooltip>
-            <TranscriptDownloadMenu jobId={id} status={status} />
+            <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
           </Menu>
         </Box>
         {status === ('done' || 'completed') ? (

@@ -70,6 +70,21 @@ export const callGetTranscript = async (
   );
 };
 
+export const callGetDataFile = async (
+  idToken: string,
+  jobId: string,
+) => {
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs/${jobId}/data`,
+    'GET',
+    null,
+    null,
+    'application/json',
+    true,
+  );
+};
+
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
@@ -153,11 +168,12 @@ export const callRuntime = async (
   method: 'GET' | 'POST' | 'DELETE',
   body: any = null,
   query: any = null,
-  contentType: string = null
+  contentType: string = null,
+  isBlob: boolean = false
 ) => {
   try {
     await runtime.refreshToken(authToken);
-    return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType);
+    return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType, isBlob);
   } catch (error) {
     throw error;
   }
@@ -169,7 +185,8 @@ export const call = async (
   method: 'GET' | 'POST' | 'DELETE',
   body: any = null,
   query: any = null,
-  contentType: string = null
+  contentType: string = null,
+  isBlob: boolean = false
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
@@ -206,6 +223,9 @@ export const call = async (
 
       if (response.body == null) {
         return null;
+      }
+      if (isBlob) {
+        return response.blob()
       }
       return isPlain ? response.text() : response.json();
     })

@@ -14,10 +14,11 @@ export type TranscriptionViewerProps = {
   jobId: string;
   accuracy: string;
   language: string;
+  fileName: string;
   transcMaxHeight?: string;
 } & BoxProps;
 
-export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => (
+export const TranscriptionViewer = ({ transcriptionText, fileName, date, jobId, accuracy, language, transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => (
   <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
     <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
       borderBottom='1px'
@@ -39,7 +40,7 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
         <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
           Download Transcription
         </MenuButton>
-        <TranscriptDownloadMenu jobId={jobId} status={'done'} />
+        <TranscriptDownloadMenu fileName={fileName} jobId={jobId} status={'done'} />
       </Menu>
     </HStack>
   </VStack>
