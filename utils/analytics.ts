@@ -47,32 +47,3 @@ export function dataDogInit() {
 
   datadogRum.startSessionReplayRecording();
 }
-
-/*
-
-trackEvent('download_transcription_click', 'Action')
-trackEvent('download_transcription_txt', 'Action')
-trackEvent('download_transcription_srt', 'Action')
-trackEvent('download_transcription_txt', 'Action')
-trackEvent('download_transcription_audio', 'Action')
-trackEvent('cancel_job', 'Action')
-trackEvent('delete_job', 'Action')
-trackEvent('delete_job_confirm', 'Action')
-trackEvent('view_transcription', 'Action')
-trackEvent('copy_transcription', 'Action')
-trackEvent('close_transcription_viewer', 'Action')
-trackEvent('usage_tab_limits', 'Navigation')
-trackEvent('usage_tab_summary', 'Navigation')
-trackEvent('usage_tab_details', 'Navigation')
-trackEvent('usage_details_pagination', 'Navigation')
-trackEvent('billing_add_card_click', 'Action')
-trackEvent('billing_remove_card_click', 'Action')
-trackEvent('billing_remove_card_confirm', 'Action')
-trackEvent('billing_chargify_submit', 'Action')
-trackEvent('billing_chargify_successful', 'Event')
-trackEvent('billing_tab_settings', 'Navigation')
-trackEvent('billing_tab_payments', 'Navigation')
-trackEvent('billing_payments_pagination', 'Navigation')
-  
-trackEvent('billing_payments_download_invoice', 'Action')
-*/
