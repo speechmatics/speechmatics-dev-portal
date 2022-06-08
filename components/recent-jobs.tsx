@@ -19,6 +19,7 @@ import {
   useDisclosure,
   Flex,
   Link,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -199,119 +200,109 @@ const RecentJobElement = ({
   onOpenTranscript,
   onStartDelete,
 }: JobElementProps & JobModalProps) => {
+
+  const breakVal = useBreakpointValue({
+    base: false, xl: true
+  });
+
   return (
-    <HStack
+    <VStack
       id={id}
       border="1px solid"
       borderColor='smBlack.200'
       borderLeft="3px solid"
       borderLeftColor={statusColour[status]}
-      width="100%"
-    >
-      <VStack alignItems="flex-start" p={4} flex={2}>
-        <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
-          {fileName}
-        </Box>
-        <HStack
-          fontSize="0.8em"
-          color="smNavy.350"
-          width="90%"
-          spacing={4}
-          justifyContent="space-between"
-        >
-          <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
-              {date ? formatDate(date) : 'Unknown'}
-            </Tooltip>
+      p={4}
+      width="100%">
+      <HStack width="100%" >
+        <VStack alignItems="flex-start" width="100%" flex={2}>
+          <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
+            {fileName}
           </Box>
-          <Box flex={1}>
-            <Tooltip
-              flex={1}
-              placement="bottom"
-              hasArrow
-              color="smWhite.500"
-              label="Accuracy"
-            >
-              {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
-              {duration || "Unknown"}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
-              {language ? mapLanguages(language) : 'Unknown'}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job ID">
-              {id ? id : 'Unknown'}
-            </Tooltip>
-          </Box>
-        </HStack>
-      </VStack>
-      <HStack flex={1} spacing={2} marginLeft={4} justifyContent="space-evenly">
-        <HStack flex={2}>
-          <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
-          <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
-        </HStack>
-        <Box flex={1}>
-          <Menu isLazy>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
-              <MenuButton as={IconButton} variant="ghost"
-                aria-label="view" icon={<DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />}>
-              </MenuButton>
-            </Tooltip>
-            <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
-          </Menu>
-        </Box>
-        {status === ('done' || 'completed') ? (
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
-              <IconButton
-                variant="ghost"
-                aria-label="view"
-                onClick={(e) =>
-                  onOpenTranscript(
-                    {
-                      jobId: id,
-                      language,
-                      accuracy,
-                      date: formatDate(date),
-                      fileName,
-                    },
-                    'txt'
-                  )
-                }
-                _focus={{ boxShadow: 'none' }}
-                icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
-              />
-            </Tooltip>
-          </Box>
-
-        ) : (
-          <Flex flex={1} >
-            <Box pl={2}>
-              <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />
+          <HStack
+            fontSize="0.8em"
+            color="smNavy.350"
+            width="90%"
+            spacing={4}
+            justifyContent="space-between"
+          >
+            { breakVal ? <>
+            <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
+                {date ? formatDate(date) : 'Unknown'}
+              </Tooltip>
             </Box>
-          </Flex>
-        )}
-        <Box flex={1}>
-          <Tooltip placement="bottom" hasArrow color="smWhite.500"
-            label={status === 'running' ? 'Cancel' : 'Delete'}>
-            <IconButton
-              variant="ghost"
-              aria-label="stop-or-delete"
-              onClick={(e) => onStartDelete(id)}
-              flex={1}
-              icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
-            />
+            <Box flex={1}>
+              <Tooltip
+                flex={1}
+                placement="bottom"
+                hasArrow
+                color="smWhite.500"
+                label="Accuracy"
+              >
+                {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
+                {duration || "Unknown"}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
+                {language ? mapLanguages(language) : 'Unknown'}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job ID">
+                {id ? id : 'Unknown'}
+              </Tooltip>
+            </Box>
+            </> :
+            <></>}
+          </HStack>
+        </VStack>
+        <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={"space-evenly"}>
+          <HStack flex={2}>
+            <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
+            <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+          </HStack>
+          {breakVal ?
+          <IconButtons 
+            onOpenTranscript={onOpenTranscript} 
+            fileName={fileName}
+            language={language} 
+            id={id} 
+            accuracy={accuracy} 
+            date={date}
+            status={status}
+            onStartDelete={onStartDelete} 
+          /> : null}
+        </HStack>
+      </HStack>
+      {!breakVal &&
+      <HStack color="smNavy.350" spacing={4} width="100%" justifyContent="space-between">
+        <Box maxW="150px" flex={1} fontFamily="RMNeue-bold" whiteSpace="nowrap" 
+            fontSize="0.8em">
+          <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
+            {date ? formatDate(date) : 'Unknown'}
           </Tooltip>
         </Box>
+        <HStack width="140px">
+          <IconButtons
+            onOpenTranscript={onOpenTranscript} 
+            fileName={fileName}
+            language={language} 
+            id={id} 
+            accuracy={accuracy} 
+            date={date}
+            status={status}
+            onStartDelete={onStartDelete} 
+          />
+        </HStack>
       </HStack>
-    </HStack>
+      }
+    </VStack>
   );
 };
 
@@ -361,6 +352,64 @@ const LoadingJobsSkeleton = (key: any) => {
     </HStack>
   );
 };
+
+const IconButtons = ({onOpenTranscript, fileName, language, id, accuracy, date, status, onStartDelete}) => (
+  <>
+    <Box flex={1}>
+      <Menu isLazy>
+        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
+          <MenuButton as={IconButton} variant="ghost"
+            aria-label="view" icon={<DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />}>
+          </MenuButton>
+        </Tooltip>
+        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+      </Menu>
+    </Box>
+    {status === ('done' || 'completed') ? (
+      <Box flex={1}>
+        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
+          <IconButton
+            variant="ghost"
+            aria-label="view"
+            onClick={(e) =>
+              onOpenTranscript(
+                {
+                  jobId: id,
+                  language,
+                  accuracy,
+                  date: formatDate(date),
+                  fileName,
+                },
+                'txt'
+              )
+            }
+            _focus={{ boxShadow: 'none' }}
+            icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
+          />
+        </Tooltip>
+      </Box>
+
+    ) : (
+      <Flex flex={1} >
+        <Box pl={2}>
+          <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />
+        </Box>
+      </Flex>
+    )}
+    <Box flex={1}>
+      <Tooltip placement="bottom" hasArrow color="smWhite.500"
+        label={status === 'running' ? 'Cancel' : 'Delete'}>
+        <IconButton
+          variant="ghost"
+          aria-label="stop-or-delete"
+          onClick={(e) => onStartDelete(id)}
+          flex={1}
+          icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
+        />
+      </Tooltip>
+    </Box>
+  </>
+)
 
 const statusColour = {
   rejected: 'smRed.500',
