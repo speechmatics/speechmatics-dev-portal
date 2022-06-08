@@ -19,6 +19,7 @@ import {
   useDisclosure,
   Flex,
   Link,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -43,6 +44,10 @@ export const RecentJobs = observer(() => {
   const pageLimit = 20;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
+
+  const breakVal = useBreakpointValue({
+    base: false, xl: true
+  });
 
   const {
     jobs,
@@ -92,9 +97,9 @@ export const RecentJobs = observer(() => {
   }, [idToken, accountStore.account]);
 
   const skeletons = useMemo(
-    () => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i)),
-    []
-  );
+    () => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)),
+    [breakVal]
+  )
 
   return (
     <>
@@ -207,178 +212,242 @@ const RecentJobElement = ({
   onOpenTranscript,
   onStartDelete,
 }: JobElementProps & JobModalProps) => {
+
+  const breakVal = useBreakpointValue({
+    base: false, xl: true
+  });
+
   return (
-    <HStack
+    <VStack
       id={id}
       border="1px solid"
       borderColor="smBlack.200"
       borderLeft="3px solid"
       borderLeftColor={statusColour[status]}
-      width="100%"
-    >
-      <VStack alignItems="flex-start" p={4} flex={2}>
-        <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
-          {fileName}
-        </Box>
-        <HStack
-          fontSize="0.8em"
-          color="smNavy.350"
-          width="90%"
-          spacing={4}
-          justifyContent="space-between"
-        >
-          <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
-              {date ? formatDate(date) : 'Unknown'}
-            </Tooltip>
+      p={4}
+      width="100%">
+      <HStack width="100%" >
+        <VStack alignItems="flex-start" width="100%" flex={2}>
+          <Box fontFamily="RMNeue-bold" as="span" width="90%" paddingRight="4px" color="smNavy.400">
+            {fileName}
           </Box>
-          <Box flex={1}>
-            <Tooltip flex={1} placement="bottom" hasArrow color="smWhite.500" label="Accuracy">
-              {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
-              {duration || 'Unknown'}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
-              {language ? mapLanguages(language) : 'Unknown'}
-            </Tooltip>
-          </Box>
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job ID">
-              {id ? id : 'Unknown'}
-            </Tooltip>
-          </Box>
-        </HStack>
-      </VStack>
-      <HStack flex={1} spacing={2} marginLeft={4} justifyContent="space-evenly">
-        <HStack flex={2}>
-          <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
-          <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
-        </HStack>
-        <Box flex={1}>
-          <Menu isLazy>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
-              <MenuButton
-                as={IconButton}
-                disabled={status === 'running' || status === 'rejected'}
-                variant="ghost"
-                aria-label="view"
-                icon={
-                  <DownloadIcon
-                    fontSize={20}
-                    color={
-                      status === 'running' || status === 'rejected'
-                        ? 'var(--chakra-colors-smBlack-250)'
-                        : 'var(--chakra-colors-smNavy-350)'
-                    }
-                  />
-                }
-              ></MenuButton>
-            </Tooltip>
-            <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
-          </Menu>
-        </Box>
-        {status === ('done' || 'completed') ? (
-          <Box flex={1}>
-            <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
-              <IconButton
-                variant="ghost"
-                aria-label="view"
-                onClick={(e) =>
-                  onOpenTranscript(
-                    {
-                      jobId: id,
-                      language,
-                      accuracy,
-                      date: formatDate(date),
-                      fileName,
-                    },
-                    'txt'
-                  )
-                }
-                _focus={{ boxShadow: 'none' }}
-                icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
-              />
-            </Tooltip>
-          </Box>
-        ) : (
-          <Flex flex={1}>
-            <Box pl={2}>
-              <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smBlack-150)" />
-            </Box>
-          </Flex>
-        )}
-        <Box flex={1}>
-          <Tooltip
-            placement="bottom"
-            hasArrow
-            color="smWhite.500"
-            label={status === 'running' ? 'Cancel' : 'Delete'}
+          <HStack
+            fontSize="0.8em"
+            color="smNavy.350"
+            width="90%"
+            spacing={4}
+            justifyContent="space-between"
           >
-            <IconButton
-              variant="ghost"
-              aria-label="stop-or-delete"
-              onClick={(e) => onStartDelete(id)}
-              flex={1}
-              icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
-            />
+            {breakVal && <>
+            <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
+                {date ? formatDate(date) : 'Unknown'}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip
+                flex={1}
+                placement="bottom"
+                hasArrow
+                color="smWhite.500"
+                label="Accuracy"
+              >
+                {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
+                {duration || "Unknown"}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
+                {language ? mapLanguages(language) : 'Unknown'}
+              </Tooltip>
+            </Box>
+            <Box flex={1}>
+              <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Unique Job ID">
+                {id ? id : 'Unknown'}
+              </Tooltip>
+            </Box>
+            </>}
+          </HStack>
+        </VStack>
+        <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={"space-evenly"}>
+          <HStack flex={2}>
+            <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
+            <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+          </HStack>
+          {breakVal ?
+          <IconButtons 
+            onOpenTranscript={onOpenTranscript} 
+            fileName={fileName}
+            language={language} 
+            id={id} 
+            accuracy={accuracy} 
+            date={date}
+            status={status}
+            onStartDelete={onStartDelete} 
+          /> : null}
+        </HStack>
+      </HStack>
+      {!breakVal &&
+      <HStack color="smNavy.350" spacing={4} width="100%" justifyContent="space-between">
+        <Box maxW="150px" flex={1} fontFamily="RMNeue-bold" whiteSpace="nowrap" 
+            fontSize="0.8em">
+          <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
+            {date ? formatDate(date) : 'Unknown'}
           </Tooltip>
         </Box>
+        <HStack width="140px">
+          <IconButtons
+            onOpenTranscript={onOpenTranscript} 
+            fileName={fileName}
+            language={language} 
+            id={id} 
+            accuracy={accuracy} 
+            date={date}
+            status={status}
+            onStartDelete={onStartDelete} 
+          />
+        </HStack>
       </HStack>
-    </HStack>
+      }
+    </VStack>
   );
 };
 
-const LoadingJobsSkeleton = (key: any) => {
+const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
   return (
-    <HStack
+    <VStack
       key={key}
       border="1px solid"
       borderColor="smBlack.200"
       borderLeft="3px solid"
       borderLeftColor="smBlack.200"
       width="100%"
-    >
-      <VStack alignItems="flex-start" p={4} flex={2}>
-        <SkeletonText
-          noOfLines={1}
-          spacing={6}
-          height="6"
-          as="span"
-          width="90%"
-          paddingRight="4px"
-          color="smNavy.400"
-        />
-        <HStack
-          fontSize="0.8em"
-          color="smNavy.350"
-          width="100%"
-          spacing={4}
-          justifyContent="space-between"
-        >
-          <SkeletonText height="4" noOfLines={1} flex={2} whiteSpace="nowrap" />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
-          <SkeletonText height="4" noOfLines={1} flex={1} />
+      p={4}>
+      <HStack width="100%">
+        <VStack alignItems="flex-start"  flex={2}>
+          <SkeletonText
+            noOfLines={1}
+            spacing={6}
+            height="6"
+            as="span"
+            width="90%"
+            paddingRight="4px"
+            color="smNavy.400"
+          />
+          {breakVal &&
+            <HStack
+              fontSize="0.8em"
+              color="smNavy.350"
+              width="100%"
+              spacing={4}
+              justifyContent="space-between"
+            >
+              <SkeletonText height="4" noOfLines={1} flex={2} whiteSpace="nowrap" />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+              <SkeletonText height="4" noOfLines={1} flex={1} />
+            </HStack>
+          }
+        </VStack>
+        {!breakVal &&
+          <SkeletonText height="6" noOfLines={1} flex={1} spacing={4} paddingRight={4} />}
+
+        {breakVal &&
+        <HStack flex={1} justifyContent="space-evenly" spacing={4}>
+          <SkeletonText noOfLines={1} flex={3} spacing={6} paddingRight={4} />
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
         </HStack>
-      </VStack>
-      <HStack flex={1} justifyContent="space-evenly" spacing={4}>
-        <SkeletonText noOfLines={1} flex={3} spacing={6} paddingRight={4} />
-        <Box flex={1}>
-          <SkeletonCircle />
-        </Box>
-        <Box flex={1}>
-          <SkeletonCircle />
-        </Box>
+        }
       </HStack>
-    </HStack>
+      {!breakVal &&
+      <HStack spacing={4} width="100%"  justifyContent="space-between">
+        <Box width="150px">
+          <SkeletonText noOfLines={1} flex={3} spacing={6}  />
+        </Box>
+        <HStack width="150px">
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+          <Box flex={1}>
+            <SkeletonCircle />
+          </Box>
+        </HStack>
+      </HStack>
+      }
+    </VStack>
   );
 };
+
+const IconButtons = ({onOpenTranscript, fileName, language, id, accuracy, date, status, onStartDelete}) => (
+  <>
+    <Box flex={1}>
+      <Menu isLazy>
+        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
+          <MenuButton as={IconButton} variant="ghost"
+            aria-label="view" icon={<DownloadIcon fontSize={20} color="var(--chakra-colors-smNavy-350)" />}>
+          </MenuButton>
+        </Tooltip>
+        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+      </Menu>
+    </Box>
+    {status === ('done' || 'completed') ? (
+      <Box flex={1}>
+        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
+          <IconButton
+            variant="ghost"
+            aria-label="view"
+            onClick={(e) =>
+              onOpenTranscript(
+                {
+                  jobId: id,
+                  language,
+                  accuracy,
+                  date: formatDate(date),
+                  fileName,
+                },
+                'txt'
+              )
+            }
+            _focus={{ boxShadow: 'none' }}
+            icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
+          />
+        </Tooltip>
+      </Box>
+
+    ) : (
+      <Flex flex={1} >
+        <Box pl={2}>
+          <ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-200)" />
+        </Box>
+      </Flex>
+    )}
+    <Box flex={1}>
+      <Tooltip placement="bottom" hasArrow color="smWhite.500"
+        label={status === 'running' ? 'Cancel' : 'Delete'}>
+        <IconButton
+          variant="ghost"
+          aria-label="stop-or-delete"
+          onClick={(e) => onStartDelete(id)}
+          flex={1}
+          icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
+        />
+      </Tooltip>
+    </Box>
+  </>
+)
 
 const statusColour = {
   rejected: 'smRed.500',

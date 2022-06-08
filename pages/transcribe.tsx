@@ -153,10 +153,14 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       <Divider my={8} color='smBlack.200' />
     </>}
 
-    {stageDelayed == 'complete' &&
-      <TranscriptionViewer my={4} fileName={fileName} date={store.dateSubmitted} jobId={store.jobId}
-        accuracy={store.accuracy} language={store.language}
-        transcriptionText={store.transcriptionText} className="fadeIn" />}
+    {
+    stageDelayed == 'complete' &&
+      <Box w={["50%", "100%"]} >
+        <TranscriptionViewer my={4} fileName={fileName} date={store.dateSubmitted} jobId={store.jobId}
+          accuracy={store.accuracy} language={store.language}
+          transcriptionText={store.transcriptionText} className="fadeIn" />
+      </Box>    
+      }
 
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
