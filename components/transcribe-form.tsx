@@ -85,7 +85,6 @@ export const FileUploadComponent = (({ onFileSelect, auth }: FileUploadComponent
             </Box>
           </Flex>}
       </Flex>
-
       {
         <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
           ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />

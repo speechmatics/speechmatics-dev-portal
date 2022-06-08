@@ -28,13 +28,13 @@ import {
   CopyButton,
   DescriptionLabel,
   ErrorInTable,
+  errToast,
   GridSpinner,
   HeaderLabel,
   PageHeader,
   positiveToast,
   SmPanel,
 } from '../components/common';
-import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
@@ -235,12 +235,16 @@ const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('aboutToRemoveOne', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
-      accountStore.fetchServerState(idToken);
-      positiveToast('API Key removed');
-    });
+    callRemoveApiKey(idToken, apikeyIdToRemove)
+      .then((res) => {
+        accountStore.fetchServerState(idToken);
+        positiveToast('API Key removed');
+        accountStore.keyJustRemoved = true;
+      })
+      .catch(err => {
+        errToast("Unable to remove API key - request failed with status " + err.status)
+      })
     onClose();
-    accountStore.keyJustRemoved = true;
   };
 
   return (

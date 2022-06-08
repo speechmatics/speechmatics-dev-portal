@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner } from './common';
+import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner, errToast } from './common';
 import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
@@ -71,6 +71,9 @@ export const RecentJobs = observer(() => {
             });
             setTranscriptOpen(true);
           }
+        })
+        .catch(err => {
+          errToast("Unable to get transcript - request failed with status " + err.status)
         });
       }
     },

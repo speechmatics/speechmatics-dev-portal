@@ -29,6 +29,7 @@ export const enum FlowError {
   FileTooBig,
   FileWrongType,
   ServerFileReceivedWrong,
+  UploadFailed,
   ServerJobFailed,
 }
 

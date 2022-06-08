@@ -2,6 +2,7 @@ import { MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
 import { useContext } from "react";
 import { callGetTranscript } from "../utils/call-api";
 import accountContext from '../utils/account-store-context';
+import { errToast } from "./common";
 
 export const TranscriptDownloadMenu = ({ jobId, status }) => {
   const { tokenStore } = useContext(accountContext);
@@ -21,6 +22,9 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
             a.download = fileName;
             a.click();
           }
+        })
+        .catch(err => {
+          errToast("Unable to download transcript - request failed with status " + err.status)
         })
     }
     return () => {

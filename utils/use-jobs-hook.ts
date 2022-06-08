@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
+import { errToast } from '../components/common';
 
 export const useJobs = (limit, page) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
@@ -74,7 +75,7 @@ export const useJobs = (limit, page) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          errToast("Unable to delete job - request failed with status " + err.status)
         });
     }
   };

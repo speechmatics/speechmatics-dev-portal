@@ -40,7 +40,7 @@ export const callGetUsage = async (
 export const callGetJobs = async (idToken: string, optionalQueries: any) => {
   return callRuntime(
     idToken,
-    `${RUNTIME_API_URL}/jobsers`,
+    `${RUNTIME_API_URL}/jobs`,
     'GET',
     {},
     {
@@ -196,11 +196,8 @@ export const call = async (
         throw { status: 401, message: 'Error authenticating against runtime. Try again later or contact support.' }
       }
       if (response.status != 200 && response.status != 201) {
-        throw response.body
+        throw { status: response.status, message: response.statusText }
       }
-      // if (response.status == 200 && apiEndpoint.includes(RUNTIME_API_URL)) {
-      //   throw { status: response.status, message: "Fake Error" }
-      // }
 
       if (response.body == null) {
         return null;
