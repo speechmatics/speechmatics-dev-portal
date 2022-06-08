@@ -17,7 +17,7 @@ export type TranscriptionViewerProps = {
   transcMaxHeight?: string;
 } & BoxProps;
 
-export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, transcMaxHeight = '1em', ...boxProps }: TranscriptionViewerProps) => (
+export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, language, transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => (
   <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
     <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
       borderBottom='1px'
