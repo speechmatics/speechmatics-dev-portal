@@ -74,7 +74,7 @@ export const RecentJobs = observer(() => {
               transcriptionText: response,
               fileName: job.fileName,
             });
-            console.log(activeJob)
+            console.log(activeJob);
             setTranscriptOpen(true);
           }
         });
@@ -96,16 +96,21 @@ export const RecentJobs = observer(() => {
     authFlow.restoreToken();
   }, [idToken, accountStore.account]);
 
-  const skeletons = useMemo(() => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)), [breakVal])
+  const skeletons = useMemo(
+    () => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)),
+    [breakVal]
+  )
 
   return (
     <>
-      {!isLoading && jobs?.length !== 0 && <WarningBanner
-        text="Transcriptions and audio files are automatically deleted after 7 days."
-        width="100%"
-        centered
-      />}
-      <VStack spacing={6} pt={6} width='100%'>
+      {!isLoading && jobs?.length !== 0 && (
+        <WarningBanner
+          text="Transcriptions and audio files are automatically deleted after 7 days."
+          width="100%"
+          centered
+        />
+      )}
+      <VStack spacing={6} pt={6} width="100%">
         {isLoading && skeletons}
         {!errorOnInit &&
           !isLoading &&
@@ -121,31 +126,34 @@ export const RecentJobs = observer(() => {
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
-        {jobs?.length !== 0 && <Button
-          hidden={errorOnInit}
-          disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
-          variant="speechmatics"
-          onClick={(e) => {
-            setPage(page + 1);
-          }}
-          width="100%"
-        >
-          {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Show More'}
-          {isLoading || (isWaitingOnMore && <Spinner />)}
-          {noMoreJobs && 'No More Jobs'}
-        </Button>
-        }
-        {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && <VStack pb={6} spacing={6}>
-          <NoSomethingBanner>No jobs found.</NoSomethingBanner>
-          <Box>
-            {/* Text inside button is underlined on hover, needs to be altered */}
-            <Link href="/transcribe/">
-              <Button variant="speechmatics" alignSelf="flex-start">
-                Transcribe Now
-              </Button>
-            </Link>
-          </Box>
-        </VStack>}
+        {jobs?.length !== 0 && (
+          <Button
+            hidden={errorOnInit}
+            disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
+            variant="speechmatics"
+            onClick={(e) => {
+              setPage(page + 1);
+            }}
+            width="100%"
+          >
+            {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Show More'}
+            {isLoading || (isWaitingOnMore && <Spinner />)}
+            {noMoreJobs && 'No More Jobs'}
+          </Button>
+        )}
+        {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
+          <VStack pb={6} spacing={6}>
+            <NoSomethingBanner>No jobs found.</NoSomethingBanner>
+            <Box>
+              {/* Text inside button is underlined on hover, needs to be altered */}
+              <Link href="/transcribe/">
+                <Button variant="speechmatics" alignSelf="flex-start">
+                  Transcribe Now
+                </Button>
+              </Link>
+            </Box>
+          </VStack>
+        )}
       </VStack>
       <Modal
         size="4xl"
@@ -213,7 +221,7 @@ const RecentJobElement = ({
     <VStack
       id={id}
       border="1px solid"
-      borderColor='smBlack.200'
+      borderColor="smBlack.200"
       borderLeft="3px solid"
       borderLeftColor={statusColour[status]}
       p={4}

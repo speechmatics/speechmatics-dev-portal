@@ -16,7 +16,7 @@ export default function Home({ }) {
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
       <VStack spacing='2em' width='100%' maxWidth='900px'>
-        <HStack alignItems="stretch" spacing="2em" width='100%'>
+        <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='2em'>
           <HomeBox
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
@@ -33,7 +33,7 @@ export default function Home({ }) {
             hrefUrl="/getting-started/"
             iconPadding='1.5em 0em 0em 0.8em'
           />
-        </HStack>
+        </Grid>
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
