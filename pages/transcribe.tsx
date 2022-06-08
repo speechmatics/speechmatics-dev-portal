@@ -154,7 +154,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     </>}
 
     {stageDelayed == 'complete' &&
-      <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
+      <TranscriptionViewer my={4} fileName={fileName} date={store.dateSubmitted} jobId={store.jobId}
         accuracy={store.accuracy} language={store.language}
         transcriptionText={store.transcriptionText} className="fadeIn" />}
 
