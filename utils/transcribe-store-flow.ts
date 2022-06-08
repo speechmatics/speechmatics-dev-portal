@@ -1,10 +1,6 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 import { makeAutoObservable } from 'mobx';
-import {
-  callGetTranscript,
-  callRequestFileTranscription,
-  callRequestJobStatus,
-} from './call-api';
+import { callGetTranscript, callRequestFileTranscription, callRequestJobStatus } from './call-api';
 import {
   Accuracy,
   Separation,
@@ -147,7 +143,7 @@ class FileTranscribeFlow {
       this.store.setFile(null);
       return;
     }
-    console.log(file.type)
+
     if (file.size > 1_000_000_000) {
       this.store.error = FlowError.FileTooBig;
     } else if (!checkIfFileCorrectType(file)) {
@@ -162,13 +158,7 @@ class FileTranscribeFlow {
     const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
 
-    const resp = await callRequestFileTranscription(
-      idToken,
-      _file,
-      language,
-      accuracy,
-      separation
-    );
+    const resp = await callRequestFileTranscription(idToken, _file, language, accuracy, separation);
 
     if (resp && 'id' in resp) {
       this.store.jobId = resp.id;

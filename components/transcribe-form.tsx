@@ -35,15 +35,17 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
       setIsFileTooBigError(true);
       return;
     }
+
     if (!checkIfFileCorrectType(file)) {
       setIsWrongTypeError(true);
       return;
     }
 
     setIsFileTooBigError(false);
+    setIsWrongTypeError(false);
+
     onFileSelect(file);
     setFile(file);
-
   }
 
   const dropClicked = useCallback(() => {
@@ -68,7 +70,7 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
 
       <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
         {!file ? <>
-          <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
+          <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3em' width='3em' />
           <VStack alignItems='flex-start' spacing={0}>
             <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
             <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
@@ -266,35 +268,6 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
     <ProgressPoint status={stageProps.step2} label='Running Transcription' posX="50%" step='2' />
     <ProgressPoint status={stageProps.step3} label='Transcription Complete' posX="85%" step='3' />
   </Box>
-}
-
-
-
-
-
-
-const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.85em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.85em'>{value}</Text>
-  </Box>
-)
-
-
-
-
-
-
-
-
-const filesMap = (files: FileList | undefined | null): File[] => {
-  const ret: File[] = [];
-  if (files && files.length > 0)
-    for (let i = 0; i < files.length; i++)
-      if (files[i]) {
-        ret.push(files[i]);
-      }
-  return ret;
 }
 
 
