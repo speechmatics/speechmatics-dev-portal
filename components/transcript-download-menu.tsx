@@ -87,17 +87,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
           >
             Download as SRT
           </MenuItem>
-          {/* <MenuDivider /> */}
         </>
       )}
-      {/* <MenuItem
-        onClick={(e) => {
-          downloadDataFile();
-        }}
-        _focus={{ color: 'smBlue.500' }}
-      >
-        Download audio file
-      </MenuItem> */}
     </MenuList>
   </>
 };
