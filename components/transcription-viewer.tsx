@@ -1,4 +1,5 @@
 import { BoxProps, VStack, HStack, Box, Button, Menu, MenuButton, Text } from "@chakra-ui/react";
+import { trackEvent } from "../utils/analytics";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
 import { getFullLanguageName } from "../utils/transcribe-elements";
@@ -32,11 +33,16 @@ export const TranscriptionViewer = ({ transcriptionText, date, jobId, accuracy, 
     </Box>
     <HStack width='100%' spacing={4} p={4} borderTop='1px' borderColor='smBlack.200'>
       <Button variant='speechmatics' flex='1' leftIcon={<CopyIcon />} fontSize='1em'
-        onClick={() => navigator?.clipboard?.writeText(transcriptionText)}>
+        onClick={() => {
+          navigator?.clipboard?.writeText(transcriptionText);
+          trackEvent('copy_transcription', 'Action')
+        }}>
         Copy Transcription
       </Button>
       <Menu>
-        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />} fontSize='1em'>
+        <MenuButton as={Button} flex='1' variant='speechmaticsGreen' leftIcon={<DownloadIcon />}
+          fontSize='1em'
+          onClick={() => trackEvent('download_transcription_click', 'Action')}>
           Download Transcription
         </MenuButton>
         <TranscriptDownloadMenu jobId={jobId} status={'done'} />

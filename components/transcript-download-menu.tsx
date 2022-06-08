@@ -2,6 +2,7 @@ import { MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
 import { useContext } from "react";
 import { callGetTranscript } from "../utils/call-api";
 import accountContext from '../utils/account-store-context';
+import { trackEvent } from "../utils/analytics";
 
 export const TranscriptDownloadMenu = ({ jobId, status }) => {
   const { tokenStore } = useContext(accountContext);
@@ -44,6 +45,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
           <MenuItem
             onClick={(e) => {
               downloadTranscript('txt');
+              trackEvent('download_transcription_txt', 'Action')
             }}
             _focus={{ color: 'smBlue.500' }}
           >
@@ -57,6 +59,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
           <MenuItem
             onClick={(e) => {
               downloadTranscript('json-v2');
+              trackEvent('download_transcription_json', 'Action')
             }}
             _focus={{ color: 'smBlue.500' }}
           >
@@ -70,6 +73,7 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
           <MenuItem
             onClick={(e) => {
               downloadTranscript('srt');
+              trackEvent('download_transcription_srt', 'Action')
             }}
             _focus={{ color: 'smBlue.500' }}
           >
@@ -78,7 +82,10 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
           <MenuDivider />
         </>
       )}
-      <MenuItem as="a" href="../public/favicon.ico" download _focus={{ color: 'smBlue.500' }}>
+      <MenuItem as="a" href="../public/favicon.ico" download _focus={{ color: 'smBlue.500' }}
+        onClick={() => {
+          trackEvent('download_transcription_audio', 'Action')
+        }}>
         Download audio file
       </MenuItem>
     </MenuList>

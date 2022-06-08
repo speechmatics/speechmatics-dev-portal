@@ -33,6 +33,7 @@ import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
+import { trackEvent } from '../utils/analytics';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -167,6 +168,7 @@ export const RecentJobs = observer(() => {
             color="smBlack.300"
             top={-4}
             right={-4}
+            onClick={() => trackEvent('close_transcription_viewer', 'Action')}
           />
           <ModalBody>
             <TranscriptionViewer {...activeJob} transcMaxHeight="38vh" />
@@ -181,6 +183,7 @@ export const RecentJobs = observer(() => {
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobId, true);
           onClose();
+          trackEvent('delete_job_confirm', 'Action')
         }}
         confirmLabel="Delete"
       />
@@ -273,7 +276,7 @@ const RecentJobElement = ({
               <IconButton
                 variant="ghost"
                 aria-label="view"
-                onClick={(e) =>
+                onClick={(e) => {
                   onOpenTranscript(
                     {
                       jobId: id,
@@ -284,6 +287,8 @@ const RecentJobElement = ({
                     },
                     'txt'
                   )
+                  trackEvent('view_transcription', 'Action');
+                }
                 }
                 _focus={{ boxShadow: 'none' }}
                 icon={<ViewEyeIcon fontSize="22" color="var(--chakra-colors-smNavy-350)" />}
@@ -304,7 +309,10 @@ const RecentJobElement = ({
             <IconButton
               variant="ghost"
               aria-label="stop-or-delete"
-              onClick={(e) => onStartDelete(id)}
+              onClick={(e) => {
+                onStartDelete(id);
+                trackEvent((status === 'running' ? 'cancel_job_click' : 'delete_job_click'), 'Action')
+              }}
               flex={1}
               icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
             />

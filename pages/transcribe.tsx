@@ -187,7 +187,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
       Go to the <Link data-qa="link-recent-jobs" href='/view-jobs/'>
         <a className="text_link"
-          onClick={() => trackEvent('view_jobs_click', 'Navigation', 'Clicked to view jobs from the transcription status', { stage })}>
+          onClick={() => trackEvent('view_jobs_click', 'Navigation', '', { stage })}>
           View Jobs
         </a></Link>
       {' '}page to view all your recent transcriptions.
@@ -196,7 +196,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline'
       onClick={() => {
         flow.reset()
-        trackEvent('transcribe_another_file_click', 'Navigation', 'Clicked to go to file new add. from the transcription status', { stage })
+        trackEvent('transcribe_another_file_click', 'Navigation', '', { stage })
       }}>
       Transcribe Another File
     </Button>
