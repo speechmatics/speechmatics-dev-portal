@@ -10,6 +10,7 @@ import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/re
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { errToast, HeaderLabel, PageHeader, positiveToast, SmPanel } from '../components/common';
+import { trackEvent } from '../utils/analytics';
 
 declare global {
   interface Window {
@@ -69,9 +70,8 @@ function Subscribe({ }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setSubmitButtonReady(false);
-
+    trackEvent('billing_chargify_submit', 'Action')
     chargify?.current.token(
       chargifyForm.current,
 
@@ -85,11 +85,16 @@ function Subscribe({ }) {
               : 'Card added successfully!');
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
+            trackEvent('billing_chargify_successful', 'Event')
           })
           .catch((error) => {
             setSubmitButtonReady(true);
             errToast(`Something went wrong, please try again later. ${error.status}`);
+            trackEvent('billing_chargify_failed', 'Event', '', {
+              error: error.status
+            })
           });
+
       },
 
       (error: any) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Dashboard from '../components/dashboard';
 import {
@@ -31,16 +31,20 @@ import {
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
+import { trackEvent } from '../utils/analytics';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
 
+  const tabsOnChange = useCallback((index) => {
+    trackEvent(`usage_tab_${['limits', 'summary', 'details'][index]}`, 'Navigation')
+  }, [])
 
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px' onChange={tabsOnChange}>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>

@@ -61,7 +61,6 @@ trackEvent('delete_job_confirm', 'Action')
 trackEvent('view_transcription', 'Action')
 trackEvent('copy_transcription', 'Action')
 trackEvent('close_transcription_viewer', 'Action')
-
 trackEvent('usage_tab_limits', 'Navigation')
 trackEvent('usage_tab_summary', 'Navigation')
 trackEvent('usage_tab_details', 'Navigation')
@@ -74,5 +73,6 @@ trackEvent('billing_chargify_successful', 'Event')
 trackEvent('billing_tab_settings', 'Navigation')
 trackEvent('billing_tab_payments', 'Navigation')
 trackEvent('billing_payments_pagination', 'Navigation')
+  
 trackEvent('billing_payments_download_invoice', 'Action')
 */

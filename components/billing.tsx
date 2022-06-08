@@ -4,6 +4,7 @@ import { HeaderLabel, DescriptionLabel, pad } from "./common";
 import { CardImage, CardGreyImage, DownloadInvoice } from "./icons-library";
 import { Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { trackEvent } from "../utils/analytics";
 
 
 export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
@@ -38,7 +39,8 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
         </DescriptionLabel>
         <Box>
           <Link href="/subscribe/">
-            <Button variant="speechmatics" alignSelf="flex-start" data-qa="button-add-replace-payment">
+            <Button variant="speechmatics" alignSelf="flex-start" data-qa="button-add-replace-payment"
+              onClick={() => trackEvent(`billing_${paymentMethod ? 'replace' : 'add'}_card_click`, 'Action')}>
               {paymentMethod ? 'Replace Your Existing Payment Card' : 'Add a Payment Card'}
             </Button>
           </Link>

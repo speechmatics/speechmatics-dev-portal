@@ -29,6 +29,7 @@ import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
+import { trackEvent } from '../utils/analytics';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -64,14 +65,21 @@ export default observer(function ManageBilling({ }) {
 
   const deleteCard = useCallback(() => {
     onOpen();
+    trackEvent('billing_remove_card_click', 'Action');
+
   }, [])
 
-  const onRemoveConfirm = () => {
+  const onRemoveConfirm = useCallback(() => {
     callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
       accountStore.fetchServerState(idToken)
     );
     onClose();
-  };
+    trackEvent('billing_remove_card_confirm', 'Action');
+  }, [idToken]);
+
+  const tabsOnChange = useCallback((index) => {
+    trackEvent(`billing_tab_${['settings', 'payments'][index]}`, 'Navigation')
+  }, [])
 
   return (
     <Dashboard>
@@ -81,12 +89,12 @@ export default observer(function ManageBilling({ }) {
       />
       <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
         data-qa="modal-delete-card-confirm"
-        mainTitle={`Are you sure want to remove your card?`}
+        mainTitle="Are you sure want to remove your card?"
         subTitle=''
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px' onChange={tabsOnChange}>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-settings">Settings</Tab>
           <Tab data-qa="tab-payments">Payments</Tab>
@@ -108,6 +116,7 @@ export default observer(function ManageBilling({ }) {
               data={paymentsData}
               DataDisplayComponent={PaymentsGrid}
               isLoading={isLoading}
+              onTrackUse={() => trackEvent('billing_payments_pagination', 'Navigation')}
             />
 
             <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." mt="2em" />
@@ -148,7 +157,10 @@ const PaymentsGrid = ({ data, isLoading }) => {
         </GridItem>
         <GridItem data-qa={`payments-download-invoice-${i}`}>
           {el.url && <Link href={el.url}>
-            <a target='_blank' download><DownloadInvoiceHoverable /></a>
+            <a target='_blank' download
+              onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
+              <DownloadInvoiceHoverable />
+            </a>
           </Link>}
         </GridItem>
       </React.Fragment>

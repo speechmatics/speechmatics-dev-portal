@@ -267,7 +267,7 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px', add
   );
 };
 
-export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
+export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5, onTrackUse = null }) => {
   const [page, setPage] = useState(0);
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
@@ -275,6 +275,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
+      onTrackUse?.();
     },
     [data]
   );
