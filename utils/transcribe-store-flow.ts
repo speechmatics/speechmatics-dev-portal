@@ -169,9 +169,20 @@ class FileTranscribeFlow {
     this.savedIdToken = idToken;
 
     callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
-      this.callRequestSuccess.bind(this),
-      this.callError.bind(this)
+      this.getResponseFn(_file),
+      this.getErrorFn(_file)
     );
+  }
+
+  getResponseFn(file: File) {
+    const { stage, file: storeFile } = this.store;
+    const owner = this;
+    return function (resp: any) {
+      if (file !== storeFile) return;
+      if (stage !== 'pendingFile') return;
+
+      owner.callRequestSuccess(resp);
+    };
   }
 
   callRequestSuccess(resp: any) {
@@ -187,6 +198,17 @@ class FileTranscribeFlow {
     } else {
       //todo gotten unexpected response
     }
+  }
+
+  getErrorFn(file: File) {
+    const { stage, file: storeFile } = this.store;
+    const owner = this;
+    return function (resp: any) {
+      if (file !== storeFile) return;
+      if (stage !== 'pendingFile') return;
+
+      owner.callError(resp);
+    };
   }
 
   callError(error: any) {
