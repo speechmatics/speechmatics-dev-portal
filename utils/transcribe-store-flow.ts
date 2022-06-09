@@ -145,6 +145,8 @@ export class FileTranscriptionStore {
 class FileTranscribeFlow {
   store = new FileTranscriptionStore();
 
+  savedIdToken: string = '';
+
   assignFile(file: File) {
     if (file == null) {
       this.store.setFile(null);
@@ -164,48 +166,55 @@ class FileTranscribeFlow {
   attemptSendFile(idToken: string) {
     const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
+    this.savedIdToken = idToken;
 
     callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
-      (resp) => {
-        console.log('attemptSendFile then', resp);
-
-        if (resp && 'id' in resp) {
-          this.store.jobId = resp.id;
-          this.store.stage = 'pendingTranscription';
-          this.runStatusPolling(idToken);
-        } else {
-          //todo gotten unexpected response
-        }
-      },
-      (error) => {
-        console.log('attemptSendFile error', error);
-        this.store.stage = 'failed';
-        if (
-          error.response.code == 403 &&
-          error.response.detail?.endsWith('Your limit is 2 hours.')
-        ) {
-          this.store.error = FlowError.BeyondFreeQuota;
-        } else if (
-          error.response.code == 403 &&
-          error.response.detail?.endsWith('Your limit is 1000 hours.')
-        ) {
-          this.store.error = FlowError.BeyondAllowedQuota;
-        } else if (
-          error.response.code == 403 &&
-          error.response.detail?.startsWith('Entitlement check failed')
-        ) {
-          this.store.error = FlowError.ContractExpired;
-        } else if (error.response.code == 403) {
-          this.store.error = FlowError.UndefinedForbiddenError;
-        } else {
-          this.store.error = FlowError.UndefinedError;
-        }
-
-        this.store.errorDetail = error.response?.detail || '';
-
-        //add BeyondAllowedQuota, FileTooBig, FileWrongType
-      }
+      this.callRequestSuccess.bind(this),
+      this.callError.bind(this)
     );
+  }
+
+  callRequestSuccess(resp: any) {
+    console.log('attemptSendFile then', resp);
+
+    //dont act on it when we're not waiting for it
+    if (this.store.stage != 'pendingFile') return;
+
+    if (resp && 'id' in resp) {
+      this.store.jobId = resp.id;
+      this.store.stage = 'pendingTranscription';
+      this.runStatusPolling(this.savedIdToken);
+    } else {
+      //todo gotten unexpected response
+    }
+  }
+
+  callError(error: any) {
+    console.log('attemptSendFile error', error);
+    if (this.store.stage != 'pendingFile') return;
+
+    this.store.stage = 'failed';
+    if (error.response.code == 403 && error.response.detail?.endsWith('Your limit is 2 hours.')) {
+      this.store.error = FlowError.BeyondFreeQuota;
+    } else if (
+      error.response.code == 403 &&
+      error.response.detail?.endsWith('Your limit is 1000 hours.')
+    ) {
+      this.store.error = FlowError.BeyondAllowedQuota;
+    } else if (
+      error.response.code == 403 &&
+      error.response.detail?.startsWith('Entitlement check failed')
+    ) {
+      this.store.error = FlowError.ContractExpired;
+    } else if (error.response.code == 403) {
+      this.store.error = FlowError.UndefinedForbiddenError;
+    } else {
+      this.store.error = FlowError.UndefinedError;
+    }
+
+    this.store.errorDetail = error.response?.detail || '';
+
+    //add BeyondAllowedQuota, FileTooBig, FileWrongType
   }
 
   interv = 0;
@@ -242,6 +251,7 @@ class FileTranscribeFlow {
   }
 
   reset() {
+    this.stopPolling();
     this.store.resetStore();
   }
 }
