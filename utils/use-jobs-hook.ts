@@ -91,7 +91,6 @@ export const useJobs = (limit, page) => {
   };
 };
 
-// This is mostly unchanged except it uses inputs rather than hooks
 const getJobs = (
   idToken,
   jobs,
@@ -127,12 +126,6 @@ const getJobs = (
           if (respJson.jobs.length !== 0 ) {
             const formatted: JobElementProps[] = formatJobs(respJson.jobs);
             const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
-            console.log(
-              'callGetJobs',
-              respJson.jobs,
-              respJson.jobs.length,
-              respJson.jobs[respJson.jobs.length - 1].created_at
-            );
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
             setJobs(combinedArrays);
             if (combinedArrays.some((item) => item.status === 'running')) {
@@ -155,9 +148,6 @@ const getJobs = (
   };
 };
 
-// This is mostly unchanged except it uses inputs rather than hooks
-// I added addMillisecond to get round the milli second precision in the polling endpoint.
-// Should be deprecated soon as the API fix will be coming
 const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
   let isActive = true;
   if (idToken && isPolling) {
@@ -176,18 +166,16 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
       requests.push(callGetJobs(idToken, query));
     }
     Promise.all(requests).then((result) => {
-      for (const res of result) {
-        if (isActive && !!res && 'jobs' in res) {
-          newJobs = [...newJobs, ...res.jobs];
-        }
-      }
       if (isActive && isPolling) {
+        for (const res of result) {
+          if (!!res && 'jobs' in res) {
+            newJobs = [...newJobs, ...res.jobs];
+          }
+        }
         const formatted = formatJobs(newJobs);
         const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
-        setJobs(combinedArrays);
-        if (combinedArrays.some((item) => item.status === 'running')) {
-          setIsPolling(true);
-        } else {
+        setJobs([...combinedArrays]);
+        if (!combinedArrays.some((item) => item.status === 'running')) {
           setIsPolling(false);
         }
       }
