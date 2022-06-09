@@ -2,7 +2,7 @@ import { Box, IconButton, Slide, useBreakpointValue, useDisclosure, useOutsideCl
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import menuData from "../static_data/menu-data";
 
@@ -63,18 +63,21 @@ function Menu() {
 }
 
 function MenuElem({ item, selected, ...props }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Link href={item.path}>
-      <Box className={`menu_elem ${selected ? 'selected' : ''}`} {...props}>
+      <Box className={`menu_elem ${selected ? 'selected' : ''}`} {...props}
+        onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
         <Box>
           {item.icon({
-            mono: !Boolean(selected),
+            mono: Boolean(selected) || isHovered,
             width: "1.65em",
             height: "1.65em"
           })}
         </Box>
         <Box
-          data-qa={`menu-${item.title.replace(' ', '-').toLowerCase()}`}
+          data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`}
           pl='0.5em'>
           {item.title}
         </Box>
