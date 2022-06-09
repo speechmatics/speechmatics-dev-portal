@@ -23,3 +23,14 @@ export function humanFileSize(bytes: number, si = false, dp = 1) {
 
   return bytes.toFixed(dp) + ' ' + units[u];
 }
+
+export function pluralize(
+  value: number,
+  singleForm: string,
+  pluralForm: string,
+  returnIfZero = false
+) {
+  if (value == 1) return `${value} ${singleForm}`;
+  if (value > 1) return `${value} ${pluralForm}`;
+  if (value == 0) return returnIfZero;
+}

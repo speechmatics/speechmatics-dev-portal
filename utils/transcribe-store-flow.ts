@@ -140,6 +140,22 @@ export class FileTranscriptionStore {
   get fileSize() {
     return this._file?.size;
   }
+
+  _uploadedFiles: File[] = [];
+  set uploadedFiles(value: File[]) {
+    this._uploadedFiles = value;
+  }
+  get uploadedFiles(): File[] {
+    return this._uploadedFiles;
+  }
+
+  addFileToUploading(file: File) {
+    this.uploadedFiles = [file, ...this.uploadedFiles];
+  }
+
+  removeFileFromUploading(file: File) {
+    this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
+  }
 }
 
 class FileTranscribeFlow {
@@ -168,6 +184,8 @@ class FileTranscribeFlow {
     this.store.stage = 'pendingFile';
     this.savedIdToken = idToken;
 
+    this.store.addFileToUploading(_file);
+
     callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
       this.getResponseFn(_file),
       this.getErrorFn(_file)
@@ -178,6 +196,8 @@ class FileTranscribeFlow {
     const { stage, file: storeFile } = this.store;
     const owner = this;
     return function (resp: any) {
+      owner.store.removeFileFromUploading(file);
+
       if (file !== storeFile) return;
       if (stage !== 'pendingFile') return;
 
@@ -204,6 +224,8 @@ class FileTranscribeFlow {
     const { stage, file: storeFile } = this.store;
     const owner = this;
     return function (resp: any) {
+      owner.store.removeFileFromUploading(file);
+
       if (file !== storeFile) return;
       if (stage !== 'pendingFile') return;
 
