@@ -193,20 +193,21 @@ class FileTranscribeFlow {
   }
 
   getResponseFn(file: File) {
-    const { stage, file: storeFile } = this.store;
+    const store = this.store;
     const owner = this;
     return function (resp: any) {
+      console.log('getResponseFn closure', resp, store.stage, file !== store.file);
       owner.store.removeFileFromUploading(file);
 
-      if (file !== storeFile) return;
-      if (stage !== 'pendingFile') return;
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
 
       owner.callRequestSuccess(resp);
     };
   }
 
   callRequestSuccess(resp: any) {
-    console.log('attemptSendFile then', resp);
+    console.log('callRequestSuccess', resp, this.store.stage);
 
     //dont act on it when we're not waiting for it
     if (this.store.stage != 'pendingFile') return;
@@ -221,13 +222,13 @@ class FileTranscribeFlow {
   }
 
   getErrorFn(file: File) {
-    const { stage, file: storeFile } = this.store;
+    const store = this.store;
     const owner = this;
     return function (resp: any) {
       owner.store.removeFileFromUploading(file);
 
-      if (file !== storeFile) return;
-      if (stage !== 'pendingFile') return;
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
 
       owner.callError(resp);
     };

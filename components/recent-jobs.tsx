@@ -60,6 +60,7 @@ export const RecentJobs = observer(() => {
     errorOnInit,
     noMoreJobs,
     onDeleteJob,
+    forceGetJobs
   } = useJobs(pageLimit, page);
 
   // converted to callback to avoid rerendering when useJobs hook state changes
@@ -111,7 +112,7 @@ export const RecentJobs = observer(() => {
         />
       )}
 
-      <FilesBeingUploaded />
+      <FilesBeingUploaded forceGetJobs={forceGetJobs} />
 
       <VStack spacing={6} pt={6} width="100%">
         {isLoading && skeletons}

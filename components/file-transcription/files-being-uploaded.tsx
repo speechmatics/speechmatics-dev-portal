@@ -1,13 +1,18 @@
 import { Box, Progress, VStack } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
+import { useRef } from 'react';
 import { pluralize } from '../../utils/string-utils';
 import { fileTranscriptionFlow } from '../../utils/transcribe-store-flow';
 
 
-export default observer(function FilesBeingUploaded({ }) {
+interface FilesBeingUploadedProps {
+  forceGetJobs: () => void;
+}
+
+export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeingUploadedProps) {
   const count = fileTranscriptionFlow.store.uploadedFiles.length;
 
-  console.log('FilesBeingUploaded count', count);
+  useTrackUploadedJobs(count, forceGetJobs);
 
   return <>{count > 0 &&
     <VStack width='100%' p={2}>
@@ -16,3 +21,16 @@ export default observer(function FilesBeingUploaded({ }) {
     </VStack>}
   </>
 })
+
+
+export const useTrackUploadedJobs = (jobsCount: number, forceGetJobs: () => void) => {
+  const recentJobsCount = useRef<number>(0);
+
+  if (jobsCount < recentJobsCount.current) {
+    forceGetJobs();
+    recentJobsCount.current = jobsCount;
+  }
+
+  if (recentJobsCount.current == 0) recentJobsCount.current = jobsCount;
+
+}

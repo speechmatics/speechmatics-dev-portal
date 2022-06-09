@@ -21,6 +21,7 @@ export default observer(function Transcribe({ }) {
 
   useEffect(() => {
     flow.reset();
+    return () => flow.reset();
   }, [])
 
   return (
