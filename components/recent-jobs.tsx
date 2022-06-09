@@ -65,18 +65,16 @@ export const RecentJobs = observer(() => {
     (job, format: TranscriptFormat) => {
       if (idToken) {
         callGetTranscript(idToken, job.jobId, format).then((response) => {
-          if (!!response) {
-            setActiveJob({
-              date: job.date,
-              jobId: job.jobId,
-              accuracy: job.accuracy,
-              language: job.language,
-              transcriptionText: response,
-              fileName: job.fileName,
-            });
-            console.log(activeJob);
-            setTranscriptOpen(true);
-          }
+          setActiveJob({
+            date: job.date,
+            jobId: job.jobId,
+            accuracy: job.accuracy,
+            language: job.language,
+            transcriptionText: response,
+            fileName: job.fileName,
+          });
+          console.log(activeJob);
+          setTranscriptOpen(true);
         });
       }
     },

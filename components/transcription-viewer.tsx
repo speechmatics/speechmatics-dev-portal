@@ -33,7 +33,7 @@ export const TranscriptionViewer = ({
       <Stat title='Language:' value={getFullLanguageName(language)} />
     </HStack>
     <Box flex='1' maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300'>
-      {transcriptionText}
+      {transcriptionText ? transcriptionText : '(Transcript is empty)'}
     </Box>
     <Grid width='100%' gap={4} p={4} borderTop='1px' borderColor='smBlack.200'
       gridTemplateColumns='repeat(auto-fit, minmax(14em, 1fr))'>
