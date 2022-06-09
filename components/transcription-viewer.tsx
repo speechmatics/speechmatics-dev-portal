@@ -1,12 +1,9 @@
-import { BoxProps, VStack, HStack, Box, Button, Menu, MenuButton, Text, Flex, Grid } from "@chakra-ui/react";
+import { BoxProps, VStack, HStack, Box, Button, Menu, MenuButton, Text, useBreakpointValue, Grid } from "@chakra-ui/react";
 import { formatTimeDateFromString } from "../utils/date-utils";
 import { capitalizeFirstLetter } from "../utils/string-utils";
 import { getFullLanguageName } from "../utils/transcribe-elements";
 import { CopyIcon, DownloadIcon } from "./icons-library";
 import { TranscriptDownloadMenu } from "./transcript-download-menu";
-
-
-
 
 export type TranscriptionViewerProps = {
   transcriptionText: string;
@@ -22,7 +19,7 @@ export const TranscriptionViewer = ({
   transcriptionText, fileName, date,
   jobId, accuracy, language,
   transcMaxHeight = '10em', ...boxProps }: TranscriptionViewerProps) => {
-
+  
   return <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
     <HStack justifyContent='space-between' width='100%' px={6} py={3} bgColor='smNavy.200'
       borderBottom='1px'

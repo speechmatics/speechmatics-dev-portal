@@ -191,7 +191,7 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
     const newItem: JobElementProps = {
       id: item.id,
       status: item.status,
-      date: new Date(item.created_at),
+      date: item.created_at,
       duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
       language: item.config?.transcription_config?.language,
@@ -244,7 +244,7 @@ const createSet = (first: JobElementProps[], second: JobElementProps[], add: boo
 export type JobElementProps = {
   status: 'running' | 'completed' | 'done' | 'rejected';
   fileName: string;
-  date: Date;
+  date: string;
   accuracy?: string;
   duration: string;
   language?: string;

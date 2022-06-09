@@ -5,6 +5,7 @@ import {
   Button,
   SkeletonCircle,
   SkeletonText,
+  Text,
   Spinner,
   Tooltip,
   Menu,
@@ -34,6 +35,7 @@ import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
+import { formatTimeDateFromString } from '../utils/date-utils'
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -48,6 +50,11 @@ export const RecentJobs = observer(() => {
   const breakVal = useBreakpointValue({
     base: false,
     xl: true,
+  });
+
+  const mediumBreak = useBreakpointValue({
+    base: false,
+    md: true,
   });
 
   const {
@@ -74,7 +81,6 @@ export const RecentJobs = observer(() => {
             transcriptionText: response,
             fileName: job.fileName,
           });
-          console.log(activeJob);
           setTranscriptOpen(true);
         });
       }
@@ -163,22 +169,23 @@ export const RecentJobs = observer(() => {
         onClose={() => setTranscriptOpen(false)}
       >
         <ModalOverlay rounded="none" />
-        <ModalContent p={4} rounded="none">
+        <ModalContent minH={600} px={breakVal ? 4 : 0} py={mediumBreak ? 4 : 0} rounded="none">
           <ModalHeader fontSize="2em" textAlign="center">
-            Transcription of "{activeJob?.fileName}"
+            <Text overflow="hidden" noOfLines={2} >
+              Transcription of "{activeJob?.fileName}"
+            </Text>
           </ModalHeader>
           <ModalCloseButton
-            _hover={{ bg: 'smBlack.200' }}
+            _hover={breakVal ? { bg: 'smBlack.200' } : null}
             _focus={{}}
-            _active={{ bg: 'smBlack.300' }}
-            position="absolute"
-            rounded="full"
-            bg="smWhite.500"
-            border="2px solid"
+            _active={breakVal ? { bg: 'smBlack.300' } : null}
+            rounded={breakVal ? "full" : null }
+            bg={breakVal ? "smWhite.500" : null}
+            border={breakVal ? "2px solid" : null}
             borderColor="smBlack.300"
-            color="smBlack.300"
-            top={-4}
-            right={-4}
+            color={breakVal ? "smBlack.300" : null}
+            top={breakVal ? -4 : null}
+            right={breakVal ? -4 : null}
           />
           <ModalBody>
             <TranscriptionViewer {...activeJob} transcMaxHeight="25vh" />
@@ -242,7 +249,7 @@ const RecentJobElement = ({
               <>
                 <Box flex={2} fontFamily="RMNeue-bold" whiteSpace="nowrap">
                   <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
-                    {date ? formatDate(date) : 'Unknown'}
+                    {date ? formatTimeDateFromString(date) : 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
@@ -298,7 +305,7 @@ const RecentJobElement = ({
         <HStack color="smNavy.350" spacing={4} width="100%" justifyContent="space-between">
           <Box maxW="150px" flex={1} fontFamily="RMNeue-bold" whiteSpace="nowrap" fontSize="0.8em">
             <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Time Submitted">
-              {date ? formatDate(date) : 'Unknown'}
+              {date ? formatTimeDateFromString(date) : 'Unknown'}
             </Tooltip>
           </Box>
           <HStack width="140px">
@@ -441,7 +448,7 @@ const IconButtons = ({
                 jobId: id,
                 language,
                 accuracy,
-                date: formatDate(date),
+                date: formatTimeDateFromString(date),
                 fileName,
               },
               'txt'
@@ -485,22 +492,6 @@ const statusColour = {
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400',
-};
-
-const formatDate = (date) => {
-  let string = `${date.getUTCDate()} ${date.toLocaleString('default', {
-    month: 'short',
-  })} ${date.getFullYear()}`;
-  let hours = date.getHours();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  string += ` ${hours}:`;
-  let minutes = date.getUTCMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  return (string += minutes);
 };
 
 const mapLanguages = (lang) => {
