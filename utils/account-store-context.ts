@@ -139,7 +139,7 @@ class AccountContext {
       })
       .catch((err) => {
         console.log(err);
-        errToast(`while fetching account: ${err}`);
+        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
         console.error(err);
       });
