@@ -1,4 +1,3 @@
-import { createStandaloneToast } from '@chakra-ui/react';
 import { makeAutoObservable } from 'mobx';
 import { callGetTranscript, callRequestFileTranscription, callRequestJobStatus } from './call-api';
 import {
@@ -9,8 +8,6 @@ import {
   FlowError,
   checkIfFileCorrectType,
 } from './transcribe-elements';
-
-const toast = createStandaloneToast({});
 
 export class FileTranscriptionStore {
   _language: string = 'en';
@@ -56,14 +53,16 @@ export class FileTranscriptionStore {
   _stage: Stage = 'form';
   set stage(value: Stage) {
     this._stage = value;
-    setTimeout(() => (this._stageDelayed = value), 500);
+    setTimeout(() => (this.stageDelayed = value), 500);
   }
   get stage(): Stage {
     return this._stage;
   }
 
   _stageDelayed: Stage = 'form';
-
+  set stageDelayed(value: Stage) {
+    this._stageDelayed = value;
+  }
   get stageDelayed(): Stage {
     return this._stageDelayed;
   }
@@ -106,6 +105,14 @@ export class FileTranscriptionStore {
   }
   get error(): FlowError | null {
     return this._error;
+  }
+
+  _errorDetail: string = '';
+  set errorDetail(value: string) {
+    this._errorDetail = value;
+  }
+  get errorDetail(): string {
+    return this._errorDetail;
   }
 
   constructor() {
@@ -154,23 +161,51 @@ class FileTranscribeFlow {
     }
   }
 
-  async attemptSendFile(idToken) {
+  attemptSendFile(idToken: string) {
     const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
 
-    const resp = await callRequestFileTranscription(idToken, _file, language, accuracy, separation);
+    callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
+      (resp) => {
+        console.log('attemptSendFile then', resp);
 
-    if (resp && 'id' in resp) {
-      this.store.jobId = resp.id;
-      this.store.stage = 'pendingTranscription';
+        if (resp && 'id' in resp) {
+          this.store.jobId = resp.id;
+          this.store.stage = 'pendingTranscription';
+          this.runStatusPolling(idToken);
+        } else {
+          //todo gotten unexpected response
+        }
+      },
+      (error) => {
+        console.log('attemptSendFile error', error);
+        this.store.stage = 'failed';
+        if (
+          error.response.code == 403 &&
+          error.response.detail?.endsWith('Your limit is 2 hours.')
+        ) {
+          this.store.error = FlowError.BeyondFreeQuota;
+        } else if (
+          error.response.code == 403 &&
+          error.response.detail?.endsWith('Your limit is 1000 hours.')
+        ) {
+          this.store.error = FlowError.BeyondAllowedQuota;
+        } else if (
+          error.response.code == 403 &&
+          error.response.detail?.startsWith('Entitlement check failed')
+        ) {
+          this.store.error = FlowError.ContractExpired;
+        } else if (error.response.code == 403) {
+          this.store.error = FlowError.UndefinedForbiddenError;
+        } else {
+          this.store.error = FlowError.UndefinedError;
+        }
 
-      this.runStatusPolling(idToken);
-    } else {
-      //todo handle errors
-      toast({ description: 'error' });
-    }
+        this.store.errorDetail = error.response?.detail || '';
 
-    //check server response if all right, does it send 4xx when wrong?
+        //add BeyondAllowedQuota, FileTooBig, FileWrongType
+      }
+    );
   }
 
   interv = 0;

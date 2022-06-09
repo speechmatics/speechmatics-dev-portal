@@ -70,10 +70,7 @@ export const callGetTranscript = async (
   );
 };
 
-export const callGetDataFile = async (
-  idToken: string,
-  jobId: string,
-) => {
+export const callGetDataFile = async (idToken: string, jobId: string) => {
   return callRuntime(
     idToken,
     `${RUNTIME_API_URL}/jobs/${jobId}/data`,
@@ -81,7 +78,7 @@ export const callGetDataFile = async (
     null,
     null,
     'application/json',
-    true,
+    true
   );
 };
 
@@ -209,8 +206,8 @@ export const call = async (
     apiEndpoint = `${apiEndpoint}?${getParams(query)}`;
   }
 
-  return fetch(apiEndpoint, options)
-    .then(async (response) => {
+  return fetch(apiEndpoint, options).then(
+    async (response) => {
       console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
       if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
@@ -218,22 +215,33 @@ export const call = async (
         throw { status: 'error', error: { type: 'runtime-auth' } };
       }
       if (response.status != 200 && response.status != 201) {
-        throw { status: 'error', error: { type: '', status: response.status } };
+        const throwObj = {
+          status: 'error',
+          error: { type: 'request-error', status: response.status },
+          response: await response.json(),
+        };
+        console.error(
+          `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
+        );
+        throw throwObj;
       }
 
       if (response.body == null) {
         return null;
       }
       if (isBlob) {
-        return response.blob()
+        return response.blob();
       }
       return isPlain ? response.text() : response.json();
-    })
-    .catch((error) => {
-      console.log(error);
+    },
+    (error) => {
+      console.log('fetch error', error);
+      //only happens when something goes wrong with the function fetch not a specific response,
+      // the responses should be cought in the following catch block on this promise
       errToast(`fetch error on ${apiEndpoint} occured`);
-      return { status: 'error', error: { type: error.type } };
-    });
+      throw { status: 'error', error: { type: error.type } };
+    }
+  );
 };
 
 function getParams(paramsObj: { [key: string]: string | number }) {

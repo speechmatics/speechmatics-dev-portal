@@ -10,8 +10,8 @@ import { FileUploadComponent, SelectField, FileProcessingProgress } from "../com
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-auth-flow";
-import { humanFileSize } from "../utils/string-utils";
-import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
+import { capitalizeFirstLetter, humanFileSize } from "../utils/string-utils";
+import { languagesData, separation, accuracyModels, FlowError } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
 
 
@@ -135,10 +135,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       subtitle={<>Status of your job (ID: {jobId.toLowerCase()}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
       </>}
-      subtitle2={<>You have reached your monthly usage limit. Please
-        {' '}<Link href='/manage-billing'>
-          <a className="text_link">Add a Payment Card</a>
-        </Link> to increase your limit.</>}
+      subtitle2={handleErrors(store)}
     />}
 
     {stage == 'complete' && <PendingLabelsSlots
@@ -154,13 +151,13 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     </>}
 
     {
-    stageDelayed == 'complete' &&
+      stageDelayed == 'complete' &&
       <Box w={["50%", "100%"]} >
         <TranscriptionViewer my={4} fileName={fileName} date={store.dateSubmitted} jobId={store.jobId}
           accuracy={store.accuracy} language={store.language}
           transcriptionText={store.transcriptionText} className="fadeIn" />
-      </Box>    
-      }
+      </Box>
+    }
 
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
@@ -183,6 +180,32 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
   </Box>
 
   <Box color='smNavy.400' fontSize='1.2em'>{subtitle}</Box>
-  <Box textAlign='center' color='smBlack.300'>{subtitle2}</Box>
+  <Box textAlign='center' color='smBlack.300' pt={1}>{subtitle2}</Box>
 </>
 )
+
+
+const handleErrors = (store: FileTranscriptionStore) => {
+
+  if (store.error == FlowError.BeyondFreeQuota)
+    return <>You have reached your monthly usage limit. Please
+      {' '}<Link href='/manage-billing'>
+        <a className="text_link">Add a Payment Card</a>
+      </Link> to increase your limit.</>
+
+  if (store.error == FlowError.BeyondAllowedQuota)
+    return <>You have reached your monthly usage limit. Please
+      {' '}<Link href='https://www.speechmatics.com/about-us/contact'>
+        <a className="text_link">Contact Us</a>
+      </Link> to increase your limit.</>
+
+  if (store.error == FlowError.UndefinedError || store.error == FlowError.UndefinedForbiddenError)
+    return <>{capitalizeFirstLetter(store.errorDetail)}</>
+
+  //all other cases
+  return <>{capitalizeFirstLetter(store.errorDetail)}</>
+}
+
+/*Non-paying user: "You have reached your monthly usage limit. Please Add a Payment Card to increase your limit."
+
+Paying user: "You have reached your monthly usage limit. Please Contact Us to increase your limit."*/

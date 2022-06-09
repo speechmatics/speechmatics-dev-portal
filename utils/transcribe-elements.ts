@@ -30,6 +30,11 @@ export const enum FlowError {
   FileWrongType,
   ServerFileReceivedWrong,
   ServerJobFailed,
+  BeyondFreeQuota,
+  BeyondAllowedQuota,
+  ContractExpired,
+  UndefinedForbiddenError,
+  UndefinedError,
 }
 
 export const checkIfFileCorrectType = (file: File) =>
