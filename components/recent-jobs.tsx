@@ -25,7 +25,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
 import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner } from './common';
-import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon } from './icons-library';
+import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon, ViewTranscriptionIcon, DownloadJobIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
 import { capitalizeFirstLetter } from '../utils/string-utils';
@@ -184,7 +184,7 @@ export const RecentJobs = observer(() => {
             _hover={breakVal ? { bg: 'smBlack.200' } : null}
             _focus={{}}
             _active={breakVal ? { bg: 'smBlack.300' } : null}
-            rounded={breakVal ? "full" : null }
+            rounded={breakVal ? "full" : null}
             bg={breakVal ? "smWhite.500" : null}
             border={breakVal ? "2px solid" : null}
             borderColor="smBlack.300"
@@ -288,10 +288,13 @@ const RecentJobElement = ({
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
-          <HStack flex={2}>
-            <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
-            <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
-          </HStack>
+          <Tooltip label={status == 'running' ? 'The media is still being transcribed.' : null} hasArrow>
+            <HStack flex={2}>
+              {status == 'running' ? <Spinner size='xs' height='9px' width='9px' color='smOrange.500' /> :
+                <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />}
+              <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+            </HStack>
+          </Tooltip>
           {breakVal ? (
             <IconButtons
               onOpenTranscript={onOpenTranscript}
@@ -417,7 +420,7 @@ const IconButtons = ({
             variant="ghost"
             aria-label="view"
             icon={
-              <DownloadIcon
+              <DownloadJobIcon
                 fontSize={20}
                 color={
                   status === ('running' || 'rejected')
@@ -451,7 +454,7 @@ const IconButtons = ({
           }
           _focus={{ boxShadow: 'none' }}
           icon={
-            <ViewEyeIcon
+            <ViewTranscriptionIcon
               fontSize="22"
               color={
                 status === ('running' || 'rejected')
