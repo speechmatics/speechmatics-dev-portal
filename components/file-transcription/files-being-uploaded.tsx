@@ -1,6 +1,6 @@
 import { Box, Progress, VStack } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { pluralize } from '../../utils/string-utils';
 import { fileTranscriptionFlow } from '../../utils/transcribe-store-flow';
 import { ErrorBanner } from '../common';
@@ -15,6 +15,12 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
   const { uploadErrors } = fileTranscriptionFlow.store;
 
   useTrackUploadedJobs(count, forceGetJobs);
+
+  useEffect(() => {
+    return () => {
+      fileTranscriptionFlow.store.uploadErrors = []
+    }
+  }, [])
 
   return <>{count > 0 &&
     <VStack width='100%' p={2}>
