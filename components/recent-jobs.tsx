@@ -63,6 +63,7 @@ export const RecentJobs = observer(() => {
     noMoreJobs,
     onDeleteJob,
     forceGetJobs,
+    errorGettingNewJob,
   } = useJobs(pageLimit, page);
 
   const onOpenTranscript = useCallback(
@@ -113,6 +114,7 @@ export const RecentJobs = observer(() => {
 
       <FilesBeingUploaded forceGetJobs={forceGetJobs} />
 
+      {errorGettingNewJob && <ErrorBanner text="We couldn't get your recently uploaded jobs." />}
       <VStack spacing={6} pt={6} width="100%">
         {isLoading && skeletons}
         {!errorOnInit &&

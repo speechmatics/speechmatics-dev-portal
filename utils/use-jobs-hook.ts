@@ -10,6 +10,7 @@ export const useJobs = (limit, page) => {
   const [isWaitingOnMore, setIsWaitingOnMore] = useState<boolean>(false);
   const [errorOnInit, setErrorOnInit] = useState<boolean>(false);
   const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
+  const [errorGettingNewJob, setErrorGettingNewJob] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [isPolling, setIsPolling] = useState<boolean>(false);
 
@@ -86,16 +87,16 @@ export const useJobs = (limit, page) => {
       idToken,
       jobs,
       setJobs,
-      createdBefore,
-      setCreatedBefore,
+      null,
+      () => {},
       limit,
       noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
-      setIsLoading,
-      setErrorOnInit
+      () => {},
+      setErrorGettingNewJob
     );
-  }, [createdBefore, idToken, limit, noMoreJobs]);
+  }, [idToken, jobs]);
 
   return {
     jobs,
@@ -107,6 +108,7 @@ export const useJobs = (limit, page) => {
     noMoreJobs,
     onDeleteJob,
     forceGetJobs,
+    errorGettingNewJob,
   };
 };
 
@@ -121,7 +123,7 @@ const getJobs = (
   setNoMoreJobs: Dispatch<boolean>,
   setIsPolling: Dispatch<boolean>,
   loadingFunction: Dispatch<boolean>,
-  errorFunction: Dispatch<boolean>,
+  errorFunction: Dispatch<boolean>
 ) => {
   let isActive = true;
   if (idToken && !noMoreJobs) {
@@ -146,7 +148,7 @@ const getJobs = (
             const formatted: JobElementProps[] = formatJobs(respJson.jobs);
             const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
-            setJobs(combinedArrays);
+            setJobs([...combinedArrays]);
             if (combinedArrays.some((item) => item.status === 'running')) {
               setIsPolling(true);
             } else {
@@ -268,7 +270,8 @@ const createSet = (
       first[index] = item;
     }
   }
-  return first;
+
+  return first.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 export type JobElementProps = {
