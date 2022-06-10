@@ -106,7 +106,7 @@ export const RecentJobs = observer(() => {
     <>
       {!isLoading && jobs?.length !== 0 && (
         <WarningBanner
-          text="Transcriptions and audio files are automatically deleted after 7 days."
+          text="Transcriptions and media files are automatically deleted after 7 days."
           width="100%"
           centered
         />
@@ -262,12 +262,12 @@ const RecentJobElement = ({
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Duration">
+                  <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Media Duration">
                     {duration || 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Audio Language">
+                  <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Media Language">
                     {language ? mapLanguages(language) : 'Unknown'}
                   </Tooltip>
                 </Box>

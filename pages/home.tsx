@@ -21,7 +21,7 @@ export default function Home({ }) {
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
             iconPadding="22px"
-            text="Upload and Transcribe an Audio File"
+            text="Upload and Transcribe an Media File"
             buttonLabel="Transcribe Now"
             hrefUrl="/transcribe/"
           />
@@ -37,7 +37,7 @@ export default function Home({ }) {
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
-            title="Manage API Keys"
+            title="Manage Access"
             description="You need to create an API key to make API requests."
             buttonLabel="Create API Key"
             hrefUrl="/manage-access/"

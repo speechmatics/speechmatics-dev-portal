@@ -22,7 +22,7 @@ const menuData = [
   },
   {
     path: '/getting-started/',
-    title: 'Start with API',
+    title: 'Start Using API',
     icon: MenuGettingStartedIcon,
   },
   {

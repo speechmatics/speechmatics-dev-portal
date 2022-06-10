@@ -268,7 +268,7 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
       style={{ transform: 'translate(0, -50%)', animationDuration: stageProps.animDur }}
       className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`} />
 
-    <ProgressPoint status={stageProps.step1} label='Audio Uploading' posX="15%" step='1' />
+    <ProgressPoint status={stageProps.step1} label='Media Uploading' posX="15%" step='1' />
     <ProgressPoint status={stageProps.step2} label='Running Transcription' posX="50%" step='2' />
     <ProgressPoint status={stageProps.step3} label='Transcription Complete' posX="85%" step='3' />
   </Box>

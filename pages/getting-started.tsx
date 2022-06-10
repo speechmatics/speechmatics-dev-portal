@@ -29,7 +29,7 @@ export default observer(function GettingStarted({ }) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Start with API"
+        headerLabel="Start Using API"
         introduction="Start using our speech-to-text SaaS in a few simple steps."
       />
 

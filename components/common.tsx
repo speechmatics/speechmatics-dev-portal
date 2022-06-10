@@ -386,7 +386,7 @@ export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
         style={{ textDecoration: 'none' }}
       >
         <Button variant="speechmaticsOutline" mt="0em">
-          View Pricing
+          Pricing
         </Button>
       </Link>
     </Flex>
