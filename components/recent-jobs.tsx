@@ -150,7 +150,7 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {noMoreJobs && jobs.length > 10 && <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
+        {noMoreJobs && jobs.length > pageLimit && <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
           The page is showing the full list.
         </Box>}
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
