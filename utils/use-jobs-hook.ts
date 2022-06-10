@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback, Dispatch } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
@@ -65,7 +65,7 @@ export const useJobs = (limit, page) => {
   }, [page]);
 
   // could/should this be memoized? Not sure
-  const onDeleteJob = (id, force) => {
+  const onDeleteJob = (id: string, force: boolean) => {
     if (idToken) {
       callDeleteJob(idToken, id, force)
         .then((response) => {
@@ -111,17 +111,17 @@ export const useJobs = (limit, page) => {
 };
 
 const getJobs = (
-  idToken,
-  jobs,
-  setJobs,
-  createdBefore,
-  setCreatedBefore,
-  limit,
-  noMoreJobs,
-  setNoMoreJobs,
-  setIsPolling,
-  loadingFunction,
-  errorFunction
+  idToken: string,
+  jobs: JobElementProps[],
+  setJobs: Dispatch<JobElementProps[]>,
+  createdBefore: string,
+  setCreatedBefore: Dispatch<string>,
+  limit: number,
+  noMoreJobs: boolean,
+  setNoMoreJobs: Dispatch<boolean>,
+  setIsPolling: Dispatch<boolean>,
+  loadingFunction: Dispatch<boolean>,
+  errorFunction: Dispatch<boolean>,
 ) => {
   let isActive = true;
   if (idToken && !noMoreJobs) {
@@ -167,7 +167,14 @@ const getJobs = (
   };
 };
 
-const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
+const pollJobStatuses = (
+  idToken: string,
+  jobs: JobElementProps[],
+  setJobs: Dispatch<JobElementProps[]>,
+  isPolling: boolean,
+  setIsPolling: Dispatch<boolean>,
+  maxlimit: number
+) => {
   let isActive = true;
   if (idToken && isPolling) {
     let newJobs = [];
@@ -175,12 +182,12 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
     const requestNo = Math.ceil(jobs.length / maxlimit);
     if (requestNo !== 1) {
       for (let i = 0; i < requestNo; i++) {
-        let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
+        let createdBeforeTime = jobs[maxlimit * i]?.date;
         let query = { limit: maxlimit, created_before: createdBeforeTime };
         requests.push(callGetJobs(idToken, query));
       }
     } else {
-      let createdBeforeTime = jobs[0]?.date?.toISOString();
+      let createdBeforeTime = jobs[0]?.date;
       let query = { limit: jobs.length, created_before: createdBeforeTime };
       requests.push(callGetJobs(idToken, query));
     }
@@ -191,7 +198,7 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
             newJobs = [...newJobs, ...res.jobs];
           }
         }
-        const formatted = formatJobs(newJobs);
+        const formatted: JobElementProps[] = formatJobs(newJobs);
         const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
         setJobs([...combinedArrays]);
         if (!combinedArrays.some((item) => item.status === 'running')) {
@@ -205,7 +212,7 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
   };
 };
 
-const formatJobs = (jobsResponse: JobsResponse[]) => {
+const formatJobs = (jobsResponse: JobsResponse[]): JobElementProps[] => {
   const formattedJobs: JobElementProps[] = jobsResponse.map((item) => {
     const newItem: JobElementProps = {
       id: item.id,
@@ -225,7 +232,7 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
   return formattedJobs;
 };
 
-const formatDuration = (duration) => {
+const formatDuration = (duration: string): string => {
   const seconds = parseInt(duration);
   if (seconds < 60) {
     return `${seconds} second${seconds !== 1 ? 's' : ''}`;
@@ -248,7 +255,11 @@ const formatDuration = (duration) => {
 // JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set
 // Therefore, I created a custom function to return a set of job objects
 // The add arg allows us to combine arrays when getting jobs and only update current jobs for polling
-const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
+const createSet = (
+  first: JobElementProps[],
+  second: JobElementProps[],
+  add: boolean
+): JobElementProps[] => {
   for (const item of second) {
     const index = first.findIndex((el) => el.id === item.id);
     if (index === -1 && add) {
