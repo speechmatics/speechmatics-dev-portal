@@ -35,7 +35,7 @@ export function TranscribeIcon({ mono, ...props }: { mono?: boolean } & React.SV
   );
 }
 
-export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
+/* export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="1em"
@@ -56,7 +56,7 @@ export function BinIcon(props: React.SVGProps<SVGSVGElement>) {
       </g>
     </svg>
   );
-}
+} */
 
 export function StopIcon(props) {
   return (
@@ -92,13 +92,12 @@ export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
         cy={23}
         r={15.513}
         transform="rotate(-45 23 23)"
-        fill="#fff"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={1.5}
       />
       <path
         d="M17.479 17.9l11.04 10.098M28.518 17.9l-11.04 10.098"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -346,7 +345,7 @@ export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { 
 )
 
 
-export const SubmitAJobIcon = (props: SVGProps<SVGSVGElement>) => (
+export const SubmitAJobIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1em"}
     height={props.height || "1em"}
@@ -1521,6 +1520,166 @@ export function ClockIcon(props: React.SVGProps<SVGSVGElement>) {
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M11.27 1.792l-9.586 9.585a1 1 0 000 1.414l9.585 9.586a1 1 0 001.414 0l9.586-9.585a1 1 0 000-1.415l-9.586-9.585a1 1 0 00-1.414 0zM12 13V7"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.987 16.11a.244.244 0 00-.237.255.254.254 0 00.25.245h.01a.248.248 0 00.221-.16.253.253 0 00-.23-.34M12 16.11h-.009"
+        stroke="#E27919"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+
+export function ViewJobsIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M35.989 3.317v5.218H0V3.317A2.66 2.66 0 012.654.663h30.68a2.652 2.652 0 012.655 2.654z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M4.501 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM7.875 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM11.249 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM35.989 5.161v20.964a2.652 2.652 0 01-2.654 2.654H2.654A2.659 2.659 0 010 26.125V5.16h35.989z"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
+      />
+      <path
+        d="M16.269 21l1.886-1.886L30.102 31.06l-1.887 1.886L16.27 21z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M21.928 27.917l3.144-3.144 7.545 7.545-3.144 3.144-7.545-7.545z"
+        fill={mono ? "#4FA9A2" : "#263243"}
+      />
+      <path
+        d="M21.929 27.916l3.144-3.144 1.257 1.257-3.144 3.144-1.257-1.257zM28.216 34.203l3.144-3.143 1.257 1.257-3.143 3.144-1.258-1.258zM5.011 17.192c0-5.402 4.38-9.781 9.781-9.781 5.402 0 9.781 4.38 9.781 9.78 0 5.402-4.38 9.782-9.78 9.782-5.402 0-9.782-4.38-9.782-9.781z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M6.79 17.192a8.003 8.003 0 1116.006 0 8.003 8.003 0 01-16.006 0z"
+        fill={mono ? "#fff" : "#FC3"}
+      />
+    </svg>
+  );
+}
+
+
+
+export function DownloadJobIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 30 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M21.444 12.187l-3.835 3.61V.992h-5.304v14.807L8.47 12.187l-3.635 3.86 10.122 9.53 10.122-9.53-3.635-3.86z"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
+      />
+      <path
+        d="M3.71 29.028h23.618v3.374H3.711v-3.374zM3.71 32.402H2.155a1.818 1.818 0 01-1.817-1.817v-7.18H3.71v8.997z"
+        fill={mono ? "#4FA9A2" : "#5E6673"}
+      />
+      <path
+        d="M27.76 32.402h-1.556v-8.997h3.374v7.18a1.817 1.817 0 01-1.818 1.817z"
+        fill={mono ? "#4FA9A2" : "#5E6673"}
+      />
+    </svg>
+  );
+}
+
+
+export function ViewTranscriptionIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 38 37"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M18.918 9.66c-6.748 0-13.496 4.205-18.115 8.997 4.619 4.792 11.367 8.997 18.114 8.997 6.748 0 13.496-4.205 18.115-8.997-4.619-4.792-11.367-8.997-18.114-8.997z"
+        fill={mono ? "#A7D0CD" : "#D1D7DC"}
+      />
+      <path
+        d="M12.015 18.593a6.915 6.915 0 1113.831 0 6.915 6.915 0 01-13.83 0z"
+        fill="#fff"
+      />
+      <path
+        d="M14.782 18.593a4.15 4.15 0 118.3 0 4.15 4.15 0 01-8.3 0z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M18.919 16.382a2.223 2.223 0 114.446 0 2.223 2.223 0 01-4.446 0z"
+        fill="#fff"
+      />
+      <path
+        d="M17.793.663h2.249V7.41h-2.25V.663zM4.49 4.696l1.59-1.59 4.772 4.77-1.59 1.591L4.49 4.696zM28.574 9.467l-1.59-1.59 4.771-4.772 1.59 1.59-4.771 4.772zM17.793 29.904h2.249v6.747h-2.25v-6.747zM9.262 27.847l1.59 1.59-4.771 4.772-1.59-1.59 4.77-4.772zM33.345 32.619l-1.59 1.59-4.772-4.771 1.59-1.59 4.772 4.771z"
+        fill={mono ? "#4FA9A2" : "#FC3"}
+      />
+    </svg>
+  );
+}
+
+
+export function BinIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 27 37"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M.635 5.368H26.21v4.297H.635V5.368z" fill="#5E6673" />
+      <path
+        d="M22.444 36.651H4.4a2.487 2.487 0 01-2.487-2.486v-24.5H24.93v24.5a2.487 2.487 0 01-2.486 2.486z"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
+      />
+      <path
+        d="M13.576 33.45h-.308c-.621 0-1.125-.504-1.125-1.125V13.091c0-.62.504-1.124 1.125-1.124h.308c.62 0 1.125.503 1.125 1.124v19.234c0 .62-.504 1.125-1.125 1.125zM19.97 33.45h-.308c-.621 0-1.125-.504-1.125-1.125V13.091c0-.62.504-1.124 1.125-1.124h.308c.62 0 1.125.503 1.125 1.124v19.234c0 .62-.504 1.125-1.125 1.125zM7.182 33.45h-.308c-.62 0-1.124-.504-1.124-1.125V13.091c0-.62.504-1.124 1.124-1.124h.308c.621 0 1.125.503 1.125 1.124v19.234c0 .62-.504 1.125-1.125 1.125z"
+        fill={mono ? "#4FA9A2" : "#5E6673"}
+      />
+      <path
+        d="M8.307 6.902V4.3a2.512 2.512 0 012.513-2.512h5.206A2.512 2.512 0 0118.537 4.3v2.602"
+        stroke={mono ? "#4FA9A2" : "#5E6673"}
+        strokeWidth={2}
+        strokeMiterlimit={10}
       />
     </svg>
   );

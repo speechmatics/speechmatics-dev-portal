@@ -1,11 +1,5 @@
-import { createStandaloneToast } from '@chakra-ui/react';
 import { makeAutoObservable } from 'mobx';
-import {
-  callFileTranscriptionSecret,
-  callRequestFileTranscription,
-  callRequestJobStatus,
-  callRequestJobTranscription,
-} from './call-api';
+import { callGetTranscript, callRequestFileTranscription, callRequestJobStatus } from './call-api';
 import {
   Accuracy,
   Separation,
@@ -14,8 +8,6 @@ import {
   FlowError,
   checkIfFileCorrectType,
 } from './transcribe-elements';
-
-const toast = createStandaloneToast({});
 
 export class FileTranscriptionStore {
   _language: string = 'en';
@@ -61,14 +53,16 @@ export class FileTranscriptionStore {
   _stage: Stage = 'form';
   set stage(value: Stage) {
     this._stage = value;
-    setTimeout(() => (this._stageDelayed = value), 500);
+    setTimeout(() => (this.stageDelayed = value), 500);
   }
   get stage(): Stage {
     return this._stage;
   }
 
   _stageDelayed: Stage = 'form';
-
+  set stageDelayed(value: Stage) {
+    this._stageDelayed = value;
+  }
   get stageDelayed(): Stage {
     return this._stageDelayed;
   }
@@ -113,8 +107,28 @@ export class FileTranscriptionStore {
     return this._error;
   }
 
+  _errorDetail: string = '';
+  set errorDetail(value: string) {
+    this._errorDetail = value;
+  }
+  get errorDetail(): string {
+    return this._errorDetail;
+  }
+
+  _uploadErrors: string[] = [];
+  set uploadErrors(value: string[]) {
+    this._uploadErrors = value;
+  }
+  get uploadErrors(): string[] {
+    return this._uploadErrors;
+  }
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  addUploadError(error: string) {
+    this._uploadErrors.push(error)
   }
 
   resetStore() {
@@ -129,6 +143,7 @@ export class FileTranscriptionStore {
     this.transcriptionText = '';
     this.dateSubmitted = '';
     this.error = null;
+    this.uploadErrors = []
   }
 
   get fileName() {
@@ -138,19 +153,28 @@ export class FileTranscriptionStore {
   get fileSize() {
     return this._file?.size;
   }
+
+  _uploadedFiles: File[] = [];
+  set uploadedFiles(value: File[]) {
+    this._uploadedFiles = value;
+  }
+  get uploadedFiles(): File[] {
+    return this._uploadedFiles;
+  }
+
+  addFileToUploading(file: File) {
+    this.uploadedFiles = [file, ...this.uploadedFiles];
+  }
+
+  removeFileFromUploading(file: File) {
+    this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
+  }
 }
 
 class FileTranscribeFlow {
   store = new FileTranscriptionStore();
 
-  async fetchSecret(idToken: string) {
-    try {
-      const json = await callFileTranscriptionSecret(idToken);
-      this.store.secretKey = json.key;
-    } catch (err) {
-      this.store.error = FlowError.CouldntFetchSecret;
-    }
-  }
+  savedIdToken: string = '';
 
   assignFile(file: File) {
     if (file == null) {
@@ -168,44 +192,99 @@ class FileTranscribeFlow {
     }
   }
 
-  async attemptSendFile() {
-    const { secretKey, _file, language, accuracy, separation } = this.store;
-
+  attemptSendFile(idToken: string) {
+    const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
+    this.savedIdToken = idToken;
 
-    const resp = await callRequestFileTranscription(
-      secretKey,
-      _file,
-      language,
-      accuracy,
-      separation
+    this.store.addFileToUploading(_file);
+
+    callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
+      this.getResponseFn(_file),
+      this.getErrorFn(_file)
     );
+  }
+
+  getResponseFn(file: File) {
+    const store = this.store;
+    const owner = this;
+    return function (resp: any) {
+      console.log('getResponseFn closure', resp, store.stage, file !== store.file);
+      owner.store.removeFileFromUploading(file);
+
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
+
+      owner.callRequestSuccess(resp);
+    };
+  }
+
+  callRequestSuccess(resp: any) {
+    console.log('callRequestSuccess', resp, this.store.stage);
+
+    //dont act on it when we're not waiting for it
+    if (this.store.stage != 'pendingFile') return;
 
     if (resp && 'id' in resp) {
       this.store.jobId = resp.id;
       this.store.stage = 'pendingTranscription';
-
-      this.runStatusPolling();
+      this.runStatusPolling(this.savedIdToken);
     } else {
-      //todo handle errors
-      toast({ description: 'error' });
+      //todo gotten unexpected response
     }
+  }
 
-    //check server response if all right, does it send 4xx when wrong?
+  getErrorFn(file: File) {
+    const store = this.store;
+    const owner = this;
+    return function (resp: any) {
+      store.addUploadError("Error uploading " + file.name + ": " + resp.response.detail)
+      owner.store.removeFileFromUploading(file);
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
+
+      owner.callError(resp);
+    };
+  }
+
+  callError(error: any) {
+    console.log('attemptSendFile error', error);
+    if (this.store.stage != 'pendingFile') return;
+
+    this.store.stage = 'failed';
+    if (error.response.code == 403 && error.response.detail?.endsWith('Your limit is 2 hours.')) {
+      this.store.error = FlowError.BeyondFreeQuota;
+    } else if (
+      error.response.code == 403 &&
+      error.response.detail?.endsWith('Your limit is 1000 hours.')
+    ) {
+      this.store.error = FlowError.BeyondAllowedQuota;
+    } else if (
+      error.response.code == 403 &&
+      error.response.detail?.startsWith('Entitlement check failed')
+    ) {
+      this.store.error = FlowError.ContractExpired;
+    } else if (error.response.code == 403) {
+      this.store.error = FlowError.UndefinedForbiddenError;
+    } else {
+      this.store.error = FlowError.UndefinedError;
+    }
+    this.store.errorDetail = error.response?.detail || '';
+    //add BeyondAllowedQuota, FileTooBig, FileWrongType
   }
 
   interv = 0;
 
-  runStatusPolling() {
-    const { secretKey, jobId } = this.store;
+  runStatusPolling(idToken) {
+    const { jobId } = this.store;
 
     this.interv = window.setInterval(async () => {
-      const resp = await callRequestJobStatus(secretKey, jobId);
+      const resp = await callRequestJobStatus(idToken, jobId);
       const status = (this.store.jobStatus = resp.job.status);
       if (status === 'done') {
         this.store.dateSubmitted = resp.job.created_at;
         this.store.stage = 'complete';
-        this.fetchTranscription();
+        this.fetchTranscription(idToken);
       }
       if (status === 'rejected') {
         this.store.stage = 'failed';
@@ -219,15 +298,16 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  async fetchTranscription() {
-    const { secretKey, jobId } = this.store;
+  async fetchTranscription(idToken) {
+    const { jobId } = this.store;
 
-    const transcr = await callRequestJobTranscription(secretKey, jobId, 'txt');
+    const transcr = await callGetTranscript(idToken, jobId, 'text');
 
     this.store.transcriptionText = transcr;
   }
 
   reset() {
+    this.stopPolling();
     this.store.resetStore();
   }
 }

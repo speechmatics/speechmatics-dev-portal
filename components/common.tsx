@@ -17,9 +17,6 @@ import {
   VStack,
   createStandaloneToast,
   useBreakpointValue,
-  Menu,
-  MenuButton,
-  BoxProps,
   Modal,
   ModalContent,
   ModalCloseButton,
@@ -33,8 +30,7 @@ import {
   ExclamationIcon,
   ExclamationIconLarge,
   ViewPricingIcon,
-  CopyIcon,
-  DownloadIcon,
+  WarningIcon
 } from './icons-library';
 
 import {
@@ -47,10 +43,6 @@ import {
   PaginationNext,
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
-import { formatTimeDateFromString } from '../utils/date-utils';
-import { capitalizeFirstLetter } from '../utils/string-utils';
-import { getFullLanguageName } from '../utils/transcribe-elements';
-import { TranscriptDownloadMenu } from './transcript-download-menu';
 
 export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
   <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
@@ -62,6 +54,24 @@ export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
     </Text>
   </Flex>
 );
+
+export const WarningBanner = ({ text, centered = false, ...props }) => (
+  <Flex width="100%" bg="smOrange.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
+    <Flex alignItems='center'>
+      <WarningIcon width="1.5em" height="1.5em" />
+    </Flex>
+    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+      {text}
+    </Text>
+  </Flex>
+);
+
+export const NoSomethingBanner = ({ children }) => (
+  <Flex width="100%" justifyContent="center">
+    <ExclamationIcon />
+    <Text ml="1em">{children}</Text>
+  </Flex>
+)
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',
@@ -195,6 +205,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </Box>
   );
 };
+
 
 
 export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
@@ -375,7 +386,7 @@ export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
         style={{ textDecoration: 'none' }}
       >
         <Button variant="speechmaticsOutline" mt="0em">
-          View Pricing
+          Pricing
         </Button>
       </Link>
     </Flex>
@@ -390,7 +401,8 @@ export const ConfirmRemoveModal = ({
   mainTitle,
   subTitle,
   onRemoveConfirm,
-  confirmLabel,
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel'
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -438,7 +450,7 @@ export const ConfirmRemoveModal = ({
             _hover={{ bg: 'smBlack.150' }}
             onClick={onClose}
           >
-            Cancel
+            {cancelLabel}
           </Button>
         </Flex>
       </ModalFooter>
@@ -486,7 +498,9 @@ export const positiveToast = (descr: string) =>
 
 export const AttentionBar = ({ description, data_qa = 'attentionBar', centered = false }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em" justifyContent={centered ? 'center' : ''}>
-    <ExclamationIcon />
+    <Box>
+      <ExclamationIcon />
+    </Box>
     <Text as='span' data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex={centered ? "" : "1"} >
       {description}
     </Text>
@@ -498,7 +512,7 @@ export const ErrorBanner = ({ text }) => (
   <Flex
     flexDir="column"
     width="100%"
-    bg="red.300"
+    bg="smRed.100"
     p="1em"
     mt="2em"
     align="center"
@@ -509,7 +523,7 @@ export const ErrorBanner = ({ text }) => (
       <Box>
         <ExclamationIcon width="1.5em" height="1.5em" />
       </Box>
-      <Text width="100%" color="white" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+      <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
         {text}
       </Text>
     </Flex>

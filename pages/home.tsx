@@ -8,7 +8,7 @@ import {
   MenuPadlockIcon,
   MenuTrackUsageIcon,
   TranscribeAudioIcon,
-  TranscribeIcon,
+  TranscribeIcon
 } from '../components/icons-library';
 
 export default function Home({ }) {
@@ -16,28 +16,28 @@ export default function Home({ }) {
     <Dashboard>
       <PageHeader headerLabel="Home" introduction="Welcome to the Speechmatics SaaS Portal." />
       <VStack spacing='2em' width='100%' maxWidth='900px'>
-        <HStack alignItems="stretch" spacing="2em">
+        <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='2em'>
           <HomeBox
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
             iconPadding="22px"
-            text="Upload and transcribe an audio file"
+            text="Upload and Transcribe a Media File"
             buttonLabel="Transcribe Now"
             hrefUrl="/transcribe/"
           />
           <HomeBox
             bgColor="smBlue.500"
             icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
-            text="Start using our API"
+            text="Start Using our API"
             buttonLabel="Get Started"
             hrefUrl="/getting-started/"
             iconPadding='1.5em 0em 0em 0.8em'
           />
-        </HStack>
+        </Grid>
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))' gridAutoFlow='dense' width='100%' gap='1em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
-            title="Manage API Keys"
+            title="Manage Access"
             description="You need to create an API key to make API requests."
             buttonLabel="Create API Key"
             hrefUrl="/manage-access/"

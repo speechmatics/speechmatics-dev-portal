@@ -42,9 +42,10 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
     }
 
     setIsFileTooBigError(false);
+    setIsWrongTypeError(false);
+
     onFileSelect(file);
     setFile(file);
-
   }
 
   const dropClicked = useCallback(() => {
@@ -69,9 +70,11 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
 
       <Flex gap={4} alignItems='center' style={{ strokeOpacity: 0.75 }} width='100%' justifyContent='center'>
         {!file ? <>
-          <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3.5em' width='3.5em' />
+          <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3em' width='3em' />
           <VStack alignItems='flex-start' spacing={0}>
-            <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+            <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>
+              Click here and choose a file or drag the file here.
+            </Box>
             <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
           </VStack>
         </> :
@@ -80,16 +83,18 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
               <Box><TranscribeIcon width='2em' height='2em' mono /></Box>
               <Box>File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.</Box>
             </Flex>
-            <Box cursor='pointer' onClick={removeFileClick}>
-              <RemoveFileIcon width='3em' height='3em' />
-            </Box>
+            <Tooltip label='Remove this file' hasArrow>
+              <Box cursor='pointer' onClick={removeFileClick} transition='all 0.3s' _hover={{ opacity: 0.8, transform: 'scale(1.1)' }}>
+                <RemoveFileIcon width='3em' height='3em' color="var(--chakra-colors-smBlue-700)" />
+              </Box>
+            </Tooltip>
           </Flex>}
       </Flex>
 
-      {
-        <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
-          ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />
-      }
+
+      <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
+        ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />
+
     </Flex>
     {isFileTooBigError &&
       <AttentionBar data_qa='message-file-too-big' centered
@@ -97,7 +102,7 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
 
     {isFileWrongTypeError &&
       <AttentionBar data_qa='message-file-too-big' centered
-        description='This file is the wrong type. Please upload another file.' />}
+        description='This file type is unsupported. The file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav' />}
   </VStack>
 });
 
@@ -263,39 +268,10 @@ export const FileProcessingProgress = function ({ stage, ...boxProps }: FileProc
       style={{ transform: 'translate(0, -50%)', animationDuration: stageProps.animDur }}
       className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`} />
 
-    <ProgressPoint status={stageProps.step1} label='Audio Uploading' posX="15%" step='1' />
+    <ProgressPoint status={stageProps.step1} label='Media Uploading' posX="15%" step='1' />
     <ProgressPoint status={stageProps.step2} label='Running Transcription' posX="50%" step='2' />
     <ProgressPoint status={stageProps.step3} label='Transcription Complete' posX="85%" step='3' />
   </Box>
-}
-
-
-
-
-
-
-const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
-    <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.85em'>{title} </Text>
-    <Text as='span' color='smBlack.300' fontSize='0.85em'>{value}</Text>
-  </Box>
-)
-
-
-
-
-
-
-
-
-const filesMap = (files: FileList | undefined | null): File[] => {
-  const ret: File[] = [];
-  if (files && files.length > 0)
-    for (let i = 0; i < files.length; i++)
-      if (files[i]) {
-        ret.push(files[i]);
-      }
-  return ret;
 }
 
 
@@ -305,7 +281,6 @@ export function onGridDragDropSetup(elem: HTMLElement | null,
 ) {
   if (!elem) return;
   let callbackRefs = []
-  console.log('setting up drag drop', elem);
   elem.addEventListener('dragover', callbackRefs[0] = (ev: DragEvent) => {
     ev.preventDefault();
     filesDraggedOver?.(true);

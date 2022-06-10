@@ -28,7 +28,8 @@ export default ({ tokenPayload }) => {
   const callb3 = useCallback(() => {
     console.log('calling GET /accounts to check the accounts');
     if (tokenPayload?.idToken) {
-      accountStore.accountsFetchFlow(tokenPayload.idToken, (v) => {});
+      console.log(tokenPayload.idToken)
+      // accountStore.accountsFetchFlow(tokenPayload.idToken, (v) => {});
     }
   }, [tokenPayload?.idToken]);
 

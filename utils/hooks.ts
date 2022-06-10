@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Ref, useEffect, useRef } from 'react';
 
 export const useInterval = (callback, delay, isPolling) => {
-  const savedCallback = useRef();
-
+  const savedCallback: any = useRef();
+  
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
@@ -17,5 +17,5 @@ export const useInterval = (callback, delay, isPolling) => {
       const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }, [delay, isPolling]);
 };

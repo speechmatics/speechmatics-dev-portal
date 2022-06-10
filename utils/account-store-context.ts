@@ -84,7 +84,6 @@ class AccountContext {
   }
 
   async fetchServerState(idToken: string) {
-    console.log('fetchServerState');
     this.isLoading = true;
     return callGetAccounts(idToken)
       .then((jsonResp) => {
@@ -107,21 +106,12 @@ class AccountContext {
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
     if (!this._account && 'account_id' in response) this._account = response as any;
-
-    console.log(
-      'AccountContext assignServerState',
-      this._account,
-      response,
-      response.accounts,
-      response.accounts?.filter((acc) => !!acc)
-    );
   }
 
   async accountsFetchFlow(
     accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
-    console.log('accountsFetchFlow');
     this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
@@ -148,7 +138,8 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        errToast(`while fetching account: ${err}`);
+        console.log(err);
+        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
         console.error(err);
       });

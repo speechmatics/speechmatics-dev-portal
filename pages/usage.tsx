@@ -31,30 +31,20 @@ import {
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
-import { RecentJobs } from '../components/recent-jobs';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
-  const [defaultIndex, setDefaultIndex] = useState(0)
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
-  const { job } = useRouter().query
-
-  useEffect(() => {
-    if (job) {
-      setDefaultIndex(3)
-    }
-  }, [job])
 
 
   return (
     <Dashboard>
       <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs defaultIndex={defaultIndex} size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
+      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px'>
         <TabList marginBottom="-1px">
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
           <Tab data-qa="tab-details">Details</Tab>
-          <Tab data-qa="tab-recent-jobs">Recent Jobs</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -107,9 +97,6 @@ export default observer(function Usage() {
 
             <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
 
-          </TabPanel>
-          <TabPanel>
-            <RecentJobs />
           </TabPanel>
         </TabPanels>
       </Tabs>

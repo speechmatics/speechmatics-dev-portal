@@ -9,7 +9,9 @@ import { ClockIcon, CompleteIcon, FileProcessingFailedIcon, FileProcessingIcon }
 import { FileUploadComponent, SelectField, FileProcessingProgress } from "../components/transcribe-form";
 import { TranscriptionViewer } from "../components/transcription-viewer";
 import accountStoreContext from "../utils/account-store-context";
-import { languagesData, separation, accuracyModels } from "../utils/transcribe-elements";
+import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from "../utils/runtime-auth-flow";
+import { capitalizeFirstLetter, humanFileSize } from "../utils/string-utils";
+import { languagesData, separation, accuracyModels, FlowError } from "../utils/transcribe-elements";
 import { fileTranscriptionFlow as flow, FileTranscriptionStore } from "../utils/transcribe-store-flow";
 
 
@@ -19,18 +21,19 @@ export default observer(function Transcribe({ }) {
 
   useEffect(() => {
     flow.reset();
+    return () => flow.reset();
   }, [])
 
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Transcribe"
-        introduction="Upload and Transcribe an Audio File." />
+        headerLabel="Upload & Transcribe"
+        introduction="Upload and Transcribe a Media File." />
 
       <SmPanel width='100%' maxWidth='900px'>
 
         {stage === 'form' ?
-          <TranscribeForm store={flow.store} /> :
+          <TranscribeForm store={flow.store} auth={authFlow.store} /> :
           <ProcessingTranscription store={flow.store} />}
 
       </SmPanel>
@@ -40,22 +43,23 @@ export default observer(function Transcribe({ }) {
 
 type TranscribeFormProps = {
   store: FileTranscriptionStore;
+  auth: RuntimeAuthStore;
 }
 
-export const TranscribeForm = observer(function ({ store }: TranscribeFormProps) {
+export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
 
   const { tokenStore } = useContext(accountStoreContext);
 
   useEffect(() => {
-    flow.reset();
+    authFlow.restoreToken()
     if (tokenStore.tokenPayload?.idToken)
-      flow.fetchSecret(tokenStore.tokenPayload.idToken);
+      authFlow.refreshToken(tokenStore.tokenPayload.idToken);
 
   }, [tokenStore.tokenPayload?.idToken])
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
-    <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
+    <DescriptionLabel>This media file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
       <FileUploadComponent onFileSelect={file => flow.assignFile(file)} />
     </Box>
@@ -75,8 +79,10 @@ export const TranscribeForm = observer(function ({ store }: TranscribeFormProps)
     </Flex>
     <Flex width='100%' justifyContent='center' py={3}>
       <Button data-qa="button-get-transcription" variant='speechmatics' fontSize='18' width='100%'
-        onClick={() => flow.attemptSendFile()}
-        disabled={!store._file || !store.secretKey}>
+        onClick={() => {
+          flow.attemptSendFile(tokenStore.tokenPayload?.idToken)
+        }}
+        disabled={!store._file || !auth.isLoggedIn}>
         Get Your Transcription
       </Button>
     </Flex>
@@ -109,7 +115,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
         icon={FileProcessingIcon}
         title={'Your Transcription File Is Being Sent.'}
         subtitle={<>Your file size is:
-          <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {fileSize}</Text>.
+          <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> {humanFileSize(fileSize, true)}</Text>.
         </>}
         subtitle2={'This page will automatically refresh and show your results.'}
       />}
@@ -117,7 +123,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
     {stage == 'pendingTranscription' && <PendingLabelsSlots
       icon={FileProcessingIcon}
       title={'Your Transcription Has Been Submitted.'}
-      subtitle={<>Status of your job (ID: {jobId}) is:
+      subtitle={<>Status of your job (ID: {jobId.toLowerCase()}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'> Running</Text>.
       </>}
       subtitle2={'This page will automatically refresh and show your results.'}
@@ -130,10 +136,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       subtitle={<>Status of your job (ID: {jobId.toLowerCase()}) is:
         <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'> Failed</Text>.
       </>}
-      subtitle2={<>You have reached your monthly usage limit. Please
-        {' '}<Link href='/manage-billing'>
-          <a className="text_link">Add a Payment Card</a>
-        </Link> to increase your limit.</>}
+      subtitle2={handleErrors(store)}
     />}
 
     {stage == 'complete' && <PendingLabelsSlots
@@ -148,19 +151,24 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       <Divider my={8} color='smBlack.200' />
     </>}
 
-    {stageDelayed == 'complete' &&
-      <TranscriptionViewer my={4} date={store.dateSubmitted} jobId={store.jobId}
-        accuracy={store.accuracy} language={store.language}
-        transcriptionText={store.transcriptionText} className="fadeIn" />}
+    {
+      stageDelayed == 'complete' &&
+      <Box w={["50%", "100%"]} >
+        <TranscriptionViewer my={4} fileName={fileName} date={store.dateSubmitted} jobId={store.jobId}
+          accuracy={store.accuracy} language={store.language}
+          transcriptionText={store.transcriptionText} className="fadeIn" />
+      </Box>
+    }
 
 
     <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
-      Go to the <Link data-qa="link-recent-jobs" href='/usage#recent-jobs'>
-        <a className="text_link">Recent Jobs</a></Link>
+      Go to the <Link data-qa="link-recent-jobs" href='/view-jobs/'>
+        <a className="text_link">View Jobs</a></Link>
       {' '}page to view all your recent transcriptions.
     </Box>
 
-    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline'
+      onClick={() => flow.reset()}>Transcribe Another File</Button>
 
   </Flex>
 })
@@ -174,6 +182,32 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (<>
   </Box>
 
   <Box color='smNavy.400' fontSize='1.2em'>{subtitle}</Box>
-  <Box textAlign='center' color='smBlack.300'>{subtitle2}</Box>
+  <Box textAlign='center' color='smBlack.300' pt={1}>{subtitle2}</Box>
 </>
 )
+
+
+const handleErrors = (store: FileTranscriptionStore) => {
+
+  if (store.error == FlowError.BeyondFreeQuota)
+    return <>You have reached your monthly usage limit. Please
+      {' '}<Link href='/manage-billing'>
+        <a className="text_link">Add a Payment Card</a>
+      </Link> to increase your limit.</>
+
+  if (store.error == FlowError.BeyondAllowedQuota)
+    return <>You have reached your monthly usage limit. Please
+      {' '}<Link href='https://www.speechmatics.com/about-us/contact'>
+        <a className="text_link">Contact Us</a>
+      </Link> to increase your limit.</>
+
+  if (store.error == FlowError.UndefinedError || store.error == FlowError.UndefinedForbiddenError)
+    return <>{capitalizeFirstLetter(store.errorDetail)}</>
+
+  //all other cases
+  return <>{capitalizeFirstLetter(store.errorDetail)}</>
+}
+
+/*Non-paying user: "You have reached your monthly usage limit. Please Add a Payment Card to increase your limit."
+
+Paying user: "You have reached your monthly usage limit. Please Contact Us to increase your limit."*/
