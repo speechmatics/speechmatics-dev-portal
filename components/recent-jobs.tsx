@@ -35,13 +35,13 @@ import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
-import { formatTimeDateFromString } from '../utils/date-utils'
+import { formatTimeDateFromString } from '../utils/date-utils';
 import FilesBeingUploaded from './file-transcription/files-being-uploaded';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
-  const [deleteJobId, setDeleteJobId] = useState<string>(null);
+  const [deleteJobInfo, setDeleteJobInfo] = useState<{ id?: string; status?: string }>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
@@ -51,11 +51,6 @@ export const RecentJobs = observer(() => {
   const breakVal = useBreakpointValue({
     base: false,
     xl: true,
-  });
-
-  const mediumBreak = useBreakpointValue({
-    base: false,
-    md: true,
   });
 
   const {
@@ -70,7 +65,6 @@ export const RecentJobs = observer(() => {
     forceGetJobs,
   } = useJobs(pageLimit, page);
 
-  // converted to callback to avoid rerendering when useJobs hook state changes
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
       if (idToken) {
@@ -90,13 +84,12 @@ export const RecentJobs = observer(() => {
     [idToken, activeJob]
   );
 
-  // converted to callback to avoid rerendering when useJobs hook state changes
   const onOpenDeleteDialogue = useCallback(
-    (id) => {
-      setDeleteJobId(id);
+    (id, status) => {
+      setDeleteJobInfo({ id, status });
       onOpen();
     },
-    [setDeleteJobId]
+    [setDeleteJobInfo]
   );
 
   useEffect(() => {
@@ -178,7 +171,7 @@ export const RecentJobs = observer(() => {
         <ModalOverlay rounded="none" />
         <ModalContent maxH="100%" py={4} rounded="none">
           <ModalHeader fontSize="2em" textAlign="center">
-            <Text overflow="hidden" noOfLines={2} >
+            <Text overflow="hidden" noOfLines={2}>
               Transcription of "{activeJob?.fileName}"
             </Text>
           </ModalHeader>
@@ -190,11 +183,11 @@ export const RecentJobs = observer(() => {
             bg={breakVal ? "smWhite.500" : null}
             border={breakVal ? "2px solid" : null}
             borderColor="smBlack.300"
-            color={breakVal ? "smBlack.300" : null}
+            color={breakVal ? 'smBlack.300' : null}
             top={breakVal ? -4 : null}
             right={breakVal ? -4 : null}
           />
-          <ModalBody overflow="hidden" >
+          <ModalBody overflow="hidden">
             <TranscriptionViewer {...activeJob} transcMaxHeight="25vh" />
           </ModalBody>
         </ModalContent>
@@ -202,13 +195,16 @@ export const RecentJobs = observer(() => {
       <ConfirmRemoveModal
         isOpen={isOpen}
         onClose={onClose}
-        mainTitle="Delete Job"
-        subTitle="Are you sure you want to delete this job?"
+        mainTitle="Delete Job?"
+        subTitle={
+          "Deleted jobs count towards usage."
+        }
         onRemoveConfirm={() => {
-          onDeleteJob(deleteJobId, true);
+          onDeleteJob(deleteJobInfo.id, true);
           onClose();
         }}
-        confirmLabel="Delete"
+        confirmLabel="Delete Job"
+        cancelLabel="Keep Job"
       />
     </>
   );
@@ -336,6 +332,87 @@ const RecentJobElement = ({
   );
 };
 
+const IconButtons = ({
+  onOpenTranscript,
+  fileName,
+  language,
+  id,
+  accuracy,
+  date,
+  status,
+  onStartDelete,
+}) => (
+  <>
+    <Box flex={1}>
+      <Menu isLazy>
+        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
+          <MenuButton
+            disabled={['running', 'rejected'].includes(status)}
+            as={IconButton}
+            variant="ghost"
+            aria-label="view"
+            icon={
+              <DownloadJobIcon
+                fontSize={20}
+                color={
+                  ['running', 'rejected'].includes(status)
+                    ? 'var(--chakra-colors-smBlack-200)'
+                    : 'var(--chakra-colors-smNavy-350)'
+                }
+              />
+            }
+          />
+        </Tooltip>
+        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+      </Menu>
+    </Box>
+    <Box flex={1}>
+      <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
+        <IconButton
+          disabled={['running', 'rejected'].includes(status)}
+          variant="ghost"
+          aria-label="view"
+          onClick={(e) =>
+            onOpenTranscript(
+              {
+                jobId: id,
+                language,
+                accuracy,
+                date: formatTimeDateFromString(date),
+                fileName,
+              },
+              'txt'
+            )
+          }
+          _focus={{ boxShadow: 'none' }}
+          icon={
+            <ViewTranscriptionIcon
+              fontSize="22"
+              color={
+                ['running', 'rejected'].includes(status)
+                  ? 'var(--chakra-colors-smBlack-200)'
+                  : 'var(--chakra-colors-smNavy-350)'
+              }
+            />
+          }
+        />
+      </Tooltip>
+    </Box>
+    <Box flex={1}>
+      <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Delete">
+        <IconButton
+          variant="ghost"
+          disabled={status === 'running'}
+          aria-label="stop-or-delete"
+          onClick={(e) => onStartDelete(id, status)}
+          flex={1}
+          icon={<BinIcon fontSize="22" />}
+        />
+      </Tooltip>
+    </Box>
+  </>
+);
+
 const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
   return (
     <VStack
@@ -401,91 +478,6 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
     </VStack>
   );
 };
-
-const IconButtons = ({
-  onOpenTranscript,
-  fileName,
-  language,
-  id,
-  accuracy,
-  date,
-  status,
-  onStartDelete,
-}) => (
-  <>
-    <Box flex={1}>
-      <Menu isLazy>
-        <Tooltip placement="bottom" hasArrow color="smWhite.500" label="Download">
-          <MenuButton
-            disabled={status === ('running' || 'rejected')}
-            as={IconButton}
-            variant="ghost"
-            aria-label="view"
-            icon={
-              <DownloadJobIcon
-                fontSize={20}
-                color={
-                  status === ('running' || 'rejected')
-                    ? 'var(--chakra-colors-smBlack-200)'
-                    : 'var(--chakra-colors-smNavy-350)'
-                }
-              />
-            }
-          />
-        </Tooltip>
-        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
-      </Menu>
-    </Box>
-    <Box flex={1}>
-      <Tooltip placement="bottom" hasArrow color="smWhite.500" label="View">
-        <IconButton
-          disabled={status === ('running' || 'rejected')}
-          variant="ghost"
-          aria-label="view"
-          onClick={(e) =>
-            onOpenTranscript(
-              {
-                jobId: id,
-                language,
-                accuracy,
-                date: formatTimeDateFromString(date),
-                fileName,
-              },
-              'txt'
-            )
-          }
-          _focus={{ boxShadow: 'none' }}
-          icon={
-            <ViewTranscriptionIcon
-              fontSize="22"
-              color={
-                status === ('running' || 'rejected')
-                  ? 'var(--chakra-colors-smBlack-200)'
-                  : 'var(--chakra-colors-smNavy-350)'
-              }
-            />
-          }
-        />
-      </Tooltip>
-    </Box>
-    <Box flex={1}>
-      <Tooltip
-        placement="bottom"
-        hasArrow
-        color="smWhite.500"
-        label={status === 'running' ? 'Cancel' : 'Delete'}
-      >
-        <IconButton
-          variant="ghost"
-          aria-label="stop-or-delete"
-          onClick={(e) => onStartDelete(id)}
-          flex={1}
-          icon={status === 'running' ? <StopIcon fontSize="22" /> : <BinIcon fontSize="22" />}
-        />
-      </Tooltip>
-    </Box>
-  </>
-);
 
 const statusColour = {
   rejected: 'smRed.500',

@@ -102,7 +102,7 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
 
     {isFileWrongTypeError &&
       <AttentionBar data_qa='message-file-too-big' centered
-        description='This file is the wrong type. Please upload another file.' />}
+        description='This file type is unsupported. The file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.' />}
   </VStack>
 });
 
