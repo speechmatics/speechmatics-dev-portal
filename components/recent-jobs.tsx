@@ -136,7 +136,7 @@ export const RecentJobs = observer(() => {
           })}
         {errorGettingMore && <ErrorBanner text="Error getting more jobs" />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
-        {jobs?.length !== 0 && (
+        {jobs?.length !== 0 && !noMoreJobs && (
           <Button
             hidden={errorOnInit}
             disabled={isLoading || isWaitingOnMore || errorGettingMore || noMoreJobs}
@@ -148,9 +148,11 @@ export const RecentJobs = observer(() => {
           >
             {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Show More'}
             {isLoading || (isWaitingOnMore && <Spinner />)}
-            {noMoreJobs && 'No More Jobs'}
           </Button>
         )}
+        {noMoreJobs && jobs.length > 10 && <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
+          The page is showing the full list.
+        </Box>}
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
           <VStack pb={6} spacing={6}>
             <NoSomethingBanner>No jobs found.</NoSomethingBanner>
