@@ -59,7 +59,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
 
   return <>
     <HeaderLabel>Upload a File</HeaderLabel>
-    <DescriptionLabel>The audio file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
+    <DescriptionLabel>This media file can be aac, amr, flac, m4a, mp3, mp4, mpeg, ogg, wav.</DescriptionLabel>
     <Box alignSelf='stretch' pt={4}>
       <FileUploadComponent onFileSelect={file => flow.assignFile(file)} />
     </Box>

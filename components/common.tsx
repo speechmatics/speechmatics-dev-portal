@@ -401,7 +401,8 @@ export const ConfirmRemoveModal = ({
   mainTitle,
   subTitle,
   onRemoveConfirm,
-  confirmLabel,
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel'
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -449,7 +450,7 @@ export const ConfirmRemoveModal = ({
             _hover={{ bg: 'smBlack.150' }}
             onClick={onClose}
           >
-            Cancel
+            {cancelLabel}
           </Button>
         </Flex>
       </ModalFooter>
