@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { callGetRuntimeSecret } from './call-api';
 
-const RUNTIME_AUTH_TTL: number = parseInt(process.env.RUNTIME_AUTH_TTL) || 60;
+const RUNTIME_AUTH_TTL: number = parseInt(process.env.RUNTIME_AUTH_TTL) || 3600;
 
 // Create an obervable store for many components to observer and update if something goes wrong with authstore
 // As I understand it, components only rerender if a specific property they access changes
