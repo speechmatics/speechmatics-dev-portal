@@ -128,7 +128,7 @@ const theme = extendTheme({
             bg: 'smBlue.300',
           },
           _disabled: {
-            bg: 'smBlack.300',
+            bg: 'smBlack.250',
           },
         } as CSSObject,
 
