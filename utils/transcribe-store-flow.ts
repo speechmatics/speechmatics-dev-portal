@@ -115,8 +115,20 @@ export class FileTranscriptionStore {
     return this._errorDetail;
   }
 
+  _uploadErrors: string[] = [];
+  set uploadErrors(value: string[]) {
+    this._uploadErrors = value;
+  }
+  get uploadErrors(): string[] {
+    return this._uploadErrors;
+  }
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  addUploadError(error: string) {
+    this._uploadErrors.push(error)
   }
 
   resetStore() {
@@ -131,6 +143,7 @@ export class FileTranscriptionStore {
     this.transcriptionText = '';
     this.dateSubmitted = '';
     this.error = null;
+    this.uploadErrors = []
   }
 
   get fileName() {
@@ -225,8 +238,8 @@ class FileTranscribeFlow {
     const store = this.store;
     const owner = this;
     return function (resp: any) {
+      store.addUploadError("Error uploading " + file.name + ": " + resp.response.detail)
       owner.store.removeFileFromUploading(file);
-
       if (file !== store.file) return;
       if (store.stage !== 'pendingFile') return;
 
@@ -256,9 +269,7 @@ class FileTranscribeFlow {
     } else {
       this.store.error = FlowError.UndefinedError;
     }
-
     this.store.errorDetail = error.response?.detail || '';
-
     //add BeyondAllowedQuota, FileTooBig, FileWrongType
   }
 
