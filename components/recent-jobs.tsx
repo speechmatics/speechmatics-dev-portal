@@ -339,10 +339,8 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
         <VStack alignItems="flex-start" flex={2}>
           <SkeletonText
             noOfLines={1}
-            spacing={6}
             height="6"
-            as="span"
-            width="90%"
+            width="75%"
             paddingRight="4px"
             color="smNavy.400"
           />
@@ -363,7 +361,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
           )}
         </VStack>
         {!breakVal && (
-          <SkeletonText height="6" noOfLines={1} flex={1} spacing={4} paddingRight={4} />
+          <SkeletonText height="6" noOfLines={1} width="100px"/>
         )}
 
         {breakVal && (
@@ -379,20 +377,12 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
         )}
       </HStack>
       {!breakVal && (
-        <HStack spacing={4} width="100%" justifyContent="space-between">
-          <Box width="150px">
-            <SkeletonText noOfLines={1} flex={3} spacing={6} />
-          </Box>
-          <HStack width="150px">
-            <Box flex={1}>
-              <SkeletonCircle />
-            </Box>
-            <Box flex={1}>
-              <SkeletonCircle />
-            </Box>
-            <Box flex={1}>
-              <SkeletonCircle />
-            </Box>
+        <HStack width="100%" justifyContent="space-between">
+          <SkeletonText width="100px" noOfLines={1} />
+          <HStack justifyContent="space-evenly" width="140px">
+              <SkeletonCircle size={7} />
+              <SkeletonCircle size={7} />
+              <SkeletonCircle size={7} />
           </HStack>
         </HStack>
       )}
