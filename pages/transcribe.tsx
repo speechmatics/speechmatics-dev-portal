@@ -167,7 +167,8 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       {' '}page to view all your recent transcriptions.
     </Box>
 
-    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline' onClick={() => flow.reset()}>Transcribe Another File</Button>
+    <Button data-qa="button-transcribe-another-file" variant='speechmaticsOutline'
+      onClick={() => flow.reset()}>Transcribe Another File</Button>
 
   </Flex>
 })
