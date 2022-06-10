@@ -92,13 +92,12 @@ export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
         cy={23}
         r={15.513}
         transform="rotate(-45 23 23)"
-        fill="#fff"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={1.5}
       />
       <path
         d="M17.479 17.9l11.04 10.098M28.518 17.9l-11.04 10.098"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

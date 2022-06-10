@@ -72,7 +72,9 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
         {!file ? <>
           <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height='3em' width='3em' />
           <VStack alignItems='flex-start' spacing={0}>
-            <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>Click here and choose a file or drag the file here.</Box>
+            <Box color='smNavy.500' fontFamily='RMNeue-SemiBold' fontSize='1.2em' lineHeight={1.2}>
+              Click here and choose a file or drag the file here.
+            </Box>
             <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
           </VStack>
         </> :
@@ -81,16 +83,18 @@ export const FileUploadComponent = (({ onFileSelect }: FileUploadComponentProps)
               <Box><TranscribeIcon width='2em' height='2em' mono /></Box>
               <Box>File "<Text as='span' fontFamily='RMNeue-SemiBold'>{file?.name}</Text>" has been added.</Box>
             </Flex>
-            <Box cursor='pointer' onClick={removeFileClick}>
-              <RemoveFileIcon width='3em' height='3em' />
-            </Box>
+            <Tooltip label='Remove this file' hasArrow>
+              <Box cursor='pointer' onClick={removeFileClick} transition='all 0.3s' _hover={{ opacity: 0.8, transform: 'scale(1.1)' }}>
+                <RemoveFileIcon width='3em' height='3em' color="var(--chakra-colors-smBlue-700)" />
+              </Box>
+            </Tooltip>
           </Flex>}
       </Flex>
 
-      {
-        <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
-          ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />
-      }
+
+      <Box position='absolute' height='100%' width='100%' display={file ? 'none' : 'block'}
+        ref={dropAreaRef} cursor={'pointer'} onClick={dropClicked} />
+
     </Flex>
     {isFileTooBigError &&
       <AttentionBar data_qa='message-file-too-big' centered
