@@ -79,6 +79,24 @@ export const useJobs = (limit, page) => {
     }
   };
 
+  //for outside use
+  const forceGetJobs = useCallback(() => {
+    console.log('forceGetJobs', createdBefore, limit);
+    getJobs(
+      idToken,
+      jobs,
+      setJobs,
+      createdBefore,
+      setCreatedBefore,
+      limit,
+      noMoreJobs,
+      setNoMoreJobs,
+      setIsPolling,
+      setIsLoading,
+      setErrorOnInit
+    );
+  }, [createdBefore, idToken, limit, noMoreJobs]);
+
   return {
     jobs,
     isLoading,
@@ -88,6 +106,7 @@ export const useJobs = (limit, page) => {
     errorOnInit,
     noMoreJobs,
     onDeleteJob,
+    forceGetJobs,
   };
 };
 
@@ -116,14 +135,14 @@ const getJobs = (
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
-        if ( !respJson || !('jobs' in respJson) || respJson.jobs == null ) {
-          throw "error geting jobs"
+        if (!respJson || !('jobs' in respJson) || respJson.jobs == null) {
+          throw 'error geting jobs';
         }
         if (isActive) {
           if (respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
           }
-          if (respJson.jobs.length !== 0 ) {
+          if (respJson.jobs.length !== 0) {
             const formatted: JobElementProps[] = formatJobs(respJson.jobs);
             const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
@@ -138,7 +157,7 @@ const getJobs = (
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         errorFunction(true);
         loadingFunction(false);
       });
@@ -213,16 +232,16 @@ const formatDuration = (duration) => {
   }
   const minutes = seconds / 60;
   if (minutes < 60) {
-    let roundedMinutes = Math.round(minutes)
+    let roundedMinutes = Math.round(minutes);
     return `${roundedMinutes} minute${roundedMinutes !== 1 ? 's' : ''}`;
   }
-  const hours = (seconds / ( 60 * 60 ));
+  const hours = seconds / (60 * 60);
   if (hours < 24) {
-    let roundedHours = Math.round(10 * hours) / 10
+    let roundedHours = Math.round(10 * hours) / 10;
     return `${roundedHours} hour${roundedHours !== 1 ? 's' : ''}`;
-  } 
-  const days = (seconds / ( 60 * 60 * 24 ) );
-  let roundedDays = Math.round(10 * days) / 10
+  }
+  const days = seconds / (60 * 60 * 24);
+  let roundedDays = Math.round(10 * days) / 10;
   return `${roundedDays} day${roundedDays !== 1 ? 's' : ''}`;
 };
 

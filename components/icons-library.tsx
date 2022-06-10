@@ -92,13 +92,12 @@ export function RemoveFileIcon(props: React.SVGProps<SVGSVGElement>) {
         cy={23}
         r={15.513}
         transform="rotate(-45 23 23)"
-        fill="#fff"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={1.5}
       />
       <path
         d="M17.479 17.9l11.04 10.098M28.518 17.9l-11.04 10.098"
-        stroke="#D82C2C"
+        stroke={props.color || "#D82C2C"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -346,7 +345,7 @@ export const DownloadInvoice = ({ mono, ...props }: SVGProps<SVGSVGElement> & { 
 )
 
 
-export const SubmitAJobIcon = ({ mono, ...props}: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
+export const SubmitAJobIcon = ({ mono, ...props }: SVGProps<SVGSVGElement> & { mono?: boolean }) => (
   <svg
     width={props.width || "1em"}
     height={props.height || "1em"}
@@ -1549,6 +1548,45 @@ export function WarningIcon(props: React.SVGProps<SVGSVGElement>) {
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+
+export function ViewJobsIcon({ mono, ...props }: { mono?: boolean } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M35.989 3.317v5.218H0V3.317A2.66 2.66 0 012.654.663h30.68a2.652 2.652 0 012.655 2.654z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M4.501 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM7.875 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM11.249 2.912a1.125 1.125 0 10-2.25.001 1.125 1.125 0 002.25 0zM35.989 5.161v20.964a2.652 2.652 0 01-2.654 2.654H2.654A2.659 2.659 0 010 26.125V5.16h35.989z"
+        fill={mono ? "#A7D0CD" : "#AEB2B8"}
+      />
+      <path
+        d="M16.269 21l1.886-1.886L30.102 31.06l-1.887 1.886L16.27 21z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M21.928 27.917l3.144-3.144 7.545 7.545-3.144 3.144-7.545-7.545z"
+        fill={mono ? "#4FA9A2" : "#263243"}
+      />
+      <path
+        d="M21.929 27.916l3.144-3.144 1.257 1.257-3.144 3.144-1.257-1.257zM28.216 34.203l3.144-3.143 1.257 1.257-3.143 3.144-1.258-1.258zM5.011 17.192c0-5.402 4.38-9.781 9.781-9.781 5.402 0 9.781 4.38 9.781 9.78 0 5.402-4.38 9.782-9.78 9.782-5.402 0-9.782-4.38-9.782-9.781z"
+        fill={mono ? "#36817E" : "#5E6673"}
+      />
+      <path
+        d="M6.79 17.192a8.003 8.003 0 1116.006 0 8.003 8.003 0 01-16.006 0z"
+        fill={mono ? "#fff" : "#FC3"}
       />
     </svg>
   );

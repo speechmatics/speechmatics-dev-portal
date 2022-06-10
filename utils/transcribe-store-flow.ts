@@ -140,6 +140,22 @@ export class FileTranscriptionStore {
   get fileSize() {
     return this._file?.size;
   }
+
+  _uploadedFiles: File[] = [];
+  set uploadedFiles(value: File[]) {
+    this._uploadedFiles = value;
+  }
+  get uploadedFiles(): File[] {
+    return this._uploadedFiles;
+  }
+
+  addFileToUploading(file: File) {
+    this.uploadedFiles = [file, ...this.uploadedFiles];
+  }
+
+  removeFileFromUploading(file: File) {
+    this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);
+  }
 }
 
 class FileTranscribeFlow {
@@ -168,6 +184,8 @@ class FileTranscribeFlow {
     this.store.stage = 'pendingFile';
     this.savedIdToken = idToken;
 
+    this.store.addFileToUploading(_file);
+
     callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
       this.getResponseFn(_file),
       this.getErrorFn(_file)
@@ -175,18 +193,21 @@ class FileTranscribeFlow {
   }
 
   getResponseFn(file: File) {
-    const { stage, file: storeFile } = this.store;
+    const store = this.store;
     const owner = this;
     return function (resp: any) {
-      if (file !== storeFile) return;
-      if (stage !== 'pendingFile') return;
+      console.log('getResponseFn closure', resp, store.stage, file !== store.file);
+      owner.store.removeFileFromUploading(file);
+
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
 
       owner.callRequestSuccess(resp);
     };
   }
 
   callRequestSuccess(resp: any) {
-    console.log('attemptSendFile then', resp);
+    console.log('callRequestSuccess', resp, this.store.stage);
 
     //dont act on it when we're not waiting for it
     if (this.store.stage != 'pendingFile') return;
@@ -201,11 +222,13 @@ class FileTranscribeFlow {
   }
 
   getErrorFn(file: File) {
-    const { stage, file: storeFile } = this.store;
+    const store = this.store;
     const owner = this;
     return function (resp: any) {
-      if (file !== storeFile) return;
-      if (stage !== 'pendingFile') return;
+      owner.store.removeFileFromUploading(file);
+
+      if (file !== store.file) return;
+      if (store.stage !== 'pendingFile') return;
 
       owner.callError(resp);
     };

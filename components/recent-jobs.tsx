@@ -36,6 +36,7 @@ import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
 import { formatTimeDateFromString } from '../utils/date-utils'
+import FilesBeingUploaded from './file-transcription/files-being-uploaded';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -66,6 +67,7 @@ export const RecentJobs = observer(() => {
     errorOnInit,
     noMoreJobs,
     onDeleteJob,
+    forceGetJobs
   } = useJobs(pageLimit, page);
 
   // converted to callback to avoid rerendering when useJobs hook state changes
@@ -115,6 +117,9 @@ export const RecentJobs = observer(() => {
           centered
         />
       )}
+
+      <FilesBeingUploaded forceGetJobs={forceGetJobs} />
+
       <VStack spacing={6} pt={6} width="100%">
         {isLoading && skeletons}
         {!errorOnInit &&
