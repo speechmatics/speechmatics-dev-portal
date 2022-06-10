@@ -60,7 +60,7 @@ export const RecentJobs = observer(() => {
     errorOnInit,
     noMoreJobs,
     onDeleteJob,
-    forceGetJobs
+    forceGetJobs,
   } = useJobs(pageLimit, page);
 
   // converted to callback to avoid rerendering when useJobs hook state changes
@@ -362,7 +362,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
         </VStack>
         {!breakVal && (
           <>
-          <SkeletonText height="6" noOfLines={1} width="100px"/>
+            <SkeletonText height="6" noOfLines={1} width="100px" />
           </>
         )}
 
@@ -380,9 +380,9 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
         <HStack width="100%" justifyContent="space-between">
           <SkeletonText width="100px" noOfLines={1} />
           <HStack justifyContent="space-evenly" width="140px">
-              <SkeletonCircle size="7" />
-              <SkeletonCircle size="7" />
-              <SkeletonCircle size="7" />
+            <SkeletonCircle size="7" />
+            <SkeletonCircle size="7" />
+            <SkeletonCircle size="7" />
           </HStack>
         </HStack>
       )}
