@@ -21,7 +21,7 @@ export default function Home({ }) {
             bgColor="smGreen.500"
             icon={<TranscribeIcon width='3em' height='3em' />}
             iconPadding="22px"
-            text="Upload and Transcribe an Media File"
+            text="Upload and Transcribe a Media File"
             buttonLabel="Transcribe Now"
             hrefUrl="/transcribe/"
           />
