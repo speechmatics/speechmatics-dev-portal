@@ -37,7 +37,6 @@ export const useJobs = (limit, page) => {
       createdBefore,
       setCreatedBefore,
       limit,
-      noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
       setIsLoading,
@@ -56,7 +55,6 @@ export const useJobs = (limit, page) => {
         createdBefore,
         setCreatedBefore,
         limit,
-        noMoreJobs,
         setNoMoreJobs,
         setIsPolling,
         setIsWaitingOnMore,
@@ -88,12 +86,11 @@ export const useJobs = (limit, page) => {
       jobs,
       setJobs,
       null,
-      () => {},
+      (value) => {},
       limit,
-      noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
-      () => {},
+      (value) => {},
       setErrorGettingNewJob
     );
   }, [idToken, jobs]);
@@ -119,14 +116,13 @@ const getJobs = (
   createdBefore: string,
   setCreatedBefore: Dispatch<string>,
   limit: number,
-  noMoreJobs: boolean,
   setNoMoreJobs: Dispatch<boolean>,
   setIsPolling: Dispatch<boolean>,
   loadingFunction: Dispatch<boolean>,
   errorFunction: Dispatch<boolean>
 ) => {
   let isActive = true;
-  if (idToken && !noMoreJobs) {
+  if (idToken) {
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
