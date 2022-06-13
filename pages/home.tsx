@@ -28,7 +28,7 @@ export default function Home({ }) {
           <HomeBox
             bgColor="smBlue.500"
             icon={<TranscribeAudioIcon width='4em' height='2.5em' />}
-            text="Start Using our API"
+            text="Start Using API"
             buttonLabel="Get Started"
             hrefUrl="/getting-started/"
             iconPadding='1.5em 0em 0em 0.8em'
