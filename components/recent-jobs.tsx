@@ -150,13 +150,13 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {!errorOnInit && !isLoading && jobs?.length !== 0 && (
-          <UsageInfoBanner text="All times are reported in UTC." mt="2em" />
-        )}
         {noMoreJobs && jobs.length > pageLimit && (
           <Box width="100%" textAlign="center" fontSize=".8em" color="smBlack.250">
             The page is showing the full list.
           </Box>
+        )}
+        {!errorOnInit && !isLoading && jobs?.length !== 0 && (
+          <UsageInfoBanner text="All times are reported in UTC." mt="2em" />
         )}
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
           <VStack pb={6} spacing={6}>
