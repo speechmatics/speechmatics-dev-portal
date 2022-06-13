@@ -23,7 +23,13 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner, UsageInfoBanner } from './common';
+import {
+  ErrorBanner,
+  ConfirmRemoveModal,
+  WarningBanner,
+  NoSomethingBanner,
+  UsageInfoBanner,
+} from './common';
 import { BinIcon, ViewTranscriptionIcon, DownloadJobIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
@@ -144,12 +150,14 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {!errorOnInit && !isLoading && jobs?.length !== 0 &&
+        {!errorOnInit && !isLoading && jobs?.length !== 0 && (
           <UsageInfoBanner text="All times are reported in UTC." mt="2em" />
-        }
-        {noMoreJobs && jobs.length > pageLimit && <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
-          The page is showing the full list.
-        </Box>}
+        )}
+        {noMoreJobs && jobs.length > pageLimit && (
+          <Box width="100%" textAlign="center" fontSize=".8em" color="smBlack.250">
+            The page is showing the full list.
+          </Box>
+        )}
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
           <VStack pb={6} spacing={6}>
             <NoSomethingBanner>No jobs found.</NoSomethingBanner>
@@ -183,9 +191,9 @@ export const RecentJobs = observer(() => {
             _hover={breakVal ? { bg: 'smBlack.200' } : null}
             _focus={{}}
             _active={breakVal ? { bg: 'smBlack.300' } : null}
-            rounded={breakVal ? "full" : null}
-            bg={breakVal ? "smWhite.500" : null}
-            border={breakVal ? "2px solid" : null}
+            rounded={breakVal ? 'full' : null}
+            bg={breakVal ? 'smWhite.500' : null}
+            border={breakVal ? '2px solid' : null}
             borderColor="smBlack.300"
             color={breakVal ? 'smBlack.300' : null}
             top={breakVal ? -4 : null}
@@ -200,9 +208,7 @@ export const RecentJobs = observer(() => {
         isOpen={isOpen}
         onClose={onClose}
         mainTitle="Delete Job?"
-        subTitle={
-          "Deleted jobs count towards usage."
-        }
+        subTitle={'Deleted jobs count towards usage.'}
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
@@ -290,10 +296,16 @@ const RecentJobElement = ({
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
-          <Tooltip label={status == 'running' ? 'The media is still being transcribed.' : null} hasArrow>
+          <Tooltip
+            label={status == 'running' ? 'The media is still being transcribed.' : null}
+            hasArrow
+          >
             <HStack flex={2}>
-              {status == 'running' ? <Spinner size='xs' height='9px' width='9px' color='smOrange.500' /> :
-                <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />}
+              {status == 'running' ? (
+                <Spinner size="xs" height="9px" width="9px" color="smOrange.500" />
+              ) : (
+                <Box w={2} h={2} rounded="full" bgColor={statusColour[status]} />
+              )}
               <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
             </HStack>
           </Tooltip>
