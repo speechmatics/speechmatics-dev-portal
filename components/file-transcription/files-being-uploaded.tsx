@@ -23,11 +23,11 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
   }, [])
 
   return <>{count > 0 &&
-    <VStack width='100%' p={2}>
+    <VStack width='100%' p={2} pt={4}>
       <Box color='smNavy.400'>{pluralize(count, 'file is', 'files are')} being uploaded in the background.</Box>
       <Progress size='xs' isIndeterminate width='40%' colorScheme='smBlue' />
     </VStack>}
-    {uploadErrors.map(item => <ErrorBanner text={item}/>)}
+    {uploadErrors.map(item => <ErrorBanner text={item} />)}
   </>
 })
 

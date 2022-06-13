@@ -76,7 +76,7 @@ function MenuElem({ item, selected, ...props }) {
           })}
         </Box>
         <Box
-          data-qa={`menu-${item.title.replace(/ /g, '-').toLowerCase()}`}
+          data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`}
           pl='0.5em'>
           {item.title}
         </Box>
