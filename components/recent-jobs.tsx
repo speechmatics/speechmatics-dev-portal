@@ -18,14 +18,13 @@ import {
   ModalHeader,
   ModalBody,
   useDisclosure,
-  Flex,
   Link,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
-import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner } from './common';
-import { DownloadIcon, ViewEyeIcon, StopIcon, BinIcon, ViewTranscriptionIcon, DownloadJobIcon } from './icons-library';
+import { ErrorBanner, ConfirmRemoveModal, WarningBanner, NoSomethingBanner, UsageInfoBanner } from './common';
+import { BinIcon, ViewTranscriptionIcon, DownloadJobIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
 import { capitalizeFirstLetter } from '../utils/string-utils';
@@ -145,6 +144,9 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
+        {!errorOnInit && !isLoading && jobs?.length !== 0 &&
+          <UsageInfoBanner text="All times are reported in UTC." mt="2em" />
+        }
         {noMoreJobs && jobs.length > pageLimit && <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
           The page is showing the full list.
         </Box>}
@@ -380,7 +382,7 @@ const IconButtons = ({
                 jobId: id,
                 language,
                 accuracy,
-                date: formatTimeDateFromString(date),
+                date: date,
                 fileName,
               },
               'txt'
