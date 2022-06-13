@@ -26,10 +26,11 @@ jobs:
       POLICY_DOMAIN: 'speechmaticsb2c.onmicrosoft.com'
       AUTH_CLIENT_ID: '75a2952e-954e-4975-8a14-ef862a8e5a39'
       ENDPOINT_API_URL: 'https://speechmatics-mp-dev-ingress-a.westeurope.cloudapp.azure.com/v1'
-      TEST_API_CALL_ENDPOINT: 'https://self-service-chargify-poc.azurewebsites.net/hello'
+      RUNTIME_API_URL: 'https://speechmatics-dev-ingress-a.westeurope.cloudapp.azure.com/v2'
       DEFAULT_B2C_SCOPE: 'https://speechmaticsb2c.onmicrosoft.com/michaltestapi/User.Read'
-      CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'
-      CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
+      CHARGIFY_PUBLIC_KEY: 'chjs_6nnmqcxmp4nrbnmf2spmwm63'
+      CHARGIFY_SERVER_HOST: 'https://speechmatics-dev.chargify.com'
+      RUNTIME_AUTH_TTL: 3600
     steps:
       - uses: actions/checkout@v2
         with:

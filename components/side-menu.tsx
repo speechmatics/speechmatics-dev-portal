@@ -1,8 +1,7 @@
 import { Box, IconButton, Slide, useBreakpointValue, useDisclosure, useOutsideClick, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import menuData from "../static_data/menu-data";
 
@@ -53,7 +52,7 @@ function MobileMenu() {
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className="nav_menu" rowGap='0.8em' height='400px'>
+    <VStack className="nav_menu" rowGap='0.8em' height='450px'>
       {menuData.map((item) => (
         <MenuElem item={item} key={item.path} selected={router.asPath == item.path}
           paddingLeft='clamp(1em, 4.2vw, 3em)' paddingRight='clamp(1em, 4.2vw, 3em)' />
@@ -64,7 +63,7 @@ function Menu() {
 
 function MenuElem({ item, selected, ...props }) {
   const [isHovered, setIsHovered] = useState(false);
-
+  
   return (
     <Link href={item.path}>
       <Box className={`menu_elem ${selected ? 'selected' : ''}`} {...props}
