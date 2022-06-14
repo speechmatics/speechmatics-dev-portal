@@ -14,19 +14,20 @@ import {
 import {
   FileUploadComponent,
   SelectField,
-  FileProcessingProgress
+  FileProcessingProgress,
+  handleErrors
 } from '../components/transcribe-form';
 import { TranscriptionViewer } from '../components/transcription-viewer';
 import accountStoreContext from '../utils/account-store-context';
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
-import { capitalizeFirstLetter, humanFileSize } from '../utils/string-utils';
+import { humanFileSize } from '../utils/string-utils';
 import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({}) {
+export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
 
   useEffect(() => {
@@ -195,7 +196,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
               .
             </>
           }
-          subtitle2={handleErrors(store)}
+          subtitle2={handleErrors(store.error, store.errorDetail)}
         />
       )}
 
@@ -264,37 +265,3 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (
     </Box>
   </>
 );
-
-const handleErrors = (store: FileTranscriptionStore) => {
-  if (store.error == FlowError.BeyondFreeQuota)
-    return (
-      <>
-        You have reached your monthly usage limit. Please{' '}
-        <Link href='/manage-billing'>
-          <a className='text_link'>Add a Payment Card</a>
-        </Link>{' '}
-        to increase your limit.
-      </>
-    );
-
-  if (store.error == FlowError.BeyondAllowedQuota)
-    return (
-      <>
-        You have reached your monthly usage limit. Please{' '}
-        <Link href='https://www.speechmatics.com/about-us/contact'>
-          <a className='text_link'>Contact Us</a>
-        </Link>{' '}
-        to increase your limit.
-      </>
-    );
-
-  if (store.error == FlowError.UndefinedError || store.error == FlowError.UndefinedForbiddenError)
-    return <>{capitalizeFirstLetter(store.errorDetail)}</>;
-
-  //all other cases
-  return <>{capitalizeFirstLetter(store.errorDetail)}</>;
-};
-
-/*Non-paying user: "You have reached your monthly usage limit. Please Add a Payment Card to increase your limit."
-
-Paying user: "You have reached your monthly usage limit. Please Contact Us to increase your limit."*/

@@ -30,7 +30,7 @@ import {
   ExclamationIcon,
   ExclamationIconLarge,
   ViewPricingIcon,
-  WarningIcon
+  WarningIcon,
 } from './icons-library';
 
 import {
@@ -102,27 +102,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-            <HStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              alignItems='center'
-              padding='1.5em 1.5em'
-              {...props}>
-              {children}
-            </HStack>
-          )
+          <HStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            alignItems='center'
+            padding='1.5em 1.5em'
+            {...props}>
+            {children}
+          </HStack>
+        )
         : ({ children }) => (
-            <VStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              padding='1.2em 0.5em'
-              spacing='1em'
-              {...props}>
-              {children}
-            </VStack>
-          ),
+          <VStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            padding='1.2em 0.5em'
+            spacing='1em'
+            {...props}>
+            {children}
+          </VStack>
+        ),
     [breakVal]
   );
 
@@ -156,7 +156,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -401,7 +401,7 @@ export const ConfirmRemoveModal = ({
   subTitle,
   onRemoveConfirm,
   confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel'
+  cancelLabel = 'Cancel',
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -514,7 +514,7 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar', centered =
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text }) => (
+export const ErrorBanner = ({ text = '', content = null }) => (
   <Flex
     flexDir='column'
     width='100%'
@@ -528,9 +528,15 @@ export const ErrorBanner = ({ text }) => (
       <Box>
         <ExclamationIcon width='1.5em' height='1.5em' />
       </Box>
-      <Text width='100%' color='smRed.500' fontFamily='RMNeue-Regular' fontSize='1em' ml='1em'>
-        {text}
-      </Text>
+      {content ? (
+        <Box width="100%" color="smRed.500" ml="1em">
+          {content}
+        </Box>
+      ) : (
+        <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+          {text}
+        </Text>
+      )}
     </Flex>
   </Flex>
 );

@@ -7,18 +7,20 @@ import {
   Text,
   Button,
   VStack,
-  BoxProps
+  BoxProps,
+  Link,
 } from '@chakra-ui/react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { checkIfFileCorrectType, Language, Stage } from '../utils/transcribe-elements';
+import { checkIfFileCorrectType, Language, Stage, FlowError } from '../utils/transcribe-elements';
 import { AttentionBar } from './common';
 import {
   OkayIcon,
   QuestionmarkInCircle,
   RemoveFileIcon,
   TranscribeIcon,
-  UploadFileIcon
+  UploadFileIcon,
 } from './icons-library';
+import { capitalizeFirstLetter } from '../utils/string-utils';
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
@@ -355,7 +357,7 @@ const stageToProps = {
     step2: 'pending',
     step3: 'pending',
     gradEndColor: 'smGreen.500',
-    animateStripes: true
+    animateStripes: true,
   },
   pendingTranscription: {
     barWidth: '50%',
@@ -364,7 +366,7 @@ const stageToProps = {
     step2: 'running',
     step3: 'pending',
     gradEndColor: 'smGreen.500',
-    animateStripes: true
+    animateStripes: true,
   },
   failed: {
     barWidth: '50%',
@@ -373,7 +375,7 @@ const stageToProps = {
     step2: 'failed',
     step3: 'pending',
     gradEndColor: 'smRed.500',
-    animateStripes: false
+    animateStripes: false,
   },
   complete: {
     barWidth: '100%',
@@ -481,3 +483,38 @@ export function removeListenersOnDropZone(
   elem.removeEventListener('drop', dropCb);
   elem.removeEventListener('dragleave', dragLeaveCb);
 }
+
+export const handleErrors = (error, detail) => {
+  console.log(error, FlowError.BeyondAllowedQuota);
+  if (error == FlowError.BeyondFreeQuota)
+    return (
+      <>
+        You have reached your monthly usage limit. Please{' '}
+        <Link href="/manage-billing">
+          <a className="text_link">Add a Payment Card</a>
+        </Link>{' '}
+        to increase your limit.
+      </>
+    );
+
+  if (error == FlowError.BeyondAllowedQuota)
+    return (
+      <>
+        You have reached your monthly usage limit. Please{' '}
+        <Link href="https://www.speechmatics.com/about-us/contact">
+          <a className="text_link">Contact Us</a>
+        </Link>{' '}
+        to increase your limit.
+      </>
+    );
+
+  if (error == FlowError.UndefinedError || error == FlowError.UndefinedForbiddenError)
+    return <>{capitalizeFirstLetter(detail)}</>;
+
+  //all other cases
+  return <>{capitalizeFirstLetter(detail)}</>;
+};
+
+/*Non-paying user: "You have reached your monthly usage limit. Please Add a Payment Card to increase your limit."
+
+Paying user: "You have reached your monthly usage limit. Please Contact Us to increase your limit."*/
