@@ -32,7 +32,7 @@ export const callGetUsage = async (
       project_id: projectId,
       grouping: 'day',
       sort_order: 'asc',
-      ...dates,
+      ...dates
     }
   );
 };
@@ -44,14 +44,14 @@ export const callGetJobs = async (idToken: string, optionalQueries: any) => {
     'GET',
     {},
     {
-      ...optionalQueries,
+      ...optionalQueries
     }
   );
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
   return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
-    force,
+    force
   });
 };
 
@@ -96,14 +96,14 @@ export const callPostRequestTokenChargify = async (
   chargifyToken: string
 ) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'POST', {
-    card_request_token: chargifyToken,
+    card_request_token: chargifyToken
   });
 };
 
 export const callPostApiKey = async (idToken: string, name: string, projectId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
-    name,
+    name
   });
 };
 
@@ -117,7 +117,7 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
 
 export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
-    ttl,
+    ttl
   });
 };
 
@@ -136,8 +136,8 @@ export const callRequestFileTranscription = async (
     transcription_config: {
       language,
       operating_point: accuracy,
-      diarization: separation,
-    },
+      diarization: separation
+    }
   };
   formData.append('config', JSON.stringify(config));
 
@@ -199,7 +199,7 @@ export const call = async (
   const options = {
     method: method,
     headers: headers,
-    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
+    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined
   };
 
   if (!!query) {
@@ -218,7 +218,7 @@ export const call = async (
         const throwObj = {
           status: 'error',
           error: { type: 'request-error', status: response.status },
-          response: await response.json(),
+          response: await response.json()
         };
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`

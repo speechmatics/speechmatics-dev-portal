@@ -30,14 +30,14 @@ export function msalLogout(inactive: boolean = false) {
   const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
     (account?.idTokenClaims as any)?.acr
   }`;
-  runtimeAuthFlow.reset()
+  runtimeAuthFlow.reset();
   accountStore.clear();
   msalInstance.logoutRedirect({
     account: account,
     authority: account ? authority : process.env.SIGNIN_POLICY,
     postLogoutRedirectUri: `${process.env.POST_LOGOUT_REDIRECT_URI}${
       inactive ? '#inactive' : '#logout'
-    }`,
+    }`
   });
 }
 

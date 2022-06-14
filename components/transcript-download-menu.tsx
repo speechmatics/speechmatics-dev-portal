@@ -1,6 +1,6 @@
-import { MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
-import { useContext } from "react";
-import { callGetTranscript, callGetDataFile } from "../utils/call-api";
+import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { callGetTranscript, callGetDataFile } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
 
 export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
@@ -24,69 +24,65 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
 
   const downloadDataFile = () => {
     if (idToken) {
-      callGetDataFile(idToken, jobId)
-        .then((response) => {
-          if (!!response) {
-
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(response);
-            a.download = fileName;
-            a.click();
-          }
-        })
+      callGetDataFile(idToken, jobId).then((response) => {
+        if (!!response) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(response);
+          a.download = fileName;
+          a.click();
+        }
+      });
     }
   };
 
-  return <>
-    <MenuList
-      color="smNavy.400"
-      border="1px solid"
-      rounded="none"
-      shadow="lg"
-      fontSize={14}
-      borderColor="smBlack.200"
-      minW="0px"
-      maxW={'180px'}
-      p={2}
-    >
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('txt');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as text
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('json-v2');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as JSON
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('srt');
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as SRT
-          </MenuItem>
-        </>
-      )}
-    </MenuList>
-  </>
+  return (
+    <>
+      <MenuList
+        color='smNavy.400'
+        border='1px solid'
+        rounded='none'
+        shadow='lg'
+        fontSize={14}
+        borderColor='smBlack.200'
+        minW='0px'
+        maxW={'180px'}
+        p={2}>
+        {status === ('done' || 'completed') && (
+          <>
+            <MenuItem
+              onClick={(e) => {
+                downloadTranscript('txt');
+              }}
+              _focus={{ color: 'smBlue.500' }}>
+              Download as text
+            </MenuItem>
+            <MenuDivider />
+          </>
+        )}
+        {status === ('done' || 'completed') && (
+          <>
+            <MenuItem
+              onClick={(e) => {
+                downloadTranscript('json-v2');
+              }}
+              _focus={{ color: 'smBlue.500' }}>
+              Download as JSON
+            </MenuItem>
+            <MenuDivider />
+          </>
+        )}
+        {status === ('done' || 'completed') && (
+          <>
+            <MenuItem
+              onClick={(e) => {
+                downloadTranscript('srt');
+              }}
+              _focus={{ color: 'smBlue.500' }}>
+              Download as SRT
+            </MenuItem>
+          </>
+        )}
+      </MenuList>
+    </>
+  );
 };

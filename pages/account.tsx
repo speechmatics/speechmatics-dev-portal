@@ -3,7 +3,7 @@ import { Button } from '@chakra-ui/react';
 import { DescriptionLabel, PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 
-export default function Account({ }) {
+export default function Account({}) {
   const { instance, inProgress } = useMsal();
 
   const resetPassword = () => {
@@ -19,10 +19,10 @@ export default function Account({ }) {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Account" introduction="" />
+      <PageHeader headerLabel='Account' introduction='' />
 
       <DescriptionLabel>Reset Your password:</DescriptionLabel>
-      <Button variant="speechmatics" onClick={resetPassword}>
+      <Button variant='speechmatics' onClick={resetPassword}>
         Reset password
       </Button>
     </Dashboard>

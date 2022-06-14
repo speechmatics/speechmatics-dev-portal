@@ -9,25 +9,25 @@ import {
   ClockIcon,
   CompleteIcon,
   FileProcessingFailedIcon,
-  FileProcessingIcon,
+  FileProcessingIcon
 } from '../components/icons-library';
 import {
   FileUploadComponent,
   SelectField,
   FileProcessingProgress,
-  handleErrors,
+  handleErrors
 } from '../components/transcribe-form';
 import { TranscriptionViewer } from '../components/transcription-viewer';
 import accountStoreContext from '../utils/account-store-context';
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { humanFileSize } from '../utils/string-utils';
-import { languagesData, separation, accuracyModels } from '../utils/transcribe-elements';
+import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
-  FileTranscriptionStore,
+  FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({}) {
+export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export default observer(function Transcribe({}) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Upload & Transcribe"
-        introduction="Upload and Transcribe a Media File."
+        headerLabel='Upload & Transcribe'
+        introduction='Upload and Transcribe a Media File.'
       />
 
-      <SmPanel width="100%" maxWidth="900px">
+      <SmPanel width='100%' maxWidth='900px'>
         {stage === 'form' ? (
           <TranscribeForm store={flow.store} auth={authFlow.store} />
         ) : (
@@ -72,7 +72,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       <DescriptionLabel>
         This media file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav
       </DescriptionLabel>
-      <Box alignSelf="stretch" pt={4}>
+      <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent onFileSelect={(file) => flow.assignFile(file)} />
       </Box>
 
@@ -81,50 +81,49 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
         Choose the best features to suit your transcription requirements.
       </DescriptionLabel>
 
-      <Flex width="100%" wrap="wrap" gap={6} pt={4}>
+      <Flex width='100%' wrap='wrap' gap={6} pt={4}>
         <SelectField
-          data-qa="select-transcribe-language"
-          label="Language"
-          tooltip="Select the language of your audio file‘s spoken content to get the best transcription accuracy"
+          data-qa='select-transcribe-language'
+          label='Language'
+          tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
           onSelect={(val) => (store.language = val)}
         />
 
         <SelectField
-          data-qa="select-transcribe-separation"
-          label="Separation"
-          tooltip="Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output."
+          data-qa='select-transcribe-separation'
+          label='Separation'
+          tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
           onSelect={(val) => (store.separation = val as any)}
         />
 
         <SelectField
-          data-qa="select-transcribe-accuracy"
-          label="Accuracy"
-          tooltip="Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy."
+          data-qa='select-transcribe-accuracy'
+          label='Accuracy'
+          tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
           onSelect={(val) => (store.accuracy = val as any)}
         />
       </Flex>
-      <Flex width="100%" justifyContent="center" py={3}>
+      <Flex width='100%' justifyContent='center' py={3}>
         <Button
-          data-qa="button-get-transcription"
-          variant="speechmatics"
-          fontSize="18"
-          width="100%"
+          data-qa='button-get-transcription'
+          variant='speechmatics'
+          fontSize='18'
+          width='100%'
           onClick={() => {
             flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
           }}
-          disabled={!store._file || !auth.isLoggedIn}
-        >
+          disabled={!store._file || !auth.isLoggedIn}>
           Get Your Transcription
         </Button>
       </Flex>
-      <Flex justifyContent="center" alignItems="center" width="100%">
+      <Flex justifyContent='center' alignItems='center' width='100%'>
         <Box mr={2}>
           <ClockIcon />
         </Box>
-        <Box fontSize="0.85em" color="smNavy.300">
+        <Box fontSize='0.85em' color='smNavy.300'>
           A one hour file will return your transcript in 30 minutes or less.
         </Box>
       </Flex>
@@ -146,7 +145,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
   }, []);
 
   return (
-    <Flex alignSelf="stretch" alignItems="center" direction="column" pt={4} className="fadeIn">
+    <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4} className='fadeIn'>
       {stage == 'pendingFile' && (
         <PendingLabelsSlots
           icon={FileProcessingIcon}
@@ -154,7 +153,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
           subtitle={
             <>
               Your file size is:
-              <Text as="span" fontFamily="RMNeue-Bold" color="smGreen.500">
+              <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'>
                 {' '}
                 {humanFileSize(fileSize, true)}
               </Text>
@@ -172,7 +171,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
           subtitle={
             <>
               Status of your job (ID: {jobId.toLowerCase()}) is:
-              <Text as="span" fontFamily="RMNeue-Bold" color="smGreen.500">
+              <Text as='span' fontFamily='RMNeue-Bold' color='smGreen.500'>
                 {' '}
                 Running
               </Text>
@@ -186,11 +185,11 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       {stage == 'failed' && (
         <PendingLabelsSlots
           icon={FileProcessingFailedIcon}
-          title="Your Transcription Has Failed."
+          title='Your Transcription Has Failed.'
           subtitle={
             <>
               Status of your job (ID: {jobId.toLowerCase()}) is:
-              <Text as="span" fontFamily="RMNeue-Bold" color="smRed.500">
+              <Text as='span' fontFamily='RMNeue-Bold' color='smRed.500'>
                 {' '}
                 Failed
               </Text>
@@ -204,7 +203,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       {stage == 'complete' && (
         <PendingLabelsSlots
           icon={CompleteIcon}
-          title="Your Transcription Is Ready."
+          title='Your Transcription Is Ready.'
           subtitle={`Transcription of: "${fileName}"`}
           subtitle2={<></>}
         />
@@ -213,7 +212,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       {stageDelayed != 'complete' && (
         <>
           <FileProcessingProgress stage={stage} my={4} />
-          <Divider my={8} color="smBlack.200" />
+          <Divider my={8} color='smBlack.200' />
         </>
       )}
 
@@ -227,24 +226,23 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
             accuracy={store.accuracy}
             language={store.language}
             transcriptionText={store.transcriptionText}
-            className="fadeIn"
+            className='fadeIn'
           />
         </Box>
       )}
 
-      <Box width="100%" textAlign="center" fontSize="1.2em" color="smNavy.400" my={4}>
+      <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
         Go to the{' '}
-        <Link data-qa="link-recent-jobs" href="/view-jobs/">
-          <a className="text_link">View Jobs</a>
+        <Link data-qa='link-recent-jobs' href='/view-jobs/'>
+          <a className='text_link'>View Jobs</a>
         </Link>{' '}
         page to view all your recent transcriptions.
       </Box>
 
       <Button
-        data-qa="button-transcribe-another-file"
-        variant="speechmaticsOutline"
-        onClick={() => flow.reset()}
-      >
+        data-qa='button-transcribe-another-file'
+        variant='speechmaticsOutline'
+        onClick={() => flow.reset()}>
         Transcribe Another File
       </Button>
     </Flex>
@@ -255,14 +253,14 @@ const PendingLabelsSlots = ({ icon, title, subtitle, subtitle2 }) => (
   <>
     {icon({ width: 64, height: 64 })}
 
-    <Box fontFamily="RMNeue-Bold" fontSize="3xl" p={2} textAlign="center">
+    <Box fontFamily='RMNeue-Bold' fontSize='3xl' p={2} textAlign='center'>
       {title}
     </Box>
 
-    <Box color="smNavy.400" fontSize="1.2em">
+    <Box color='smNavy.400' fontSize='1.2em'>
       {subtitle}
     </Box>
-    <Box textAlign="center" color="smBlack.300" pt={1}>
+    <Box textAlign='center' color='smBlack.300' pt={1}>
       {subtitle2}
     </Box>
   </>

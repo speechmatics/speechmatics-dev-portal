@@ -6,7 +6,7 @@ import {
   Stage,
   JobStatus,
   FlowError,
-  checkIfFileCorrectType,
+  checkIfFileCorrectType
 } from './transcribe-elements';
 
 type UploadError = {
@@ -137,7 +137,7 @@ export class FileTranscriptionStore {
     this._uploadErrors.push({
       name,
       error,
-      detail,
+      detail
     });
   }
 

@@ -18,7 +18,7 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
 
   useEffect(() => {
     return () => {
-      fileTranscriptionFlow.store.uploadErrors = []
+      fileTranscriptionFlow.store.uploadErrors = [];
     };
   }, []);
 

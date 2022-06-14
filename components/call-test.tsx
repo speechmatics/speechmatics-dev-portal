@@ -28,7 +28,7 @@ export default ({ tokenPayload }) => {
   const callb3 = useCallback(() => {
     console.log('calling GET /accounts to check the accounts');
     if (tokenPayload?.idToken) {
-      console.log(tokenPayload.idToken)
+      console.log(tokenPayload.idToken);
       // accountStore.accountsFetchFlow(tokenPayload.idToken, (v) => {});
     }
   }, [tokenPayload?.idToken]);
@@ -42,13 +42,13 @@ export default ({ tokenPayload }) => {
 
   return (
     <VStack style={{ marginTop: 50 }}>
-      <Button size="xs" variant="outline" onClick={callb}>
+      <Button size='xs' variant='outline' onClick={callb}>
         test accesstoken on test endpoint
       </Button>
-      <Button size="xs" variant="outline" onClick={callb3}>
+      <Button size='xs' variant='outline' onClick={callb3}>
         test /accounts with idtoken
       </Button>
-      <Button size="xs" variant="outline" onClick={callb4}>
+      <Button size='xs' variant='outline' onClick={callb4}>
         test GET /accounts with mobx store
       </Button>
       <div dangerouslySetInnerHTML={{ __html: response }} />

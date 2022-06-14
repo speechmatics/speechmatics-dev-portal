@@ -79,77 +79,72 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
   return (
     <VStack>
       <Flex
-        alignSelf="stretch"
+        alignSelf='stretch'
         bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
         _hover={!file ? { bgColor: 'smBlue.150' } : {}}
-        border="2px dashed"
-        borderColor="#386DFB66"
-        justifyContent="center"
-        alignItems="center"
-        position="relative"
+        border='2px dashed'
+        borderColor='#386DFB66'
+        justifyContent='center'
+        alignItems='center'
+        position='relative'
         py={6}
-        px={8}
-      >
+        px={8}>
         <input
-          type="file"
+          type='file'
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={onSelectFiles}
-          accept="audio/*"
+          accept='audio/*'
         />
 
         <Flex
           gap={4}
-          alignItems="center"
+          alignItems='center'
           style={{ strokeOpacity: 0.75 }}
-          width="100%"
-          justifyContent="center"
-        >
+          width='100%'
+          justifyContent='center'>
           {!file ? (
             <>
-              <UploadFileIcon color="var(--chakra-colors-smBlue-500)" height="3em" width="3em" />
-              <VStack alignItems="flex-start" spacing={0}>
+              <UploadFileIcon color='var(--chakra-colors-smBlue-500)' height='3em' width='3em' />
+              <VStack alignItems='flex-start' spacing={0}>
                 <Box
-                  color="smNavy.500"
-                  fontFamily="RMNeue-SemiBold"
-                  fontSize="1.2em"
-                  lineHeight={1.2}
-                >
+                  color='smNavy.500'
+                  fontFamily='RMNeue-SemiBold'
+                  fontSize='1.2em'
+                  lineHeight={1.2}>
                   Click here and choose a file or drag the file here.
                 </Box>
-                <Box color="smBlack.250" fontSize=".85em" pt={1}></Box>
+                <Box color='smBlack.250' fontSize='.85em' pt={1}></Box>
               </VStack>
             </>
           ) : (
             <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              width="100%"
-              className="fadeIn"
-            >
-              <Flex color="smNavy.500" fontSize="1.2em" alignItems="center" gap={2}>
+              alignItems='center'
+              justifyContent='space-between'
+              width='100%'
+              className='fadeIn'>
+              <Flex color='smNavy.500' fontSize='1.2em' alignItems='center' gap={2}>
                 <Box>
-                  <TranscribeIcon width="2em" height="2em" mono />
+                  <TranscribeIcon width='2em' height='2em' mono />
                 </Box>
                 <Box>
                   File "
-                  <Text as="span" fontFamily="RMNeue-SemiBold">
+                  <Text as='span' fontFamily='RMNeue-SemiBold'>
                     {file?.name}
                   </Text>
                   " has been added.
                 </Box>
               </Flex>
-              <Tooltip label="Remove this file" hasArrow>
+              <Tooltip label='Remove this file' hasArrow>
                 <Box
-                  cursor="pointer"
+                  cursor='pointer'
                   onClick={removeFileClick}
-                  transition="all 0.3s"
-                  _hover={{ opacity: 0.8, transform: 'scale(1.1)' }}
-                >
+                  transition='all 0.3s'
+                  _hover={{ opacity: 0.8, transform: 'scale(1.1)' }}>
                   <RemoveFileIcon
-                    width="3em"
-                    height="3em"
-                    color="var(--chakra-colors-smBlue-700)"
+                    width='3em'
+                    height='3em'
+                    color='var(--chakra-colors-smBlue-700)'
                   />
                 </Box>
               </Tooltip>
@@ -158,9 +153,9 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
         </Flex>
 
         <Box
-          position="absolute"
-          height="100%"
-          width="100%"
+          position='absolute'
+          height='100%'
+          width='100%'
           display={file ? 'none' : 'block'}
           ref={dropAreaRef}
           cursor={'pointer'}
@@ -169,17 +164,17 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
       </Flex>
       {isFileTooBigError && (
         <AttentionBar
-          data_qa="message-file-too-big"
+          data_qa='message-file-too-big'
           centered
-          description="This file size exceeds the 1GB file size limit. Please upload another file."
+          description='This file size exceeds the 1GB file size limit. Please upload another file.'
         />
       )}
 
       {isFileWrongTypeError && (
         <AttentionBar
-          data_qa="message-file-too-big"
+          data_qa='message-file-too-big'
           centered
-          description="This file type is unsupported. The file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav"
+          description='This file type is unsupported. The file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav'
         />
       )}
     </VStack>
@@ -199,7 +194,7 @@ export const SelectField = ({
   tooltip,
   data,
   onSelect,
-  'data-qa': dataQa,
+  'data-qa': dataQa
 }: SelectFieldProps) => {
   const select = useCallback((value: number) => {
     onSelect(data[value].value);
@@ -216,11 +211,11 @@ export const SelectField = ({
   );
 
   return (
-    <Box flex="1 0 auto">
-      <HStack alignItems="center" pb={2}>
-        <Box color="smBlack.400">{label}</Box>
+    <Box flex='1 0 auto'>
+      <HStack alignItems='center' pb={2}>
+        <Box color='smBlack.400'>{label}</Box>
         <Box>
-          <Tooltip label={tooltip} hasArrow placement="right">
+          <Tooltip label={tooltip} hasArrow placement='right'>
             <Box>
               <QuestionmarkInCircle />
             </Box>
@@ -228,14 +223,13 @@ export const SelectField = ({
         </Box>
       </HStack>
       <Select
-        borderColor="smBlack.200"
-        color="smBlack.300"
+        borderColor='smBlack.200'
+        color='smBlack.300'
         data-qa={dataQa}
         defaultValue={defaultValue}
-        borderRadius="2px"
-        size="lg"
-        onChange={(event) => select(event.target.selectedIndex)}
-      >
+        borderRadius='2px'
+        size='lg'
+        onChange={(event) => select(event.target.selectedIndex)}>
         {sortedData.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}
@@ -266,43 +260,41 @@ export const ChoiceButtons = ({ label, tooltip, data, onSelect }: ChoiceButtonsP
   }, []);
 
   return (
-    <Box flex="1 0 40%">
-      <HStack alignItems="center" pb={2}>
-        <Box color="smBlack.400">{label}</Box>
+    <Box flex='1 0 40%'>
+      <HStack alignItems='center' pb={2}>
+        <Box color='smBlack.400'>{label}</Box>
         <Box>
-          <Tooltip label={tooltip} hasArrow placement="right">
+          <Tooltip label={tooltip} hasArrow placement='right'>
             <Box>
               <QuestionmarkInCircle />
             </Box>
           </Tooltip>
         </Box>
       </HStack>
-      <Flex width="100%">
+      <Flex width='100%'>
         {data.map(({ value, label }) => {
           if (selected == value)
             return (
               <Button
-                variant="speechmatics"
-                height="3em"
-                py="1.4em"
-                fontFamily="RMNeue-Regular"
-                flex="1"
-              >
+                variant='speechmatics'
+                height='3em'
+                py='1.4em'
+                fontFamily='RMNeue-Regular'
+                flex='1'>
                 {label}
               </Button>
             );
           else
             return (
               <Button
-                variant="speechmaticsOutline"
-                height="3em"
-                border="1px solid"
-                borderColor="smBlack.180"
-                color="smBlack.250"
-                fontFamily="RMNeue-Light"
-                flex="1"
-                onClick={() => select(value)}
-              >
+                variant='speechmaticsOutline'
+                height='3em'
+                border='1px solid'
+                borderColor='smBlack.180'
+                color='smBlack.250'
+                fontFamily='RMNeue-Light'
+                flex='1'
+                onClick={() => select(value)}>
                 {label}
               </Button>
             );
@@ -323,34 +315,32 @@ const statusColors = {
   done: { label: 'smBlue.500', pointBg: 'smBlue.500', step: 'smWhite.500' },
   running: { label: 'smGreen.500', pointBg: 'smGreen.500', step: 'smWhite.500' },
   pending: { label: 'smNavy.280', pointBg: 'smBlue.140', step: '#5E667366' },
-  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' },
+  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' }
 };
 
 export const ProgressPoint = function ({ status, label, step, posX }: ProgressPointProps) {
   return (
     <VStack
-      top="50%"
+      top='50%'
       left={posX}
       style={{ transform: 'translate(-50%, -1em)' }}
-      pos="absolute"
-      spacing={1}
-    >
+      pos='absolute'
+      spacing={1}>
       <Flex
-        rounded="full"
+        rounded='full'
         w={8}
         h={8}
         bgColor={statusColors[status].pointBg}
-        border="3px solid white"
-        justifyContent="center"
-        alignItems="center"
+        border='3px solid white'
+        justifyContent='center'
+        alignItems='center'
         zIndex={2}
-        fontFamily="RMNeue-SemiBold"
+        fontFamily='RMNeue-SemiBold'
         color={statusColors[status].step}
-        fontSize=".75em"
-      >
+        fontSize='.75em'>
         {status == 'done' ? <OkayIcon /> : step}
       </Flex>
-      <Box fontSize="12" color={statusColors[status].label} textAlign="center">
+      <Box fontSize='12' color={statusColors[status].label} textAlign='center'>
         {label}
       </Box>
     </VStack>
@@ -394,8 +384,8 @@ const stageToProps = {
     step2: 'done',
     step3: 'done',
     gradEndColor: 'smGreen.500',
-    animateStripes: false,
-  },
+    animateStripes: false
+  }
 };
 
 export const FileProcessingProgress = function ({
@@ -405,45 +395,45 @@ export const FileProcessingProgress = function ({
   const stageProps = stageToProps[stage];
 
   return (
-    <Box {...boxProps} width="100%" pos="relative" height="4em">
+    <Box {...boxProps} width='100%' pos='relative' height='4em'>
       <Box
-        rounded="full"
-        width="100%"
+        rounded='full'
+        width='100%'
         height={2}
-        bgColor="smBlue.140"
-        pos="absolute"
-        top="50%"
+        bgColor='smBlue.140'
+        pos='absolute'
+        top='50%'
         zIndex={0}
         style={{ transform: 'translate(0, -50%)' }}
       />
 
       <Box
-        rounded="full"
+        rounded='full'
         width={stageProps.barWidth}
-        transition="all 0.5s"
+        transition='all 0.5s'
         height={2}
         bgGradient={`linear(to-r, smBlue.500 25%, ${stageProps.gradEndColor})`}
-        pos="absolute"
-        top="50%"
+        pos='absolute'
+        top='50%'
         zIndex={0}
         style={{ transform: 'translate(0, -50%)' }}
       />
 
       <Box
-        rounded="full"
+        rounded='full'
         width={stageProps.barWidth}
-        transition="all 0.5s"
+        transition='all 0.5s'
         height={2}
-        pos="absolute"
-        top="50%"
+        pos='absolute'
+        top='50%'
         zIndex={0}
         style={{ transform: 'translate(0, -50%)', animationDuration: stageProps.animDur }}
         className={`striped_background ${stageProps.animateStripes ? 'animate_background' : ''}`}
       />
 
-      <ProgressPoint status={stageProps.step1} label="Media Uploading" posX="15%" step="1" />
-      <ProgressPoint status={stageProps.step2} label="Running Transcription" posX="50%" step="2" />
-      <ProgressPoint status={stageProps.step3} label="Transcription Complete" posX="85%" step="3" />
+      <ProgressPoint status={stageProps.step1} label='Media Uploading' posX='15%' step='1' />
+      <ProgressPoint status={stageProps.step2} label='Running Transcription' posX='50%' step='2' />
+      <ProgressPoint status={stageProps.step3} label='Transcription Complete' posX='85%' step='3' />
     </Box>
   );
 };
