@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
-import {
-  callGetSecrChargify,
-  callPostRequestTokenChargify,
-} from '../utils/call-api';
+import { callGetSecrChargify, callPostRequestTokenChargify } from '../utils/call-api';
 
 import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -17,7 +14,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -80,9 +77,11 @@ function Subscribe({ }) {
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
           .then(async () => {
-            positiveToast(!!accountStore.getPaymentMethod()
-              ? 'Card updated successfully!'
-              : 'Card added successfully!');
+            positiveToast(
+              !!accountStore.getPaymentMethod()
+                ? 'Card updated successfully!'
+                : 'Card added successfully!'
+            );
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
           })
@@ -99,65 +98,67 @@ function Subscribe({ }) {
     );
   };
 
-
-
   return (
     <Dashboard>
-      <PageHeader headerLabel={!!accountStore.getPaymentMethod()
-        ? 'Replace your existing payment card'
-        : 'Add a payment card to your account'} introduction="" />
+      <PageHeader
+        headerLabel={
+          !!accountStore.getPaymentMethod()
+            ? 'Replace your existing payment card'
+            : 'Add a payment card to your account'
+        }
+        introduction=''
+      />
 
       <div>
         <Box width='100%' maxWidth='630px'>
-          <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
+          <form onSubmit={handleSubmit} ref={chargifyForm} id='chargify-form'>
             <SmPanel>
               <HeaderLabel>Your Name</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_firstName"></div>
-                <div id="chargify_lastname"></div>
+                <div id='chargify_firstName'></div>
+                <div id='chargify_lastname'></div>
               </Box>
             </SmPanel>
 
-            <SmPanel marginTop="2em">
+            <SmPanel marginTop='2em'>
               <HeaderLabel>Your Card Information</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_ccnumber"></div>
-                <div id="chargify_cvv"></div>
-                <div id="chargify_ccmonth"></div>
-                <div id="chargify_ccyear"></div>
+                <div id='chargify_ccnumber'></div>
+                <div id='chargify_cvv'></div>
+                <div id='chargify_ccmonth'></div>
+                <div id='chargify_ccyear'></div>
               </Box>
             </SmPanel>
 
-            <SmPanel marginTop="2em">
+            <SmPanel marginTop='2em'>
               <HeaderLabel>Your Address</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_address"></div>
-                <div id="chargify_address2"></div>
-                <div id="chargify_city"></div>
-                <div id="chargify_country"></div>
-                <div id="chargify_zip"></div>
-                <div id="chargify_state"></div>
+                <div id='chargify_address'></div>
+                <div id='chargify_address2'></div>
+                <div id='chargify_city'></div>
+                <div id='chargify_country'></div>
+                <div id='chargify_zip'></div>
+                <div id='chargify_state'></div>
               </Box>
             </SmPanel>
 
             <label>
-              <input id="host-token" disabled value={token} type="hidden" />
-              <input id="reference" disabled value={'client1'} type="hidden" />
+              <input id='host-token' disabled value={token} type='hidden' />
+              <input id='reference' disabled value={'client1'} type='hidden' />
               <input
-                type="hidden"
-                className="host-input"
-                data-chargify="reference"
+                type='hidden'
+                className='host-input'
+                data-chargify='reference'
                 value={'client1'}
               />
             </label>
             <p>
               <Button
-                variant="speechmatics"
-                type="submit"
+                variant='speechmatics'
+                type='submit'
                 disabled={!submitButtonReady}
-                marginTop="2em"
-                data-qa="button-add-replace-payment"
-              >
+                marginTop='2em'
+                data-qa='button-add-replace-payment'>
                 {submitButtonReady ? (
                   !!accountStore.getPaymentMethod() ? (
                     'Update card'
@@ -184,9 +185,12 @@ function Subscribe({ }) {
 export default observer(Subscribe);
 
 const sectStyle = {
-  display: 'grid', gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
-  columnGap: '2em', alignSelf: 'center', width: '100%'
-} as React.CSSProperties
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
+  columnGap: '2em',
+  alignSelf: 'center',
+  width: '100%',
+} as React.CSSProperties;
 
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
@@ -205,7 +209,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       paddingTop: '2px',
       paddingBottom: '1px',
       borderRadius: '2px',
-      fontSize: '1.1em'
+      fontSize: '1.1em',
     },
     label: labelStyle,
     message: { paddingTop: '2px', paddingBottom: '1px' },
@@ -315,4 +319,3 @@ const chargifyFields = (color1, color2, color3, name) => {
     },
   };
 };
-

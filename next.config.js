@@ -40,7 +40,6 @@ module.exports = {
       '/account': { page: '/account' },
       '/transcribe': { page: '/transcribe' },
       '/view-jobs': { page: '/view-jobs' },
-
     };
 
     return paths;

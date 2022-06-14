@@ -2,13 +2,10 @@ import { render, fireEvent, waitFor, screen, configure } from '@testing-library/
 import React from 'react';
 import { SelectField } from '../transcribe-form';
 
-configure({ testIdAttribute: 'data-qa' })
+configure({ testIdAttribute: 'data-qa' });
 
 describe('transcribe form and flow tests', () => {
-
-
   test('SelectField doing what it should', () => {
-
     const data = [
       { label: 'English', value: 'en', default: true },
       { label: 'French', value: 'fr' },
@@ -16,20 +13,23 @@ describe('transcribe form and flow tests', () => {
     ];
 
     const callback = (value: string) => {
-
-      expect(value).toBe("fr");
-    }
+      expect(value).toBe('fr');
+    };
 
     const comp = render(
-      <SelectField label='title' tooltip='tooltip'
-        data={data} onSelect={callback} data-qa='test-select' />);
+      <SelectField
+        label='title'
+        tooltip='tooltip'
+        data={data}
+        onSelect={callback}
+        data-qa='test-select'
+      />
+    );
 
     fireEvent.change(comp.getByTestId('test-select'), {
       target: {
-        selectedIndex: 1
-      }
-    })
-
-
+        selectedIndex: 1,
+      },
+    });
   });
 });

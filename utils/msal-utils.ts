@@ -30,7 +30,7 @@ export function msalLogout(inactive: boolean = false) {
   const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
     (account?.idTokenClaims as any)?.acr
   }`;
-  runtimeAuthFlow.reset()
+  runtimeAuthFlow.reset();
   accountStore.clear();
   msalInstance.logoutRedirect({
     account: account,

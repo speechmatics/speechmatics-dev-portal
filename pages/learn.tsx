@@ -35,27 +35,27 @@ export default function Learn({ }) {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Learn" introduction="Explore our API Documentation and Resources." />
+      <PageHeader headerLabel='Learn' introduction='Explore our API Documentation and Resources.' />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
-      <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='900px'>
+      <VStack spacing='1.5em' alignItems='flex-start' width='100%' maxWidth='900px'>
         <InfoBarbox
-          bgColor="smNavy.500"
+          bgColor='smNavy.500'
           icon={<SubmitAJobIcon width='4em' height='4em' />}
-          title="How to Submit a Job"
-          description="Watch our demo on how to submit a transcription job."
-          buttonLabel="Watch Video"
+          title='How to Submit a Job'
+          description='Watch our demo on how to submit a transcription job.'
+          buttonLabel='Watch Video'
           setStateUp={() => setIsYtModalOpen(true)}
         />
-        <Grid gridTemplateColumns="repeat(auto-fit, minmax(14em, 1fr))" gap="1.5em" width='100%'>
+        <Grid gridTemplateColumns='repeat(auto-fit, minmax(14em, 1fr))' gap='1.5em' width='100%'>
           {elems.map((el, i) => (
             <React.Fragment key={i}>
-              <SmPanel justifyContent="space-between" p="1.5em" height="100%">
+              <SmPanel justifyContent='space-between' p='1.5em' height='100%'>
                 <Box>
                   <HeaderLabel>{el.title}</HeaderLabel>
                   <DescriptionLabel>{el.descr}</DescriptionLabel>
                 </Box>
                 <Link href={el.link} target='_blank'>
-                  <Box fontFamily="RMNeue-Regular" color="smBlue.500">
+                  <Box fontFamily='RMNeue-Regular' color='smBlue.500'>
                     <a>Read Article &gt;</a>
                   </Box>
                 </Link>
@@ -69,26 +69,25 @@ export default function Learn({ }) {
 }
 
 const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
-
   const vidWidth = useBreakpointValue({
-    xs: "20em",
-    sm: "25em",
-    md: "40em",
-    lg: "50em",
-    xl: "60em",
-    "2xl": "70em",
+    xs: '20em',
+    sm: '25em',
+    md: '40em',
+    lg: '50em',
+    xl: '60em',
+    '2xl': '70em',
   });
 
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={true}>
       <ModalOverlay />
-      <ModalContent borderRadius="2px" maxWidth={`calc(${vidWidth} + 2em)`}>
+      <ModalContent borderRadius='2px' maxWidth={`calc(${vidWidth} + 2em)`}>
         <ModalHeader>
           <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         </ModalHeader>
-        <ModalBody p="1em">
+        <ModalBody p='1em'>
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
+            url='https://www.youtube.com/watch?v=vbK0u-aMuPQ'
             width={vidWidth}
             height={`calc(${vidWidth} * 0.6)`}
             controls={true}
@@ -103,39 +102,41 @@ const elems = [
   {
     title: 'Introduction',
     descr: 'How to use the RESTful API for the Speechmatics SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/introduction/'
+    link: 'https://docs.speechmatics.com/en/cloud/introduction/',
   },
   {
     title: 'API How-To Guide',
     descr: 'Examples and guidance on using the Speechmatics SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/howto/'
-
+    link: 'https://docs.speechmatics.com/en/cloud/howto/',
   },
   {
-    title: 'Entities', descr: 'What entities are, and how they are formatted.',
-    link: 'https://docs.speechmatics.com/en/cloud/entities/'
+    title: 'Entities',
+    descr: 'What entities are, and how they are formatted.',
+    link: 'https://docs.speechmatics.com/en/cloud/entities/',
   },
   {
     title: 'Configuring the Job Request',
     descr: 'How to configure your requests to take advantage of Speechmatics features.',
-    link: 'https://docs.speechmatics.com/en/cloud/configuring-job-request/'
+    link: 'https://docs.speechmatics.com/en/cloud/configuring-job-request/',
   },
   {
     title: 'Understanding SaaS Usage',
     descr: 'How to make requests and understand your usage of our service.',
-    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
+    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/',
   },
   {
-    title: 'Troubleshooting', descr: 'Resolving errors with the SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/'
+    title: 'Troubleshooting',
+    descr: 'Resolving errors with the SaaS.',
+    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/',
   },
   {
-    title: 'API Reference', descr: 'Reference guide for the ASR REST API.',
-    link: 'https://docs.speechmatics.com/en/cloud/saasv2api/'
+    title: 'API Reference',
+    descr: 'Reference guide for the ASR REST API.',
+    link: 'https://docs.speechmatics.com/en/cloud/saasv2api/',
   },
   {
     title: 'Release Notes',
     descr: "What's new in our SaaS.",
-    link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
+    link: 'https://docs.speechmatics.com/en/cloud/release-notes/',
   },
 ];

@@ -32,18 +32,17 @@ export default observer(function SignUp() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const userHint = urlParams.get('hint');
-    if ((decodeURI(window.location.hash).includes('AADB2C90091'))) {
-      setb2cError("Account creation cancelled");
+    if (decodeURI(window.location.hash).includes('AADB2C90091')) {
+      setb2cError('Account creation cancelled');
       return;
     }
     if (!userHint) {
-      setb2cError("");
-      console.log("hint parameter expected")
+      setb2cError('');
+      console.log('hint parameter expected');
       return;
-    };
+    }
 
     accountStore.userHint = userHint;
-
 
     if (inProgress == 'none' && accounts.length > 0) return;
 
@@ -61,7 +60,7 @@ export default observer(function SignUp() {
             extraQueryParameters,
             tokenQueryParameters,
             authority,
-            redirectUri: process.env.REDIRECT_URI_INVITATION
+            redirectUri: process.env.REDIRECT_URI_INVITATION,
           })
           .catch((error) => {
             console.log(error);
@@ -74,15 +73,32 @@ export default observer(function SignUp() {
 
   useEffect(() => {
     if (tokenStore.loginFailureError) {
-      setb2cError(tokenStore.loginFailureError ?
-        <>This invitation link has expired. Please contact <a style={{ color: 'var(--chakra-colors-smBlue-500' }} target='_blank' href="https://www.speechmatics.com/about-us/contact">our support.</a></> : '');
+      setb2cError(
+        tokenStore.loginFailureError ? (
+          <>
+            This invitation link has expired. Please contact{' '}
+            <a
+              style={{ color: 'var(--chakra-colors-smBlue-500' }}
+              target='_blank'
+              href='https://www.speechmatics.com/about-us/contact'>
+              our support.
+            </a>
+          </>
+        ) : (
+          ''
+        )
+      );
     }
   }, [tokenStore.loginFailureError]);
 
   return (
-    <div className="login_container">
-      <Box px='3em' maxWidth='500px'><SpeechmaticsLogo width='100%' /></Box>
-      <Text textAlign="center" mt='1em'>{b2cError || <Spinner />}</Text>
+    <div className='login_container'>
+      <Box px='3em' maxWidth='500px'>
+        <SpeechmaticsLogo width='100%' />
+      </Box>
+      <Text textAlign='center' mt='1em'>
+        {b2cError || <Spinner />}
+      </Text>
     </div>
   );
-})
+});

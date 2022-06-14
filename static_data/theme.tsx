@@ -1,6 +1,5 @@
 import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
-import { createBreakpoints } from "@chakra-ui/theme-tools"
-
+import { createBreakpoints } from '@chakra-ui/theme-tools';
 
 const smTabStyle = {
   bg: 'smBlue.100',
@@ -28,18 +27,18 @@ const smTabStyle = {
 } as CSSObject;
 
 const breakpoints = createBreakpoints({
-  xs: "22em", // 352px
-  sm: "30em", // 480
-  md: "48em", // 768
-  lg: "62em", // 992
-  xl: "80em", // 1280
-  "2xl": "96em", // 1536
-})
+  xs: '22em', // 352px
+  sm: '30em', // 480
+  md: '48em', // 768
+  lg: '62em', // 992
+  xl: '80em', // 1280
+  '2xl': '96em', // 1536
+});
 
 const theme = extendTheme({
   breakpoints,
   fonts: {
-    body: 'RMNeue-Regular'
+    body: 'RMNeue-Regular',
   },
   colors: {
     smGreen: {
@@ -98,7 +97,7 @@ const theme = extendTheme({
     smOrange: {
       150: '#CB6C4310',
       400: '#E27919',
-      500: '#CB6C43'
+      500: '#CB6C43',
     },
     smWhite: {
       150: '#ffffff26',
@@ -239,6 +238,3 @@ const theme = extendTheme({
 });
 
 export default theme;
-
-
-
