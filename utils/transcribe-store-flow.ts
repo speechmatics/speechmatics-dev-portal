@@ -6,7 +6,7 @@ import {
   Stage,
   JobStatus,
   FlowError,
-  checkIfFileCorrectType,
+  checkIfFileCorrectType
 } from './transcribe-elements';
 
 export class FileTranscriptionStore {
@@ -128,7 +128,7 @@ export class FileTranscriptionStore {
   }
 
   addUploadError(error: string) {
-    this._uploadErrors.push(error)
+    this._uploadErrors.push(error);
   }
 
   resetStore() {
@@ -143,7 +143,7 @@ export class FileTranscriptionStore {
     this.transcriptionText = '';
     this.dateSubmitted = '';
     this.error = null;
-    this.uploadErrors = []
+    this.uploadErrors = [];
   }
 
   get fileName() {
@@ -238,7 +238,7 @@ class FileTranscribeFlow {
     const store = this.store;
     const owner = this;
     return function (resp: any) {
-      store.addUploadError("Error uploading " + file.name + ": " + resp.response.detail)
+      store.addUploadError('Error uploading ' + file.name + ': ' + resp.response.detail);
       owner.store.removeFileFromUploading(file);
       if (file !== store.file) return;
       if (store.stage !== 'pendingFile') return;

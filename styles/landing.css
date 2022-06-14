@@ -1,71 +1,70 @@
-
 .landing_container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .landing_box {
-    width: 11em;
-    height: 7em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: GibsonRegular;
-    font-size: 1.7rem;
-    cursor: pointer;
-    position: relative;
+  width: 11em;
+  height: 7em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: GibsonRegular;
+  font-size: 1.7rem;
+  cursor: pointer;
+  position: relative;
 }
 
 .landing_box > div > div {
-    transition: 0.3s all ease-in-out;
+  transition: 0.3s all ease-in-out;
 }
 
 .landing_box:hover > div:first-child > div {
-    transform: translateY(-12px);
+  transform: translateY(-12px);
 }
 
 .landing_box > div > div:not(:first-child) {
-    margin-top: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .landing_arrow {
-    position: absolute;
-    opacity: 0;
-    transition: 0.3s all ease-in-out;
-    bottom: 30px;
+  position: absolute;
+  opacity: 0;
+  transition: 0.3s all ease-in-out;
+  bottom: 30px;
 }
 
 .landing_arrow.green {
-    filter: sepia(1) saturate(100%) hue-rotate(127deg) brightness(94%) contrast(76%);
+  filter: sepia(1) saturate(100%) hue-rotate(127deg) brightness(94%) contrast(76%);
 }
 
 .landing_arrow.blue {
-    filter: sepia(1) saturate(250%) hue-rotate(190deg) brightness(94%) contrast(76%);
+  filter: sepia(1) saturate(250%) hue-rotate(190deg) brightness(94%) contrast(76%);
 }
 
 .landing_box:hover .landing_arrow {
-    opacity: 1;
+  opacity: 1;
 }
 
 .landing_boxes {
-    width: auto;
-    display: flex;
-    margin-top: 3em;
-    padding-bottom: 10em;
+  width: auto;
+  display: flex;
+  margin-top: 3em;
+  padding-bottom: 10em;
 }
 
 .landing_boxes > div:not(:first-child) {
-    margin-left: 2em;
+  margin-left: 2em;
 }
 
 .landing_text {
-    width: 30em;
-    margin-top: 5em;
-    font-family: GibsonLight;
-    color: #3E4D5B;
-    font-size: 1.4em;
+  width: 30em;
+  margin-top: 5em;
+  font-family: GibsonLight;
+  color: #3e4d5b;
+  font-size: 1.4em;
 }

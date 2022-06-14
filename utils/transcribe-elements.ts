@@ -12,7 +12,7 @@ export const separation: {
 }[] = [
   { label: 'None', value: 'none', default: true },
   { label: 'Speaker', value: 'speaker' },
-  { label: 'Channel', value: 'channel' },
+  { label: 'Channel', value: 'channel' }
 ];
 
 export const accuracyModels: {
@@ -21,7 +21,7 @@ export const accuracyModels: {
   default?: boolean;
 }[] = [
   { label: 'Enhanced', value: 'enhanced', default: true },
-  { label: 'Standard', value: 'standard' },
+  { label: 'Standard', value: 'standard' }
 ];
 
 export const enum FlowError {
@@ -34,7 +34,7 @@ export const enum FlowError {
   BeyondAllowedQuota,
   ContractExpired,
   UndefinedForbiddenError,
-  UndefinedError,
+  UndefinedError
 }
 
 export const checkIfFileCorrectType = (file: File) =>
@@ -51,7 +51,7 @@ export const checkIfFileCorrectType = (file: File) =>
     'audio/aac',
     'audio/amr',
     'video/mpeg',
-    'video/mp4',
+    'video/mp4'
   ].includes(file.type);
 
 export const getFullLanguageName = (value: string) =>
@@ -60,126 +60,126 @@ export const getFullLanguageName = (value: string) =>
 export const languagesData: Language[] = [
   {
     label: 'Arabic',
-    value: 'ar',
+    value: 'ar'
   },
   {
     label: 'Dutch',
-    value: 'nl',
+    value: 'nl'
   },
   {
     label: 'Catalan',
-    value: 'ca',
+    value: 'ca'
   },
   {
     label: 'Danish',
-    value: 'da',
+    value: 'da'
   },
   {
     label: 'English',
     value: 'en',
-    default: true,
+    default: true
   },
   {
     label: 'French',
-    value: 'fr',
+    value: 'fr'
   },
   {
     label: 'German',
-    value: 'de',
+    value: 'de'
   },
   {
     label: 'Hindi',
-    value: 'hi',
+    value: 'hi'
   },
   {
     label: 'Italian',
-    value: 'it',
+    value: 'it'
   },
   {
     label: 'Japanese',
-    value: 'ja',
+    value: 'ja'
   },
   {
     label: 'Korean',
-    value: 'ko',
+    value: 'ko'
   },
   {
     label: 'Polish',
-    value: 'pl',
+    value: 'pl'
   },
   {
     label: 'Portuguese',
-    value: 'pt',
+    value: 'pt'
   },
   {
     label: 'Russian',
-    value: 'ru',
+    value: 'ru'
   },
   {
     label: 'Spanish',
-    value: 'es',
+    value: 'es'
   },
   {
     label: 'Swedish',
-    value: 'sv',
+    value: 'sv'
   },
   {
     label: 'Mandarin',
-    value: 'cmn',
+    value: 'cmn'
   },
   {
     label: 'Norwegian',
-    value: 'no',
+    value: 'no'
   },
   {
     label: 'Bulgarian',
-    value: 'bg',
+    value: 'bg'
   },
   {
     label: 'Czech',
-    value: 'cs',
+    value: 'cs'
   },
   {
     label: 'Finnish',
-    value: 'fi',
+    value: 'fi'
   },
   {
     label: 'Hungarian',
-    value: 'hu',
+    value: 'hu'
   },
   {
     label: 'Croatian',
-    value: 'hr',
+    value: 'hr'
   },
   {
     label: 'Lithuanian',
-    value: 'lt',
+    value: 'lt'
   },
   {
     label: 'Latvian',
-    value: 'lv',
+    value: 'lv'
   },
   {
     label: 'Romanian',
-    value: 'ro',
+    value: 'ro'
   },
   {
     label: 'Slovak',
-    value: 'sk',
+    value: 'sk'
   },
   {
     label: 'Slovenian',
-    value: 'sl',
+    value: 'sl'
   },
   {
     label: 'Turkish',
-    value: 'tr',
+    value: 'tr'
   },
   {
     label: 'Malay',
-    value: 'ms',
+    value: 'ms'
   },
   { label: 'Ukrainian', value: 'uk' },
   { label: 'Cantonese', value: 'yue' },
-  { label: 'Greek', value: 'el' },
+  { label: 'Greek', value: 'el' }
 ];
