@@ -36,7 +36,7 @@ export default function Learn({ }) {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Learn" introduction="Explore our comprehensive API documentation." />
+      <PageHeader headerLabel="Learn" introduction="Explore our API Documentation and Resources." />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
       <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='900px'>
         <InfoBarbox

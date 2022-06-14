@@ -1,33 +1,45 @@
 import { MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
 import { useContext } from "react";
-import { callGetTranscript } from "../utils/call-api";
+import { callGetTranscript, callGetDataFile } from "../utils/call-api";
 import accountContext from '../utils/account-store-context';
 import { trackEvent } from "../utils/analytics";
 
-export const TranscriptDownloadMenu = ({ jobId, status }) => {
+export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
   const { tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
 
   const downloadTranscript = (format) => {
-    let isActive = true;
     if (idToken) {
       callGetTranscript(idToken, jobId, format)
         .then((response) => {
-          if (isActive && !!response) {
-            const fileName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
+          if (!!response) {
+            const fName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
             const contentType = format === 'json-v2' ? 'application/json' : 'text/plain'
             const output = format === 'json-v2' ? JSON.stringify(response) : response
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
+            a.download = fName;
+            a.click();
+          }
+        })
+    }
+  };
+
+  const downloadDataFile = () => {
+    if (idToken) {
+      callGetDataFile(idToken, jobId)
+        .then((response) => {
+          if (!!response) {
+
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(response);
             a.download = fileName;
             a.click();
           }
         })
     }
-    return () => {
-      isActive = false;
-    };
   };
+
   return <>
     <MenuList
       color="smNavy.400"
@@ -79,15 +91,8 @@ export const TranscriptDownloadMenu = ({ jobId, status }) => {
           >
             Download as SRT
           </MenuItem>
-          <MenuDivider />
         </>
       )}
-      <MenuItem as="a" href="../public/favicon.ico" download _focus={{ color: 'smBlue.500' }}
-        onClick={() => {
-          trackEvent('download_transcription_audio', 'Action')
-        }}>
-        Download audio file
-      </MenuItem>
     </MenuList>
   </>
 };

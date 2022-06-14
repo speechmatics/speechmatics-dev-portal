@@ -106,7 +106,6 @@ class AccountContext {
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
 
     if (!this._account && 'account_id' in response) this._account = response as any;
-
   }
 
   async accountsFetchFlow(
@@ -116,14 +115,12 @@ class AccountContext {
     this.requestSent = this.isLoading = true;
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
-
         if (
           jsonResp &&
           jsonResp.accounts &&
           Array.isArray(jsonResp.accounts) &&
           jsonResp.accounts.length == 0
         ) {
-          console.log(jsonResp)
           console.log(
             'no account on management platform, sending a request to create with POST /accounts'
           );
@@ -134,7 +131,6 @@ class AccountContext {
             return jsonPostResp;
           });
         } else if (jsonResp && Array.isArray(jsonResp.accounts) && jsonResp.accounts.length > 0) {
-          console.log(jsonResp)
           this.isLoading = false;
           return jsonResp;
         }
@@ -142,8 +138,8 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        console.log(err)
-        errToast(`while fetching account: ${err}`);
+        console.log(err);
+        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
         console.error(err);
       });

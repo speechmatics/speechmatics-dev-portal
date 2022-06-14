@@ -28,12 +28,12 @@ const smTabStyle = {
 } as CSSObject;
 
 const breakpoints = createBreakpoints({
-  xs: "22em",
-  sm: "30em",
-  md: "48em",
-  lg: "62em",
-  xl: "80em",
-  "2xl": "96em",
+  xs: "22em", // 352px
+  sm: "30em", // 480
+  md: "48em", // 768
+  lg: "62em", // 992
+  xl: "80em", // 1280
+  "2xl": "96em", // 1536
 })
 
 const theme = extendTheme({
@@ -57,6 +57,8 @@ const theme = extendTheme({
       300: '#BFD8FE',
       400: '#5398FC',
       500: '#386DFB',
+      600: '#1848C3',
+      700: '#103490',
     },
     smNavy: {
       100: '#F9FBFD', //dashboard background
@@ -126,7 +128,7 @@ const theme = extendTheme({
             bg: 'smBlue.300',
           },
           _disabled: {
-            bg: 'smBlack.300',
+            bg: 'smBlack.250',
           },
         } as CSSObject,
 

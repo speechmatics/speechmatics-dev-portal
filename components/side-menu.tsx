@@ -53,7 +53,7 @@ function MobileMenu() {
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className="nav_menu" rowGap='0.8em' height='400px'>
+    <VStack className="nav_menu" rowGap='0.8em' height='450px'>
       {menuData.map((item) => (
         <MenuElem item={item} key={item.path} selected={router.asPath == item.path}
           paddingLeft='clamp(1em, 4.2vw, 3em)' paddingRight='clamp(1em, 4.2vw, 3em)' />
@@ -81,7 +81,7 @@ function MenuElem({ item, selected, ...props }) {
           })}
         </Box>
         <Box
-          data-qa={`menu-${item.title.replace(/ /g, '-').toLowerCase()}`}
+          data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`}
           pl='0.5em'>
           {item.title}
         </Box>

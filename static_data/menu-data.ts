@@ -6,7 +6,7 @@ import {
   MenuGettingStartedIcon,
   MenuTrackUsageIcon,
   TranscribeIcon,
-  SubmitAJobIcon,
+  ViewJobsIcon,
 } from '../components/icons-library';
 
 const menuData = [
@@ -22,7 +22,7 @@ const menuData = [
   },
   {
     path: '/getting-started/',
-    title: 'Start with API',
+    title: 'Start Using API',
     icon: MenuGettingStartedIcon,
   },
   {
@@ -33,7 +33,7 @@ const menuData = [
   {
     path: '/view-jobs/',
     title: 'View Jobs',
-    icon: SubmitAJobIcon,
+    icon: ViewJobsIcon,
   },
   {
     path: '/usage/',

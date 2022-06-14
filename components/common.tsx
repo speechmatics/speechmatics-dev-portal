@@ -17,9 +17,6 @@ import {
   VStack,
   createStandaloneToast,
   useBreakpointValue,
-  Menu,
-  MenuButton,
-  BoxProps,
   Modal,
   ModalContent,
   ModalCloseButton,
@@ -398,7 +395,7 @@ export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
         style={{ textDecoration: 'none' }}
       >
         <Button variant="speechmaticsOutline" mt="0em">
-          View Pricing
+          Pricing
         </Button>
       </Link>
     </Flex>
@@ -413,7 +410,8 @@ export const ConfirmRemoveModal = ({
   mainTitle,
   subTitle,
   onRemoveConfirm,
-  confirmLabel,
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel'
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -461,7 +459,7 @@ export const ConfirmRemoveModal = ({
             _hover={{ bg: 'smBlack.150' }}
             onClick={onClose}
           >
-            Cancel
+            {cancelLabel}
           </Button>
         </Flex>
       </ModalFooter>
@@ -509,7 +507,9 @@ export const positiveToast = (descr: string) =>
 
 export const AttentionBar = ({ description, data_qa = 'attentionBar', centered = false }) => (
   <HStack width="100%" bg="smRed.100" p="1em" spacing="1em" justifyContent={centered ? 'center' : ''}>
-    <ExclamationIcon />
+    <Box>
+      <ExclamationIcon />
+    </Box>
     <Text as='span' data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex={centered ? "" : "1"} >
       {description}
     </Text>

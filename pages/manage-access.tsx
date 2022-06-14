@@ -193,8 +193,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops>
 
             {codeExample && <>
               <Text color='smBlack.300'>
-                The following curl command contains your new API key which will become active after 1
-                minute.
+                The following curl commands contain your new API key.
               </Text>
               <CodeExamples token={generatedToken} />
             </>}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback, Dispatch } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
@@ -10,6 +10,7 @@ export const useJobs = (limit, page) => {
   const [isWaitingOnMore, setIsWaitingOnMore] = useState<boolean>(false);
   const [errorOnInit, setErrorOnInit] = useState<boolean>(false);
   const [errorGettingMore, setErrorGettingMore] = useState<boolean>(false);
+  const [errorGettingNewJob, setErrorGettingNewJob] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [isPolling, setIsPolling] = useState<boolean>(false);
 
@@ -36,7 +37,6 @@ export const useJobs = (limit, page) => {
       createdBefore,
       setCreatedBefore,
       limit,
-      noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
       setIsLoading,
@@ -55,7 +55,6 @@ export const useJobs = (limit, page) => {
         createdBefore,
         setCreatedBefore,
         limit,
-        noMoreJobs,
         setNoMoreJobs,
         setIsPolling,
         setIsWaitingOnMore,
@@ -65,7 +64,7 @@ export const useJobs = (limit, page) => {
   }, [page]);
 
   // could/should this be memoized? Not sure
-  const onDeleteJob = (id, force) => {
+  const onDeleteJob = (id: string, force: boolean) => {
     if (idToken) {
       callDeleteJob(idToken, id, force)
         .then((response) => {
@@ -79,6 +78,23 @@ export const useJobs = (limit, page) => {
     }
   };
 
+  //for outside use
+  const forceGetJobs = useCallback(() => {
+    console.log('forceGetJobs', createdBefore, limit);
+    getJobs(
+      idToken,
+      jobs,
+      setJobs,
+      null,
+      (value) => {},
+      limit,
+      setNoMoreJobs,
+      setIsPolling,
+      (value) => {},
+      setErrorGettingNewJob
+    );
+  }, [idToken, jobs]);
+
   return {
     jobs,
     isLoading,
@@ -88,25 +104,25 @@ export const useJobs = (limit, page) => {
     errorOnInit,
     noMoreJobs,
     onDeleteJob,
+    forceGetJobs,
+    errorGettingNewJob,
   };
 };
 
-// This is mostly unchanged except it uses inputs rather than hooks
 const getJobs = (
-  idToken,
-  jobs,
-  setJobs,
-  createdBefore,
-  setCreatedBefore,
-  limit,
-  noMoreJobs,
-  setNoMoreJobs,
-  setIsPolling,
-  loadingFunction,
-  errorFunction
+  idToken: string,
+  jobs: JobElementProps[],
+  setJobs: Dispatch<JobElementProps[]>,
+  createdBefore: string,
+  setCreatedBefore: Dispatch<string>,
+  limit: number,
+  setNoMoreJobs: Dispatch<boolean>,
+  setIsPolling: Dispatch<boolean>,
+  loadingFunction: Dispatch<boolean>,
+  errorFunction: Dispatch<boolean>
 ) => {
   let isActive = true;
-  if (idToken && !noMoreJobs) {
+  if (idToken) {
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
@@ -117,24 +133,18 @@ const getJobs = (
     }
     callGetJobs(idToken, queries)
       .then((respJson) => {
-        if ( !respJson || !('jobs' in respJson) || respJson.jobs == null ) {
-          throw "error geting jobs"
+        if (!respJson || !('jobs' in respJson) || respJson.jobs == null) {
+          throw 'error geting jobs';
         }
         if (isActive) {
           if (respJson?.jobs?.length < limit) {
             setNoMoreJobs(true);
           }
-          if (respJson.jobs.length !== 0 ) {
+          if (respJson.jobs.length !== 0) {
             const formatted: JobElementProps[] = formatJobs(respJson.jobs);
             const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
-            console.log(
-              'callGetJobs',
-              respJson.jobs,
-              respJson.jobs.length,
-              respJson.jobs[respJson.jobs.length - 1].created_at
-            );
             setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
-            setJobs(combinedArrays);
+            setJobs([...combinedArrays]);
             if (combinedArrays.some((item) => item.status === 'running')) {
               setIsPolling(true);
             } else {
@@ -145,7 +155,7 @@ const getJobs = (
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         errorFunction(true);
         loadingFunction(false);
       });
@@ -155,10 +165,14 @@ const getJobs = (
   };
 };
 
-// This is mostly unchanged except it uses inputs rather than hooks
-// I added addMillisecond to get round the milli second precision in the polling endpoint.
-// Should be deprecated soon as the API fix will be coming
-const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit) => {
+const pollJobStatuses = (
+  idToken: string,
+  jobs: JobElementProps[],
+  setJobs: Dispatch<JobElementProps[]>,
+  isPolling: boolean,
+  setIsPolling: Dispatch<boolean>,
+  maxlimit: number
+) => {
   let isActive = true;
   if (idToken && isPolling) {
     let newJobs = [];
@@ -166,28 +180,26 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
     const requestNo = Math.ceil(jobs.length / maxlimit);
     if (requestNo !== 1) {
       for (let i = 0; i < requestNo; i++) {
-        let createdBeforeTime = jobs[maxlimit * i]?.date?.toISOString();
+        let createdBeforeTime = jobs[maxlimit * i]?.date;
         let query = { limit: maxlimit, created_before: createdBeforeTime };
         requests.push(callGetJobs(idToken, query));
       }
     } else {
-      let createdBeforeTime = jobs[0]?.date?.toISOString();
+      let createdBeforeTime = jobs[0]?.date;
       let query = { limit: jobs.length, created_before: createdBeforeTime };
       requests.push(callGetJobs(idToken, query));
     }
     Promise.all(requests).then((result) => {
-      for (const res of result) {
-        if (isActive && !!res && 'jobs' in res) {
-          newJobs = [...newJobs, ...res.jobs];
-        }
-      }
       if (isActive && isPolling) {
-        const formatted = formatJobs(newJobs);
+        for (const res of result) {
+          if (!!res && 'jobs' in res) {
+            newJobs = [...newJobs, ...res.jobs];
+          }
+        }
+        const formatted: JobElementProps[] = formatJobs(newJobs);
         const combinedArrays: JobElementProps[] = createSet(jobs, formatted, false);
-        setJobs(combinedArrays);
-        if (combinedArrays.some((item) => item.status === 'running')) {
-          setIsPolling(true);
-        } else {
+        setJobs([...combinedArrays]);
+        if (!combinedArrays.some((item) => item.status === 'running')) {
           setIsPolling(false);
         }
       }
@@ -198,12 +210,12 @@ const pollJobStatuses = (idToken, jobs, setJobs, isPolling, setIsPolling, maxlim
   };
 };
 
-const formatJobs = (jobsResponse: JobsResponse[]) => {
+const formatJobs = (jobsResponse: JobsResponse[]): JobElementProps[] => {
   const formattedJobs: JobElementProps[] = jobsResponse.map((item) => {
     const newItem: JobElementProps = {
       id: item.id,
       status: item.status,
-      date: new Date(item.created_at),
+      date: item.created_at,
       duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
       language: item.config?.transcription_config?.language,
@@ -218,30 +230,34 @@ const formatJobs = (jobsResponse: JobsResponse[]) => {
   return formattedJobs;
 };
 
-const formatDuration = (duration) => {
+const formatDuration = (duration: string): string => {
   const seconds = parseInt(duration);
   if (seconds < 60) {
     return `${seconds} second${seconds !== 1 ? 's' : ''}`;
   }
   const minutes = seconds / 60;
   if (minutes < 60) {
-    let roundedMinutes = Math.round(minutes)
+    let roundedMinutes = Math.round(minutes);
     return `${roundedMinutes} minute${roundedMinutes !== 1 ? 's' : ''}`;
   }
-  const hours = (seconds / ( 60 * 60 ));
+  const hours = seconds / (60 * 60);
   if (hours < 24) {
-    let roundedHours = Math.round(10 * hours) / 10
+    let roundedHours = Math.round(10 * hours) / 10;
     return `${roundedHours} hour${roundedHours !== 1 ? 's' : ''}`;
-  } 
-  const days = (seconds / ( 60 * 60 * 24 ) );
-  let roundedDays = Math.round(10 * days) / 10
+  }
+  const days = seconds / (60 * 60 * 24);
+  let roundedDays = Math.round(10 * days) / 10;
   return `${roundedDays} day${roundedDays !== 1 ? 's' : ''}`;
 };
 
 // JS inbuilt set only compares object references to doesn't exclude objects with identical values from being in the same set
 // Therefore, I created a custom function to return a set of job objects
 // The add arg allows us to combine arrays when getting jobs and only update current jobs for polling
-const createSet = (first: JobElementProps[], second: JobElementProps[], add: boolean) => {
+const createSet = (
+  first: JobElementProps[],
+  second: JobElementProps[],
+  add: boolean
+): JobElementProps[] => {
   for (const item of second) {
     const index = first.findIndex((el) => el.id === item.id);
     if (index === -1 && add) {
@@ -250,13 +266,14 @@ const createSet = (first: JobElementProps[], second: JobElementProps[], add: boo
       first[index] = item;
     }
   }
-  return first;
+
+  return first.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 export type JobElementProps = {
   status: 'running' | 'completed' | 'done' | 'rejected';
   fileName: string;
-  date: Date;
+  date: string;
   accuracy?: string;
   duration: string;
   language?: string;
