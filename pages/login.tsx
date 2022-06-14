@@ -19,7 +19,7 @@ export default function Login() {
   const loginRequest = {
     scopes: [],
     authority,
-    redirectUri: process.env.REDIRECT_URI,
+    redirectUri: process.env.REDIRECT_URI
   } as RedirectRequest;
 
   const loginHandler = () => {
@@ -110,7 +110,7 @@ const LoginSub = ({
   loggedExpired,
   loggedManualy,
   loginHandler,
-  hintExpiredError,
+  hintExpiredError
 }) => {
   if (
     inProgress == 'startup' ||

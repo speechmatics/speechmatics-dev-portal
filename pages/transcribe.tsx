@@ -9,12 +9,12 @@ import {
   ClockIcon,
   CompleteIcon,
   FileProcessingFailedIcon,
-  FileProcessingIcon,
+  FileProcessingIcon
 } from '../components/icons-library';
 import {
   FileUploadComponent,
   SelectField,
-  FileProcessingProgress,
+  FileProcessingProgress
 } from '../components/transcribe-form';
 import { TranscriptionViewer } from '../components/transcription-viewer';
 import accountStoreContext from '../utils/account-store-context';
@@ -23,7 +23,7 @@ import { capitalizeFirstLetter, humanFileSize } from '../utils/string-utils';
 import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
-  FileTranscriptionStore,
+  FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
 export default observer(function Transcribe({}) {

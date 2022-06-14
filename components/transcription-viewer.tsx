@@ -8,7 +8,7 @@ import {
   MenuButton,
   Text,
   useBreakpointValue,
-  Grid,
+  Grid
 } from '@chakra-ui/react';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import { capitalizeFirstLetter } from '../utils/string-utils';

@@ -8,7 +8,7 @@ import {
   MenuPadlockIcon,
   MenuTrackUsageIcon,
   TranscribeAudioIcon,
-  TranscribeIcon,
+  TranscribeIcon
 } from '../components/icons-library';
 
 export default function Home({}) {

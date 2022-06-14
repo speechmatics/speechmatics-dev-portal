@@ -5,7 +5,7 @@ import {
   useBreakpointValue,
   useDisclosure,
   useOutsideClick,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -38,7 +38,7 @@ function MobileMenu() {
 
   useOutsideClick({
     ref: ref,
-    handler: () => onClose(),
+    handler: () => onClose()
   });
 
   return (
@@ -99,7 +99,7 @@ function MenuElem({ item, selected, ...props }) {
           {item.icon({
             mono: Boolean(selected) || isHovered,
             width: '1.65em',
-            height: '1.65em',
+            height: '1.65em'
           })}
         </Box>
         <Box data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`} pl='0.5em'>

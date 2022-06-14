@@ -9,7 +9,7 @@ describe('transcribe form and flow tests', () => {
     const data = [
       { label: 'English', value: 'en', default: true },
       { label: 'French', value: 'fr' },
-      { label: 'German', value: 'de' },
+      { label: 'German', value: 'de' }
     ];
 
     const callback = (value: string) => {
@@ -28,8 +28,8 @@ describe('transcribe form and flow tests', () => {
 
     fireEvent.change(comp.getByTestId('test-select'), {
       target: {
-        selectedIndex: 1,
-      },
+        selectedIndex: 1
+      }
     });
   });
 });

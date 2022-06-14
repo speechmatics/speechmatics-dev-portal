@@ -47,7 +47,7 @@ export default observer(function SignUp() {
     if (inProgress == 'none' && accounts.length > 0) return;
 
     const extraQueryParameters = {
-      id_token_hint: userHint,
+      id_token_hint: userHint
     };
 
     const tokenQueryParameters = { grant_type: 'authorization_code' };
@@ -60,7 +60,7 @@ export default observer(function SignUp() {
             extraQueryParameters,
             tokenQueryParameters,
             authority,
-            redirectUri: process.env.REDIRECT_URI_INVITATION,
+            redirectUri: process.env.REDIRECT_URI_INVITATION
           })
           .catch((error) => {
             console.log(error);

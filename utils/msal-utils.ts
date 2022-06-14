@@ -37,7 +37,7 @@ export function msalLogout(inactive: boolean = false) {
     authority: account ? authority : process.env.SIGNIN_POLICY,
     postLogoutRedirectUri: `${process.env.POST_LOGOUT_REDIRECT_URI}${
       inactive ? '#inactive' : '#logout'
-    }`,
+    }`
   });
 }
 

@@ -9,7 +9,7 @@ import {
   Tabs,
   Text,
   useBreakpointValue,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ import {
   HeaderLabel,
   PageHeader,
   UsageInfoBanner,
-  ViewPricingBar,
+  ViewPricingBar
 } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { ExclamationIcon } from '../components/icons-library';
@@ -130,7 +130,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
     md: 3,
     lg: 4,
     xl: 5,
-    '2xl': 6,
+    '2xl': 6
   });
 
   const columns = 5;

@@ -13,7 +13,7 @@ import {
   ChakraComponent,
   Flex,
   BoxProps,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext, useEffect } from 'react';
@@ -31,7 +31,7 @@ import {
   HeaderLabel,
   PageHeader,
   positiveToast,
-  SmPanel,
+  SmPanel
 } from '../components/common';
 import { ExclamationIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
@@ -74,7 +74,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
       md: 3,
       lg: 4,
       xl: 5,
-      '2xl': 6,
+      '2xl': 6
     });
 
     const { accountStore, tokenStore } = useContext(accountContext);

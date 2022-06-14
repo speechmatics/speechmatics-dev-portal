@@ -12,7 +12,7 @@ export default function Custom404() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
+        width: '100%'
       }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <h1
@@ -22,7 +22,7 @@ export default function Custom404() {
             fontSize: '24px',
             fontWeight: '500',
             verticalAlign: 'top',
-            paddingRight: '18px',
+            paddingRight: '18px'
           }}>
           404
         </h1>
@@ -32,7 +32,7 @@ export default function Custom404() {
             textAlign: 'left',
             lineHeight: '49px',
             height: '49px',
-            verticalAlign: 'middle',
+            verticalAlign: 'middle'
           }}>
           <h2
             style={{
@@ -41,7 +41,7 @@ export default function Custom404() {
               lineHeight: 'inherit',
               margin: '0',
               padding: '0',
-              paddingLeft: '18px',
+              paddingLeft: '18px'
             }}>
             This page could not be found
           </h2>

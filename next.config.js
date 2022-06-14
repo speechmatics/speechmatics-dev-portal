@@ -23,7 +23,7 @@ module.exports = {
     INVITATION_SIGNUP_POLICY: process.env.INVITATION_SIGNUP_POLICY,
     REDIRECT_URI_INVITATION: process.env.REDIRECT_URI_INVITATION,
     RESET_PASSWORD_POLICY: process.env.RESET_PASSWORD_POLICY,
-    RUNTIME_AUTH_TTL: process.env.RUNTIME_AUTH_TTL,
+    RUNTIME_AUTH_TTL: process.env.RUNTIME_AUTH_TTL
   },
   exportPathMap: async function () {
     const paths = {
@@ -39,9 +39,9 @@ module.exports = {
       '/learn': { page: '/learn' },
       '/account': { page: '/account' },
       '/transcribe': { page: '/transcribe' },
-      '/view-jobs': { page: '/view-jobs' },
+      '/view-jobs': { page: '/view-jobs' }
     };
 
     return paths;
-  },
+  }
 };

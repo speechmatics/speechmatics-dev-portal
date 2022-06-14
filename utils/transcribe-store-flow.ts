@@ -6,7 +6,7 @@ import {
   Stage,
   JobStatus,
   FlowError,
-  checkIfFileCorrectType,
+  checkIfFileCorrectType
 } from './transcribe-elements';
 
 export class FileTranscriptionStore {

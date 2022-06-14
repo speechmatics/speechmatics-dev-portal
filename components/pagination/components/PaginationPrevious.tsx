@@ -24,7 +24,7 @@ export const PaginationPrevious: FC<ButtonProps> = ({
   const allProps = useMemo(
     () => ({
       ...buttonProps,
-      isDisabled,
+      isDisabled
     }),
     [buttonProps, isDisabled]
   );
@@ -41,7 +41,7 @@ export const PaginationPrevious: FC<ButtonProps> = ({
       }
 
       handlePreviousClick();
-    },
+    }
   });
 
   // handlers

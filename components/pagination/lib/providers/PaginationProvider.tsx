@@ -21,13 +21,13 @@ export const PaginationContext = createContext<PaginationContextValues>({
   state: {
     currentPage: INITIAL_VALUES.currentPage,
     isDisabled: INITIAL_VALUES.isDisabled,
-    pagesCount: 0,
+    pagesCount: 0
   },
   actions: {
     setCurrentPage: () => null,
     setIsDisabled: () => null,
-    changePage: () => null,
-  },
+    changePage: () => null
+  }
 });
 
 export type PaginationProviderProps = {
@@ -42,7 +42,7 @@ export const PaginationProvider: FC<PaginationProviderProps> = ({
   onPageChange,
   pagesCount: pagesCountProp,
   currentPage: currentPageProp,
-  isDisabled: isDisabledProp,
+  isDisabled: isDisabledProp
 }) => {
   // react hooks
   const [currentPage, setCurrentPage] = useState<number>(INITIAL_VALUES.currentPage);
@@ -85,13 +85,13 @@ export const PaginationProvider: FC<PaginationProviderProps> = ({
   const state = {
     currentPage,
     pagesCount,
-    isDisabled,
+    isDisabled
   };
 
   const actions = {
     setCurrentPage,
     setIsDisabled,
-    changePage,
+    changePage
   };
 
   return (

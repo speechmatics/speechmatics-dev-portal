@@ -20,7 +20,7 @@ export type PageProps = {
 const buttonStyles: ButtonProps = {
   minW: 'auto',
   px: 1,
-  cursor: 'pointer',
+  cursor: 'pointer'
 };
 
 export const PaginationPage: FC<PageProps & ButtonProps> = ({
@@ -48,7 +48,7 @@ export const PaginationPage: FC<PageProps & ButtonProps> = ({
       }
 
       changePage(page);
-    },
+    }
   });
 
   // memos
@@ -73,7 +73,7 @@ export const PaginationPage: FC<PageProps & ButtonProps> = ({
       ...buttonStyles,
       ...buttonProps,
       ...currentStyles,
-      isDisabled,
+      isDisabled
     }),
     [buttonProps, currentStyles, isDisabled]
   );

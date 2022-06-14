@@ -6,7 +6,7 @@ import {
   Text,
   useBreakpointValue,
   IconButton,
-  Flex,
+  Flex
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from './icons-library';
@@ -19,7 +19,7 @@ export function HeaderBar({ logout, accountEmail }) {
     md: 3,
     lg: 4,
     xl: 5,
-    '2xl': 6,
+    '2xl': 6
   });
 
   return (

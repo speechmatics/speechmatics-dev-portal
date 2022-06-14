@@ -15,6 +15,6 @@ export function formatDate(date: Date) {
 export function formatTimeDateFromString(str: string): string {
   const date = new Date(str);
   return `${date.getUTCDate()} ${date.toLocaleString('default', {
-    month: 'short',
+    month: 'short'
   })} ${date.getUTCFullYear()} ${date.getUTCHours()}:${pad(date.getUTCMinutes())}`;
 }

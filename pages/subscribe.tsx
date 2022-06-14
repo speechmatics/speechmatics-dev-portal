@@ -54,7 +54,7 @@ function Subscribe({}) {
         type: 'card',
         serverHost: process.env.CHARGIFY_SERVER_HOST,
         fields: chargifyFields('#ffffff', '#ffffff', '#333333', ''),
-        addressDropdowns: true,
+        addressDropdowns: true
       });
       setChargifyLoaded(true);
     }
@@ -189,30 +189,30 @@ const sectStyle = {
   gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
   columnGap: '2em',
   alignSelf: 'center',
-  width: '100%',
+  width: '100%'
 } as React.CSSProperties;
 
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '1.2em',
+    fontSize: '1.2em'
   };
 
   const defaultStyle = {
     field: {
       backgroundColor: color1,
       padding: '3px',
-      borderRadius: '2px',
+      borderRadius: '2px'
     },
     input: {
       backgroundColor: color2,
       paddingTop: '2px',
       paddingBottom: '1px',
       borderRadius: '2px',
-      fontSize: '1.1em',
+      fontSize: '1.1em'
     },
     label: labelStyle,
-    message: { paddingTop: '2px', paddingBottom: '1px' },
+    message: { paddingTop: '2px', paddingBottom: '1px' }
   };
 
   return {
@@ -223,7 +223,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'First name is not valid. Please update it.',
       maxlength: '30',
-      style: defaultStyle,
+      style: defaultStyle
     },
     lastName: {
       selector: '#chargify_lastname',
@@ -232,28 +232,28 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '30',
-      style: defaultStyle,
+      style: defaultStyle
     },
     number: {
       selector: '#chargify_ccnumber',
       label: 'Credit card number',
       placeholder: 'xxxx xxxx xxxx xxxx',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     month: {
       selector: '#chargify_ccmonth',
       label: 'Expiry Month',
       placeholder: 'mm',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     year: {
       selector: '#chargify_ccyear',
       label: 'Expiry Year',
       placeholder: 'yyyy',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     cvv: {
       selector: '#chargify_cvv',
@@ -261,7 +261,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       placeholder: 'XXX',
       required: true,
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     address: {
       selector: '#chargify_address',
@@ -270,7 +270,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     address2: {
       selector: '#chargify_address2',
@@ -279,7 +279,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     city: {
       selector: '#chargify_city',
@@ -288,7 +288,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     state: {
       selector: '#chargify_state',
@@ -297,7 +297,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     zip: {
       selector: '#chargify_zip',
@@ -306,7 +306,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     country: {
       selector: '#chargify_country',
@@ -315,7 +315,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
-    },
+      style: defaultStyle
+    }
   };
 };

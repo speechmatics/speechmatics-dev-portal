@@ -19,7 +19,7 @@ import {
   ModalBody,
   useDisclosure,
   Link,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -28,7 +28,7 @@ import {
   ConfirmRemoveModal,
   WarningBanner,
   NoSomethingBanner,
-  UsageInfoBanner,
+  UsageInfoBanner
 } from './common';
 import { BinIcon, ViewTranscriptionIcon, DownloadJobIcon } from './icons-library';
 import { callGetTranscript } from '../utils/call-api';
@@ -55,7 +55,7 @@ export const RecentJobs = observer(() => {
 
   const breakVal = useBreakpointValue({
     base: false,
-    xl: true,
+    xl: true
   });
 
   const {
@@ -68,7 +68,7 @@ export const RecentJobs = observer(() => {
     noMoreJobs,
     onDeleteJob,
     forceGetJobs,
-    errorGettingNewJob,
+    errorGettingNewJob
   } = useJobs(pageLimit, page);
 
   const onOpenTranscript = useCallback(
@@ -81,7 +81,7 @@ export const RecentJobs = observer(() => {
             accuracy: job.accuracy,
             language: job.language,
             transcriptionText: response,
-            fileName: job.fileName,
+            fileName: job.fileName
           });
           setTranscriptOpen(true);
         });
@@ -227,11 +227,11 @@ const RecentJobElement = ({
   language,
   id,
   onOpenTranscript,
-  onStartDelete,
+  onStartDelete
 }: JobElementProps & JobModalProps) => {
   const breakVal = useBreakpointValue({
     base: false,
-    xl: true,
+    xl: true
   });
 
   return (
@@ -350,7 +350,7 @@ const IconButtons = ({
   accuracy,
   date,
   status,
-  onStartDelete,
+  onStartDelete
 }) => (
   <>
     <Box flex={1}>
@@ -389,7 +389,7 @@ const IconButtons = ({
                 language,
                 accuracy,
                 date: date,
-                fileName,
+                fileName
               },
               'txt'
             )
@@ -491,7 +491,7 @@ const statusColour = {
   rejected: 'smRed.500',
   done: 'smGreen.500',
   completed: 'smGreen.500',
-  running: 'smOrange.400',
+  running: 'smOrange.400'
 };
 
 const mapLanguages = (lang) => {

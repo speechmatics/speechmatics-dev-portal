@@ -11,7 +11,7 @@ export default function Account({}) {
       .loginRedirect({
         scopes: [],
         authority: process.env.RESET_PASSWORD_POLICY,
-        redirectUri: process.env.REDIRECT_URI,
+        redirectUri: process.env.REDIRECT_URI
       })
       .then((response) => console.log(response))
       .catch((error) => console.error(error));

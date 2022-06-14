@@ -13,20 +13,20 @@ import {
   ModalOverlay,
   Spinner,
   ModalCloseButton,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import {
   DescriptionLabel,
   HeaderLabel,
   InfoBarbox,
   PageHeader,
-  SmPanel,
+  SmPanel
 } from '../components/common';
 import { SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-export default function Learn({ }) {
+export default function Learn({}) {
   const [isYtModalOpen, setIsYtModalOpen] = useState(false);
 
   const onYtModalClose = () => {
@@ -75,7 +75,7 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
     md: '40em',
     lg: '50em',
     xl: '60em',
-    '2xl': '70em',
+    '2xl': '70em'
   });
 
   return (
@@ -102,41 +102,41 @@ const elems = [
   {
     title: 'Introduction',
     descr: 'How to use the RESTful API for the Speechmatics SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/introduction/',
+    link: 'https://docs.speechmatics.com/en/cloud/introduction/'
   },
   {
     title: 'API How-To Guide',
     descr: 'Examples and guidance on using the Speechmatics SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/howto/',
+    link: 'https://docs.speechmatics.com/en/cloud/howto/'
   },
   {
     title: 'Entities',
     descr: 'What entities are, and how they are formatted.',
-    link: 'https://docs.speechmatics.com/en/cloud/entities/',
+    link: 'https://docs.speechmatics.com/en/cloud/entities/'
   },
   {
     title: 'Configuring the Job Request',
     descr: 'How to configure your requests to take advantage of Speechmatics features.',
-    link: 'https://docs.speechmatics.com/en/cloud/configuring-job-request/',
+    link: 'https://docs.speechmatics.com/en/cloud/configuring-job-request/'
   },
   {
     title: 'Understanding SaaS Usage',
     descr: 'How to make requests and understand your usage of our service.',
-    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/',
+    link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
   },
   {
     title: 'Troubleshooting',
     descr: 'Resolving errors with the SaaS.',
-    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/',
+    link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/'
   },
   {
     title: 'API Reference',
     descr: 'Reference guide for the ASR REST API.',
-    link: 'https://docs.speechmatics.com/en/cloud/saasv2api/',
+    link: 'https://docs.speechmatics.com/en/cloud/saasv2api/'
   },
   {
     title: 'Release Notes',
     descr: "What's new in our SaaS.",
-    link: 'https://docs.speechmatics.com/en/cloud/release-notes/',
-  },
+    link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
+  }
 ];

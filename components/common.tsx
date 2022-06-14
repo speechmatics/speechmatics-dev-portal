@@ -22,7 +22,7 @@ import {
   ModalCloseButton,
   ModalOverlay,
   ModalBody,
-  ModalFooter,
+  ModalFooter
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -30,7 +30,7 @@ import {
   ExclamationIcon,
   ExclamationIconLarge,
   ViewPricingIcon,
-  WarningIcon,
+  WarningIcon
 } from './icons-library';
 
 import {
@@ -40,7 +40,7 @@ import {
   PaginationPrevious,
   PaginationPageGroup,
   PaginationPage,
-  PaginationNext,
+  PaginationNext
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
 
@@ -95,7 +95,7 @@ export const InfoBarbox = ({
 }) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   const Containter = useMemo(
@@ -206,7 +206,7 @@ export const PageHeader = ({ headerLabel, introduction }) => {
           marginTop: '2em',
           width: '100%',
           marginBottom: '3em',
-          borderColor: 'var(--chakra-colors-smNavy-270)',
+          borderColor: 'var(--chakra-colors-smNavy-270)'
         }}
       />
     </Box>
@@ -304,7 +304,7 @@ export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
     pagesCount: pagesCountInitial,
     initialState: { currentPage: 1 },
-    limits: limits,
+    limits: limits
   });
 
   const onPageChange = useCallback(
@@ -336,7 +336,7 @@ export const GridPagination: ChakraComponent<'div', GridPaginationProps> = ({
                 borderRadius='2px'
                 _current={{
                   bg: 'smBlue.200',
-                  color: 'smBlue.500',
+                  color: 'smBlue.500'
                 }}
                 _focus={{ boxShadow: null }}
                 fontFamily='RMNeue-Light'
@@ -365,7 +365,7 @@ export const pad = (n: number) => n.toString().padStart(2, '0');
 export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   return (
@@ -401,7 +401,7 @@ export const ConfirmRemoveModal = ({
   subTitle,
   onRemoveConfirm,
   confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  cancelLabel = 'Cancel'
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -459,13 +459,13 @@ const toast = createStandaloneToast({
     ...baseTheme,
     colors: {
       red: {
-        500: 'var(--chakra-colors-smRed-500)',
+        500: 'var(--chakra-colors-smRed-500)'
       },
       green: {
-        500: 'var(--chakra-colors-smGreen-500)',
-      },
-    },
-  },
+        500: 'var(--chakra-colors-smGreen-500)'
+      }
+    }
+  }
 });
 export const errToast = (descr: string | any) =>
   toast({
@@ -476,8 +476,8 @@ export const errToast = (descr: string | any) =>
     position: 'bottom-right',
     isClosable: true,
     containerStyle: {
-      fontFamily: 'RMNeue-Regular',
-    },
+      fontFamily: 'RMNeue-Regular'
+    }
   });
 
 export const positiveToast = (descr: string) =>
@@ -488,8 +488,8 @@ export const positiveToast = (descr: string) =>
     position: 'bottom-right',
     isClosable: true,
     containerStyle: {
-      fontFamily: 'RMNeue-Regular',
-    },
+      fontFamily: 'RMNeue-Regular'
+    }
   });
 
 export const AttentionBar = ({ description, data_qa = 'attentionBar', centered = false }) => (

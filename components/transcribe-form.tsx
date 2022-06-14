@@ -7,7 +7,7 @@ import {
   Text,
   Button,
   VStack,
-  BoxProps,
+  BoxProps
 } from '@chakra-ui/react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { checkIfFileCorrectType, Language, Stage } from '../utils/transcribe-elements';
@@ -17,7 +17,7 @@ import {
   QuestionmarkInCircle,
   RemoveFileIcon,
   TranscribeIcon,
-  UploadFileIcon,
+  UploadFileIcon
 } from './icons-library';
 
 type FileUploadComponentProps = {
@@ -192,7 +192,7 @@ export const SelectField = ({
   tooltip,
   data,
   onSelect,
-  'data-qa': dataQa,
+  'data-qa': dataQa
 }: SelectFieldProps) => {
   const select = useCallback((value: number) => {
     onSelect(data[value].value);
@@ -313,7 +313,7 @@ const statusColors = {
   done: { label: 'smBlue.500', pointBg: 'smBlue.500', step: 'smWhite.500' },
   running: { label: 'smGreen.500', pointBg: 'smGreen.500', step: 'smWhite.500' },
   pending: { label: 'smNavy.280', pointBg: 'smBlue.140', step: '#5E667366' },
-  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' },
+  failed: { label: 'smRed.500', pointBg: 'smRed.500', step: 'smWhite.500' }
 };
 
 export const ProgressPoint = function ({ status, label, step, posX }: ProgressPointProps) {
@@ -355,7 +355,7 @@ const stageToProps = {
     step2: 'pending',
     step3: 'pending',
     gradEndColor: 'smGreen.500',
-    animateStripes: true,
+    animateStripes: true
   },
   pendingTranscription: {
     barWidth: '50%',
@@ -364,7 +364,7 @@ const stageToProps = {
     step2: 'running',
     step3: 'pending',
     gradEndColor: 'smGreen.500',
-    animateStripes: true,
+    animateStripes: true
   },
   failed: {
     barWidth: '50%',
@@ -373,7 +373,7 @@ const stageToProps = {
     step2: 'failed',
     step3: 'pending',
     gradEndColor: 'smRed.500',
-    animateStripes: false,
+    animateStripes: false
   },
   complete: {
     barWidth: '100%',
@@ -382,8 +382,8 @@ const stageToProps = {
     step2: 'done',
     step3: 'done',
     gradEndColor: 'smGreen.500',
-    animateStripes: false,
-  },
+    animateStripes: false
+  }
 };
 
 export const FileProcessingProgress = function ({

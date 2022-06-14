@@ -13,7 +13,7 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
     md: 3,
     lg: 4,
     xl: 5,
-    '2xl': 6,
+    '2xl': 6
   });
 
   return isLoading ? (

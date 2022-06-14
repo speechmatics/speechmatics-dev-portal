@@ -21,7 +21,7 @@ export const generatePages = ({
   pagesCount,
   currentPage,
   innerLimit,
-  outerLimit,
+  outerLimit
 }: Arguments): number[] => {
   if (pagesCount == null) {
     return [];

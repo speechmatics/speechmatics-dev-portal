@@ -27,17 +27,17 @@ const separatorStyles: ButtonProps = {
   sx: {
     _hover: {
       '.call-to-action': {
-        opacity: 1,
-      },
-    },
-  },
+        opacity: 1
+      }
+    }
+  }
 };
 
 const separatorIconStyles: IconProps = {
   h: 4,
   w: 4,
   bg: 'inherit',
-  color: 'inherit',
+  color: 'inherit'
 };
 
 const separatorTransitionStyles: IconProps = {
@@ -48,7 +48,7 @@ const separatorTransitionStyles: IconProps = {
   right: 0,
   bottom: 0,
   opacity: 0,
-  transition: 'all  cubic-bezier(0.4, 1, 0.9, 0.6) 0.3s',
+  transition: 'all  cubic-bezier(0.4, 1, 0.9, 0.6) 0.3s'
 };
 
 export const PaginationSeparator: FC<SeparatorProps & ButtonProps> = ({
@@ -93,7 +93,7 @@ export const PaginationSeparator: FC<SeparatorProps & ButtonProps> = ({
       }
 
       handleJumpClick();
-    },
+    }
   });
 
   // constants
@@ -113,7 +113,7 @@ export const PaginationSeparator: FC<SeparatorProps & ButtonProps> = ({
   const allProps = useMemo(
     () => ({
       ...separatorStyles,
-      ...buttonProps,
+      ...buttonProps
     }),
     [buttonProps]
   );

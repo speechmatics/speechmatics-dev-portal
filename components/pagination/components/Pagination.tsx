@@ -16,7 +16,7 @@ export const Pagination: FC<PaginationProps> = ({
   pagesCount,
   onPageChange,
   isDisabled = INITIAL_VALUES.isDisabled,
-  currentPage = INITIAL_VALUES.currentPage,
+  currentPage = INITIAL_VALUES.currentPage
 }) => (
   <PaginationProvider
     currentPage={currentPage}

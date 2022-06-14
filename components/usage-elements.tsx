@@ -10,7 +10,7 @@ import {
   Spinner,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
@@ -30,7 +30,7 @@ export const UsageSummary = observer(function Usage() {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     return {
-      since: `${year}-${month > 9 ? month : '0' + month}-01`,
+      since: `${year}-${month > 9 ? month : '0' + month}-01`
     };
   };
 
@@ -45,7 +45,7 @@ export const UsageSummary = observer(function Usage() {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageSummaryJson({
               aggregate: respJson.aggregate,
-              breakdown: respJson.breakdown.reverse(),
+              breakdown: respJson.breakdown.reverse()
             });
             setIsLoading(false);
           }
@@ -164,7 +164,7 @@ export const UsageBreakdown = observer(function Usage() {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageDetailsJson({
               aggregate: respJson.aggregate,
-              breakdown: respJson.breakdown.reverse(),
+              breakdown: respJson.breakdown.reverse()
             });
             setIsLoading(false);
           }
@@ -259,7 +259,7 @@ export const prepCurrentUsage = (aggregate: UsageUnit) => {
           ?.count || 0,
       countEnhanced:
         aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
-          ?.count || 0,
+          ?.count || 0
     };
   } else return null;
 };
@@ -284,7 +284,7 @@ type UsageUnit = {
 export const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   const Containter = useMemo(
@@ -316,7 +316,7 @@ export const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) =
 export const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, description }) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   const Containter = useMemo(

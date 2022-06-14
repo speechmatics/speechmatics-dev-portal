@@ -9,13 +9,13 @@ import {
   HeaderLabel,
   PageHeader,
   UsageInfoBanner,
-  ViewPricingBar,
+  ViewPricingBar
 } from '../components/common';
 import {
   ModelDescriptionBox,
   UsageBreakdown,
   GetInTouchBox,
-  UsageSummary,
+  UsageSummary
 } from '../components/usage-elements';
 import { BaloonIcon, CallSupportIcon, RocketIcon } from '../components/icons-library';
 
