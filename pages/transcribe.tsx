@@ -27,7 +27,7 @@ import {
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({ }) {
+export default observer(function Transcribe({}) {
   const { stage } = flow.store;
 
   useEffect(() => {

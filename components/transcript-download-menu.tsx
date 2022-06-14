@@ -9,16 +9,15 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
 
   const downloadTranscript = (format) => {
     if (idToken) {
-      callGetTranscript(idToken, jobId, format)
-        .then((response) => {
-          const fName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
-          const contentType = format === 'json-v2' ? 'application/json' : 'text/plain'
-          const output = format === 'json-v2' ? JSON.stringify(response) : response
-          const a = document.createElement('a');
-          a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
-          a.download = fName;
-          a.click();
-        })
+      callGetTranscript(idToken, jobId, format).then((response) => {
+        const fName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
+        const contentType = format === 'json-v2' ? 'application/json' : 'text/plain';
+        const output = format === 'json-v2' ? JSON.stringify(response) : response;
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
+        a.download = fName;
+        a.click();
+      });
     }
   };
 

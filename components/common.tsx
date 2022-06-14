@@ -30,7 +30,7 @@ import {
   ExclamationIcon,
   ExclamationIconLarge,
   ViewPricingIcon,
-  WarningIcon,
+  WarningIcon
 } from './icons-library';
 
 import {
@@ -401,7 +401,7 @@ export const ConfirmRemoveModal = ({
   subTitle,
   onRemoveConfirm,
   confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  cancelLabel = 'Cancel'
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -529,11 +529,11 @@ export const ErrorBanner = ({ text = '', content = null }) => (
         <ExclamationIcon width='1.5em' height='1.5em' />
       </Box>
       {content ? (
-        <Box width="100%" color="smRed.500" ml="1em">
+        <Box width='100%' color='smRed.500' ml='1em'>
           {content}
         </Box>
       ) : (
-        <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+        <Text width='100%' color='smRed.500' fontSize='1em' ml='1em'>
           {text}
         </Text>
       )}
