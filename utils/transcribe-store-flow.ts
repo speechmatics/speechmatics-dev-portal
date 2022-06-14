@@ -9,6 +9,12 @@ import {
   checkIfFileCorrectType,
 } from './transcribe-elements';
 
+type UploadError = {
+  error: FlowError;
+  detail?: string;
+  name: string;
+};
+
 export class FileTranscriptionStore {
   _language: string = 'en';
   set language(value: string) {
@@ -115,11 +121,11 @@ export class FileTranscriptionStore {
     return this._errorDetail;
   }
 
-  _uploadErrors: string[] = [];
-  set uploadErrors(value: string[]) {
+  _uploadErrors: UploadError[] = [];
+  set uploadErrors(value: UploadError[]) {
     this._uploadErrors = value;
   }
-  get uploadErrors(): string[] {
+  get uploadErrors(): UploadError[] {
     return this._uploadErrors;
   }
 
@@ -127,8 +133,12 @@ export class FileTranscriptionStore {
     makeAutoObservable(this);
   }
 
-  addUploadError(error: string) {
-    this._uploadErrors.push(error)
+  addUploadError(name: string, error: FlowError, detail: string) {
+    this._uploadErrors.push({
+      name,
+      error,
+      detail,
+    });
   }
 
   resetStore() {
@@ -143,7 +153,7 @@ export class FileTranscriptionStore {
     this.transcriptionText = '';
     this.dateSubmitted = '';
     this.error = null;
-    this.uploadErrors = []
+    this.uploadErrors = [];
   }
 
   get fileName() {
@@ -238,38 +248,45 @@ class FileTranscribeFlow {
     const store = this.store;
     const owner = this;
     return function (resp: any) {
-      store.addUploadError("Error uploading " + file.name + ": " + resp.response.detail)
       owner.store.removeFileFromUploading(file);
-      if (file !== store.file) return;
-      if (store.stage !== 'pendingFile') return;
-
-      owner.callError(resp);
+      owner.callError(resp, file.name, file === store.file && store.stage === 'pendingFile');
     };
   }
 
-  callError(error: any) {
+  callError(error: any, name: string = null, forSingleFlow: boolean = false) {
     console.log('attemptSendFile error', error);
-    if (this.store.stage != 'pendingFile') return;
+    const store = this.store;
+    function arrayOrSingleError(name, error, detail) {
+      store.addUploadError(name, error, detail);
+      if (forSingleFlow) {
+        store.error = error;
+      }
+    }
+    const deets = error.response?.detail || '';
 
-    this.store.stage = 'failed';
-    if (error.response.code == 403 && error.response.detail?.endsWith('Your limit is 2 hours.')) {
-      this.store.error = FlowError.BeyondFreeQuota;
+    if (forSingleFlow) this.store.stage = 'failed';
+    if (
+      error.response.code == 403 &&
+      (error.response.detail?.endsWith('Your limit is 2 hours.') ||
+        error.response.detail?.endsWith('Your limit is 3 hours.'))
+    ) {
+      arrayOrSingleError(name, FlowError.BeyondFreeQuota, deets);
     } else if (
       error.response.code == 403 &&
       error.response.detail?.endsWith('Your limit is 1000 hours.')
     ) {
-      this.store.error = FlowError.BeyondAllowedQuota;
+      arrayOrSingleError(name, FlowError.BeyondAllowedQuota, deets);
     } else if (
       error.response.code == 403 &&
       error.response.detail?.startsWith('Entitlement check failed')
     ) {
-      this.store.error = FlowError.ContractExpired;
+      arrayOrSingleError(name, FlowError.ContractExpired, deets);
     } else if (error.response.code == 403) {
-      this.store.error = FlowError.UndefinedForbiddenError;
+      arrayOrSingleError(name, FlowError.UndefinedForbiddenError, deets);
     } else {
-      this.store.error = FlowError.UndefinedError;
+      arrayOrSingleError(name, FlowError.UndefinedError, deets);
     }
-    this.store.errorDetail = error.response?.detail || '';
+    this.store.errorDetail = deets;
     //add BeyondAllowedQuota, FileTooBig, FileWrongType
   }
 

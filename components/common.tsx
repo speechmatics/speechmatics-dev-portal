@@ -30,7 +30,7 @@ import {
   ExclamationIcon,
   ExclamationIconLarge,
   ViewPricingIcon,
-  WarningIcon
+  WarningIcon,
 } from './icons-library';
 
 import {
@@ -45,22 +45,34 @@ import {
 import { Limits } from './pagination/lib/hooks/usePagination';
 
 export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
-  <Flex width="100%" bg="smBlue.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
-    <Flex alignItems='center'>
+  <Flex width="100%" bg="smBlue.150" p="1em" {...props} justifyContent={centered ? 'center' : ''}>
+    <Flex alignItems="center">
       <CalendarIcon width="1.5em" height="1.5em" />
     </Flex>
-    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    <Text
+      width={centered ? '' : '100%'}
+      color="smBlack.400"
+      fontFamily="RMNeue-Regular"
+      fontSize="1em"
+      ml="1em"
+    >
       {text}
     </Text>
   </Flex>
 );
 
 export const WarningBanner = ({ text, centered = false, ...props }) => (
-  <Flex width="100%" bg="smOrange.150" p="1em"  {...props} justifyContent={centered ? 'center' : ''}>
-    <Flex alignItems='center'>
+  <Flex width="100%" bg="smOrange.150" p="1em" {...props} justifyContent={centered ? 'center' : ''}>
+    <Flex alignItems="center">
       <WarningIcon width="1.5em" height="1.5em" />
     </Flex>
-    <Text width={centered ? '' : "100%"} color="smBlack.400" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+    <Text
+      width={centered ? '' : '100%'}
+      color="smBlack.400"
+      fontFamily="RMNeue-Regular"
+      fontSize="1em"
+      ml="1em"
+    >
       {text}
     </Text>
   </Flex>
@@ -71,7 +83,7 @@ export const NoSomethingBanner = ({ children }) => (
     <ExclamationIcon />
     <Text ml="1em">{children}</Text>
   </Flex>
-)
+);
 
 export const InfoBarbox = ({
   bgColor = 'smGreen.500',
@@ -92,29 +104,29 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-          <HStack
-            width="100%"
-            bg={bgColor}
-            justifyContent="space-between"
-            alignItems="center"
-            padding="1.5em 1.5em"
-            {...props}
-          >
-            {children}
-          </HStack>
-        )
+            <HStack
+              width="100%"
+              bg={bgColor}
+              justifyContent="space-between"
+              alignItems="center"
+              padding="1.5em 1.5em"
+              {...props}
+            >
+              {children}
+            </HStack>
+          )
         : ({ children }) => (
-          <VStack
-            width="100%"
-            bg={bgColor}
-            justifyContent="space-between"
-            padding="1.2em 0.5em"
-            spacing="1em"
-            {...props}
-          >
-            {children}
-          </VStack>
-        ),
+            <VStack
+              width="100%"
+              bg={bgColor}
+              justifyContent="space-between"
+              padding="1.2em 0.5em"
+              spacing="1em"
+              {...props}
+            >
+              {children}
+            </VStack>
+          ),
     [breakVal]
   );
 
@@ -149,7 +161,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src="/assets/temp_trackIcon.png" />}
     title="Track your usage"
@@ -205,8 +217,6 @@ export const PageHeader = ({ headerLabel, introduction }) => {
     </Box>
   );
 };
-
-
 
 export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
   const [isTTOpen, setIsTTOpen] = useState(false);
@@ -402,7 +412,7 @@ export const ConfirmRemoveModal = ({
   subTitle,
   onRemoveConfirm,
   confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel'
+  cancelLabel = 'Cancel',
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -497,18 +507,30 @@ export const positiveToast = (descr: string) =>
   });
 
 export const AttentionBar = ({ description, data_qa = 'attentionBar', centered = false }) => (
-  <HStack width="100%" bg="smRed.100" p="1em" spacing="1em" justifyContent={centered ? 'center' : ''}>
+  <HStack
+    width="100%"
+    bg="smRed.100"
+    p="1em"
+    spacing="1em"
+    justifyContent={centered ? 'center' : ''}
+  >
     <Box>
       <ExclamationIcon />
     </Box>
-    <Text as='span' data-qa={data_qa} color="smRed.500" fontSize="0.95em" flex={centered ? "" : "1"} >
+    <Text
+      as="span"
+      data-qa={data_qa}
+      color="smRed.500"
+      fontSize="0.95em"
+      flex={centered ? '' : '1'}
+    >
       {description}
     </Text>
   </HStack>
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text }) => (
+export const ErrorBanner = ({ text = '', content = null }) => (
   <Flex
     flexDir="column"
     width="100%"
@@ -523,9 +545,15 @@ export const ErrorBanner = ({ text }) => (
       <Box>
         <ExclamationIcon width="1.5em" height="1.5em" />
       </Box>
-      <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
-        {text}
-      </Text>
+      {content ? (
+        <Box width="100%" color="smRed.500" ml="1em">
+          {content}
+        </Box>
+      ) : (
+        <Text width="100%" color="smRed.500" fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+          {text}
+        </Text>
+      )}
     </Flex>
   </Flex>
 );
