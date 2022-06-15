@@ -26,7 +26,7 @@ import { SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-export default function Learn({}) {
+export default function Learn({ }) {
   const [isYtModalOpen, setIsYtModalOpen] = useState(false);
 
   const onYtModalClose = () => {
@@ -49,7 +49,7 @@ export default function Learn({}) {
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(14em, 1fr))' gap='1.5em' width='100%'>
           {elems.map((el, i) => (
             <React.Fragment key={i}>
-              <SmPanel justifyContent='space-between' p='1.5em' height='100%'>
+              <SmPanel justifyContent='space-between' p='1.5em'>
                 <Box>
                   <HeaderLabel>{el.title}</HeaderLabel>
                   <DescriptionLabel>{el.descr}</DescriptionLabel>
