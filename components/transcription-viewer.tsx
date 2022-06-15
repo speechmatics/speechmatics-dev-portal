@@ -15,8 +15,7 @@ import { capitalizeFirstLetter } from '../utils/string-utils';
 import { getFullLanguageName } from '../utils/transcribe-elements';
 import { CopyIcon, DownloadIcon } from './icons-library';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
-import { trackEvent } from "../utils/analytics";
-
+import { trackEvent } from '../utils/analytics';
 
 export type TranscriptionViewerProps = {
   transcriptionText: string;
@@ -68,7 +67,6 @@ export const TranscriptionViewer = ({
           flex='1'
           leftIcon={<CopyIcon />}
           fontSize='1em'
-
           onClick={() => {
             trackEvent('copy_transcription', 'Action');
             navigator?.clipboard?.writeText(transcriptionText);

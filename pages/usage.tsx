@@ -17,11 +17,7 @@ import {
   GetInTouchBox,
   UsageSummary
 } from '../components/usage-elements';
-import {
-  BaloonIcon,
-  CallSupportIcon,
-  RocketIcon,
-} from '../components/icons-library';
+import { BaloonIcon, CallSupportIcon, RocketIcon } from '../components/icons-library';
 import { trackEvent } from '../utils/analytics';
 
 export default observer(function Usage() {
@@ -29,17 +25,17 @@ export default observer(function Usage() {
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
 
   const tabsOnChange = useCallback((index) => {
-    trackEvent(`usage_tab_${['limits', 'summary', 'details'][index]}`, 'Navigation')
-  }, [])
+    trackEvent(`usage_tab_${['limits', 'summary', 'details'][index]}`, 'Navigation');
+  }, []);
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Track Usage" introduction="Review Usage of the API." />
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px' onChange={tabsOnChange}>
-        <TabList marginBottom="-1px">
-          <Tab data-qa="tab-limits">Limits</Tab>
-          <Tab data-qa="tab-summary">Summary</Tab>
-          <Tab data-qa="tab-details">Details</Tab>
+      <PageHeader headerLabel='Track Usage' introduction='Review Usage of the API.' />
+      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px' onChange={tabsOnChange}>
+        <TabList marginBottom='-1px'>
+          <Tab data-qa='tab-limits'>Limits</Tab>
+          <Tab data-qa='tab-summary'>Summary</Tab>
+          <Tab data-qa='tab-details'>Details</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

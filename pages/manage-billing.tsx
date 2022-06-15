@@ -54,7 +54,7 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({ }) {
+export default observer(function ManageBilling({}) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
 
@@ -65,7 +65,7 @@ export default observer(function ManageBilling({ }) {
   const deleteCard = useCallback(() => {
     onOpen();
     trackEvent('billing_remove_card_click', 'Action');
-  }, [])
+  }, []);
 
   const onRemoveConfirm = useCallback(() => {
     callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
@@ -76,8 +76,8 @@ export default observer(function ManageBilling({ }) {
   }, [idToken]);
 
   const tabsOnChange = useCallback((index) => {
-    trackEvent(`billing_tab_${['settings', 'payments'][index]}`, 'Navigation')
-  }, [])
+    trackEvent(`billing_tab_${['settings', 'payments'][index]}`, 'Navigation');
+  }, []);
 
   return (
     <Dashboard>
@@ -180,7 +180,10 @@ const PaymentsGrid = ({ data, isLoading }) => {
           <GridItem data-qa={`payments-download-invoice-${i}`}>
             {el.url && (
               <Link href={el.url}>
-                <a target='_blank' download onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
+                <a
+                  target='_blank'
+                  download
+                  onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
                   <DownloadInvoiceHoverable />
                 </a>
               </Link>

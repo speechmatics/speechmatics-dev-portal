@@ -103,27 +103,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-          <HStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            alignItems='center'
-            padding='1.5em 1.5em'
-            {...props}>
-            {children}
-          </HStack>
-        )
+            <HStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              alignItems='center'
+              padding='1.5em 1.5em'
+              {...props}>
+              {children}
+            </HStack>
+          )
         : ({ children }) => (
-          <VStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            padding='1.2em 0.5em'
-            spacing='1em'
-            {...props}>
-            {children}
-          </VStack>
-        ),
+            <VStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              padding='1.2em 0.5em'
+              spacing='1em'
+              {...props}>
+              {children}
+            </VStack>
+          ),
     [breakVal]
   );
 
@@ -158,7 +158,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -222,8 +222,12 @@ interface CopyButtonProps {
   additionalOnClick?: () => void;
 }
 
-
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px', additionalOnClick = null }: CopyButtonProps) => {
+export const CopyButton = ({
+  copyContent,
+  position = 'initial',
+  top = '9px',
+  additionalOnClick = null
+}: CopyButtonProps) => {
   const [isTTOpen, setIsTTOpen] = useState(false);
 
   useEffect(() => {
@@ -269,7 +273,13 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px', add
   );
 };
 
-export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5, onTrackUse = null }) => {
+export const DataGridComponent = ({
+  data,
+  DataDisplayComponent,
+  isLoading,
+  itemsPerPage = 5,
+  onTrackUse = null
+}) => {
   const [page, setPage] = useState(0);
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);

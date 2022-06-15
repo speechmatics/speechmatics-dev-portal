@@ -28,7 +28,7 @@ import {
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({ }) {
+export default observer(function Transcribe({}) {
   const { stage } = flow.store;
 
   useEffect(() => {
@@ -74,10 +74,12 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
         This media file can be .aac, .amr, .flac, .m4a, .mp3, .mp4, .mpeg, .ogg, .wav
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
-        <FileUploadComponent onFileSelect={(file) => {
-          trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
-          flow.assignFile(file)
-        }} />
+        <FileUploadComponent
+          onFileSelect={(file) => {
+            trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
+            flow.assignFile(file);
+          }}
+        />
       </Box>
 
       <HeaderLabel pt={8}>Configure Transcription Options</HeaderLabel>
@@ -93,7 +95,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           data={languagesData}
           onSelect={(val) => {
             trackEvent('language_select', 'Action', 'Changed the language', { value: val });
-            (store.language = val)
+            store.language = val;
           }}
         />
 
@@ -104,7 +106,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           data={separation}
           onSelect={(val) => {
             trackEvent('separation_select', 'Action', 'Changed the separation', { value: val });
-            (store.separation = val as any)
+            store.separation = val as any;
           }}
         />
 
@@ -115,7 +117,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           data={accuracyModels}
           onSelect={(val) => {
             trackEvent('accuracy_select', 'Action', 'Changed the Accuracy', { value: val });
-            (store.accuracy = val as any)
+            store.accuracy = val as any;
           }}
         />
       </Flex>
@@ -160,7 +162,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
 
   useEffect(() => {
     if (stageDelayed == 'complete') {
-      trackEvent('transcription_complete', 'Event', 'transcription has been shown')
+      trackEvent('transcription_complete', 'Event', 'transcription has been shown');
     }
   }, [stageDelayed]);
 
@@ -254,7 +256,9 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
         Go to the{' '}
         <Link data-qa='link-recent-jobs' href='/view-jobs/'>
-          <a className='text_link' onClick={() => trackEvent('view_jobs_click', 'Navigation', '', { stage })}>
+          <a
+            className='text_link'
+            onClick={() => trackEvent('view_jobs_click', 'Navigation', '', { stage })}>
             View Jobs
           </a>
         </Link>{' '}
@@ -265,8 +269,8 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
         data-qa='button-transcribe-another-file'
         variant='speechmaticsOutline'
         onClick={() => {
-          flow.reset()
-          trackEvent('transcribe_another_file_click', 'Navigation', '', { stage })
+          flow.reset();
+          trackEvent('transcribe_another_file_click', 'Navigation', '', { stage });
         }}>
         Transcribe Another File
       </Button>

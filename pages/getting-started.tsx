@@ -9,7 +9,7 @@ import accountContext from '../utils/account-store-context';
 import { CodeExamples } from '../components/code-examples';
 import { trackEvent } from '../utils/analytics';
 
-export default observer(function GettingStarted({ }) {
+export default observer(function GettingStarted({}) {
   const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
 
   const { accountStore } = useContext(accountContext);
@@ -30,9 +30,12 @@ export default observer(function GettingStarted({ }) {
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
-            <a href='/example.wav' download='example.wav' title='Download an example file'
+            <a
+              href='/example.wav'
+              download='example.wav'
+              title='Download an example file'
               onClick={() => {
-                trackEvent('download_example', 'Actions', 'example.wav')
+                trackEvent('download_example', 'Actions', 'example.wav');
               }}>
               <Text color='smBlue.500' as='span'>
                 sample audio file
@@ -50,9 +53,10 @@ export default observer(function GettingStarted({ }) {
                 <>
                   You've already created 5 API Keys. Before generating a new API key, you need to{' '}
                   <Link href='/manage-access/'>
-                    <a style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                    <a
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
                       onClick={() => {
-                        trackEvent('link_to_manage_access', 'Navigation', 'link_in_start_in_api')
+                        trackEvent('link_to_manage_access', 'Navigation', 'link_in_start_in_api');
                       }}>
                       remove an existing key
                     </a>
@@ -69,20 +73,18 @@ export default observer(function GettingStarted({ }) {
             </VStack>
           )}
         </Box>
-        {
-          showDefaultCodeExample && (
-            <>
-              <PanelDivider />
-              <Box paddingTop='1.5em' width='100%'>
-                <HeaderLabel>Make an API Request</HeaderLabel>
-                <DescriptionLabel>Run the commands to generate a transcript.</DescriptionLabel>{' '}
-                <CodeExamples />
-              </Box>
-            </>
-          )
-        }
-      </SmPanel >
-    </Dashboard >
+        {showDefaultCodeExample && (
+          <>
+            <PanelDivider />
+            <Box paddingTop='1.5em' width='100%'>
+              <HeaderLabel>Make an API Request</HeaderLabel>
+              <DescriptionLabel>Run the commands to generate a transcript.</DescriptionLabel>{' '}
+              <CodeExamples />
+            </Box>
+          </>
+        )}
+      </SmPanel>
+    </Dashboard>
   );
 });
 

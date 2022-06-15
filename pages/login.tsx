@@ -91,7 +91,6 @@ export default function Login() {
     if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
       st = window.setTimeout(() => router.push('/home/'), 1000);
       trackEvent('post_regular_login', 'B2C_Flow', 'User logged in change');
-
     }
 
     return () => window.clearTimeout(st);

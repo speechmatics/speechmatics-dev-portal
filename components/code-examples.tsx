@@ -5,7 +5,7 @@ import { DescriptionLabel, CopyButton } from './common';
 import accountContext from '../utils/account-store-context';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { nord as codeTheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import { trackEvent } from "../utils/analytics";
+import { trackEvent } from '../utils/analytics';
 
 export const CodeExamples = observer(({ token }: { token?: string }) => {
   const { accountStore } = useContext(accountContext);
@@ -28,11 +28,15 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             <CodeHighlight
               data_qa={'code-post-job-standard'}
               copyButtonExtraOnClick={() =>
-                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', { os: 'win' })
+                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', {
+                  os: 'win'
+                })
               }
-              code={`curl.exe -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
+              code={`curl.exe -L -X POST ${
+                accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/ -H "Authorization: Bearer ${
+                token || `Ex4MPl370k3n`
+              }" -F data_file=@example.wav -F config="{\\"type\\": \\"transcription\\", \\"transcription_config\\": { \\"operating_point\\":\\"enhanced\\", \\"language\\": \\"en\\" }}"`}
             />
             <DescriptionLabel pt='2em'>
               Get a transcript using the job ID returned by the POST request above:
@@ -40,11 +44,15 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             <CodeHighlight
               data_qa={'code-get-job-standard'}
               copyButtonExtraOnClick={() =>
-                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', { os: 'win' })
+                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', {
+                  os: 'win'
+                })
               }
-              code={`curl.exe -L -X GET ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }"`}
+              code={`curl.exe -L -X GET ${
+                accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/INSERT_JOB_ID/transcript?format=txt -H "Authorization: Bearer ${
+                token || `Ex4MPl370k3n`
+              }"`}
             />
             <DescriptionLabel pt='2em'>
               To get output in JSON format, remove the format=txt query parameter from the GET
@@ -57,11 +65,15 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             <CodeHighlight
               data_qa={'code-post-job-enhanced'}
               copyButtonExtraOnClick={() =>
-                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', { os: 'linux/macos' })
+                trackEvent('copy_code_submit', 'Action', 'Copied submit transcript code', {
+                  os: 'linux/macos'
+                })
               }
-              code={`curl -L -X POST ${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/ -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
+              code={`curl -L -X POST ${
+                accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/ -H "Authorization: Bearer ${
+                token || `Ex4MPl370k3n`
+              }" -F data_file=@example.wav -F config='{"type": "transcription","transcription_config": { "operating_point":"enhanced", "language": "en" }}'`}
             />
 
             <DescriptionLabel pt='2em'>
@@ -70,11 +82,15 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
             <CodeHighlight
               data_qa={'code-get-job-enhanced'}
               copyButtonExtraOnClick={() =>
-                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', { os: 'linux/macos' })
+                trackEvent('copy_code_fetch', 'Action', 'Copied fetch transcript code', {
+                  os: 'linux/macos'
+                })
               }
-              code={`curl -L -X GET "${accountStore.getRuntimeURL() || '$HOST'
-                }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${token || `Ex4MPl370k3n`
-                }"`}
+              code={`curl -L -X GET "${
+                accountStore.getRuntimeURL() || '$HOST'
+              }/v2/jobs/INSERT_JOB_ID/transcript?format=txt" -H "Authorization: Bearer ${
+                token || `Ex4MPl370k3n`
+              }"`}
             />
             <DescriptionLabel pt='2em'>
               To get output in JSON format, remove the format=txt query parameter from the GET
@@ -101,8 +117,12 @@ export const CodeExamples = observer(({ token }: { token?: string }) => {
 export const CodeHighlight = ({ code, data_qa, copyButtonExtraOnClick = null }) => {
   return (
     <Box position='relative' width='100%' height='50px'>
-      <CopyButton copyContent={code} position='absolute' top='12px'
-        additionalOnClick={copyButtonExtraOnClick} />
+      <CopyButton
+        copyContent={code}
+        position='absolute'
+        top='12px'
+        additionalOnClick={copyButtonExtraOnClick}
+      />
       <Box position='absolute' width='100%'>
         <SyntaxHighlighter
           language='bash'

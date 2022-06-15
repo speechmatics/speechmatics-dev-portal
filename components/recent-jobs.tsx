@@ -212,7 +212,7 @@ export const RecentJobs = observer(() => {
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
-          trackEvent('delete_job_confirm', 'Action')
+          trackEvent('delete_job_confirm', 'Action');
         }}
         confirmLabel='Delete Job'
         cancelLabel='Keep Job'

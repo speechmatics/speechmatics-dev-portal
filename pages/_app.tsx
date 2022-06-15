@@ -14,7 +14,7 @@ import Head from 'next/head';
 import { msalInstance } from '../utils/msal-utils';
 import { dataDogInit, trackPageview } from '../utils/analytics';
 
-Router.events.on('routeChangeComplete', url => {
+Router.events.on('routeChangeComplete', (url) => {
   trackPageview(url);
 });
 

@@ -68,7 +68,7 @@ function Subscribe({}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitButtonReady(false);
-    trackEvent('billing_chargify_submit', 'Action')
+    trackEvent('billing_chargify_submit', 'Action');
     chargify?.current.token(
       chargifyForm.current,
 
@@ -84,16 +84,15 @@ function Subscribe({}) {
             );
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
-            trackEvent('billing_chargify_successful', 'Event')
+            trackEvent('billing_chargify_successful', 'Event');
           })
           .catch((error) => {
             setSubmitButtonReady(true);
             errToast(`Something went wrong, please try again later. ${error.status}`);
             trackEvent('billing_chargify_failed', 'Event', '', {
               error: error.status
-            })
+            });
           });
-
       },
 
       (error: any) => {

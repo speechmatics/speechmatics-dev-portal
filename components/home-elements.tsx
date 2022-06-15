@@ -1,7 +1,6 @@
 import { VStack, Box, Button, Text } from '@chakra-ui/react';
 import Link from 'next/link';
-import { trackEvent } from "../utils/analytics";
-
+import { trackEvent } from '../utils/analytics';
 
 export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl }) => {
   return (
@@ -27,8 +26,12 @@ export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel
         </Box>
       </VStack>
       <Link href={hrefUrl}>
-        <Button variant='speechmaticsWhite' color={bgColor}
-          onClick={() => { trackEvent('home_box_click', 'CTAs', buttonLabel) }}>
+        <Button
+          variant='speechmaticsWhite'
+          color={bgColor}
+          onClick={() => {
+            trackEvent('home_box_click', 'CTAs', buttonLabel);
+          }}>
           {buttonLabel}
         </Button>
       </Link>

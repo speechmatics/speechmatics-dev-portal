@@ -1,11 +1,10 @@
-import { useBreakpointValue, HStack, VStack, Box, Button } from "@chakra-ui/react";
-import Link from "next/link";
-import { HeaderLabel, DescriptionLabel, pad } from "./common";
-import { CardImage, CardGreyImage, DownloadInvoice } from "./icons-library";
-import { Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { trackEvent } from "../utils/analytics";
-
+import { useBreakpointValue, HStack, VStack, Box, Button } from '@chakra-ui/react';
+import Link from 'next/link';
+import { HeaderLabel, DescriptionLabel, pad } from './common';
+import { CardImage, CardGreyImage, DownloadInvoice } from './icons-library';
+import { Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { trackEvent } from '../utils/analytics';
 
 export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
   const breakVal = useBreakpointValue({
@@ -55,7 +54,9 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
               variant='speechmatics'
               alignSelf='flex-start'
               data-qa='button-add-replace-payment'
-              onClick={() => trackEvent(`billing_${paymentMethod ? 'replace' : 'add'}_card_click`, 'Action')}>
+              onClick={() =>
+                trackEvent(`billing_${paymentMethod ? 'replace' : 'add'}_card_click`, 'Action')
+              }>
               {paymentMethod ? 'Replace Your Existing Payment Card' : 'Add a Payment Card'}
             </Button>
           </Link>

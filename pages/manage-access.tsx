@@ -124,7 +124,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
             setGenTokenStage('error');
           });
       }
-      trackEvent('GenerateAPIKey', 'Actions', 'ManageAccess')
+      trackEvent('GenerateAPIKey', 'Actions', 'ManageAccess');
     }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
 
     const generatedApikeyonClick = useCallback(() => {

@@ -6,7 +6,7 @@ export const trackPageview = (url: string) => {
   console.log('trackPageview', url);
   try {
     window.gtag('config', GA_TRACKING_ID, {
-      page_location: url,
+      page_location: url
     });
   } catch (err) {
     console.error('Failed sending metrics', err);
@@ -23,7 +23,7 @@ export const trackEvent = (
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
-      ...value,
+      ...value
     });
   } catch (err) {
     console.error('Failed sending metrics', err);
@@ -42,7 +42,7 @@ export function dataDogInit() {
     premiumSampleRate: 100,
     trackInteractions: true,
     defaultPrivacyLevel: 'mask-user-input',
-    env: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    env: process.env.NODE_ENV === 'production' ? 'production' : 'development'
   });
 
   datadogRum.startSessionReplayRecording();

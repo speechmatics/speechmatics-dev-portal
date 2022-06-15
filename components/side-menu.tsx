@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
-import { trackEvent } from "../utils/analytics";
+import { trackEvent } from '../utils/analytics';
 
 export function MenuContainer() {
   const showMenuBurger = useBreakpointValue({ base: true, xs: true, sm: true, md: false });
@@ -96,7 +96,9 @@ function MenuElem({ item, selected, ...props }) {
         {...props}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => { trackEvent('main_nav_click', 'Navigation', item.title) }}>
+        onClick={() => {
+          trackEvent('main_nav_click', 'Navigation', item.title);
+        }}>
         <Box>
           {item.icon({
             mono: Boolean(selected) || isHovered,
