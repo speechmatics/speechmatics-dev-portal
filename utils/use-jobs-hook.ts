@@ -37,7 +37,6 @@ export const useJobs = (limit, page) => {
       createdBefore,
       setCreatedBefore,
       limit,
-      noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
       setIsLoading,
@@ -56,7 +55,6 @@ export const useJobs = (limit, page) => {
         createdBefore,
         setCreatedBefore,
         limit,
-        noMoreJobs,
         setNoMoreJobs,
         setIsPolling,
         setIsWaitingOnMore,
@@ -88,12 +86,11 @@ export const useJobs = (limit, page) => {
       jobs,
       setJobs,
       null,
-      () => {},
+      (value) => {},
       limit,
-      noMoreJobs,
       setNoMoreJobs,
       setIsPolling,
-      () => {},
+      (value) => {},
       setErrorGettingNewJob
     );
   }, [idToken, jobs]);
@@ -108,7 +105,7 @@ export const useJobs = (limit, page) => {
     noMoreJobs,
     onDeleteJob,
     forceGetJobs,
-    errorGettingNewJob,
+    errorGettingNewJob
   };
 };
 
@@ -119,18 +116,17 @@ const getJobs = (
   createdBefore: string,
   setCreatedBefore: Dispatch<string>,
   limit: number,
-  noMoreJobs: boolean,
   setNoMoreJobs: Dispatch<boolean>,
   setIsPolling: Dispatch<boolean>,
   loadingFunction: Dispatch<boolean>,
   errorFunction: Dispatch<boolean>
 ) => {
   let isActive = true;
-  if (idToken && !noMoreJobs) {
+  if (idToken) {
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
-      limit: limit,
+      limit: limit
     };
     if (createdBefore != null) {
       queries.created_before = createdBefore;
@@ -222,7 +218,7 @@ const formatJobs = (jobsResponse: JobsResponse[]): JobElementProps[] => {
       date: item.created_at,
       duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
-      language: item.config?.transcription_config?.language,
+      language: item.config?.transcription_config?.language
     };
     if (item?.config?.transcription_config?.operating_point != null) {
       newItem.accuracy = item.config.transcription_config.operating_point;

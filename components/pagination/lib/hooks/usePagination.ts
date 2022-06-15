@@ -25,7 +25,7 @@ export const usePagination = ({
   total,
   initialState,
   pagesCount: pagesCountProp,
-  limits,
+  limits
 }: UsePagination): {
   offset: number;
   pages: number[];
@@ -72,7 +72,7 @@ export const usePagination = ({
         currentPage,
         innerLimit,
         outerLimit,
-        pagesCount,
+        pagesCount
       }),
     [currentPage, innerLimit, outerLimit, pagesCount]
   );
@@ -97,6 +97,6 @@ export const usePagination = ({
     isDisabled,
     setIsDisabled,
     pages,
-    pagesCount,
+    pagesCount
   };
 };

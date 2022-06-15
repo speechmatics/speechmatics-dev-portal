@@ -1,8 +1,8 @@
-import React, { FC, useMemo, useContext, MouseEvent } from "react"
-import { Button, ButtonProps } from "@chakra-ui/react"
+import React, { FC, useMemo, useContext, MouseEvent } from 'react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 
 // lib
-import { PaginationContext } from "../lib/providers/PaginationProvider"
+import { PaginationContext } from '../lib/providers/PaginationProvider';
 
 export const PaginationNext: FC<ButtonProps> = ({
   children,
@@ -10,54 +10,47 @@ export const PaginationNext: FC<ButtonProps> = ({
   ...buttonProps
 }) => {
   // provider
-  const { actions, state } = useContext(PaginationContext)
-  const { changePage } = actions
-  const { currentPage, pagesCount, isDisabled: isDisabledGlobal } = state
+  const { actions, state } = useContext(PaginationContext);
+  const { changePage } = actions;
+  const { currentPage, pagesCount, isDisabled: isDisabledGlobal } = state;
 
   // memos
-  const isLast = useMemo(
-    () => currentPage > pagesCount - 1,
-    [currentPage, pagesCount],
-  )
+  const isLast = useMemo(() => currentPage > pagesCount - 1, [currentPage, pagesCount]);
   const isDisabled = useMemo(
     () => isLast || (isDisabledProp ?? isDisabledGlobal),
-    [isLast, isDisabledProp, isDisabledGlobal],
-  )
+    [isLast, isDisabledProp, isDisabledGlobal]
+  );
   const allProps = useMemo(
     () => ({
       ...buttonProps,
-      isDisabled,
+      isDisabled
     }),
-    [buttonProps, isDisabled],
-  )
+    [buttonProps, isDisabled]
+  );
 
   // methods
-  const getNextProps = ({
-    onClick,
-    isDisabled,
-    ...props
-  }: ButtonProps): ButtonProps => ({
+  const getNextProps = ({ onClick, isDisabled, ...props }: ButtonProps): ButtonProps => ({
     ...props,
-    "aria-label": "Next page",
-    "aria-disabled": isDisabled,
+    'aria-label': 'Next page',
+    'aria-disabled': isDisabled,
     isDisabled,
     onClick: (event: MouseEvent<HTMLButtonElement>) => {
       if (!isDisabled) {
-        onClick?.(event)
+        onClick?.(event);
       }
 
-      handleNextClick()
-    },
-  })
+      handleNextClick();
+    }
+  });
 
   // handlers
   const handleNextClick = (): void => {
-    if (!isLast) changePage(currentPage + 1)
-  }
+    if (!isLast) changePage(currentPage + 1);
+  };
 
   return (
-    <Button className="pagination-next" {...getNextProps(allProps)}>
+    <Button className='pagination-next' {...getNextProps(allProps)}>
       {children}
     </Button>
-  )
-}
+  );
+};

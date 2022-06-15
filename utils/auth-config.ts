@@ -2,7 +2,7 @@ import { LogLevel } from '@azure/msal-browser';
 
 export const b2cPolicies = {
   authorityDomain: process.env.AUTHORITY_DOMAIN,
-  policyDomain: process.env.POLICY_DOMAIN,
+  policyDomain: process.env.POLICY_DOMAIN
 };
 
 // Config object to be passed to Msal on creation
@@ -13,11 +13,11 @@ export const msalConfig = {
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: process.env.REDIRECT_URI || 'http://localhost:3000/login/', // You must register this URI on Azure Portal/App Registration. Defaults to window.location.origin
     postLogoutRedirectUri: process.env.POST_LOGOUT_REDIRECT_URI || 'http://localhost:3000/', // Indicates the page to navigate after logout.
-    navigateToLoginRequestUrl: true, // If "true", will navigate back to the original request location before processing the auth code response.
+    navigateToLoginRequestUrl: true // If "true", will navigate back to the original request location before processing the auth code response.
   },
   cache: {
     cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
-    storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+    storeAuthStateInCookie: false // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {
     loggerOptions: {
@@ -39,9 +39,9 @@ export const msalConfig = {
             console.warn(message);
             return;
         }
-      },
-    },
-  },
+      }
+    }
+  }
 };
 
 //console.log(`msal auth redirectUri ${msalConfig.auth.redirectUri}`);
@@ -60,5 +60,5 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: [],
+  scopes: []
 };
