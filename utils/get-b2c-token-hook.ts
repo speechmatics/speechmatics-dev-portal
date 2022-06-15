@@ -22,7 +22,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       scopes: [],
       account,
       authority: account ? authority : process.env.SIGNIN_POLICY,
-      extraQueryParameters: { id_token_hint: accountStore.userHint },
+      extraQueryParameters: { id_token_hint: accountStore.userHint }
     } as SilentRequest;
 
     msalInstance

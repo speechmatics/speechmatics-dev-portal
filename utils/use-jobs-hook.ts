@@ -105,7 +105,7 @@ export const useJobs = (limit, page) => {
     noMoreJobs,
     onDeleteJob,
     forceGetJobs,
-    errorGettingNewJob,
+    errorGettingNewJob
   };
 };
 
@@ -126,7 +126,7 @@ const getJobs = (
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
-      limit: limit,
+      limit: limit
     };
     if (createdBefore != null) {
       queries.created_before = createdBefore;
@@ -218,7 +218,7 @@ const formatJobs = (jobsResponse: JobsResponse[]): JobElementProps[] => {
       date: item.created_at,
       duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
-      language: item.config?.transcription_config?.language,
+      language: item.config?.transcription_config?.language
     };
     if (item?.config?.transcription_config?.operating_point != null) {
       newItem.accuracy = item.config.transcription_config.operating_point;

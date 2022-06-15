@@ -1,0 +1,8 @@
+**/.next
+**/.git
+**/.github
+**/.vscode
+**/.svn
+**/.hg
+**/node_modules
+**/out

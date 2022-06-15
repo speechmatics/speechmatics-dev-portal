@@ -20,8 +20,7 @@ export default function Login() {
   const loginRequest = {
     scopes: [],
     authority,
-    redirectUri: process.env.REDIRECT_URI,
-
+    redirectUri: process.env.REDIRECT_URI
   } as RedirectRequest;
 
   const loginHandler = () => {
@@ -30,14 +29,27 @@ export default function Login() {
     });
   };
 
-  const passwordChangeFlow = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90118')), []);
-  const hintExpiredError = useMemo(() => (decodeURI(global.window?.location.hash).includes('AADB2C90208')), []);
-  const postPassChange = useMemo(() => (decodeURI(global.window?.location.hash).includes('postPasswordChange')), []);
-  const loggedManualy = useMemo(() => (decodeURI(global.window?.location.hash).includes('logout')), []);
-  const loggedExpired = useMemo(() => (decodeURI(global.window?.location.hash).includes('inactive')), []);
+  const passwordChangeFlow = useMemo(
+    () => decodeURI(global.window?.location.hash).includes('AADB2C90118'),
+    []
+  );
+  const hintExpiredError = useMemo(
+    () => decodeURI(global.window?.location.hash).includes('AADB2C90208'),
+    []
+  );
+  const postPassChange = useMemo(
+    () => decodeURI(global.window?.location.hash).includes('postPasswordChange'),
+    []
+  );
+  const loggedManualy = useMemo(
+    () => decodeURI(global.window?.location.hash).includes('logout'),
+    []
+  );
+  const loggedExpired = useMemo(
+    () => decodeURI(global.window?.location.hash).includes('inactive'),
+    []
+  );
   // console.log('global.window?.location.hash', global.window?.location.hash);
-
-
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
@@ -45,20 +57,33 @@ export default function Login() {
   }
 
   useEffect(() => {
-
-    console.log('postPassChange', postPassChange, 'inclErr', passwordChangeFlow, 'inProgress', inProgress)
+    console.log(
+      'postPassChange',
+      postPassChange,
+      'inclErr',
+      passwordChangeFlow,
+      'inProgress',
+      inProgress
+    );
 
     if (passwordChangeFlow && inProgress == 'none') {
       tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
       loginRequest.redirectUri = process.env.REDIRECT_URI;
-      loginRequest.state = 'postPasswordChange'
+      loginRequest.state = 'postPasswordChange';
       loginHandler();
     }
 
-    if (!loggedManualy && !loggedExpired && !postPassChange && !passwordChangeFlow &&
-      inProgress == 'none' && (!accounts || accounts.length == 0) && authority == process.env.SIGNIN_POLICY) {
-      trackEvent('pre_regular_login', 'B2C_Flow', 'User logged in change');
+    if (
+      !loggedManualy &&
+      !loggedExpired &&
+      !postPassChange &&
+      !passwordChangeFlow &&
+      inProgress == 'none' &&
+      (!accounts || accounts.length == 0) &&
+      authority == process.env.SIGNIN_POLICY
+    ) {
       loginHandler();
+      trackEvent('pre_regular_login', 'B2C_Flow', 'User logged in change');
     }
 
     let st: number;
@@ -72,30 +97,51 @@ export default function Login() {
     return () => window.clearTimeout(st);
   }, [inProgress, accounts, accounts?.length]);
 
-
   return (
-    <div className="login_container">
-      <Box px='3em' maxWidth='500px'><SpeechmaticsLogo width='100%' /></Box>
-      <LoginSub {...{ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }} />
+    <div className='login_container'>
+      <Box px='3em' maxWidth='500px'>
+        <SpeechmaticsLogo width='100%' />
+      </Box>
+      <LoginSub
+        {...{ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }}
+      />
     </div>
   );
 }
 
-
-const LoginSub = ({ inProgress, accounts, loggedExpired, loggedManualy, loginHandler, hintExpiredError }) => {
-  if (inProgress == 'startup' || inProgress == 'handleRedirect' || (accounts.length > 0 && inProgress === 'none')) {
-    return <div className="login_text"><Spinner /></div>;
+const LoginSub = ({
+  inProgress,
+  accounts,
+  loggedExpired,
+  loggedManualy,
+  loginHandler,
+  hintExpiredError
+}) => {
+  if (
+    inProgress == 'startup' ||
+    inProgress == 'handleRedirect' ||
+    (accounts.length > 0 && inProgress === 'none')
+  ) {
+    return (
+      <div className='login_text'>
+        <Spinner />
+      </div>
+    );
   } else if (inProgress == 'login') {
-    return <div className="login_text"><Spinner /></div>;
+    return (
+      <div className='login_text'>
+        <Spinner />
+      </div>
+    );
   } else if (inProgress == 'none' && accounts.length == 0) {
     return (
-      <div className="login_form">
+      <div className='login_form'>
         <Box>
           {loggedExpired && 'You were logged out due to an expired session.'}
           {loggedManualy && 'You were logged out.'}
           {hintExpiredError && 'Your invitation token expired.'}
         </Box>
-        <Button variant="speechmatics" onClick={loginHandler} data-qa="button-log-in">
+        <Button variant='speechmatics' onClick={loginHandler} data-qa='button-log-in'>
           Log in ➔
         </Button>
       </div>

@@ -6,50 +6,50 @@ import {
   MenuGettingStartedIcon,
   MenuTrackUsageIcon,
   TranscribeIcon,
-  ViewJobsIcon,
+  ViewJobsIcon
 } from '../components/icons-library';
 
 const menuData = [
   {
     path: '/home/',
     title: 'Home',
-    icon: MenuHouseIcon,
+    icon: MenuHouseIcon
   },
   {
     path: '/transcribe/',
     title: 'Upload & Transcribe',
-    icon: TranscribeIcon,
+    icon: TranscribeIcon
   },
   {
     path: '/getting-started/',
     title: 'Start Using API',
-    icon: MenuGettingStartedIcon,
+    icon: MenuGettingStartedIcon
   },
   {
     path: '/manage-access/',
     title: 'Manage Access',
-    icon: MenuPadlockIcon,
+    icon: MenuPadlockIcon
   },
   {
     path: '/view-jobs/',
     title: 'View Jobs',
-    icon: ViewJobsIcon,
+    icon: ViewJobsIcon
   },
   {
     path: '/usage/',
     title: 'Track Usage',
-    icon: MenuTrackUsageIcon,
+    icon: MenuTrackUsageIcon
   },
   {
     path: '/manage-billing/',
     title: 'Manage Billing',
-    icon: MenuBillingIcon,
+    icon: MenuBillingIcon
   },
   {
     path: '/learn/',
     title: 'Learn',
-    icon: MenuLearnIcon,
-  },
+    icon: MenuLearnIcon
+  }
 ];
 
 export default menuData;

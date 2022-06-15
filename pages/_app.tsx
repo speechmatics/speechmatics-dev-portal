@@ -14,12 +14,9 @@ import Head from 'next/head';
 import { msalInstance } from '../utils/msal-utils';
 import { dataDogInit, trackPageview } from '../utils/analytics';
 
-
 Router.events.on('routeChangeComplete', url => {
   trackPageview(url);
 });
-
-
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
@@ -34,11 +31,13 @@ export default function MyApp({ Component, pageProps }) {
         <MsalProvider instance={msalInstance}>
           <Head>
             <title>Speechmatics Portal</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+            <meta
+              name='viewport'
+              content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+            />
           </Head>
-          <div className="all_container">
-            <div className="content">
+          <div className='all_container'>
+            <div className='content'>
               <Component {...pageProps} />
             </div>
             {/* <div className="footer"></div> */}

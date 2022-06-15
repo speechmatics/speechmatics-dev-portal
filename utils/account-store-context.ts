@@ -4,7 +4,7 @@ import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api'
 import {
   AccountInfo,
   AuthenticationResult,
-  InteractionRequiredAuthError,
+  InteractionRequiredAuthError
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { errToast } from '../components/common';
@@ -28,7 +28,7 @@ class AccountContext {
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
-      keyJustRemoved: observable,
+      keyJustRemoved: observable
     });
   }
 
@@ -71,7 +71,7 @@ class AccountContext {
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
     const dict = {
       standard: 'LIM_DUR_CUR_MON_STANDARD_SEC',
-      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
+      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC'
     };
 
     const val = this._account?.contracts
@@ -158,7 +158,7 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable,
+      loginFailureError: observable
     });
   }
 
@@ -173,7 +173,7 @@ export async function acquireTokenFlow(
 ) {
   const request = {
     scopes: [],
-    account,
+    account
   } as SilentRequest;
 
   return msalInstance

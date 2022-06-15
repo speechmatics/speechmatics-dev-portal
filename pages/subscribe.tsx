@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
-import {
-  callGetSecrChargify,
-  callPostRequestTokenChargify,
-} from '../utils/call-api';
+import { callGetSecrChargify, callPostRequestTokenChargify } from '../utils/call-api';
 
 import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -18,7 +15,7 @@ declare global {
   }
 }
 
-function Subscribe({ }) {
+function Subscribe({}) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -58,7 +55,7 @@ function Subscribe({ }) {
         type: 'card',
         serverHost: process.env.CHARGIFY_SERVER_HOST,
         fields: chargifyFields('#ffffff', '#ffffff', '#333333', ''),
-        addressDropdowns: true,
+        addressDropdowns: true
       });
       setChargifyLoaded(true);
     }
@@ -80,9 +77,11 @@ function Subscribe({ }) {
 
         callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
           .then(async () => {
-            positiveToast(!!accountStore.getPaymentMethod()
-              ? 'Card updated successfully!'
-              : 'Card added successfully!');
+            positiveToast(
+              !!accountStore.getPaymentMethod()
+                ? 'Card updated successfully!'
+                : 'Card added successfully!'
+            );
             await accountStore.fetchServerState(idToken);
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
             trackEvent('billing_chargify_successful', 'Event')
@@ -104,65 +103,67 @@ function Subscribe({ }) {
     );
   };
 
-
-
   return (
     <Dashboard>
-      <PageHeader headerLabel={!!accountStore.getPaymentMethod()
-        ? 'Replace your existing payment card'
-        : 'Add a payment card to your account'} introduction="" />
+      <PageHeader
+        headerLabel={
+          !!accountStore.getPaymentMethod()
+            ? 'Replace your existing payment card'
+            : 'Add a payment card to your account'
+        }
+        introduction=''
+      />
 
       <div>
         <Box width='100%' maxWidth='630px'>
-          <form onSubmit={handleSubmit} ref={chargifyForm} id="chargify-form">
+          <form onSubmit={handleSubmit} ref={chargifyForm} id='chargify-form'>
             <SmPanel>
               <HeaderLabel>Your Name</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_firstName"></div>
-                <div id="chargify_lastname"></div>
+                <div id='chargify_firstName'></div>
+                <div id='chargify_lastname'></div>
               </Box>
             </SmPanel>
 
-            <SmPanel marginTop="2em">
+            <SmPanel marginTop='2em'>
               <HeaderLabel>Your Card Information</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_ccnumber"></div>
-                <div id="chargify_cvv"></div>
-                <div id="chargify_ccmonth"></div>
-                <div id="chargify_ccyear"></div>
+                <div id='chargify_ccnumber'></div>
+                <div id='chargify_cvv'></div>
+                <div id='chargify_ccmonth'></div>
+                <div id='chargify_ccyear'></div>
               </Box>
             </SmPanel>
 
-            <SmPanel marginTop="2em">
+            <SmPanel marginTop='2em'>
               <HeaderLabel>Your Address</HeaderLabel>
               <Box style={sectStyle}>
-                <div id="chargify_address"></div>
-                <div id="chargify_address2"></div>
-                <div id="chargify_city"></div>
-                <div id="chargify_country"></div>
-                <div id="chargify_zip"></div>
-                <div id="chargify_state"></div>
+                <div id='chargify_address'></div>
+                <div id='chargify_address2'></div>
+                <div id='chargify_city'></div>
+                <div id='chargify_country'></div>
+                <div id='chargify_zip'></div>
+                <div id='chargify_state'></div>
               </Box>
             </SmPanel>
 
             <label>
-              <input id="host-token" disabled value={token} type="hidden" />
-              <input id="reference" disabled value={'client1'} type="hidden" />
+              <input id='host-token' disabled value={token} type='hidden' />
+              <input id='reference' disabled value={'client1'} type='hidden' />
               <input
-                type="hidden"
-                className="host-input"
-                data-chargify="reference"
+                type='hidden'
+                className='host-input'
+                data-chargify='reference'
                 value={'client1'}
               />
             </label>
             <p>
               <Button
-                variant="speechmatics"
-                type="submit"
+                variant='speechmatics'
+                type='submit'
                 disabled={!submitButtonReady}
-                marginTop="2em"
-                data-qa="button-add-replace-payment"
-              >
+                marginTop='2em'
+                data-qa='button-add-replace-payment'>
                 {submitButtonReady ? (
                   !!accountStore.getPaymentMethod() ? (
                     'Update card'
@@ -189,21 +190,24 @@ function Subscribe({ }) {
 export default observer(Subscribe);
 
 const sectStyle = {
-  display: 'grid', gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
-  columnGap: '2em', alignSelf: 'center', width: '100%'
-} as React.CSSProperties
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, 16.25em)',
+  columnGap: '2em',
+  alignSelf: 'center',
+  width: '100%'
+} as React.CSSProperties;
 
 const chargifyFields = (color1, color2, color3, name) => {
   const labelStyle = {
     padding: '2px 5px 3px 5px',
-    fontSize: '1.2em',
+    fontSize: '1.2em'
   };
 
   const defaultStyle = {
     field: {
       backgroundColor: color1,
       padding: '3px',
-      borderRadius: '2px',
+      borderRadius: '2px'
     },
     input: {
       backgroundColor: color2,
@@ -213,7 +217,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       fontSize: '1.1em'
     },
     label: labelStyle,
-    message: { paddingTop: '2px', paddingBottom: '1px' },
+    message: { paddingTop: '2px', paddingBottom: '1px' }
   };
 
   return {
@@ -224,7 +228,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'First name is not valid. Please update it.',
       maxlength: '30',
-      style: defaultStyle,
+      style: defaultStyle
     },
     lastName: {
       selector: '#chargify_lastname',
@@ -233,28 +237,28 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '30',
-      style: defaultStyle,
+      style: defaultStyle
     },
     number: {
       selector: '#chargify_ccnumber',
       label: 'Credit card number',
       placeholder: 'xxxx xxxx xxxx xxxx',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     month: {
       selector: '#chargify_ccmonth',
       label: 'Expiry Month',
       placeholder: 'mm',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     year: {
       selector: '#chargify_ccyear',
       label: 'Expiry Year',
       placeholder: 'yyyy',
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     cvv: {
       selector: '#chargify_cvv',
@@ -262,7 +266,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       placeholder: 'XXX',
       required: true,
       message: 'This field is not valid. Please update it.',
-      style: defaultStyle,
+      style: defaultStyle
     },
     address: {
       selector: '#chargify_address',
@@ -271,7 +275,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     address2: {
       selector: '#chargify_address2',
@@ -280,7 +284,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     city: {
       selector: '#chargify_city',
@@ -289,7 +293,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     state: {
       selector: '#chargify_state',
@@ -298,7 +302,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: false,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     zip: {
       selector: '#chargify_zip',
@@ -307,7 +311,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
+      style: defaultStyle
     },
     country: {
       selector: '#chargify_country',
@@ -316,8 +320,7 @@ const chargifyFields = (color1, color2, color3, name) => {
       required: true,
       message: 'This field is not valid. Please update it.',
       maxlength: '70',
-      style: defaultStyle,
-    },
+      style: defaultStyle
+    }
   };
 };
-

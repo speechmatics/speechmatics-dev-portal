@@ -8,9 +8,9 @@ const RUNTIME_AUTH_TTL: number = parseInt(process.env.RUNTIME_AUTH_TTL) || 3600;
 // Thus I'm considering adding a isLoggedIn property for components to track rather than the secretKey
 // This should hopefully limit re-renders when the secretKey is refreshed
 export class RuntimeAuthStore {
-  _ttl: number = RUNTIME_AUTH_TTL
+  _ttl: number = RUNTIME_AUTH_TTL;
   get ttl(): number {
-    return this._ttl
+    return this._ttl;
   }
   _secretKey: string = '';
   set secretKey(value: string) {
@@ -28,7 +28,7 @@ export class RuntimeAuthStore {
   }
   _timeout: number = null;
   set timeout(value: number) {
-    this._timeout = value
+    this._timeout = value;
   }
   get timeout(): number {
     return this._timeout;
@@ -57,36 +57,36 @@ class RuntimeAuthFlow {
   store = new RuntimeAuthStore();
 
   storeRuntimeSecret = (secret) => {
-    this.store.secretKey = secret.key_value
-    this.store.timeout = secret.timeout
-    this.store.isLoggedIn = true
+    this.store.secretKey = secret.key_value;
+    this.store.timeout = secret.timeout;
+    this.store.isLoggedIn = true;
     sessionStorage.setItem('runtime_token', JSON.stringify(secret));
   };
-  
+
   async restoreToken() {
-    if ( this.store.isLoggedIn ) {
-      return
+    if (this.store.isLoggedIn) {
+      return;
     }
     let token = JSON.parse(sessionStorage.getItem('runtime_token'));
     if (!!token) {
-      this.store.secretKey = token?.key_value
-      this.store.timeout = token?.timeout
-      this.store.isLoggedIn = true
-      return
+      this.store.secretKey = token?.key_value;
+      this.store.timeout = token?.timeout;
+      this.store.isLoggedIn = true;
+      return;
     }
-    return this.reset()
+    return this.reset();
   }
-  
+
   async refreshToken(idToken: string) {
     try {
-      this.restoreToken()
-      if ( !this.store.isLoggedIn || this.store.timeout < new Date().getTime() ) {
-        const token = await callGetRuntimeSecret(idToken, this.store.ttl)
-        const timeout = new Date().getTime() + 1000 * this.store.ttl
-        this.storeRuntimeSecret({ ...token, timeout })
+      this.restoreToken();
+      if (!this.store.isLoggedIn || this.store.timeout < new Date().getTime()) {
+        const token = await callGetRuntimeSecret(idToken, this.store.ttl);
+        const timeout = new Date().getTime() + 1000 * this.store.ttl;
+        this.storeRuntimeSecret({ ...token, timeout });
       }
     } catch (err) {
-      this.reset(err)
+      this.reset(err);
     }
   }
 

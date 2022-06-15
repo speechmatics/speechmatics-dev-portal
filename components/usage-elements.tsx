@@ -10,7 +10,7 @@ import {
   Spinner,
   Text,
   useBreakpointValue,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 import { callGetUsage } from '../utils/call-api';
 import accountContext, { accountStore } from '../utils/account-store-context';
@@ -31,7 +31,7 @@ export const UsageSummary = observer(function Usage() {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     return {
-      since: `${year}-${month > 9 ? month : '0' + month}-01`,
+      since: `${year}-${month > 9 ? month : '0' + month}-01`
     };
   };
 
@@ -46,7 +46,7 @@ export const UsageSummary = observer(function Usage() {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageSummaryJson({
               aggregate: respJson.aggregate,
-              breakdown: respJson.breakdown.reverse(),
+              breakdown: respJson.breakdown.reverse()
             });
             setIsLoading(false);
           }
@@ -81,37 +81,36 @@ export const UsageSummary = observer(function Usage() {
       </HeaderLabel>
 
       <Grid
-        templateColumns="repeat(4, 1fr)"
-        marginTop="2em"
-        className="sm_grid"
-        alignSelf="stretch"
-      >
-        <GridItem className="grid_header">Accuracy</GridItem>
-        <GridItem className="grid_header">Limit (Hours per Month)</GridItem>
-        <GridItem className="grid_header">Hours Used</GridItem>
-        <GridItem className="grid_header">Requests Made</GridItem>
+        templateColumns='repeat(4, 1fr)'
+        marginTop='2em'
+        className='sm_grid'
+        alignSelf='stretch'>
+        <GridItem className='grid_header'>Accuracy</GridItem>
+        <GridItem className='grid_header'>Limit (Hours per Month)</GridItem>
+        <GridItem className='grid_header'>Hours Used</GridItem>
+        <GridItem className='grid_header'>Requests Made</GridItem>
 
         {isLoading && (
           <GridItem colSpan={4}>
-            <Flex width="100%" justifyContent="center">
+            <Flex width='100%' justifyContent='center'>
               <GridSpinner />
-              <Text ml="1em">One moment please...</Text>
+              <Text ml='1em'>One moment please...</Text>
             </Flex>
           </GridItem>
         )}
         {!isLoading && !currentUsage && !usageError && (
           <GridItem colSpan={4}>
-            <Flex width="100%" justifyContent="center">
+            <Flex width='100%' justifyContent='center'>
               <ExclamationIcon />
-              <Text ml="1em">You don't currently have any usage data.</Text>
+              <Text ml='1em'>You don't currently have any usage data.</Text>
             </Flex>
           </GridItem>
         )}
         {!isLoading && !currentUsage && usageError && (
           <GridItem colSpan={4}>
-            <Flex width="100%" justifyContent="center">
+            <Flex width='100%' justifyContent='center'>
               <ExclamationIcon />
-              <Text ml="1em">We couldn't get your usage summary.</Text>
+              <Text ml='1em'>We couldn't get your usage summary.</Text>
             </Flex>
           </GridItem>
         )}
@@ -121,12 +120,12 @@ export const UsageSummary = observer(function Usage() {
             <GridItem>
               {accountStore.isLoading ? '...' : accountStore.getUsageLimit('enhanced')} hours
             </GridItem>
-            <GridItem data-qa="usage-enhanced">
+            <GridItem data-qa='usage-enhanced'>
               {Number(currentUsage?.usageEnhanced).toFixed(2)} hours
             </GridItem>
-            <GridItem data-qa="requests-enhanced">{currentUsage?.countEnhanced}</GridItem>
+            <GridItem data-qa='requests-enhanced'>{currentUsage?.countEnhanced}</GridItem>
 
-            <GridItem className="grid_row_divider">
+            <GridItem className='grid_row_divider'>
               <hr />
             </GridItem>
 
@@ -134,14 +133,17 @@ export const UsageSummary = observer(function Usage() {
             <GridItem>
               {accountStore.isLoading ? '...' : accountStore.getUsageLimit('standard')} hours
             </GridItem>
-            <GridItem data-qa="usage-standard">
+            <GridItem data-qa='usage-standard'>
               {Number(currentUsage?.usageStandard).toFixed(2)} hours
             </GridItem>
-            <GridItem data-qa="requests-standard">{currentUsage?.countStandard}</GridItem>
+            <GridItem data-qa='requests-standard'>{currentUsage?.countStandard}</GridItem>
           </>
         )}
       </Grid>
-      <UsageInfoBanner text="Usage is reported on a UTC calendar-day basis and is updated every 5 minutes." mt="2em" />
+      <UsageInfoBanner
+        text='Usage is reported on a UTC calendar-day basis and is updated every 5 minutes.'
+        mt='2em'
+      />
     </>
   );
 });
@@ -163,7 +165,7 @@ export const UsageBreakdown = observer(function Usage() {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageDetailsJson({
               aggregate: respJson.aggregate,
-              breakdown: respJson.breakdown.reverse(),
+              breakdown: respJson.breakdown.reverse()
             });
             setIsLoading(false);
           }
@@ -192,17 +194,16 @@ export const UsageBreakdown = observer(function Usage() {
       )}
       {usageError && (
         <Grid
-          templateColumns="repeat(2, 1fr)"
-          marginTop="2em"
-          className="sm_grid"
-          alignSelf="stretch"
-        >
-          <GridItem className="grid_header">Day</GridItem>
-          <GridItem className="grid_header">Hours Used</GridItem>
+          templateColumns='repeat(2, 1fr)'
+          marginTop='2em'
+          className='sm_grid'
+          alignSelf='stretch'>
+          <GridItem className='grid_header'>Day</GridItem>
+          <GridItem className='grid_header'>Hours Used</GridItem>
           <GridItem colSpan={2}>
-            <Flex width="100%" justifyContent="center">
+            <Flex width='100%' justifyContent='center'>
               <ExclamationIcon />
-              <Text ml="1em">We couldn't get your usage details.</Text>
+              <Text ml='1em'>We couldn't get your usage details.</Text>
             </Flex>
           </GridItem>
         </Grid>
@@ -212,14 +213,14 @@ export const UsageBreakdown = observer(function Usage() {
 });
 
 const UsageBreakdownGrid = ({ data, isLoading }) => (
-  <Grid templateColumns="repeat(2, 1fr)" marginTop="2em" className="sm_grid" alignSelf="stretch">
-    <GridItem className="grid_header">Day</GridItem>
-    <GridItem className="grid_header">Hours Used</GridItem>
+  <Grid templateColumns='repeat(2, 1fr)' marginTop='2em' className='sm_grid' alignSelf='stretch'>
+    <GridItem className='grid_header'>Day</GridItem>
+    <GridItem className='grid_header'>Hours Used</GridItem>
 
     {data?.map((el: UsageUnit, i: number) => {
       return (
         <React.Fragment key={el.since}>
-          <GridItem className="grid_row_divider">{i != 0 && <hr />}</GridItem>
+          <GridItem className='grid_row_divider'>{i != 0 && <hr />}</GridItem>
           <GridItem>{formatDate(new Date(el.since))}</GridItem>
           <GridItem>{Number(el.total_hrs).toFixed(2)} hours</GridItem>
         </React.Fragment>
@@ -227,17 +228,17 @@ const UsageBreakdownGrid = ({ data, isLoading }) => (
     })}
     {!isLoading && (!data || data?.length == 0) && (
       <GridItem colSpan={2}>
-        <Flex width="100%" justifyContent="center">
+        <Flex width='100%' justifyContent='center'>
           <ExclamationIcon />
-          <Text ml="1em">You don't currently have any usage data.</Text>
+          <Text ml='1em'>You don't currently have any usage data.</Text>
         </Flex>
       </GridItem>
     )}
     {isLoading && (
       <GridItem colSpan={2}>
-        <Flex width="100%" justifyContent="center">
+        <Flex width='100%' justifyContent='center'>
           <GridSpinner />
-          <Text ml="1em">One moment please...</Text>
+          <Text ml='1em'>One moment please...</Text>
         </Flex>
       </GridItem>
     )}
@@ -260,7 +261,7 @@ export const prepCurrentUsage = (aggregate: UsageUnit) => {
           ?.count || 0,
       countEnhanced:
         aggregate?.summary.find((s) => s.type == 'transcription' && s.operating_point == 'enhanced')
-          ?.count || 0,
+          ?.count || 0
     };
   } else return null;
 };
@@ -285,7 +286,7 @@ type UsageUnit = {
 export const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   const Containter = useMemo(
@@ -297,18 +298,18 @@ export const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) =
   );
 
   return (
-    <Containter width="100%" bg="smNavy.500" justifyContent="space-between" padding="1em 1.5em">
-      <Box flex="0 0 auto">{icon}</Box>
-      <VStack alignItems="flex-start" flex="1" pl="1em" spacing="0px">
-        <Text fontFamily="Matter-Bold" fontSize="1.4em" color="smWhite.500">
+    <Containter width='100%' bg='smNavy.500' justifyContent='space-between' padding='1em 1.5em'>
+      <Box flex='0 0 auto'>{icon}</Box>
+      <VStack alignItems='flex-start' flex='1' pl='1em' spacing='0px'>
+        <Text fontFamily='Matter-Bold' fontSize='1.4em' color='smWhite.500'>
           {title}
         </Text>
-        <Text fontFamily="RMNeue-Regular" fontSize="1em" color="smWhite.500" pb="0.5em">
+        <Text fontFamily='RMNeue-Regular' fontSize='1em' color='smWhite.500' pb='0.5em'>
           {ctaText}
         </Text>
       </VStack>
       <Link href={hrefLink}>
-        <Button variant="speechmaticsWhite">{buttonLabel}</Button>
+        <Button variant='speechmaticsWhite'>{buttonLabel}</Button>
       </Link>
     </Containter>
   );
@@ -317,7 +318,7 @@ export const GetInTouchBox = ({ icon, title, ctaText, hrefLink, buttonLabel }) =
 export const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, description }) => {
   const breakVal = useBreakpointValue({
     xs: false,
-    sm: true,
+    sm: true
   });
 
   const Containter = useMemo(
@@ -329,22 +330,21 @@ export const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, de
   );
 
   return (
-    <GridItem bg={`${mainColor}.200`} className="flexColumnBetween">
-      <Containter p={breakVal ? '1em 1em 1em 1em' : '0.5em'} alignItems="flex-start">
-        <Box p="1em 0em 0em 0.2em">{icon}</Box>
-        <Box pt="1em" pl="0.5em">
-          <Text fontSize="0.85em" color="smBlack.400">
+    <GridItem bg={`${mainColor}.200`} className='flexColumnBetween'>
+      <Containter p={breakVal ? '1em 1em 1em 1em' : '0.5em'} alignItems='flex-start'>
+        <Box p='1em 0em 0em 0.2em'>{icon}</Box>
+        <Box pt='1em' pl='0.5em'>
+          <Text fontSize='0.85em' color='smBlack.400'>
             {title}
           </Text>
           <Text
-            fontFamily="RMNeue-Bold"
-            fontSize="1.5em"
+            fontFamily='RMNeue-Bold'
+            fontSize='1.5em'
             color={`${mainColor}.500`}
-            mt="0.15em"
-            data-qa={`limit-${usageLimitType}`}
-          >
+            mt='0.15em'
+            data-qa={`limit-${usageLimitType}`}>
             {accountStore.isLoading ? (
-              <Spinner size="sm" />
+              <Spinner size='sm' />
             ) : (
               accountStore.getUsageLimit(usageLimitType)
             )}{' '}
@@ -354,11 +354,10 @@ export const ModelDescriptionBox = ({ mainColor, icon, title, usageLimitType, de
       </Containter>
       <Box
         bg={`${mainColor}.100`}
-        p=".8em 1em .8em 1em"
-        borderTop="1px solid"
-        borderColor={`${mainColor}.400`}
-      >
-        <Text fontSize="0.8em" color="smBlack.400">
+        p='.8em 1em .8em 1em'
+        borderTop='1px solid'
+        borderColor={`${mainColor}.400`}>
+        <Text fontSize='0.8em' color='smBlack.400'>
           {description}
         </Text>
       </Box>
