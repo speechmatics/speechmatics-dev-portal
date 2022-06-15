@@ -54,7 +54,7 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
 
@@ -64,13 +64,8 @@ export default observer(function ManageBilling({}) {
 
   const deleteCard = useCallback(() => {
     onOpen();
-<<<<<<< HEAD
     trackEvent('billing_remove_card_click', 'Action');
-
   }, [])
-=======
-  }, []);
->>>>>>> main
 
   const onRemoveConfirm = useCallback(() => {
     callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
@@ -90,32 +85,19 @@ export default observer(function ManageBilling({}) {
         headerLabel='Manage Billing'
         introduction='Manage Your Payments and Usage Limits.'
       />
-<<<<<<< HEAD
-      <ConfirmRemoveModal isOpen={isOpen} onClose={onClose}
-        data-qa="modal-delete-card-confirm"
-        mainTitle="Are you sure want to remove your card?"
-=======
       <ConfirmRemoveModal
         isOpen={isOpen}
         onClose={onClose}
         data-qa='modal-delete-card-confirm'
         mainTitle={`Are you sure want to remove your card?`}
->>>>>>> main
         subTitle=''
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-<<<<<<< HEAD
-      <Tabs size="lg" variant="speechmatics" width="100%" maxWidth='900px' onChange={tabsOnChange}>
-        <TabList marginBottom="-1px">
-          <Tab data-qa="tab-settings">Settings</Tab>
-          <Tab data-qa="tab-payments">Payments</Tab>
-=======
       <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
         <TabList marginBottom='-1px'>
           <Tab data-qa='tab-settings'>Settings</Tab>
           <Tab data-qa='tab-payments'>Payments</Tab>
->>>>>>> main
         </TabList>
         <TabPanels>
           <TabPanel p='1.5em'>
@@ -198,7 +180,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
           <GridItem data-qa={`payments-download-invoice-${i}`}>
             {el.url && (
               <Link href={el.url}>
-                <a target='_blank' download>
+                <a target='_blank' download onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
                   <DownloadInvoiceHoverable />
                 </a>
               </Link>
@@ -221,39 +203,9 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <Text ml='1em'>One moment please...</Text>
           </Flex>
         </GridItem>
-<<<<<<< HEAD
-        <GridItem data-qa={`payments-download-invoice-${i}`}>
-          {el.url && <Link href={el.url}>
-            <a target='_blank' download
-              onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
-              <DownloadInvoiceHoverable />
-            </a>
-          </Link>}
-        </GridItem>
-      </React.Fragment>
-    ))}
-    {!isLoading && (!data || data?.length == 0) && (
-      <GridItem colSpan={columns}>
-        <Flex width="100%" justifyContent="center">
-          <ExclamationIcon />
-          <Text ml="1em">You don’t currently have any due or paid invoices.</Text>
-        </Flex>
-      </GridItem>
-    )}
-    {isLoading && (
-      <GridItem colSpan={columns}>
-        <Flex width="100%" justifyContent="center">
-          <GridSpinner />
-          <Text ml="1em">One moment please...</Text>
-        </Flex>
-      </GridItem>
-    )}
-  </Grid>
-=======
       )}
     </Grid>
   );
->>>>>>> main
 };
 
 interface PaymentItem {

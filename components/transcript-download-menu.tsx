@@ -35,64 +35,6 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
     }
   };
 
-<<<<<<< HEAD
-  return <>
-    <MenuList
-      color="smNavy.400"
-      border="1px solid"
-      rounded="none"
-      shadow="lg"
-      fontSize={14}
-      borderColor="smBlack.200"
-      minW="0px"
-      maxW={'180px'}
-      p={2}
-    >
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('txt');
-              trackEvent('download_transcription_txt', 'Action')
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as text
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('json-v2');
-              trackEvent('download_transcription_json', 'Action')
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as JSON
-          </MenuItem>
-          <MenuDivider />
-        </>
-      )}
-      {status === ('done' || 'completed') && (
-        <>
-          <MenuItem
-            onClick={(e) => {
-              downloadTranscript('srt');
-              trackEvent('download_transcription_srt', 'Action')
-            }}
-            _focus={{ color: 'smBlue.500' }}
-          >
-            Download as SRT
-          </MenuItem>
-        </>
-      )}
-    </MenuList>
-  </>
-};
-=======
   return (
     <>
       <MenuList
@@ -110,6 +52,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('txt');
+                trackEvent('download_transcription_txt', 'Action')
+
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as text
@@ -122,6 +66,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('json-v2');
+                trackEvent('download_transcription_json', 'Action')
+
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as JSON
@@ -134,6 +80,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('srt');
+                trackEvent('download_transcription_srt', 'Action')
+
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as SRT
@@ -144,4 +92,3 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
     </>
   );
 };
->>>>>>> main

@@ -23,12 +23,8 @@ module.exports = {
     INVITATION_SIGNUP_POLICY: process.env.INVITATION_SIGNUP_POLICY,
     REDIRECT_URI_INVITATION: process.env.REDIRECT_URI_INVITATION,
     RESET_PASSWORD_POLICY: process.env.RESET_PASSWORD_POLICY,
-<<<<<<< HEAD
     RUNTIME_AUTH_TTL: process.env.RUNTIME_AUTH_TTL,
     GTAG: process.env.GTAG
-=======
-    RUNTIME_AUTH_TTL: process.env.RUNTIME_AUTH_TTL
->>>>>>> main
   },
   exportPathMap: async function () {
     const paths = {

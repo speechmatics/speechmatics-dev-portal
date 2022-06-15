@@ -193,12 +193,8 @@ export const RecentJobs = observer(() => {
             rounded={breakVal ? 'full' : null}
             bg={breakVal ? 'smWhite.500' : null}
             border={breakVal ? '2px solid' : null}
-<<<<<<< HEAD
-            borderColor="smBlack.300"
-            onClick={() => trackEvent('close_transcription_viewer', 'Action')}
-=======
             borderColor='smBlack.300'
->>>>>>> main
+            onClick={() => trackEvent('close_transcription_viewer', 'Action')}
             color={breakVal ? 'smBlack.300' : null}
             top={breakVal ? -4 : null}
             right={breakVal ? -4 : null}

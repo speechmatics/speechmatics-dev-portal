@@ -160,10 +160,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
 
   useEffect(() => {
     if (stageDelayed == 'complete') {
-      trackEvent('transcription_complete', 'Event', 'transcription has been shown', { id: store.jobId });
-    }
-    if (stage == 'failed') {
-      trackEvent('transcription_failed', 'Event', 'transcription has been shown', { id: store.jobId });
+      trackEvent('transcription_complete', 'Event', 'transcription has been shown')
     }
   }, [stageDelayed]);
 

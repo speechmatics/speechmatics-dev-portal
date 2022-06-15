@@ -1,7 +1,8 @@
 import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
-import { InfoBarbox, PageHeader } from '../components/common';
+import Link from 'next/link';
+import { PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { HomeBox, HomeWhiteBox } from '../components/home-elements';
+import { HomeBox } from '../components/home-elements';
 import {
   MenuLearnIcon,
   MenuPadlockIcon,
@@ -10,7 +11,7 @@ import {
   TranscribeIcon
 } from '../components/icons-library';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel='Home' introduction='Welcome to the Speechmatics SaaS Portal.' />
@@ -69,12 +70,6 @@ export default function Home({}) {
   );
 }
 
-<<<<<<< HEAD
-
-
-
-
-=======
 const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
   return (
     <VStack className='sm_panel' width='100%' alignItems='center' justifyContent='space-between'>
@@ -100,4 +95,3 @@ const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
     </VStack>
   );
 };
->>>>>>> main

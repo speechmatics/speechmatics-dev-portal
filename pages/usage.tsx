@@ -17,22 +17,17 @@ import {
   GetInTouchBox,
   UsageSummary
 } from '../components/usage-elements';
-<<<<<<< HEAD
 import {
   BaloonIcon,
   CallSupportIcon,
   RocketIcon,
 } from '../components/icons-library';
 import { trackEvent } from '../utils/analytics';
-=======
-import { BaloonIcon, CallSupportIcon, RocketIcon } from '../components/icons-library';
->>>>>>> main
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
 
-<<<<<<< HEAD
   const tabsOnChange = useCallback((index) => {
     trackEvent(`usage_tab_${['limits', 'summary', 'details'][index]}`, 'Navigation')
   }, [])
@@ -45,16 +40,6 @@ export default observer(function Usage() {
           <Tab data-qa="tab-limits">Limits</Tab>
           <Tab data-qa="tab-summary">Summary</Tab>
           <Tab data-qa="tab-details">Details</Tab>
-=======
-  return (
-    <Dashboard>
-      <PageHeader headerLabel='Track Usage' introduction='Review Usage of the API.' />
-      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
-        <TabList marginBottom='-1px'>
-          <Tab data-qa='tab-limits'>Limits</Tab>
-          <Tab data-qa='tab-summary'>Summary</Tab>
-          <Tab data-qa='tab-details'>Details</Tab>
->>>>>>> main
         </TabList>
         <TabPanels>
           <TabPanel>

@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { Box, HStack, Divider, Tooltip, Text, useBreakpointValue, IconButton, Flex } from "@chakra-ui/react";
-import Link from "next/link";
-import { trackEvent } from "../utils/analytics";
-import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from "./icons-library";
-
-=======
 import {
   Box,
   HStack,
@@ -16,8 +9,8 @@ import {
   Flex
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { trackEvent } from '../utils/analytics';
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from './icons-library';
->>>>>>> main
 
 export function HeaderBar({ logout, accountEmail }) {
   const breakValue = useBreakpointValue({
@@ -46,26 +39,13 @@ export function HeaderBar({ logout, accountEmail }) {
 export function RightSidePanel({ logout, accountEmail, breakValue }) {
   return (
     <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
-<<<<<<< HEAD
-      {breakValue > 1 && <>
-        <Link href="https://docs.speechmatics.com" >
-          <a target="_blank"
-            onClick={() => trackEvent('Dashboard_documentation_click', 'LinkOut', 'Selected Documentation link')}>
-            <Box
-              color="smNavy.270"
-              _hover={{ color: 'smNavy.200' }}>
-              {breakValue < 3 ? 'Docs' : 'Documentation'}
-            </Box>
-          </a>
-        </Link>
-        <Divider orientation="vertical" color="#5E6673" alignSelf='stretch' />
-      </>
-      }
-=======
       {breakValue > 1 && (
         <>
           <Link href='https://docs.speechmatics.com'>
-            <a target='_blank'>
+            <a target='_blank'
+              onClick={
+                () => trackEvent('Dashboard_documentation_click', 'LinkOut', 'Selected Documentation link')
+              }>
               <Box color='smNavy.270' _hover={{ color: 'smNavy.200' }}>
                 {breakValue < 3 ? 'Docs' : 'Documentation'}
               </Box>
@@ -74,7 +54,6 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
           <Divider orientation='vertical' color='#5E6673' alignSelf='stretch' />
         </>
       )}
->>>>>>> main
       <Flex>
         <Box
           whiteSpace='nowrap'
@@ -91,33 +70,12 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
       <Tooltip label='Log out' placement='bottom'>
         <Box
           style={{ cursor: 'pointer', marginLeft: '1em' }}
-<<<<<<< HEAD
-          data-qa="logout"
-          onClick={() => (trackEvent('Dashboard_logout_click', 'B2C_Flow', 'Manual logout'), logout())}
-        ><LogoutIcon w={20} h={20} color="var(--chakra-colors-smNavy-270)" />
-=======
           data-qa='logout'
-          onClick={() => logout()}>
+          onClick={() => (trackEvent('Dashboard_logout_click', 'B2C_Flow', 'Manual logout'), logout())}
+        >
           <LogoutIcon w={20} h={20} color='var(--chakra-colors-smNavy-270)' />
->>>>>>> main
         </Box>
       </Tooltip>
-    </HStack>
-  );
-<<<<<<< HEAD
+    </HStack >
+  )
 }
-=======
-}
-
-{
-  /* <Link href="/account/" passHref>
-        <ChakraLink>
-          <Tooltip label="Account" placement="bottom"> */
-}
-
-{
-  /* </Tooltip>
-        </ChakraLink>
-      </Link> */
-}
->>>>>>> main
