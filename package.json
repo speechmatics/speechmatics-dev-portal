@@ -28,6 +28,9 @@
     "react-icons": "^4.3.1",
     "react-player": "^2.10.0",
     "react-syntax-highlighter": "^15.4.5",
+    "react-virtualized": "^9.22.3",
+    "react-virtualized-auto-sizer": "^1.0.6",
+    "react-window": "^1.8.7",
     "swr": "^1.2.1"
   },
   "devDependencies": {

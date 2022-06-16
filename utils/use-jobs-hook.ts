@@ -3,7 +3,7 @@ import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
 
-export const useJobs = (limit, page) => {
+export const useJobs = (limit, page, includeDeleted) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [noMoreJobs, setNoMoreJobs] = useState<boolean>(false);
@@ -29,20 +29,48 @@ export const useJobs = (limit, page) => {
     if (limit > maxlimit) {
       throw new Error('Limit cannot be more than ' + maxlimit);
     }
+    setJobs([])
     // return useEffect cleanup function from get Jobs
     return getJobs(
       idToken,
       jobs,
       setJobs,
-      createdBefore,
+      null,
       setCreatedBefore,
       limit,
+      includeDeleted,
       setNoMoreJobs,
       setIsPolling,
       setIsLoading,
       setErrorOnInit
     );
   }, [idToken]);
+
+  useEffect(() => {
+    if (includeDeleted === true ) {
+      setJobs([])
+      return getJobs(
+        idToken,
+        jobs,
+        setJobs,
+        null,
+        setCreatedBefore,
+        limit,
+        includeDeleted,
+        setNoMoreJobs,
+        setIsPolling,
+        () => {},
+        setErrorOnInit
+      );
+    } else {
+      const undeletedJobs: JobElementProps[] = jobs.filter(item => item.status !== 'deleted');
+      setJobs(undeletedJobs);
+      if (undeletedJobs.length > 0)
+        setCreatedBefore(undeletedJobs[undeletedJobs.length - 1].date)
+      else setCreatedBefore(null)
+    }
+    // return useEffect cleanup function from get Jobs
+  }, [includeDeleted]);
 
   useEffect(() => {
     // only use this hook after the initial load
@@ -55,6 +83,7 @@ export const useJobs = (limit, page) => {
         createdBefore,
         setCreatedBefore,
         limit,
+        includeDeleted,
         setNoMoreJobs,
         setIsPolling,
         setIsWaitingOnMore,
@@ -69,7 +98,12 @@ export const useJobs = (limit, page) => {
       callDeleteJob(idToken, id, force)
         .then((response) => {
           if (!!response) {
-            setJobs((oldJobs) => oldJobs.filter((item) => item.id !== id));
+            setJobs((oldJobs) => {
+              const index = oldJobs.findIndex((item) => item.id === id)
+              oldJobs[index].fileName = ''
+              oldJobs[index].status = 'deleted'
+              return [...oldJobs]
+            });
           }
         })
         .catch((err) => {
@@ -88,6 +122,7 @@ export const useJobs = (limit, page) => {
       null,
       (value) => {},
       limit,
+      includeDeleted,
       setNoMoreJobs,
       setIsPolling,
       (value) => {},
@@ -116,6 +151,7 @@ const getJobs = (
   createdBefore: string,
   setCreatedBefore: Dispatch<string>,
   limit: number,
+  includeDeleted: boolean,
   setNoMoreJobs: Dispatch<boolean>,
   setIsPolling: Dispatch<boolean>,
   loadingFunction: Dispatch<boolean>,
@@ -126,7 +162,8 @@ const getJobs = (
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
-      limit: limit
+      limit: limit,
+      include_deleted: includeDeleted,
     };
     if (createdBefore != null) {
       queries.created_before = createdBefore;
@@ -271,7 +308,7 @@ const createSet = (
 };
 
 export type JobElementProps = {
-  status: 'running' | 'completed' | 'done' | 'rejected';
+  status: 'running' | 'completed' | 'done' | 'rejected' | 'deleted';
   fileName: string;
   date: string;
   accuracy?: string;
@@ -283,7 +320,7 @@ export type JobElementProps = {
 type JobsResponse = {
   created_at: string;
   data_name: string;
-  status: 'running' | 'completed' | 'done' | 'rejected';
+  status: 'running' | 'completed' | 'done' | 'rejected' | 'deleted';
   duration: string;
   id: string;
   config?: JobConfig;
@@ -300,4 +337,5 @@ type JobConfig = {
 type JobQuery = {
   limit?: number;
   created_before?: string;
+  include_deleted?: boolean;
 };

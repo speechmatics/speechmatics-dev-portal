@@ -19,10 +19,14 @@ import {
   ModalBody,
   useDisclosure,
   Link,
-  useBreakpointValue
+  useBreakpointValue,
+  Switch,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
+import { List, WindowScroller } from 'react-virtualized';
+import 'react-virtualized/styles.css'; // only needs to be imported once
+import AutoSizer from 'react-virtualized-auto-sizer'
+import { useEffect, useState, useContext, useCallback, useMemo, useRef } from 'react';
 import {
   ErrorBanner,
   ConfirmRemoveModal,
@@ -47,16 +51,17 @@ export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
   const [deleteJobInfo, setDeleteJobInfo] = useState<{ id?: string; status?: string }>({});
+  const [includeDeleted, setIncludeDeleted] = useState<boolean>(true)
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore.tokenPayload?.idToken;
-
   const breakVal = useBreakpointValue({
     base: false,
     xl: true
   });
+  const listRef = useRef(null)
 
   const {
     jobs,
@@ -69,7 +74,7 @@ export const RecentJobs = observer(() => {
     onDeleteJob,
     forceGetJobs,
     errorGettingNewJob
-  } = useJobs(pageLimit, page);
+  } = useJobs(pageLimit, page, true);
 
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
@@ -89,6 +94,25 @@ export const RecentJobs = observer(() => {
     },
     [idToken, activeJob]
   );
+  const filteredList = useMemo(() => {
+    if (includeDeleted) return jobs
+    return jobs.filter(item => item.status !== 'deleted')
+  }, [jobs, includeDeleted])
+
+  const renderItem = useCallback(({ index, key, style }) => {
+    const job = filteredList[index];
+
+    return (
+      <Box
+      key={key} style={style}>
+        <RecentJobElement
+          {...job}
+          onOpenTranscript={onOpenTranscript}
+          onStartDelete={onOpenDeleteDialogue}
+        />
+      </Box>
+    );
+  }, [filteredList])
 
   const onOpenDeleteDialogue = useCallback(
     (id, status) => {
@@ -120,20 +144,41 @@ export const RecentJobs = observer(() => {
       <FilesBeingUploaded forceGetJobs={forceGetJobs} />
 
       {errorGettingNewJob && <ErrorBanner text="We couldn't get your recently uploaded jobs." />}
-      <VStack spacing={6} pt={6} width='100%'>
+      <VStack ref={listRef} spacing={6} pt={6} width='100%'>
         {isLoading && skeletons}
+
+        {!errorOnInit &&
+          !isLoading && jobs.length > 0 &&
+          <HStack w="100%" justifyContent="end">
+            <Text color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.9em'>Show deleted jobs:</Text>
+            <Switch colorScheme="teal" size="md" isChecked={includeDeleted} onChange={() => setIncludeDeleted(!includeDeleted)} />
+          </HStack>
+        }
         {!errorOnInit &&
           !isLoading &&
-          jobs?.map((el, i) => {
-            return (
-              <RecentJobElement
-                key={el.id + i}
-                {...el}
-                onOpenTranscript={onOpenTranscript}
-                onStartDelete={onOpenDeleteDialogue}
-              />
-            );
-          })}
+          jobs.length > 0 &&
+            <WindowScroller scrollingResetTimeInterval={1200}>
+              {({ height }) => (
+              <List
+                estimatedRowHeight={100}
+                width={1}
+                rowHeight={100}
+                height={height}
+                autoHeight
+                overscanRowCount={10}
+                containerStyle={{
+                  width: "100%",
+                  maxWidth: "100%"
+                }}
+                style={{
+                  width: "100%"
+                }}
+                rowCount={filteredList.length}
+                rowRenderer={renderItem}>
+              </List>
+            )}
+            </WindowScroller>
+        }
         {errorGettingMore && <ErrorBanner text='Error getting more jobs' />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
         {jobs?.length !== 0 && !noMoreJobs && (
@@ -246,7 +291,9 @@ const RecentJobElement = ({
       <HStack width='100%'>
         <VStack alignItems='flex-start' width='100%' flex={2}>
           <Box fontFamily='RMNeue-bold' as='span' width='90%' paddingRight='4px' color='smNavy.400'>
-            {fileName}
+            <Text noOfLines={1}>
+              {!fileName && status === 'deleted' ? "(Item deleted)" : fileName}
+            </Text>
           </Box>
           <HStack
             fontSize='0.8em'
@@ -300,7 +347,7 @@ const RecentJobElement = ({
               ) : (
                 <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
               )}
-              <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+              <Box color={statusColour[status]}>{status ? capitalizeFirstLetter(status) : 'Unknown'}</Box>
             </HStack>
           </Tooltip>
           {breakVal ? (
@@ -357,7 +404,7 @@ const IconButtons = ({
       <Menu isLazy>
         <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Download'>
           <MenuButton
-            disabled={['running', 'rejected'].includes(status)}
+            disabled={['running', 'rejected', 'deleted'].includes(status)}
             as={IconButton}
             variant='ghost'
             aria-label='view'
@@ -365,7 +412,7 @@ const IconButtons = ({
               <DownloadJobIcon
                 fontSize={20}
                 color={
-                  ['running', 'rejected'].includes(status)
+                  ['running', 'rejected', 'deleted'].includes(status)
                     ? 'var(--chakra-colors-smBlack-200)'
                     : 'var(--chakra-colors-smNavy-350)'
                 }
@@ -379,7 +426,7 @@ const IconButtons = ({
     <Box flex={1}>
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='View'>
         <IconButton
-          disabled={['running', 'rejected'].includes(status)}
+          disabled={['running', 'rejected', 'deleted'].includes(status)}
           variant='ghost'
           aria-label='view'
           onClick={(e) =>
@@ -399,7 +446,7 @@ const IconButtons = ({
             <ViewTranscriptionIcon
               fontSize='22'
               color={
-                ['running', 'rejected'].includes(status)
+                ['running', 'rejected', 'deleted'].includes(status)
                   ? 'var(--chakra-colors-smBlack-200)'
                   : 'var(--chakra-colors-smNavy-350)'
               }
@@ -412,7 +459,7 @@ const IconButtons = ({
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Delete'>
         <IconButton
           variant='ghost'
-          disabled={status === 'running'}
+          disabled={['running', 'deleted'].includes(status)}
           aria-label='stop-or-delete'
           onClick={(e) => onStartDelete(id, status)}
           flex={1}
@@ -489,6 +536,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
 
 const statusColour = {
   rejected: 'smRed.500',
+  deleted: 'smBlack.300',
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400'
