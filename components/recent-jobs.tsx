@@ -19,7 +19,9 @@ import {
   ModalBody,
   useDisclosure,
   Link,
-  useBreakpointValue
+  useBreakpointValue,
+  Switch,
+  Collapse
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -47,6 +49,7 @@ export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
   const [deleteJobInfo, setDeleteJobInfo] = useState<{ id?: string; status?: string }>({});
+  const [includeDeleted, setIncludeDeleted] = useState<boolean>(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
@@ -69,7 +72,11 @@ export const RecentJobs = observer(() => {
     onDeleteJob,
     forceGetJobs,
     errorGettingNewJob
-  } = useJobs(pageLimit, page);
+  } = useJobs(pageLimit, page, true);
+
+  const deletedListCount = useMemo(() => {
+    return jobs?.filter((item) => item.status === 'deleted').length;
+  }, [jobs]);
 
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
@@ -122,18 +129,39 @@ export const RecentJobs = observer(() => {
       {errorGettingNewJob && <ErrorBanner text="We couldn't get your recently uploaded jobs." />}
       <VStack spacing={6} pt={6} width='100%'>
         {isLoading && skeletons}
-        {!errorOnInit &&
-          !isLoading &&
-          jobs?.map((el, i) => {
-            return (
-              <RecentJobElement
-                key={el.id + i}
-                {...el}
-                onOpenTranscript={onOpenTranscript}
-                onStartDelete={onOpenDeleteDialogue}
-              />
-            );
-          })}
+        {!errorOnInit && !isLoading && jobs.length > 0 && (
+          // added a switch for shwoing delete jobs
+          <HStack data-qa="switch-show-deleted-jobs" w='100%' justifyContent='end'>
+            <Text color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.9em'>
+              Show deleted jobs:
+            </Text>
+            <Switch
+              colorScheme='teal'
+              size='md'
+              isChecked={includeDeleted}
+              onChange={() => setIncludeDeleted(!includeDeleted)}
+            />
+          </HStack>
+        )}
+        <VStack spacing={0} width='100%'>
+          {!errorOnInit &&
+            !isLoading &&
+            jobs?.map((el, i) => {
+              return (
+                // use the collapse animation feature to show and hide items
+                <Collapse
+                  key={el.key}
+                  style={{ width: '100%' }}
+                  in={(includeDeleted || el.status !== 'deleted') && el.visible}>
+                  <RecentJobElement
+                    {...el}
+                    onOpenTranscript={onOpenTranscript}
+                    onStartDelete={onOpenDeleteDialogue}
+                  />
+                </Collapse>
+              );
+            })}
+        </VStack>
         {errorGettingMore && <ErrorBanner text='Error getting more jobs' />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
         {jobs?.length !== 0 && !noMoreJobs && (
@@ -149,9 +177,25 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {noMoreJobs && jobs.length > pageLimit && (
+        {((noMoreJobs && jobs.length > pageLimit) || !includeDeleted) && (
+          // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
-            The page is showing the full list.
+            {noMoreJobs && jobs.length > pageLimit && 'The page is showing the full list.'}
+            {noMoreJobs && jobs.length > pageLimit && !includeDeleted && ' '}
+            {!includeDeleted && !!deletedListCount && (
+              <>
+                There are {deletedListCount} deleted job{deletedListCount !== 1 && 's'} not showing.{' '}
+                <Text
+                  data-qa='button-show-deleted-jobs'
+                  onClick={() => setIncludeDeleted(true)}
+                  as='span'
+                  color='var(--chakra-colors-smBlue-500)'
+                  cursor='pointer'
+                  _hover={{ textDecoration: 'underline' }}>
+                  Show deleted jobs.
+                </Text>
+              </>
+            )}
           </Box>
         )}
         {!errorOnInit && !isLoading && jobs?.length !== 0 && (
@@ -213,6 +257,8 @@ export const RecentJobs = observer(() => {
         }}
         confirmLabel='Delete Job'
         cancelLabel='Keep Job'
+        // prevents an error where the deleted jobs tooltip lingers
+        returnFocusOnClose={false}
       />
     </>
   );
@@ -237,16 +283,20 @@ const RecentJobElement = ({
   return (
     <VStack
       id={id}
+      // used to animate on initial loading - could be replaced with a visibility timeout function instead
+      className='fadein fade-item'
+      // key={id + fileName}
       border='1px solid'
       borderColor='smBlack.200'
       borderLeft='3px solid'
       borderLeftColor={statusColour[status]}
       p={4}
+      mb={4}
       width='100%'>
       <HStack width='100%'>
         <VStack alignItems='flex-start' width='100%' flex={2}>
-          <Box fontFamily='RMNeue-bold' as='span' width='90%' paddingRight='4px' color='smNavy.400'>
-            {fileName}
+          <Box fontFamily='RMNeue-bold' as='span' data-qa="list-job-file-name" width='90%' paddingRight='4px' color='smNavy.400'>
+            {status === 'deleted' ? '(Item deleted)' : fileName}
           </Box>
           <HStack
             fontSize='0.8em'
@@ -257,12 +307,13 @@ const RecentJobElement = ({
             {breakVal && (
               <>
                 <Box flex={2} fontFamily='RMNeue-bold' whiteSpace='nowrap'>
-                  <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
+                  <Tooltip data-qa="list-job-date" placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
                     {date ? formatTimeDateFromString(date) : 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
                   <Tooltip
+                    data-qa="list-job-accuracy" 
                     flex={1}
                     placement='bottom'
                     hasArrow
@@ -272,17 +323,17 @@ const RecentJobElement = ({
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Media Duration'>
+                  <Tooltip placement='bottom' data-qa="list-job-duration"  hasArrow color='smWhite.500' label='Media Duration'>
                     {duration || 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Media Language'>
+                  <Tooltip placement='bottom' data-qa="list-job-language" hasArrow color='smWhite.500' label='Media Language'>
                     {language ? mapLanguages(language) : 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Unique Job ID'>
+                  <Tooltip placement='bottom' data-qa="list-job-id" hasArrow color='smWhite.500' label='Unique Job ID'>
                     {id ? id : 'Unknown'}
                   </Tooltip>
                 </Box>
@@ -295,7 +346,7 @@ const RecentJobElement = ({
             label={status == 'running' ? 'The media is still being transcribed.' : null}
             hasArrow>
             <HStack flex={2}>
-              {status == 'running' ? (
+              {status === 'running' ? (
                 <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
               ) : (
                 <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
@@ -357,7 +408,7 @@ const IconButtons = ({
       <Menu isLazy>
         <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Download'>
           <MenuButton
-            disabled={['running', 'rejected'].includes(status)}
+            disabled={['running', 'rejected', 'deleted'].includes(status)}
             as={IconButton}
             variant='ghost'
             aria-label='view'
@@ -365,7 +416,7 @@ const IconButtons = ({
               <DownloadJobIcon
                 fontSize={20}
                 color={
-                  ['running', 'rejected'].includes(status)
+                  ['running', 'rejected', 'deleted'].includes(status)
                     ? 'var(--chakra-colors-smBlack-200)'
                     : 'var(--chakra-colors-smNavy-350)'
                 }
@@ -379,7 +430,7 @@ const IconButtons = ({
     <Box flex={1}>
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='View'>
         <IconButton
-          disabled={['running', 'rejected'].includes(status)}
+          disabled={['running', 'rejected', 'deleted'].includes(status)}
           variant='ghost'
           aria-label='view'
           onClick={(e) =>
@@ -399,7 +450,7 @@ const IconButtons = ({
             <ViewTranscriptionIcon
               fontSize='22'
               color={
-                ['running', 'rejected'].includes(status)
+                ['running', 'rejected', 'deleted'].includes(status)
                   ? 'var(--chakra-colors-smBlack-200)'
                   : 'var(--chakra-colors-smNavy-350)'
               }
@@ -412,7 +463,7 @@ const IconButtons = ({
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Delete'>
         <IconButton
           variant='ghost'
-          disabled={status === 'running'}
+          disabled={['running', 'deleted'].includes(status)}
           aria-label='stop-or-delete'
           onClick={(e) => onStartDelete(id, status)}
           flex={1}
@@ -489,6 +540,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
 
 const statusColour = {
   rejected: 'smRed.500',
+  deleted: 'smBlack.300',
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400'
