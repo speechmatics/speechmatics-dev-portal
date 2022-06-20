@@ -34,3 +34,9 @@ export function pluralize(
   if (value > 1) return `${value} ${pluralForm}`;
   if (value == 0) return returnIfZero;
 }
+
+export function lowerCaseNoSpace(
+  value: string
+) {
+  return value.toLocaleLowerCase().replaceAll(' ','-')
+}

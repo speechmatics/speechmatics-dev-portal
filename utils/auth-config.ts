@@ -16,7 +16,7 @@ export const msalConfig = {
     navigateToLoginRequestUrl: true // If "true", will navigate back to the original request location before processing the auth code response.
   },
   cache: {
-    cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
+    cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
     storeAuthStateInCookie: false // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {

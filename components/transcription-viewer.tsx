@@ -7,11 +7,10 @@ import {
   Menu,
   MenuButton,
   Text,
-  useBreakpointValue,
   Grid
 } from '@chakra-ui/react';
 import { formatTimeDateFromString } from '../utils/date-utils';
-import { capitalizeFirstLetter } from '../utils/string-utils';
+import { capitalizeFirstLetter, lowerCaseNoSpace } from '../utils/string-utils';
 import { getFullLanguageName } from '../utils/transcribe-elements';
 import { CopyIcon, DownloadIcon } from './icons-library';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
@@ -46,10 +45,10 @@ export const TranscriptionViewer = ({
         bgColor='smNavy.200'
         borderBottom='1px'
         borderColor='smBlack.200'>
-        <Stat title='Submitted:' value={formatTimeDateFromString(date)} />
-        <Stat title='Job ID:' value={jobId} />
-        <Stat title='Accuracy:' value={capitalizeFirstLetter(accuracy)} />
-        <Stat title='Language:' value={getFullLanguageName(language)} />
+        <Stat title='Submitted' value={formatTimeDateFromString(date)} />
+        <Stat title='Job ID' value={jobId} />
+        <Stat title='Accuracy' value={capitalizeFirstLetter(accuracy)} />
+        <Stat title='Language' value={getFullLanguageName(language)} />
       </HStack>
       <Box flex='1' maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300'>
         {transcriptionText ? transcriptionText : '(Transcript is empty)'}
@@ -86,9 +85,9 @@ export const TranscriptionViewer = ({
 };
 
 const Stat = ({ title, value, ...boxProps }) => (
-  <Box {...boxProps}>
+  <Box data-qa={`transcript-${lowerCaseNoSpace(title)}`} {...boxProps}>
     <Text as='span' color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.8em'>
-      {title}{' '}
+      {title}{': '}
     </Text>
     <Text as='span' color='smBlack.300' fontSize='0.8em'>
       {value}
