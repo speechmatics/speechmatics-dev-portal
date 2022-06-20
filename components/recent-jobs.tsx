@@ -131,7 +131,7 @@ export const RecentJobs = observer(() => {
         {isLoading && skeletons}
         {!errorOnInit && !isLoading && jobs.length > 0 && (
           // added a switch for shwoing delete jobs
-          <HStack data-qa="switch-show-deleted-jobs" w='100%' justifyContent='end'>
+          <HStack data-qa='switch-show-deleted-jobs' w='100%' justifyContent='end'>
             <Text color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.9em'>
               Show deleted jobs:
             </Text>
@@ -153,11 +153,15 @@ export const RecentJobs = observer(() => {
                   key={el.key}
                   style={{ width: '100%' }}
                   in={(includeDeleted || el.status !== 'deleted') && el.visible}>
-                  <RecentJobElement
-                    {...el}
-                    onOpenTranscript={onOpenTranscript}
-                    onStartDelete={onOpenDeleteDialogue}
-                  />
+                  {/* {el.status !== 'deleted' ? ( */}
+                    <RecentJobElement
+                      {...el}
+                      onOpenTranscript={onOpenTranscript}
+                      onStartDelete={onOpenDeleteDialogue}
+                    />
+                  {/* // ) : (
+                  //   <DeletedJobElementOne {...el} />
+                  // )} */}
                 </Collapse>
               );
             })}
@@ -295,8 +299,14 @@ const RecentJobElement = ({
       width='100%'>
       <HStack width='100%'>
         <VStack alignItems='flex-start' width='100%' flex={2}>
-          <Box fontFamily='RMNeue-bold' as='span' data-qa="list-job-file-name" width='90%' paddingRight='4px' color='smNavy.400'>
-            {status === 'deleted' ? '(Item deleted)' : fileName}
+          <Box
+            fontFamily={status === 'deleted' ? null : 'RMNeue-bold'}
+            as='span'
+            data-qa='list-job-file-name'
+            width='90%'
+            paddingRight='4px'
+            color='smNavy.400'>
+            {status === 'deleted' ? 'Deleted Job' : fileName}
           </Box>
           <HStack
             fontSize='0.8em'
@@ -307,13 +317,18 @@ const RecentJobElement = ({
             {breakVal && (
               <>
                 <Box flex={2} fontFamily='RMNeue-bold' whiteSpace='nowrap'>
-                  <Tooltip data-qa="list-job-date" placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
+                  <Tooltip
+                    data-qa='list-job-date'
+                    placement='bottom'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Time Submitted'>
                     {date ? formatTimeDateFromString(date) : 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
                   <Tooltip
-                    data-qa="list-job-accuracy" 
+                    data-qa='list-job-accuracy'
                     flex={1}
                     placement='bottom'
                     hasArrow
@@ -323,17 +338,32 @@ const RecentJobElement = ({
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' data-qa="list-job-duration"  hasArrow color='smWhite.500' label='Media Duration'>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-duration'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Media Duration'>
                     {duration || 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' data-qa="list-job-language" hasArrow color='smWhite.500' label='Media Language'>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-language'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Media Language'>
                     {language ? mapLanguages(language) : 'Unknown'}
                   </Tooltip>
                 </Box>
                 <Box flex={1}>
-                  <Tooltip placement='bottom' data-qa="list-job-id" hasArrow color='smWhite.500' label='Unique Job ID'>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-id'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Unique Job ID'>
                     {id ? id : 'Unknown'}
                   </Tooltip>
                 </Box>
@@ -342,30 +372,34 @@ const RecentJobElement = ({
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
-          <Tooltip
-            label={status == 'running' ? 'The media is still being transcribed.' : null}
-            hasArrow>
-            <HStack flex={2}>
-              {status === 'running' ? (
-                <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
-              ) : (
-                <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
-              )}
-              <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
-            </HStack>
-          </Tooltip>
-          {breakVal ? (
-            <IconButtons
-              onOpenTranscript={onOpenTranscript}
-              fileName={fileName}
-              language={language}
-              id={id}
-              accuracy={accuracy}
-              date={date}
-              status={status}
-              onStartDelete={onStartDelete}
-            />
-          ) : null}
+          {status !== 'deleted' &&
+          <>
+            <Tooltip
+              label={status == 'running' ? 'The media is still being transcribed.' : null}
+              hasArrow>
+              <HStack flex={2}>
+                {status === 'running' ? (
+                  <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
+                ) : (
+                  <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
+                )}
+                <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+              </HStack>
+            </Tooltip>
+            {breakVal? (
+              <IconButtons
+                onOpenTranscript={onOpenTranscript}
+                fileName={fileName}
+                language={language}
+                id={id}
+                accuracy={accuracy}
+                date={date}
+                status={status}
+                onStartDelete={onStartDelete}
+              />
+            ) : null}
+          </>
+          }
         </HStack>
       </HStack>
       {!breakVal && (
@@ -474,6 +508,136 @@ const IconButtons = ({
   </>
 );
 
+const DeletedJobElementOne = ({
+  status,
+  date,
+  accuracy,
+  duration,
+  language,
+  id
+}: JobElementProps & JobModalProps) => {
+  const breakVal = useBreakpointValue({
+    base: false,
+    xl: true
+  });
+
+  return (
+    <VStack
+      data-qa="list-item-deleted-job"
+      id={id}
+      className='fadein fade-item'
+      border='1px solid'
+      borderColor='smBlack.200'
+      borderLeft='3px solid'
+      borderLeftColor={statusColour[status]}
+      p={4}
+      mb={4}
+      width='100%'>
+      <HStack width='100%'>
+        <VStack alignItems='flex-start' width='100%' flex={2}>
+          <HStack>
+            <Box
+              // fontFamily='RMNeue-bold'
+              as='span'
+              flex={2}
+              data-qa='list-job-file-name'
+              paddingRight='4px'
+              color='smBlack.300'>
+              Deleted Job
+            </Box>
+          </HStack>
+          <HStack
+            fontSize='0.8em'
+            color='smNavy.350'
+            width='90%'
+            spacing={4}
+            justifyContent='space-between'>
+            {breakVal && (
+              <>
+              <Box flex={2} fontFamily='RMNeue-bold' whiteSpace='nowrap'>
+                <Tooltip
+                  data-qa='list-job-date'
+                  placement='bottom'
+                  hasArrow
+                  color='smWhite.500'
+                  label='Time Submitted'>
+                  {date ? formatTimeDateFromString(date) : 'Unknown'}
+                </Tooltip>
+              </Box>
+                <Box flex={1}>
+                  <Tooltip
+                    data-qa='list-job-accuracy'
+                    flex={1}
+                    placement='bottom'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Accuracy'>
+                    {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
+                  </Tooltip>
+                </Box>
+                <Box flex={1}>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-duration'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Media Duration'>
+                    {duration || 'Unknown'}
+                  </Tooltip>
+                </Box>
+                <Box flex={1}>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-language'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Media Language'>
+                    {language ? mapLanguages(language) : 'Unknown'}
+                  </Tooltip>
+                </Box>
+                
+                <Box flex={1}>
+                  <Tooltip
+                    placement='bottom'
+                    data-qa='list-job-id'
+                    hasArrow
+                    color='smWhite.500'
+                    label='Unique Job ID'>
+                    {id ? id : 'Unknown'}
+                  </Tooltip>
+                </Box>
+              </>
+            )}
+          </HStack>
+        </VStack>
+        <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
+          {/* <Tooltip
+            label={status == 'running' ? 'The media is still being transcribed.' : null}
+            hasArrow>
+            <HStack flex={2}>
+              {status === 'running' ? (
+                <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
+              ) : (
+                <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
+              )}
+              <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+            </HStack>
+          </Tooltip> */}
+        </HStack>
+      </HStack>
+      {!breakVal && (
+        <HStack color='smNavy.350' spacing={4} width='100%' justifyContent='space-between'>
+          <Box maxW='150px' flex={1} fontFamily='RMNeue-bold' whiteSpace='nowrap' fontSize='0.8em'>
+            <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
+              {date ? formatTimeDateFromString(date) : 'Unknown'}
+            </Tooltip>
+          </Box>
+        </HStack>
+      )}
+    </VStack>
+  );
+};
+
 const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
   return (
     <VStack
@@ -540,7 +704,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
 
 const statusColour = {
   rejected: 'smRed.500',
-  deleted: 'smBlack.300',
+  deleted: 'smBlack.250',
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400'
