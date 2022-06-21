@@ -302,7 +302,7 @@ const RecentJobElement = ({
           <Box
             fontFamily={status === 'deleted' ? null : 'RMNeue-bold'}
             as='span'
-            data-qa='list-job-file-name'
+            data-qa={status === 'deleted' ? 'list-job-deleted' : 'list-job-file-name'}
             width='90%'
             paddingRight='4px'
             color='smNavy.400'>
@@ -409,18 +409,20 @@ const RecentJobElement = ({
               {date ? formatTimeDateFromString(date) : 'Unknown'}
             </Tooltip>
           </Box>
-          <HStack width='140px'>
-            <IconButtons
-              onOpenTranscript={onOpenTranscript}
-              fileName={fileName}
-              language={language}
-              id={id}
-              accuracy={accuracy}
-              date={date}
-              status={status}
-              onStartDelete={onStartDelete}
-            />
-          </HStack>
+          {status !== 'deleted' &&
+            <HStack width='140px'>
+              <IconButtons
+                onOpenTranscript={onOpenTranscript}
+                fileName={fileName}
+                language={language}
+                id={id}
+                accuracy={accuracy}
+                date={date}
+                status={status}
+                onStartDelete={onStartDelete}
+              />
+            </HStack>
+          }
         </HStack>
       )}
     </VStack>
