@@ -177,18 +177,17 @@ export const RecentJobs = observer(() => {
               setPage(page + 1);
             }}
             width='100%'>
-            {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Show More'}
+            {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Load More'}
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
         {((noMoreJobs && jobs.length > pageLimit) || !includeDeleted) && (
           // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
-            {noMoreJobs && jobs.length > pageLimit && 'The page is showing the full list.'}
-            {noMoreJobs && jobs.length > pageLimit && !includeDeleted && ' '}
+            {noMoreJobs && jobs.length > pageLimit && 'No more jobs to load.'}
             {!includeDeleted && !!deletedListCount && (
               <>
-                There are {deletedListCount} deleted job{deletedListCount !== 1 && 's'} not showing.{' '}
+                {' '}There {deletedListCount !== 1 ? 'are' : 'is'} {deletedListCount} deleted job{deletedListCount !== 1 && 's'} not showing.{' '}
                 <Text
                   data-qa='button-show-deleted-jobs'
                   onClick={() => setIncludeDeleted(true)}
@@ -254,7 +253,7 @@ export const RecentJobs = observer(() => {
         isOpen={isOpen}
         onClose={onClose}
         mainTitle='Delete Job?'
-        subTitle={'Deleted jobs count towards usage.'}
+        subTitle={'A record of the deleted job will be kept to track usage.'}
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
@@ -372,7 +371,7 @@ const RecentJobElement = ({
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
-          {status !== 'deleted' &&
+        {status !== 'deleted' &&
           <>
             <Tooltip
               label={status == 'running' ? 'The media is still being transcribed.' : null}
@@ -399,7 +398,7 @@ const RecentJobElement = ({
               />
             ) : null}
           </>
-          }
+        }
         </HStack>
       </HStack>
       {!breakVal && (
