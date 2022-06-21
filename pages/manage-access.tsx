@@ -175,7 +175,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
               <WarningBanner
                 text={
                   tokensFullDescr ||
-                  "You've already created 5 API Keys. Before generating a new API key, you need to remove an existing key."
+                  'You are using all of your available API keys. To generate a new API key, you need to delete an existing API key.'
                 }
               />
             )}
@@ -184,38 +184,39 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
 
         {genTokenStage == 'generated' && (
           <VStack alignItems='flex-start' spacing='1.5em' mt='1.5em'>
-            <VStack py={8} px={breakVal < 3 ? 0 : 8} spacing={4} width='100%' borderY='1px' borderColor='smBlack.130'>
-              <VStack mb={4} textAlign="center" spacing={4} width='100%' alignItems='center'>
+            <VStack py={8} px={breakVal < 4 ? 0 : 6} spacing={4} width='100%' borderY='1px' borderColor='smBlack.130'>
+              <VStack mb={2} textAlign='center' spacing={4} width='100%' alignItems='center'>
                 <CompleteIcon fontSize={64} />
                 <Text fontSize='1.2em'>Successfully Generated Your API Key</Text>
               </VStack>
-              <Box fontSize={22} position='relative' width='100%'>
-                <Input
-                  bg='smBlack.100'
-                  border='0'
-                  borderRadius='2px'
-                  p='1.5em'
-                  color='smBlack.400'
-                  width='100%'
-                  id='apikeyValue'
-                  type='text'
-                  value={generatedToken}
-                  readOnly
-                  onClick={generatedApikeyonClick}
-                  ref={generatedApikeyinputRef}
+              <VStack spacing={4} pb={2} width='100%'>
+                <Box fontSize={22} position='relative' width='100%'>
+                  <Input
+                    bg='smBlack.100'
+                    border='0'
+                    borderRadius='2px'
+                    p='1.5em'
+                    color='smBlack.400'
+                    width='100%'
+                    id='apikeyValue'
+                    type='text'
+                    value={generatedToken}
+                    readOnly
+                    onClick={generatedApikeyonClick}
+                    ref={generatedApikeyinputRef}
+                  />
+                  <CopyButton copyContent={generatedToken} position='absolute' top='8px' />
+                </Box>
+                <WarningBanner
+                  data_qa='message-token-security'
+                  text={
+                    'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'
+                  }
                 />
-                <CopyButton copyContent={generatedToken} position='absolute' top='8px' />
-              </Box>
-              <WarningBanner
-                data_qa='message-token-security'
-                text={
-                  'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'
-                }
-              />
+              </VStack>
 
               <Button
                 variant='speechmaticsOutline'
-                mt='0px'
                 onClick={() => setGenTokenStage('init')}
                 data-qa={`button-create-another-key`}>
                 Generate Another Key
