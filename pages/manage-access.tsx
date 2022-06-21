@@ -18,12 +18,11 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext, useEffect } from 'react';
 import Dashboard from '../components/dashboard';
-import { IoTrashBinOutline } from 'react-icons/io5';
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
-  AttentionBar,
+  WarningBanner,
   ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
@@ -33,7 +32,7 @@ import {
   positiveToast,
   SmPanel
 } from '../components/common';
-import { ExclamationIcon } from '../components/icons-library';
+import { ExclamationIcon, BinIcon, CompleteIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
@@ -145,47 +144,51 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
         <DescriptionLabel>
           Create new keys to manage security or provide temporary access.
         </DescriptionLabel>
-        {(genTokenStage == 'init' ||
-          genTokenStage == 'waiting' ||
-          genTokenStage == 'generated') && (
-          <HStack mt='1em' spacing='1em' width='100%'>
-            {apiKeys?.length >= 5 ? (
-              <AttentionBar
-                description={
+        {(genTokenStage == 'init' || genTokenStage == 'waiting') && (
+          <VStack width='100%' spacing={4}>
+            <HStack mt='1em' spacing='1em' width='100%'>
+              <Input
+                variant='speechmatics'
+                flex='1'
+                type='text'
+                bg={genTokenStage == 'waiting' || apiKeys?.length >= 5 ? 'smBlack.100' : null}
+                placeholder='Enter a name for your API key'
+                onChange={(ev) => setChosenTokenName(ev.target.value)}
+                style={{ border: noNameError ? '1px solid red' : '' }}
+                ref={nameInputRef}
+                p='1.55em 1em'
+                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5}
+                onKeyDown={inputOnKeyDown}
+                data-qa='input-token-name'
+                maxLength={120}></Input>
+              <Button
+                variant='speechmatics'
+                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5}
+                onClick={() => requestToken()}
+                data-qa='button-generate-key'
+                {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}>
+                {genTokenStage == 'waiting' && <Spinner mr='1em' />}Generate API Key
+              </Button>
+            </HStack>
+
+            {apiKeys?.length >= 5 && (
+              <WarningBanner
+                text={
                   tokensFullDescr ||
-                  'Before generating a new API key, you need to remove an existing key.'
+                  "You've already created 5 API Keys. Before generating a new API key, you need to remove an existing key."
                 }
               />
-            ) : (
-              <>
-                <Input
-                  variant='speechmatics'
-                  flex='1'
-                  type='text'
-                  placeholder='Enter a name for your API key'
-                  onChange={(ev) => setChosenTokenName(ev.target.value)}
-                  style={{ border: noNameError ? '1px solid red' : '' }}
-                  ref={nameInputRef}
-                  p='1.55em 1em'
-                  disabled={genTokenStage == 'waiting'}
-                  onKeyDown={inputOnKeyDown}
-                  data-qa='input-token-name'
-                  maxLength={120}></Input>
-                <Button
-                  variant='speechmatics'
-                  disabled={genTokenStage == 'waiting'}
-                  onClick={() => requestToken()}
-                  data-qa='button-generate-key'
-                  {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}>
-                  {genTokenStage == 'waiting' && <Spinner mr='1em' />}Generate API Key
-                </Button>
-              </>
             )}
-          </HStack>
+          </VStack>
         )}
 
         {genTokenStage == 'generated' && (
           <VStack alignItems='flex-start' spacing='1.5em' mt='1.5em'>
+            <VStack p={8} spacing={4} width="100%" borderY="1px" borderColor="smBlack.130" >
+            <VStack mb={4}spacing={4} width="100%" alignItems="center">
+              <CompleteIcon fontSize={64} />
+              <Text fontSize="1.2em">Successfully Generated Your API Key</Text>
+            </VStack>
             <Box fontSize={22} position='relative' width='100%'>
               <Input
                 bg='smBlack.100'
@@ -203,12 +206,21 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
               />
               <CopyButton copyContent={generatedToken} position='absolute' top='8px' />
             </Box>
-            <AttentionBar
+            <WarningBanner
               data_qa='message-token-security'
-              description={
+              text={
                 'For security reasons, this key will not be displayed again. Please copy it now and keep it securely.'
               }
             />
+
+            <Button
+              variant='speechmaticsOutline'
+              mt='0px'
+              onClick={() => setGenTokenStage('init')}
+              data-qa={`button-create-another-key`}>
+              Generate Another Key
+            </Button>
+            </VStack>
 
             {codeExample && (
               <>
@@ -295,7 +307,7 @@ const PreviousTokens = observer(() => {
                 size='sm'
                 variant='ghost'
                 aria-label='remove'
-                icon={<IoTrashBinOutline />}
+                icon={<BinIcon />}
                 onClick={() => aboutToRemoveOne(el)}
               />
             </GridItem>
