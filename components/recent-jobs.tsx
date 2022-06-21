@@ -130,7 +130,7 @@ export const RecentJobs = observer(() => {
       <VStack spacing={6} pt={6} width='100%'>
         {isLoading && skeletons}
         {!errorOnInit && !isLoading && jobs.length > 0 && (
-          // added a switch for shwoing delete jobs
+          // added a switch for showing deleted jobs
           <HStack data-qa='switch-show-deleted-jobs' w='100%' justifyContent='end'>
             <Text color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.9em'>
               Show deleted jobs:
@@ -153,15 +153,11 @@ export const RecentJobs = observer(() => {
                   key={el.key}
                   style={{ width: '100%' }}
                   in={(includeDeleted || el.status !== 'deleted') && el.visible}>
-                  {/* {el.status !== 'deleted' ? ( */}
                     <RecentJobElement
                       {...el}
                       onOpenTranscript={onOpenTranscript}
                       onStartDelete={onOpenDeleteDialogue}
                     />
-                  {/* // ) : (
-                  //   <DeletedJobElementOne {...el} />
-                  // )} */}
                 </Collapse>
               );
             })}
