@@ -19,7 +19,6 @@ export default function Login() {
   const loginRequest = {
     scopes: [],
     authority,
-    redirectUri: process.env.REDIRECT_URI
   } as RedirectRequest;
 
   const loginHandler = () => {
@@ -48,7 +47,14 @@ export default function Login() {
     () => decodeURI(global.window?.location.hash).includes('inactive'),
     []
   );
-  // console.log('global.window?.location.hash', global.window?.location.hash);
+  const queries: { returnUrl?: string } = useMemo(() => {
+    const queriesArray = decodeURI(global.window?.location.search).replace('?', '').split('&');
+    return queriesArray.reduce((object, item) => {
+      const split = item.split('=');
+      object[split[0]] = split[1]
+      return object
+    }, {})
+  }, [inProgress])
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
@@ -80,13 +86,13 @@ export default function Login() {
       (!accounts || accounts.length == 0) &&
       authority == process.env.SIGNIN_POLICY
     ) {
+      loginRequest.redirectStartPage = createRedirectStartPage(queries.returnUrl);
       loginHandler();
     }
 
     let st: number;
-
     if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
-      st = window.setTimeout(() => router.push('/home/'), 1000);
+      st = window.setTimeout(() => router.push(queries.returnUrl || '/home/'), 1000);
     }
 
     return () => window.clearTimeout(st);
@@ -143,3 +149,24 @@ const LoginSub = ({
     );
   } else return <></>;
 };
+
+const createRedirectStartPage = (query) => {
+  console.log(query)
+  const allowedRedirects = [
+    '/',
+    '/getting-started',
+    '/home',
+    '/manage-billing',
+    '/subscribe',
+    '/usage',
+    '/manage-access',
+    '/learn',
+    '/account',
+    '/transcribe',
+    '/view-jobs'
+  ]
+  if ( allowedRedirects.includes(query) ) {
+    return process.env.REDIRECT_URI + `?returnUrl=${query}`;
+  }
+  return process.env.REDIRECT_URI;
+}
