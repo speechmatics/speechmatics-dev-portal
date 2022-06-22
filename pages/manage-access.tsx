@@ -30,7 +30,9 @@ import {
   HeaderLabel,
   PageHeader,
   positiveToast,
-  SmPanel
+  SmPanel,
+  ErrorBanner,
+  
 } from '../components/common';
 import { ExclamationIcon, BinIcon, CompleteIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
@@ -114,6 +116,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
         callPostApiKey(idToken, nameInputRef?.current?.value, accountStore.getProjectId())
           .then((resp) => {
             setGeneratedToken(resp.key_value);
+            setChosenTokenName('')
             setGenTokenStage('generated');
             accountStore.fetchServerState(idToken);
             if (nameInputRef.current) nameInputRef.current.value = '';
@@ -144,7 +147,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
         <DescriptionLabel>
           Create new keys to manage security or provide temporary access.
         </DescriptionLabel>
-        {(genTokenStage == 'init' || genTokenStage == 'waiting') && (
+        {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage === 'error') && (
           <VStack width='100%' spacing={4}>
             <HStack mt='1em' spacing='1em' width='100%'>
               <Input
@@ -163,7 +166,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
                 maxLength={120}></Input>
               <Button
                 variant='speechmatics'
-                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5}
+                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5 || !chosenTokenName?.length }
                 onClick={() => requestToken()}
                 data-qa='button-generate-key'
                 {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}>
@@ -176,6 +179,16 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
                 text={
                   tokensFullDescr ||
                   'You are using all of your available API keys. To generate a new API key, you need to delete an existing API key.'
+                }
+              />
+            )}
+
+            {genTokenStage === 'error' && (
+              <ErrorBanner
+                alignment='left'
+                text={
+                  tokensFullDescr ||
+                  'Something went wrong generating your API key. Please try again.'
                 }
               />
             )}
@@ -232,18 +245,6 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
               </>
             )}
           </VStack>
-        )}
-        {genTokenStage == 'error' && (
-          <>
-            <Box pb={3}>
-              <Text as='span' color='#D72F3F'>
-                Sorry, something has gone wrong. We're on it! Please try again in a moment.
-              </Text>
-            </Box>
-            <Button className='default_button' onClick={() => setGenTokenStage('init')}>
-              Start over!
-            </Button>
-          </>
         )}
       </Box>
     );

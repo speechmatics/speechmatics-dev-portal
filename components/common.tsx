@@ -514,16 +514,16 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar', centered =
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text = '', content = null }) => (
+export const ErrorBanner = ({ text = '', content = null, alignment = "center" }) => (
   <Flex
     flexDir='column'
     width='100%'
     bg='smRed.100'
     p='1em'
     mt='2em'
-    align='center'
-    justify='center'
-    alignItems='center'>
+    align={alignment}
+    justify={alignment}
+    alignItems={alignment}>
     <Flex>
       <Box>
         <ExclamationIcon width='1.5em' height='1.5em' />
