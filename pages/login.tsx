@@ -55,14 +55,6 @@ export default function Login() {
   }
 
   useEffect(() => {
-    console.log(
-      'postPassChange',
-      postPassChange,
-      'inclErr',
-      passwordChangeFlow,
-      'inProgress',
-      inProgress
-    );
 
     if (passwordChangeFlow && inProgress == 'none') {
       tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
