@@ -102,27 +102,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-          <HStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            alignItems='center'
-            padding='1.5em 1.5em'
-            {...props}>
-            {children}
-          </HStack>
-        )
+            <HStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              alignItems='center'
+              padding='1.5em 1.5em'
+              {...props}>
+              {children}
+            </HStack>
+          )
         : ({ children }) => (
-          <VStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            padding='1.2em 0.5em'
-            spacing='1em'
-            {...props}>
-            {children}
-          </VStack>
-        ),
+            <VStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              padding='1.2em 0.5em'
+              spacing='1em'
+              {...props}>
+              {children}
+            </VStack>
+          ),
     [breakVal]
   );
 
@@ -156,7 +156,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -401,9 +401,10 @@ export const ConfirmRemoveModal = ({
   subTitle,
   onRemoveConfirm,
   confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel'
+  cancelLabel = 'Cancel',
+  returnFocusOnClose=true
 }) => (
-  <Modal isOpen={isOpen} onClose={onClose}>
+  <Modal returnFocusOnClose={returnFocusOnClose} isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent borderRadius='2px'>
       <ModalCloseButton _focus={{ boxShadow: '' }} />
@@ -514,16 +515,16 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar', centered =
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text = '', content = null }) => (
+export const ErrorBanner = ({ text = '', content = null, alignment = "center" }) => (
   <Flex
     flexDir='column'
     width='100%'
     bg='smRed.100'
     p='1em'
     mt='2em'
-    align='center'
-    justify='center'
-    alignItems='center'>
+    align={alignment}
+    justify={alignment}
+    alignItems={alignment}>
     <Flex>
       <Box>
         <ExclamationIcon width='1.5em' height='1.5em' />
