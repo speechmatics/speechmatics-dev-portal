@@ -78,7 +78,7 @@ export default observer(function Dashboard({ children }) {
           accountStore.assignServerState(resp);
           onUserCreationModalClose();
         })
-        .catch(console.error);
+        .catch(err => console.error("dashboard accountStore catch", err));
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
@@ -131,7 +131,7 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
 
 function UserNotAuthModal({ isModalOpen }) {
   return (
-    <Modal isOpen={isModalOpen} onClose={() => {}} closeOnOverlayClick={false}>
+    <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalBody>

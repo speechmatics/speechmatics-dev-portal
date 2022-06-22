@@ -208,17 +208,25 @@ export const call = async (
 
   return fetch(apiEndpoint, options).then(
     async (response) => {
-      console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
-      if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
-        msalLogout(true);
-      } else if (response.status == 401) {
-        throw { status: 'error', error: { type: 'runtime-auth' } };
+      console.log('fetch then', response);
+      if (response.status == 401) {
+        if (apiEndpoint.includes(RUNTIME_API_URL)) {
+          throw { status: 'error', error: { type: 'runtime-auth' } };
+        } else {
+          console.log('error status 401, will logout');
+          setTimeout(() => msalLogout(true), 1000);
+          errToast(`Session expired, redirecting to login page...`);
+        }
       }
       if (response.status != 200 && response.status != 201) {
+        let resp = null;
+        try {
+          resp = await response.json();
+        } catch (e) {}
         const throwObj = {
-          status: 'error',
-          error: { type: 'request-error', status: response.status },
-          response: await response.json()
+          type: 'request-error',
+          status: response.status,
+          response: resp
         };
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
@@ -249,12 +257,4 @@ function getParams(paramsObj: { [key: string]: string | number }) {
     (prev, curr, i) => `${prev}${i != 0 ? '&' : ''}${curr}=${paramsObj[curr]}`,
     ''
   );
-}
-
-async function responseCopy(response: Response, isPlain: boolean) {
-  try {
-    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
-  } catch (e) {
-    return '';
-  }
 }

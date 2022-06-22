@@ -469,7 +469,7 @@ const toast = createStandaloneToast({
 });
 export const errToast = (descr: string | any) =>
   toast({
-    title: 'An error occurred.',
+    title: '',
     description: typeof descr === 'string' ? descr : JSON.stringify(descr),
     status: 'error',
     duration: 10000,
