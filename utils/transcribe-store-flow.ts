@@ -321,9 +321,6 @@ class FileTranscribeFlow {
     const transcr = await callGetTranscript(idToken, jobId, 'text');
 
     this.store.transcriptionText = transcr;
-
-    const json = await callGetTranscript(idToken, jobId, 'json-v2');
-    console.log('json', json);
   }
 
   reset() {
