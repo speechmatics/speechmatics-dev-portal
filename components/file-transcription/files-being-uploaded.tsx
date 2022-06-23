@@ -1,6 +1,6 @@
-import { Box, Progress, VStack } from '@chakra-ui/react';
+import { Box, Collapse, Progress, useStyleConfig, VStack } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { pluralize } from '../../utils/string-utils';
 import { fileTranscriptionFlow } from '../../utils/transcribe-store-flow';
 import { ErrorBanner } from '../common';
@@ -12,6 +12,7 @@ interface FilesBeingUploadedProps {
 
 export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeingUploadedProps) {
   const count = fileTranscriptionFlow.store.uploadedFiles.length;
+  const [showLoader, setShowLoader] = useState<boolean>(false)
   const { uploadErrors } = fileTranscriptionFlow.store;
 
   useTrackUploadedJobs(count, forceGetJobs);
@@ -22,16 +23,29 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
     };
   }, []);
 
+  // this timeout is to add a smooth animation, otherwise we get jerky UI movement
+  useEffect(() => {
+    if (count > 0) {
+      setShowLoader(true)
+    } else {
+      setTimeout(() => {
+        setShowLoader(false)
+      }, 700)
+    }
+  }, [count]);
+
   return (
     <>
-      {count > 0 && (
-        <VStack width='100%' p={2} pt={4}>
+     {/* use collapse to animate the open and close of this element smoothly */}
+      <Collapse in={showLoader} style={{ width: '100%' }} unmountOnExit={true}>
+        <VStack  p={2} pt={4}>
           <Box color='smNavy.400'>
-            {pluralize(count, 'file is', 'files are')} being uploaded in the background.
+            {count > 0 ? `${pluralize(count, 'file is', 'files are')} being uploaded in the background.`
+              : 'Finishing upload...'}
           </Box>
           <Progress size='xs' isIndeterminate width='40%' colorScheme='smBlue' />
         </VStack>
-      )}
+      </Collapse>
       {uploadErrors.map((item) => (
         <ErrorBanner
           content={
@@ -45,7 +59,7 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
   );
 });
 
-export const useTrackUploadedJobs = (jobsCount: number, forceGetJobs: () => void) => {
+export const useTrackUploadedJobs = async (jobsCount: number, forceGetJobs: () => void) => {
   const recentJobsCount = useRef<number>(0);
 
   if (jobsCount < recentJobsCount.current) {
