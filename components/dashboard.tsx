@@ -19,6 +19,7 @@ import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
+import { WarningBanner } from './common';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -99,6 +100,7 @@ export default observer(function Dashboard({ children }) {
       <Box className='dashboard' tabIndex={0}>
         <MenuContainer />
         <Box className='dashboard_content'>
+          
           <motion.main
             variants={animationVariants} // Pass the variant object into Framer Motion
             initial='hidden' // Set the initial state to variants.hidden
@@ -106,6 +108,16 @@ export default observer(function Dashboard({ children }) {
             exit='exit' // Exit state (used later) to variants.exit
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
           >
+            <WarningBanner 
+              content={
+                <>
+                  We’ve had trouble taking payment. Please{' '}
+                  <Link href='/manage-billing/'>
+                    <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+                  </Link> to avoid disruptions to your account.{' '}
+                </>
+              }/>
+
             {children}
           </motion.main>
         </Box>

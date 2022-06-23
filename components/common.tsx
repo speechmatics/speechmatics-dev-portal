@@ -60,19 +60,25 @@ export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
   </Flex>
 );
 
-export const WarningBanner = ({ text, centered = false, ...props }) => (
+export const WarningBanner = ({ text = null, content = null, centered = false, ...props }) => (
   <Flex width='100%' bg='smOrange.150' p='1em' {...props} justifyContent={centered ? 'center' : ''}>
     <Flex alignItems='center'>
       <WarningIcon width='1.5em' height='1.5em' />
     </Flex>
-    <Text
-      width={centered ? '' : '100%'}
-      color='smBlack.400'
-      fontFamily='RMNeue-Regular'
-      fontSize='1em'
-      ml='1em'>
-      {text}
-    </Text>
+    {content ? (
+      <Box width='100%' color='smBlack.400' ml='1em'>
+        {content}
+      </Box>
+    ) : (
+      <Text
+        width={centered ? '' : '100%'}
+        color='smBlack.400'
+        fontFamily='RMNeue-Regular'
+        fontSize='1em'
+        ml='1em'>
+        {text}
+      </Text>
+    )}
   </Flex>
 );
 
