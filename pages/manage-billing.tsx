@@ -1,14 +1,7 @@
 import {
-  Box,
-  Button,
-  ChakraComponent,
   Flex,
   Grid,
   GridItem,
-  HStack,
-  Skeleton,
-  SkeletonText,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -17,7 +10,6 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  VStack,
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
@@ -25,20 +17,17 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   ConfirmRemoveModal,
   DataGridComponent,
-  DescriptionLabel,
   GridSpinner,
   HeaderLabel,
-  pad,
   PageHeader,
   UsageInfoBanner,
   ViewPricingBar,
 } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { CardGreyImage, CardImage, ExclamationIcon, PricingTags } from '../components/icons-library';
+import { ExclamationIcon, } from '../components/icons-library';
 import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
-import { HiDownload } from 'react-icons/hi';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
 
 const useGetPayments = (idToken: string) => {
@@ -121,7 +110,7 @@ export default observer(function ManageBilling({ }) {
               isLoading={isLoading}
             />
 
-            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." />
+            <UsageInfoBanner text="All usage is reported on a UTC calendar-day basis and excludes the current day." mt="2em" />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -158,7 +147,7 @@ const PaymentsGrid = ({ data, isLoading }) => {
             <>Paid on {formatDate(new Date(el.billing_date))}</>}
         </GridItem>
         <GridItem data-qa={`payments-download-invoice-${i}`}>
-          {false && el.url && <Link href={el.url}>
+          {el.url && <Link href={el.url}>
             <a target='_blank' download><DownloadInvoiceHoverable /></a>
           </Link>}
         </GridItem>

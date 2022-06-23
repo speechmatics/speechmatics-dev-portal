@@ -1,7 +1,10 @@
 import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
+import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
+import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
+const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
 
@@ -13,14 +16,70 @@ export const callGetAccounts = async (idToken: string) => {
   return call(idToken, `${ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
-export const callGetUsage = async (idToken: string, contractId: number, projectId: number, dates: any) => {
-  return call(idToken, `${ENDPOINT_API_URL}/usage`, 'GET', {
-    contract_id: contractId,
-    project_id: projectId,
-    grouping: 'day',
-    sort_order: 'asc',
-    ...dates
+export const callGetUsage = async (
+  idToken: string,
+  contractId: number,
+  projectId: number,
+  dates: any
+) => {
+  return call(
+    idToken,
+    `${ENDPOINT_API_URL}/usage`,
+    'GET',
+    {},
+    {
+      contract_id: contractId,
+      project_id: projectId,
+      grouping: 'day',
+      sort_order: 'asc',
+      ...dates,
+    }
+  );
+};
+
+export const callGetJobs = async (idToken: string, optionalQueries: any) => {
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs`,
+    'GET',
+    {},
+    {
+      ...optionalQueries,
+    }
+  );
+};
+
+export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
+    force,
   });
+};
+
+export const callGetTranscript = async (
+  idToken: string,
+  jobId: string,
+  format: TranscriptFormat
+) => {
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs/${jobId}/transcript`,
+    'GET',
+    {},
+    { format: format == 'text' ? 'txt' : format },
+    format === 'json-v2' ? 'application/json' : 'text/plain'
+  );
+};
+
+export const callGetDataFile = async (idToken: string, jobId: string) => {
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs/${jobId}/data`,
+    'GET',
+    null,
+    null,
+    'application/json',
+    true
+  );
 };
 
 export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
@@ -41,12 +100,7 @@ export const callPostRequestTokenChargify = async (
   });
 };
 
-export const callPostApiKey = async (
-  idToken: string,
-  name: string,
-  projectId: number,
-  clientRef: string
-) => {
+export const callPostApiKey = async (idToken: string, name: string, projectId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
     name,
@@ -61,52 +115,133 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
+export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
+  return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
+    ttl,
+  });
+};
+
+export const callRequestFileTranscription = async (
+  idToken: string,
+  file: File,
+  language: string,
+  accuracy: Accuracy,
+  separation: Separation
+) => {
+  const formData = new FormData();
+
+  formData.append('data_file', file);
+  const config = {
+    type: 'transcription',
+    transcription_config: {
+      language,
+      operating_point: accuracy,
+      diarization: separation,
+    },
+  };
+  formData.append('config', JSON.stringify(config));
+
+  return callRuntime(
+    idToken,
+    `${RUNTIME_API_URL}/jobs`,
+    'POST',
+    formData,
+    null,
+    'multipart/form-data'
+  );
+};
+
+export const callRequestJobStatus = async (idToken: string, jobId: string) => {
+  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'GET');
+};
+
+// Used to check if the secretKey is still valid (i.e. hasn't timed out)
+// If secret key has timed out, refresh the store
+// Use the secret key from the store to make the request
+// If something goes wrong updating the token, the store should update to tell the component something is wrong
+export const callRuntime = async (
+  authToken: string,
+  apiEndpoint: string,
+  method: 'GET' | 'POST' | 'DELETE',
+  body: any = null,
+  query: any = null,
+  contentType: string = null,
+  isBlob: boolean = false
+) => {
+  try {
+    await runtime.refreshToken(authToken);
+    return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType, isBlob);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const call = async (
   authToken: string,
   apiEndpoint: string,
-  method: string,
-  body: any = null
+  method: 'GET' | 'POST' | 'DELETE',
+  body: any = null,
+  query: any = null,
+  contentType: string = null,
+  isBlob: boolean = false
 ) => {
   const headers = new Headers();
   const bearer = `Bearer ${authToken}`;
 
+  const useBODY = method.toLowerCase() != 'get';
+  const isPlain = contentType === 'text/plain';
+
   headers.append('Authorization', bearer);
-  headers.append('Content-Type', 'application/json');
+  if (contentType != 'multipart/form-data') {
+    headers.append('Content-Type', contentType ? contentType : 'application/json');
+  }
 
   const options = {
     method: method,
     headers: headers,
-    body: method.toLowerCase() != 'get' && body ? JSON.stringify(body) : undefined,
+    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
   };
 
-  if (method.toLowerCase() == 'get' && !!body) {
-    apiEndpoint = `${apiEndpoint}?${getParams(body)}`;
+  if (!!query) {
+    apiEndpoint = `${apiEndpoint}?${getParams(query)}`;
   }
 
-  console.log('fetching', apiEndpoint, options);
-
-  return fetch(apiEndpoint, options)
-    .then(async (response) => {
-      console.log(
-        `response from`,
-        apiEndpoint,
-        options,
-        'is:',
-        await jsonCopy(response.clone()),
-        response
-      );
-      if (response.status == 401) {
+  return fetch(apiEndpoint, options).then(
+    async (response) => {
+      console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
+      if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
         msalLogout(true);
+      } else if (response.status == 401) {
+        throw { status: 'error', error: { type: 'runtime-auth' } };
       }
       if (response.status != 200 && response.status != 201) {
-        throw new Error(`response from ${method} ${apiEndpoint} has status ${response.status}`);
+        const throwObj = {
+          status: 'error',
+          error: { type: 'request-error', status: response.status },
+          response: await response.json(),
+        };
+        console.error(
+          `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
+        );
+        throw throwObj;
       }
 
-      return response.json();
-    })
-    .catch((error) => {
-      errToast(`details: ${error}`);
-    });
+      if (response.body == null) {
+        return null;
+      }
+      if (isBlob) {
+        return response.blob();
+      }
+      return isPlain ? response.text() : response.json();
+    },
+    (error) => {
+      console.log('fetch error', error);
+      //only happens when something goes wrong with the function fetch not a specific response,
+      // the responses should be cought in the following catch block on this promise
+      errToast(`fetch error on ${apiEndpoint} occured`);
+      throw { status: 'error', error: { type: error.type } };
+    }
+  );
 };
 
 function getParams(paramsObj: { [key: string]: string | number }) {
@@ -116,9 +251,9 @@ function getParams(paramsObj: { [key: string]: string | number }) {
   );
 }
 
-async function jsonCopy(response: Response) {
+async function responseCopy(response: Response, isPlain: boolean) {
   try {
-    return response.json().catch(console.error);
+    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
   } catch (e) {
     return '';
   }

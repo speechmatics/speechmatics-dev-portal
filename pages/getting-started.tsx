@@ -3,8 +3,6 @@ import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import {
-  AttentionBar,
-  CodeExamples,
   DescriptionLabel,
   HeaderLabel,
   PageHeader,
@@ -13,6 +11,7 @@ import {
 import Dashboard from '../components/dashboard';
 import { GenerateTokenComponent, TokenGenStages as TokenGenStage } from './manage-access';
 import accountContext from '../utils/account-store-context';
+import { CodeExamples } from '../components/code-examples';
 
 
 
@@ -30,7 +29,7 @@ export default observer(function GettingStarted({ }) {
   return (
     <Dashboard>
       <PageHeader
-        headerLabel="Get Started"
+        headerLabel="Start Using API"
         introduction="Start using our speech-to-text SaaS in a few simple steps."
       />
 
