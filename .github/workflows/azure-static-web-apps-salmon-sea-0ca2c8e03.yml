@@ -3,11 +3,11 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - general_dev_salmon_sea
+      - general_dev_mars
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - general_dev_salmon_sea
+      - general_dev_mars
 
 jobs:
   build_and_deploy_job:
@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      REDIRECT_URI: 'https://salmon-sea-0ca2c8e03.1.azurestaticapps.net/login/'
-      POST_LOGOUT_REDIRECT_URI: 'https://salmon-sea-0ca2c8e03.1.azurestaticapps.net/login/'
-      REDIRECT_URI_INVITATION: 'https://salmon-sea-0ca2c8e03.1.azurestaticapps.net/signup/'
+      REDIRECT_URI: 'https://dev-mars-portal.ui-internal.speechmatics.com/login/'
+      POST_LOGOUT_REDIRECT_URI: 'https://dev-mars-portal.ui-internal.speechmatics.com/login/'
+      REDIRECT_URI_INVITATION: 'https://dev-mars-portal.ui-internal.speechmatics.com/signup/'
       SIGNIN_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
       INVITATION_SIGNUP_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNUP_INVITATION'
       RESET_PASSWORD_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_PASSWORDRESET'
