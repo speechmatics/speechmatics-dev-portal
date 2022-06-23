@@ -21,7 +21,8 @@ import {
   Link,
   useBreakpointValue,
   Switch,
-  Collapse
+  Collapse,
+  Portal
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -443,7 +444,9 @@ const IconButtons = ({
             }
           />
         </Tooltip>
-        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+        <Portal>
+          <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+        </Portal>
       </Menu>
     </Box>
     <Box flex={1}>
