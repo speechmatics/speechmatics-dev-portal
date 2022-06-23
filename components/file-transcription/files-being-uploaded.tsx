@@ -23,6 +23,7 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
     };
   }, []);
 
+  // this timeout is to add a smooth animation, otherwise we get jerky UI movement
   useEffect(() => {
     if (count > 0) {
       setShowLoader(true)
@@ -35,6 +36,7 @@ export default observer(function FilesBeingUploaded({ forceGetJobs }: FilesBeing
 
   return (
     <>
+     {/* use collapse to animate the open and close of this element smoothly */}
       <Collapse in={showLoader} style={{ width: '100%' }} unmountOnExit={true}>
         <VStack  p={2} pt={4}>
           <Box color='smNavy.400'>

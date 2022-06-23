@@ -5,6 +5,7 @@ import { useMsal } from '@azure/msal-react';
 import { Box, Button, Spinner } from '@chakra-ui/react';
 import accountStoreContext from '../utils/account-store-context';
 import { RedirectRequest } from '@azure/msal-browser';
+import menuData from '../static_data/menu-data';
 
 export default function Login() {
   const router = useRouter();
@@ -47,28 +48,16 @@ export default function Login() {
     () => decodeURI(global.window?.location.hash).includes('inactive'),
     []
   );
-  const queries: { returnUrl?: string } = useMemo(() => {
-    const queriesArray = decodeURI(global.window?.location.search).replace('?', '').split('&');
-    return queriesArray.reduce((object, item) => {
-      const split = item.split('=');
-      object[split[0]] = split[1]
-      return object
-    }, {})
-  }, [inProgress])
+  const queries = useMemo(
+    () => new URLSearchParams(global.window?.location.search), 
+    [inProgress]
+  );
 
   if (postPassChange) {
     tokenStore.authorityToUse = process.env.RESET_PASSWORD_POLICY;
   }
 
   useEffect(() => {
-    console.log(
-      'postPassChange',
-      postPassChange,
-      'inclErr',
-      passwordChangeFlow,
-      'inProgress',
-      inProgress
-    );
 
     if (passwordChangeFlow && inProgress == 'none') {
       tokenStore.authorityToUse = loginRequest.authority = process.env.RESET_PASSWORD_POLICY;
@@ -86,13 +75,13 @@ export default function Login() {
       (!accounts || accounts.length == 0) &&
       authority == process.env.SIGNIN_POLICY
     ) {
-      loginRequest.redirectStartPage = createRedirectStartPage(queries.returnUrl);
+      loginRequest.redirectStartPage = createRedirectStartPage(queries.get('returnUrl'));
       loginHandler();
     }
 
     let st: number;
     if (inProgress == 'none' && accounts.length > 0 && authority == process.env.SIGNIN_POLICY) {
-      st = window.setTimeout(() => router.push(queries.returnUrl || '/home/'), 1000);
+      st = window.setTimeout(() => router.push(queries.get('returnUrl') || '/home/'), 1000);
     }
 
     return () => window.clearTimeout(st);
@@ -151,21 +140,7 @@ const LoginSub = ({
 };
 
 const createRedirectStartPage = (query) => {
-  console.log(query)
-  const allowedRedirects = [
-    '/',
-    '/getting-started',
-    '/home',
-    '/manage-billing',
-    '/subscribe',
-    '/usage',
-    '/manage-access',
-    '/learn',
-    '/account',
-    '/transcribe',
-    '/view-jobs'
-  ]
-  if ( allowedRedirects.includes(query) ) {
+  if ( menuData.some(item => item.path === query + '/') ) {
     return process.env.REDIRECT_URI + `?returnUrl=${query}`;
   }
   return process.env.REDIRECT_URI;
