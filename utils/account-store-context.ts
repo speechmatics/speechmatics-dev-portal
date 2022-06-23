@@ -138,10 +138,8 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        console.log(err);
-        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
-        console.error(err);
+        console.error('account store catch', err);
       });
   }
 }
@@ -179,14 +177,12 @@ export async function acquireTokenFlow(
   return msalInstance
     .acquireTokenSilent(request)
     .then((tokenResponse) => {
-      console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
       return tokenResponse;
     })
     .catch(async (error) => {
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
         return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
-          console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
           return tokenResponse;
         });
       }
