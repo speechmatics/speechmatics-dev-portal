@@ -21,12 +21,20 @@ export type TranscriptResult = {
   }[];
 };
 
+export type SpeakerDiarization = 'none' | 'speaker' | 'channel';
+
+export type TranscriptionConfig = {
+  diarization: SpeakerDiarization;
+  language: string;
+  operating_point: 'standard' | 'enhanced';
+};
+
 export type BatchTranscriptionResponse = {
   format: string;
   metadata?: {
     created_at: string;
     type: 'transcription' | string;
-    transcription_config?: any;
+    transcription_config?: TranscriptionConfig;
     transcript: string;
   };
   results?: TranscriptResult[];

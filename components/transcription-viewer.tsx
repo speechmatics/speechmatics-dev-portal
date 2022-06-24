@@ -14,7 +14,7 @@ import { BatchTranscriptionResponse } from '../custom';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import { capitalizeFirstLetter, lowerCaseNoSpace } from '../utils/string-utils';
 import { getFullLanguageName } from '../utils/transcribe-elements';
-import { getTranscription } from '../utils/transcription-utils';
+import { getDiarizedTranscription } from '../utils/transcription-utils';
 import { CopyIcon, DownloadIcon } from './icons-library';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
 
@@ -41,7 +41,7 @@ export const TranscriptionViewer = ({
   ...boxProps
 }: TranscriptionViewerProps) => {
 
-  const { type, output: transcriptionOutput, copyText } = useMemo(() => getTranscription(transcriptionJSON), [transcriptionJSON]);
+  const { type, output: transcriptionOutput, copyText } = useMemo(() => getDiarizedTranscription(transcriptionJSON), [transcriptionJSON]);
 
   return (
     <VStack border='1px' borderColor='smBlack.200' width='100%' {...boxProps}>
