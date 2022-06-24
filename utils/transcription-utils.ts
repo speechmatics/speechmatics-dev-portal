@@ -1,4 +1,5 @@
 import { BatchTranscriptionResponse } from '../custom';
+import { capitalizeFirstLetter } from './string-utils';
 
 export function getDiarizedTranscription(input: string | BatchTranscriptionResponse) {
   let json: BatchTranscriptionResponse;
@@ -13,28 +14,42 @@ export function getDiarizedTranscription(input: string | BatchTranscriptionRespo
     }
   }
 
+  const diarization = json.metadata.transcription_config.diarization;
+
   let html = '';
   let prevSpeaker = '';
-  let speakerChange = '';
-  let speakerChangeWTags = '';
+  let speaker = '';
+  let speakerWTags = '';
   let copyText = '';
+  let prevChannel = '';
+  let channel = '';
+  let channelWTags = '';
 
   json.results.forEach((curr) => {
     const alt = curr.alternatives?.[0];
 
-    if (prevSpeaker != alt.speaker && json.metadata.transcription_config.diarization == 'speaker') {
-      speakerChange = alt.speaker.replace('S', 'Speaker ');
-      speakerChangeWTags = `<span class='speakerChangeLabel'>${speakerChange}:</span>`;
-      speakerChange = `\n${speakerChange}: `;
+    if (diarization == 'speaker' && prevSpeaker != alt.speaker) {
+      speaker = alt.speaker.replace('S', 'Speaker ');
+      speakerWTags = `<span class='speakerChangeLabel'>${speaker}:</span>`;
+      speaker = `\n${speaker}: `;
       prevSpeaker = alt.speaker;
     }
 
-    const separtor = curr.type == 'punctuation' ? '' : ' ';
-    html = `${html}${speakerChangeWTags}${separtor}${alt.content}`;
-    copyText = `${copyText}${speakerChange}${separtor}${alt.content}`;
+    if (diarization == 'channel' && prevChannel != curr.channel) {
+      channel = capitalizeFirstLetter(curr.channel?.replace('_', ''));
+      channelWTags = `<span class='channelLabel'>${channel}</span>`;
+      channel = `\n${channel}\n`;
+      prevChannel = curr.channel;
+    }
 
-    speakerChangeWTags = '';
-    speakerChange = '';
+    const separtor = curr.type == 'punctuation' ? '' : ' ';
+    html = `${html}${channelWTags}${speakerWTags}${separtor}${alt.content}`;
+    copyText = `${copyText}${channel}${speaker}${separtor}${alt.content}`;
+
+    speakerWTags = '';
+    speaker = '';
+    channel = '';
+    channelWTags = '';
   }, '');
 
   return { type: 'json', output: html, copyText };

@@ -7,6 +7,20 @@
   display: block;
 }
 
+.channelLabel {
+  font-weight: bold;
+}
+
+.channelLabel::before {
+  content: '';
+  display: block;
+}
+
+.channelLabel::after {
+  content: '';
+  display: block;
+}
+
 .scrollBarStyle::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0);
 }
