@@ -1,11 +1,11 @@
 import { useBreakpointValue, HStack, VStack, Box, Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import { HeaderLabel, DescriptionLabel, pad } from './common';
+import { HeaderLabel, DescriptionLabel, pad, WarningBanner } from './common';
 import { CardImage, CardGreyImage, DownloadInvoice } from './icons-library';
 import { Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
+export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, accountState }) => {
   const breakVal = useBreakpointValue({
     base: 0,
     xs: 1,
@@ -15,6 +15,15 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
     xl: 5,
     '2xl': 6
   });
+
+  const paymentMethodText = useCallback(() => {
+    if (!paymentMethod)
+      return 'No Payment Card Added'
+    if (accountState === 'active')
+      return 'Payment Card Active'
+    if (['past_due', 'unpaid'].includes(accountState))
+      return 'Payment Card Issue'
+  }, [paymentMethod, accountState])
 
   return isLoading ? (
     <HStack width='100%' justifyContent='space-between' alignItems='flex-start'>
@@ -29,7 +38,7 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
     <HStack width='100%' justifyContent='space-between' alignItems='flex-start'>
       <VStack alignItems='flex-start'>
         <HeaderLabel>
-          {paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}
+          {paymentMethodText()}
           {breakVal < 2 && (
             <span style={{ display: 'inline-block', marginLeft: '0.5em' }}>
               {paymentMethod ? (
@@ -47,6 +56,13 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
             : 'Add a payment card to increase these limits.'}
         </DescriptionLabel>
+          {
+            accountState === 'unpaid' && (
+              <Box width={{ base: "100%", lg: "90%" }} py={4}>
+                <WarningBanner text="Please update your card details to transcribe more files. If you have recently made a payment, it may take a few minutes to update your account." />
+              </Box>
+            )
+          }
         <Box>
           <Link href='/subscribe/'>
             <Button

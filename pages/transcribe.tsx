@@ -3,7 +3,7 @@ import { Box, Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel, WarningBanner } from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
   ClockIcon,
@@ -59,7 +59,7 @@ type TranscribeFormProps = {
 };
 
 export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
-  const { tokenStore } = useContext(accountStoreContext);
+  const { tokenStore, accountStore } = useContext(accountStoreContext);
 
   useEffect(() => {
     authFlow.restoreToken();
@@ -106,6 +106,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           onSelect={(val) => (store.accuracy = val as any)}
         />
       </Flex>
+        {accountStore.getAccountState() === 'unpaid' &&
+          <Flex width="100%" pt={4}>
+            <WarningBanner text="Please update your card details to transcribe more files." />
+          </Flex>
+        }
       <Flex width='100%' justifyContent='center' py={3}>
         <Button
           data-qa='button-get-transcription'
@@ -115,7 +120,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           onClick={() => {
             flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
           }}
-          disabled={!store._file || !auth.isLoggedIn}>
+          disabled={!store._file || !auth.isLoggedIn || accountStore.getAccountState() === 'unpaid'}>
           Get Your Transcription
         </Button>
       </Flex>

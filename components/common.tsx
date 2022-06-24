@@ -8,11 +8,11 @@ import {
   Flex,
   FlexProps,
   HStack,
-  Link,
   ResponsiveValue,
   Spinner,
   StackProps,
   Text,
+  Link as ChakraLink,
   Tooltip,
   VStack,
   createStandaloneToast,
@@ -24,6 +24,7 @@ import {
   ModalBody,
   ModalFooter
 } from '@chakra-ui/react';
+import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   CalendarIcon,
@@ -66,7 +67,7 @@ export const WarningBanner = ({ text = null, content = null, centered = false, .
       <WarningIcon width='1.5em' height='1.5em' />
     </Flex>
     {content ? (
-      <Box width='100%' color='smBlack.400' ml='1em'>
+      <Box justifyContent={centered ? 'center' : ''} color='smBlack.400' ml='1em'>
         {content}
       </Box>
     ) : (
@@ -144,14 +145,14 @@ export const InfoBarbox = ({
         </Text>
       </VStack>
       {hrefUrl && (
-        <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
+        <ChakraLink href={hrefUrl} style={{ textDecoration: 'none' }}>
           <Button
             variant='speechmaticsWhite'
             mt='0px'
             data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
             {buttonLabel}
           </Button>
-        </Link>
+        </ChakraLink>
       )}
       {setStateUp && (
         <Button variant='speechmaticsWhite' onClick={setStateUp}>
@@ -179,7 +180,7 @@ export const SmPanel: ComponentWithAs<'div', StackProps> = ({ children, ...props
 );
 
 export const PageHeaderLabel = ({ children }) => (
-  <Text fontFamily='RMNeue-Bold' fontSize='2.2em' mt='2em'>
+  <Text fontFamily='RMNeue-Bold' fontSize='2.2em' mt={{ base: '0.7em', md: '2em'}} >
     {children}
   </Text>
 );
@@ -386,14 +387,14 @@ export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
       <Text fontFamily='RMNeue-Bold' fontSize='20px'>
         View our Pricing
       </Text>
-      <Link
+      <ChakraLink
         href='https://www.speechmatics.com/our-technology/pricing'
         target='_blank'
         style={{ textDecoration: 'none' }}>
         <Button variant='speechmaticsOutline' mt='0em'>
           Pricing
         </Button>
-      </Link>
+      </ChakraLink>
     </Flex>
   );
 };
@@ -521,13 +522,13 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar', centered =
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text = '', content = null, alignment = "center" }) => (
+export const ErrorBanner = ({ text = '', content = null, alignment = "center", mt="2em" }) => (
   <Flex
     flexDir='column'
     width='100%'
     bg='smRed.100'
     p='1em'
-    mt='2em'
+    mt={mt}
     align={alignment}
     justify={alignment}
     alignItems={alignment}>
@@ -547,3 +548,35 @@ export const ErrorBanner = ({ text = '', content = null, alignment = "center" })
     </Flex>
   </Flex>
 );
+
+export function PaymentWarningBanner({ accountState }) {
+
+  return (
+    <HStack zIndex={10} position="sticky" top="62px">
+      {accountState === 'past_due' &&
+        <WarningBanner 
+          centered={true}
+          content={
+            <>
+              We’ve had trouble taking payment. Please{' '}
+              <Link href='/manage-billing/'>
+                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+              </Link> to avoid disruptions to your account.{' '}
+            </>
+          }/>
+        }
+        {accountState === 'unpaid' &&
+          <ErrorBanner
+            mt="0"
+            content={
+              <>
+                We’ve had trouble taking payment. Please{' '}
+                <Link href='/manage-billing/'>
+                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+                </Link> to transcribe more files.{' '}
+              </>
+            }/>
+          }
+    </HStack>
+  )
+};

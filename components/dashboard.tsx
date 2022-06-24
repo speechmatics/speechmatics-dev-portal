@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import { Box, useDisclosure, Spinner, Button, VStack } from '@chakra-ui/react';
+import { Box, useDisclosure, Spinner, Button, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
@@ -12,14 +12,14 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
-  ModalBody
+  ModalBody,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { WarningBanner } from './common';
+import { PaymentWarningBanner } from './common'
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -39,6 +39,8 @@ export default observer(function Dashboard({ children }) {
   const { instance, inProgress } = useMsal();
 
   const isAuthenticated = useIsAuthenticated();
+
+  const breakVal = useBreakpointValue({ base: true, md: false })
 
   useEffect(() => {
     let st: number;
@@ -97,29 +99,24 @@ export default observer(function Dashboard({ children }) {
         onModalClose={onUserCreationModalClose}
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
-      <Box className='dashboard' tabIndex={0}>
-        <MenuContainer />
-        <Box className='dashboard_content'>
-          
-          <motion.main
-            variants={animationVariants} // Pass the variant object into Framer Motion
-            initial='hidden' // Set the initial state to variants.hidden
-            animate='enter' // Animated state to variants.enter
-            exit='exit' // Exit state (used later) to variants.exit
-            transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
-          >
-            <WarningBanner 
-              content={
-                <>
-                  We’ve had trouble taking payment. Please{' '}
-                  <Link href='/manage-billing/'>
-                    <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-                  </Link> to avoid disruptions to your account.{' '}
-                </>
-              }/>
+      <PaymentWarningBanner accountState={accountStore.getAccountState()} />
+      
+      <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
+        {!breakVal && <MenuContainer /> }
 
-            {children}
-          </motion.main>
+        <Box className='dashboard_content'>
+          {breakVal && <MenuContainer /> }
+          <Box className='dashboard_padding'>
+            <motion.main
+              variants={animationVariants} // Pass the variant object into Framer Motion
+              initial='hidden' // Set the initial state to variants.hidden
+              animate='enter' // Animated state to variants.enter
+              exit='exit' // Exit state (used later) to variants.exit
+              transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
+            >
+              {children}
+            </motion.main>
+          </Box>
         </Box>
       </Box>
     </Box>

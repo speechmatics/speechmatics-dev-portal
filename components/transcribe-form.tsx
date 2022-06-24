@@ -94,6 +94,7 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={onSelectFiles}
+          disabled={true}
           accept='audio/*, video/mp4, video/m4a, video/ogg, video/mpeg'
         />
 
