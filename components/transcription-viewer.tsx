@@ -58,9 +58,11 @@ export const TranscriptionViewer = ({
         <Stat title='Accuracy' value={capitalizeFirstLetter(accuracy)} />
         <Stat title='Language' value={getFullLanguageName(language)} />
       </HStack>
-      <Box flex='1' maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300'>
-        {type == 'text' && (transcriptionOutput || '(Transcript is empty)')}
-        {type == 'json' && <Box dangerouslySetInnerHTML={{ __html: transcriptionOutput }} />}
+      <Box pr={1} flex='1'>
+        <Box maxHeight={transcMaxHeight} overflowY='auto' px={6} py={2} color='smBlack.300' className='scrollBarStyle'>
+          {type == 'text' && (transcriptionOutput || '(Transcript is empty)')}
+          {type == 'json' && <Box dangerouslySetInnerHTML={{ __html: transcriptionOutput }} />}
+        </Box>
       </Box>
       <Grid
         width='100%'
