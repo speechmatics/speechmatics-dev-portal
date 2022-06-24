@@ -27,7 +27,7 @@ import {
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({}) {
+export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
 
   useEffect(() => {
@@ -217,7 +217,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       )}
 
       {stageDelayed == 'complete' && (
-        <Box w={['50%', '100%']}>
+        <Box width='100%'>
           <TranscriptionViewer
             my={4}
             fileName={fileName}
@@ -225,7 +225,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
             jobId={store.jobId}
             accuracy={store.accuracy}
             language={store.language}
-            transcriptionText={store.transcriptionText}
+            transcriptionJSON={store.transcriptionJSON}
             className='fadeIn'
           />
         </Box>

@@ -87,7 +87,7 @@ export const RecentJobs = observer(() => {
             jobId: job.jobId,
             accuracy: job.accuracy,
             language: job.language,
-            transcriptionText: response,
+            transcriptionJSON: response,
             fileName: job.fileName
           });
           setTranscriptOpen(true);
@@ -462,7 +462,7 @@ const IconButtons = ({
                 date: date,
                 fileName
               },
-              'txt'
+              'json-v2'
             )
           }
           _focus={{ boxShadow: 'none' }}
