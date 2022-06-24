@@ -30,7 +30,7 @@ export function getDiarizedTranscription(input: string | BatchTranscriptionRespo
     }
 
     const separtor = curr.type == 'punctuation' ? '' : ' ';
-    html = `${html}${speakerChangeWTags}${separtor}<span>${alt.content}</span>`;
+    html = `${html}${speakerChangeWTags}${separtor}${alt.content}`;
     copyText = `${copyText}${speakerChange}${separtor}${alt.content}`;
 
     speakerChangeWTags = '';
