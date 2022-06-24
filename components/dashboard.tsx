@@ -30,6 +30,8 @@ const animationVariants = {
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
 
+  const redirectUrl = router.route;
+
   const {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
@@ -45,7 +47,7 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     let st: number;
     if (!isAuthenticated) {
-      st = window.setTimeout(() => router.push('/login/'), 2000);
+      st = window.setTimeout(() => router.push(`/login/?returnUrl=${redirectUrl}`), 2000);
     }
     return () => window.clearTimeout(st);
   }, [isAuthenticated]);
@@ -57,7 +59,7 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     let st: number;
     if (!!b2cError) {
-      st = window.setTimeout(() => router.push('/login/'), 2000);
+      st = window.setTimeout(() => router.push(`/login/?returnUrl=${redirectUrl}`), 2000);
     }
     return () => window.clearTimeout(st);
   }, [b2cError]);
@@ -93,7 +95,7 @@ export default observer(function Dashboard({ children }) {
 
   return (
     <Box className='dashboard_container'>
-      <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} />
+      <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} returnUrl={redirectUrl} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
@@ -138,7 +140,7 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
   );
 }
 
-function UserNotAuthModal({ isModalOpen }) {
+function UserNotAuthModal({ isModalOpen, returnUrl }) {
   return (
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
@@ -152,7 +154,7 @@ function UserNotAuthModal({ isModalOpen }) {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Link href='/login'>
+          <Link href={`/login/?returnUrl=${returnUrl}`}>
             <Button variant='speechmatics'>Go to Login</Button>
           </Link>
         </ModalFooter>
