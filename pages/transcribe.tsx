@@ -217,7 +217,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       )}
 
       {stageDelayed == 'complete' && (
-        <Box w={['50%', '100%']}>
+        <Box width='100%'>
           <TranscriptionViewer
             my={4}
             fileName={fileName}
