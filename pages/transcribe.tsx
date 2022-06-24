@@ -227,6 +227,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
             language={store.language}
             transcriptionJSON={store.transcriptionJSON}
             className='fadeIn'
+            transcMaxHeight='15em'
           />
         </Box>
       )}
