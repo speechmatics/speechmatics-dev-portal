@@ -462,7 +462,7 @@ const IconButtons = ({
                 date: date,
                 fileName
               },
-              'json'
+              'json-v2'
             )
           }
           _focus={{ boxShadow: 'none' }}
