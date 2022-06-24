@@ -1,0 +1,8 @@
+.speakerChangeLabel {
+  font-weight: bold;
+}
+
+.speakerChangeLabel::before {
+  content: '';
+  display: block;
+}
