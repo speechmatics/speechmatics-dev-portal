@@ -13,13 +13,14 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  HStack
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { PaymentWarningBanner } from './common'
+import { WarningBanner, ErrorBanner } from './common'
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -162,3 +163,35 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
     </Modal>
   );
 }
+
+function PaymentWarningBanner({ accountState }) {
+
+  return (
+    <HStack zIndex={20} position="sticky" top="62px">
+      {accountState === 'past_due' &&
+        <WarningBanner 
+          centered={true}
+          content={
+            <>
+              We’ve had trouble taking payment. Please{' '}
+              <Link href='/manage-billing/'>
+                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+              </Link> to avoid disruptions to your account.{' '}
+            </>
+          }/>
+        }
+        {accountState === 'unpaid' &&
+          <ErrorBanner
+            mt="0"
+            content={
+              <>
+                We’ve had trouble taking payment. Please{' '}
+                <Link href='/manage-billing/'>
+                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+                </Link> to transcribe more files.{' '}
+              </>
+            }/>
+          }
+    </HStack>
+  )
+};

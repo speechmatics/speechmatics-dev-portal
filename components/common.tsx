@@ -12,7 +12,7 @@ import {
   Spinner,
   StackProps,
   Text,
-  Link as ChakraLink,
+  Link,
   Tooltip,
   VStack,
   createStandaloneToast,
@@ -24,7 +24,6 @@ import {
   ModalBody,
   ModalFooter
 } from '@chakra-ui/react';
-import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   CalendarIcon,
@@ -62,7 +61,7 @@ export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
 );
 
 export const WarningBanner = ({ text = null, content = null, centered = false, ...props }) => (
-  <Flex width='100%' bg='smOrange.150' p='1em' {...props} justifyContent={centered ? 'center' : ''}>
+  <Flex width='100%' bg='smOrange.200' p='1em' {...props} justifyContent={centered ? 'center' : ''}>
     <Flex alignItems='center'>
       <WarningIcon width='1.5em' height='1.5em' />
     </Flex>
@@ -145,14 +144,14 @@ export const InfoBarbox = ({
         </Text>
       </VStack>
       {hrefUrl && (
-        <ChakraLink href={hrefUrl} style={{ textDecoration: 'none' }}>
+        <Link href={hrefUrl} style={{ textDecoration: 'none' }}>
           <Button
             variant='speechmaticsWhite'
             mt='0px'
             data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
             {buttonLabel}
           </Button>
-        </ChakraLink>
+        </Link>
       )}
       {setStateUp && (
         <Button variant='speechmaticsWhite' onClick={setStateUp}>
@@ -387,14 +386,14 @@ export const ViewPricingBar: ComponentWithAs<'div', FlexProps> = (props) => {
       <Text fontFamily='RMNeue-Bold' fontSize='20px'>
         View our Pricing
       </Text>
-      <ChakraLink
+      <Link
         href='https://www.speechmatics.com/our-technology/pricing'
         target='_blank'
         style={{ textDecoration: 'none' }}>
         <Button variant='speechmaticsOutline' mt='0em'>
           Pricing
         </Button>
-      </ChakraLink>
+      </Link>
     </Flex>
   );
 };
@@ -548,35 +547,3 @@ export const ErrorBanner = ({ text = '', content = null, alignment = "center", m
     </Flex>
   </Flex>
 );
-
-export function PaymentWarningBanner({ accountState }) {
-
-  return (
-    <HStack zIndex={10} position="sticky" top="62px">
-      {accountState === 'past_due' &&
-        <WarningBanner 
-          centered={true}
-          content={
-            <>
-              We’ve had trouble taking payment. Please{' '}
-              <Link href='/manage-billing/'>
-                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-              </Link> to avoid disruptions to your account.{' '}
-            </>
-          }/>
-        }
-        {accountState === 'unpaid' &&
-          <ErrorBanner
-            mt="0"
-            content={
-              <>
-                We’ve had trouble taking payment. Please{' '}
-                <Link href='/manage-billing/'>
-                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-                </Link> to transcribe more files.{' '}
-              </>
-            }/>
-          }
-    </HStack>
-  )
-};

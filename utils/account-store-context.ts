@@ -69,7 +69,7 @@ class AccountContext {
   }
 
   getAccountState(): ContractState {
-    return 'past_due'
+    return 'unpaid'
     // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
   }
 

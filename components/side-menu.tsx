@@ -43,7 +43,7 @@ function MobileMenu() {
 
   return (
     <Box ml={0}>
-      <Slide direction='left' in={isOpen} style={{ zIndex: 1000 }}>
+      <Slide direction='left' in={isOpen} style={{ zIndex: 20 }}>
         <Box
           position="relative"
           className='dashboard_sidenav'

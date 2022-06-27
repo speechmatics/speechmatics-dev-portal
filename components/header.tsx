@@ -77,12 +77,12 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
 
 {
   /* <Link href="/account/" passHref>
-        <ChakraLink>
+        <Link>
           <Tooltip label="Account" placement="bottom"> */
 }
 
 {
   /* </Tooltip>
-        </ChakraLink>
+        </Link>
       </Link> */
 }
