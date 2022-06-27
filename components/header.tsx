@@ -1,13 +1,4 @@
-import {
-  Box,
-  HStack,
-  Divider,
-  Tooltip,
-  Text,
-  useBreakpointValue,
-  IconButton,
-  Flex
-} from '@chakra-ui/react';
+import { Box, HStack, Divider, Tooltip, useBreakpointValue, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from './icons-library';
 
@@ -36,6 +27,7 @@ export function HeaderBar({ logout, accountEmail }) {
 }
 
 export function RightSidePanel({ logout, accountEmail, breakValue }) {
+
   return (
     <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
       {breakValue > 1 && (
@@ -73,16 +65,4 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
       </Tooltip>
     </HStack>
   );
-}
-
-{
-  /* <Link href="/account/" passHref>
-        <ChakraLink>
-          <Tooltip label="Account" placement="bottom"> */
-}
-
-{
-  /* </Tooltip>
-        </ChakraLink>
-      </Link> */
 }

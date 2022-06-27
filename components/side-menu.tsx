@@ -42,11 +42,12 @@ function MobileMenu() {
   });
 
   return (
-    <>
-      <Slide direction='left' in={isOpen} style={{ zIndex: 1000 }}>
+    <Box ml={0}>
+      <Slide direction='left' in={isOpen} style={{ zIndex: 20 }}>
         <Box
+          position="relative"
           className='dashboard_sidenav'
-          position={'absolute'}
+          width="250px"
           top='62px'
           ref={ref}
           borderBottom='1px solid var(--chakra-colors-smBlack-180)'
@@ -54,7 +55,7 @@ function MobileMenu() {
           <Menu />
         </Box>
       </Slide>
-      <Box position='absolute' top='62px'>
+      <Box  top='62px'>
         <IconButton
           icon={<FiMenu />}
           aria-label={''}
@@ -64,7 +65,7 @@ function MobileMenu() {
           onClick={onToggle}
         />
       </Box>
-    </>
+    </Box>
   );
 }
 
