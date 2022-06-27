@@ -232,9 +232,7 @@ export const call = async (
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
         );
-        errToast(
-          `There was an error with the request to ${apiEndpoint}. (Status ${response.status})`
-        );
+        errToast(`An error occured at the request to ${apiEndpoint}. (Status ${response.status})`);
         throw throwObj;
       }
 
