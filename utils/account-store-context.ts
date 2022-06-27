@@ -7,7 +7,6 @@ import {
   InteractionRequiredAuthError
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
-import { errToast } from '../components/common';
 
 class AccountContext {
   _account: Account = null;
@@ -18,16 +17,19 @@ class AccountContext {
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
+  _testAccountState: ContractState = 'active';
 
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
+      _testAccountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
+      getAccountState: action,
       keyJustRemoved: observable
     });
   }
@@ -66,6 +68,16 @@ class AccountContext {
 
   getPaymentMethod(): PaymentMethod | null {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
+  }
+
+  getAccountState(): ContractState {
+    return this._testAccountState
+    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
+  }
+
+  setAccountState(state: ContractState) {
+    this._testAccountState = state;
+    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
   }
 
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
@@ -223,6 +235,7 @@ interface Contract {
   projects: Project[];
   runtime_url: string;
   payment_method: PaymentMethod | null;
+  state: ContractState;
 }
 
 interface UsageLimit {
@@ -249,3 +262,5 @@ export interface PaymentMethod {
   expiration_month: number;
   expiration_year: number;
 }
+
+export type ContractState = 'active' | 'past_due' | 'unpaid';

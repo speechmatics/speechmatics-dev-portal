@@ -39,7 +39,6 @@
   height: 100%;
   flex: 1 1 auto;
   display: flex;
-  flex-direction: row;
 }
 
 .dashboard_sidenav {
@@ -51,6 +50,12 @@
 }
 
 .dashboard_content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.dashboard_padding {
   padding-left: clamp(0.5em, 5.6vw, 4em);
   padding-right: clamp(0.5em, 5.6vw, 4em);
   padding-bottom: 3em;
@@ -60,7 +65,7 @@
 }
 
 @media screen and (max-width: 480px) {
-  .dashboard_content {
+  .dashboard_padding {
     padding-left: 0em;
     padding-right: 0em;
   }
