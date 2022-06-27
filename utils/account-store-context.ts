@@ -23,7 +23,6 @@ class AccountContext {
     makeObservable(this, {
       clear: action,
       _account: observable,
-      _testAccountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
@@ -71,13 +70,7 @@ class AccountContext {
   }
 
   getAccountState(): ContractState {
-    return this._testAccountState
-    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
-  }
-
-  setAccountState(state: ContractState) {
-    this._testAccountState = state;
-    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
+    return this._account?.contracts.filter((con) => !!con)?.[0]?.state;
   }
 
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
