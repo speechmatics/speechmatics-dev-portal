@@ -216,6 +216,7 @@ export const call = async (
           console.log('error status 401, will logout');
           setTimeout(() => msalLogout(true), 1000);
           errToast(`Session expired, redirecting to login page...`);
+          return;
         }
       }
       if (response.status != 200 && response.status != 201) {
@@ -231,6 +232,7 @@ export const call = async (
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
         );
+        errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
         throw throwObj;
       }
 
