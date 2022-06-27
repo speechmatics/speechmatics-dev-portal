@@ -174,7 +174,7 @@ function PaymentWarningBanner({ accountState }) {
           content={
             <>
               We’ve had trouble taking payment. Please{' '}
-              <Link href='/manage-billing/'>
+              <Link href='/manage-billing/#update_card'>
                 <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
               </Link> to avoid disruptions to your account.{' '}
             </>
@@ -186,7 +186,7 @@ function PaymentWarningBanner({ accountState }) {
             content={
               <>
                 We’ve had trouble taking payment. Please{' '}
-                <Link href='/manage-billing/'>
+                <Link href='/manage-billing/#update_card'>
                   <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
                 </Link> to transcribe more files.{' '}
               </>
