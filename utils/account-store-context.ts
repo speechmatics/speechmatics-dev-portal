@@ -17,11 +17,13 @@ class AccountContext {
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
+  _testAccountState: ContractState = 'active';
 
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
+      _testAccountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
@@ -69,7 +71,12 @@ class AccountContext {
   }
 
   getAccountState(): ContractState {
-    return 'unpaid'
+    return this._testAccountState
+    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
+  }
+
+  setAccountState(state: ContractState) {
+    this._testAccountState = state;
     // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
   }
 
