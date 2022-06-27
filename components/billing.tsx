@@ -20,6 +20,7 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
 
   const updateButtonRef = useRef(null)
   const [highlight, setHighlight] = useState<boolean>(false)
+  const [bgColour, setBgColour] = useState<string>(null)
 
   const paymentMethodText = useCallback(() => {
     if (!paymentMethod)
@@ -38,11 +39,15 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
 
   useEffect(() => {
     if (highlight) {
-      updateButtonRef?.current?.focus()
       setTimeout(() => {
-        document.activeElement.blur()
-        setHighlight(false);
-      }, 5000)
+        updateButtonRef?.current?.focus()
+        setTimeout(() => {
+          if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+          }
+          setHighlight(false);
+        }, 1000)
+      }, 300)
     }
   }, [highlight])
 
@@ -91,8 +96,9 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
               _focus={{
                 // boxShadow:
                 //   '0 0 1px 4px var(--chakra-colors-smOrange-400), 0 1px 1px rgba(0, 0, 0, .15)',
-                bg:  "var(--chakra-colors-smRed-500)",
+                bg:  "var(--chakra-colors-smOrange-500)",
               }}
+              bg={bgColour}
               variant='speechmatics'
               alignSelf='flex-start'
               data-qa='button-add-replace-payment'>
