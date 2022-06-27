@@ -129,7 +129,7 @@ const EngagementBox = ({
     p={6} alignSelf='stretch' justifyContent='space-between'
   >
     <VStack alignItems='flex-start' alignSelf='stretch'>
-      <HStack>
+      <HStack spacing={3}>
         <Box>{titleIcon({ width: '1.6em', height: '1.6em' })}</Box>
         <Box fontFamily='RMNeue-Bold' fontSize='1.5em'>{title}</Box>
       </HStack>
