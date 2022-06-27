@@ -66,15 +66,3 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
     </HStack>
   );
 }
-
-{
-  /* <Link href="/account/" passHref>
-        <Link>
-          <Tooltip label="Account" placement="bottom"> */
-}
-
-{
-  /* </Tooltip>
-        </Link>
-      </Link> */
-}
