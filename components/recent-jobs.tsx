@@ -178,7 +178,7 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {((noMoreJobs && jobs.length > pageLimit) || !includeDeleted) && (
+        {!isLoading && ((noMoreJobs && jobs.length > pageLimit) || (!includeDeleted && !!deletedListCount)) && (
           // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
             {noMoreJobs && jobs.length > pageLimit && 'No more jobs to load.'}
