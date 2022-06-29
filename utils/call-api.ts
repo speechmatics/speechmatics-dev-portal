@@ -32,7 +32,7 @@ export const callGetUsage = async (
       project_id: projectId,
       grouping: 'day',
       sort_order: 'asc',
-      ...dates,
+      ...dates
     }
   );
 };
@@ -44,14 +44,14 @@ export const callGetJobs = async (idToken: string, optionalQueries: any) => {
     'GET',
     {},
     {
-      ...optionalQueries,
+      ...optionalQueries
     }
   );
 };
 
 export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
   return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
-    force,
+    force
   });
 };
 
@@ -96,14 +96,14 @@ export const callPostRequestTokenChargify = async (
   chargifyToken: string
 ) => {
   return call(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'POST', {
-    card_request_token: chargifyToken,
+    card_request_token: chargifyToken
   });
 };
 
 export const callPostApiKey = async (idToken: string, name: string, projectId: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
-    name,
+    name
   });
 };
 
@@ -117,7 +117,7 @@ export const callRemoveCard = async (idToken: string, contractId: number) => {
 
 export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
   return call(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
-    ttl,
+    ttl
   });
 };
 
@@ -136,8 +136,8 @@ export const callRequestFileTranscription = async (
     transcription_config: {
       language,
       operating_point: accuracy,
-      diarization: separation,
-    },
+      diarization: separation
+    }
   };
   formData.append('config', JSON.stringify(config));
 
@@ -199,7 +199,7 @@ export const call = async (
   const options = {
     method: method,
     headers: headers,
-    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
+    body: useBODY && body ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined
   };
 
   if (!!query) {
@@ -208,21 +208,31 @@ export const call = async (
 
   return fetch(apiEndpoint, options).then(
     async (response) => {
-      console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
-      if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
-        msalLogout(true);
-      } else if (response.status == 401) {
-        throw { status: 'error', error: { type: 'runtime-auth' } };
+      console.log('fetch then', response);
+      if (response.status == 401) {
+        if (apiEndpoint.includes(RUNTIME_API_URL)) {
+          throw { status: 'error', error: { type: 'runtime-auth' } };
+        } else {
+          console.log('error status 401, will logout');
+          setTimeout(() => msalLogout(true), 1000);
+          errToast(`Session expired, redirecting to login page...`);
+          return;
+        }
       }
       if (response.status != 200 && response.status != 201) {
+        let resp = null;
+        try {
+          resp = await response.json();
+        } catch (e) {}
         const throwObj = {
-          status: 'error',
-          error: { type: 'request-error', status: response.status },
-          response: await response.json(),
+          type: 'request-error',
+          status: response.status,
+          response: resp
         };
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
         );
+        errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
         throw throwObj;
       }
 
@@ -238,7 +248,8 @@ export const call = async (
       console.log('fetch error', error);
       //only happens when something goes wrong with the function fetch not a specific response,
       // the responses should be cought in the following catch block on this promise
-      errToast(`fetch error on ${apiEndpoint} occured`);
+      setTimeout(() => msalLogout(true), 1000);
+      errToast(`Redirecting to login page...`);
       throw { status: 'error', error: { type: error.type } };
     }
   );
@@ -249,12 +260,4 @@ function getParams(paramsObj: { [key: string]: string | number }) {
     (prev, curr, i) => `${prev}${i != 0 ? '&' : ''}${curr}=${paramsObj[curr]}`,
     ''
   );
-}
-
-async function responseCopy(response: Response, isPlain: boolean) {
-  try {
-    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
-  } catch (e) {
-    return '';
-  }
 }

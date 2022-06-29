@@ -4,7 +4,7 @@ import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api'
 import {
   AccountInfo,
   AuthenticationResult,
-  InteractionRequiredAuthError,
+  InteractionRequiredAuthError
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { errToast } from '../components/common';
@@ -28,7 +28,7 @@ class AccountContext {
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
-      keyJustRemoved: observable,
+      keyJustRemoved: observable
     });
   }
 
@@ -71,7 +71,7 @@ class AccountContext {
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
     const dict = {
       standard: 'LIM_DUR_CUR_MON_STANDARD_SEC',
-      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
+      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC'
     };
 
     const val = this._account?.contracts
@@ -138,10 +138,8 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        console.log(err);
-        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
-        console.error(err);
+        console.error('account store catch', err);
       });
   }
 }
@@ -158,7 +156,7 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable,
+      loginFailureError: observable
     });
   }
 
@@ -173,20 +171,18 @@ export async function acquireTokenFlow(
 ) {
   const request = {
     scopes: [],
-    account,
+    account
   } as SilentRequest;
 
   return msalInstance
     .acquireTokenSilent(request)
     .then((tokenResponse) => {
-      console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
       return tokenResponse;
     })
     .catch(async (error) => {
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
         return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
-          console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
           return tokenResponse;
         });
       }

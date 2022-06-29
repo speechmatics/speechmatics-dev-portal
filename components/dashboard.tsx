@@ -1,13 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import {
-  Box,
-  useDisclosure,
-  Spinner,
-  Button,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, useDisclosure, Spinner, Button, VStack } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
 import accountContext from '../utils/account-store-context';
@@ -18,7 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
-  ModalBody,
+  ModalBody
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
@@ -29,16 +23,18 @@ import { MenuContainer } from './side-menu';
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
   enter: { opacity: 1, x: 0, y: 0 },
-  exit: { opacity: 0, x: 0, y: -100 },
+  exit: { opacity: 0, x: 0, y: -100 }
 };
 
 export default observer(function Dashboard({ children }) {
   const router = useRouter();
 
+  const redirectUrl = router.route;
+
   const {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
-    onClose: onUserCreationModalClose,
+    onClose: onUserCreationModalClose
   } = useDisclosure();
 
   const { instance, inProgress } = useMsal();
@@ -48,7 +44,7 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     let st: number;
     if (!isAuthenticated) {
-      st = window.setTimeout(() => router.push('/login/'), 2000);
+      st = window.setTimeout(() => router.push(`/login/?returnUrl=${redirectUrl}`), 2000);
     }
     return () => window.clearTimeout(st);
   }, [isAuthenticated]);
@@ -60,18 +56,23 @@ export default observer(function Dashboard({ children }) {
   useEffect(() => {
     let st: number;
     if (!!b2cError) {
-      st = window.setTimeout(() => router.push('/login/'), 2000);
+      st = window.setTimeout(() => router.push(`/login/?returnUrl=${redirectUrl}`), 2000);
     }
     return () => window.clearTimeout(st);
   }, [b2cError]);
 
   const isSettingUpAccount = (val: boolean) => {
-    console.log('isSettingUpAccount', val)
+    console.log('isSettingUpAccount', val);
     if (val) onUserCreationModalOpen();
   };
 
   useEffect(() => {
-    if (!accountStore.requestSent && !accountStore.account && isAuthenticated && tokenPayload?.idToken) {
+    if (
+      !accountStore.requestSent &&
+      !accountStore.account &&
+      isAuthenticated &&
+      tokenPayload?.idToken
+    ) {
       tokenStore.setTokenPayload(tokenPayload);
       accountStore
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
@@ -79,7 +80,7 @@ export default observer(function Dashboard({ children }) {
           accountStore.assignServerState(resp);
           onUserCreationModalClose();
         })
-        .catch(console.error);
+        .catch(err => console.error("dashboard accountStore catch", err));
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
@@ -90,21 +91,21 @@ export default observer(function Dashboard({ children }) {
   };
 
   return (
-    <Box className="dashboard_container">
-      <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} />
+    <Box className='dashboard_container'>
+      <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} returnUrl={redirectUrl} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
-      <Box className="dashboard" tabIndex={0}>
+      <Box className='dashboard' tabIndex={0}>
         <MenuContainer />
-        <Box className="dashboard_content">
+        <Box className='dashboard_content'>
           <motion.main
             variants={animationVariants} // Pass the variant object into Framer Motion
-            initial="hidden" // Set the initial state to variants.hidden
-            animate="enter" // Animated state to variants.enter
-            exit="exit" // Exit state (used later) to variants.exit
+            initial='hidden' // Set the initial state to variants.hidden
+            animate='enter' // Animated state to variants.enter
+            exit='exit' // Exit state (used later) to variants.exit
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
           >
             {children}
@@ -114,10 +115,6 @@ export default observer(function Dashboard({ children }) {
     </Box>
   );
 });
-
-
-
-
 
 function UserCreationModal({ isModalOpen, onModalClose }) {
   return (
@@ -134,12 +131,12 @@ function UserCreationModal({ isModalOpen, onModalClose }) {
   );
 }
 
-function UserNotAuthModal({ isModalOpen }) {
+function UserNotAuthModal({ isModalOpen, returnUrl }) {
   return (
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody >
+        <ModalBody>
           <VStack>
             <SpeechmaticsLogo width={160} height={100} />
             <Box>Your session expired. </Box>
@@ -148,8 +145,8 @@ function UserNotAuthModal({ isModalOpen }) {
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Link href="/login">
-            <Button variant="speechmatics">Go to Login</Button>
+          <Link href={`/login/?returnUrl=${returnUrl}`}>
+            <Button variant='speechmatics'>Go to Login</Button>
           </Link>
         </ModalFooter>
       </ModalContent>

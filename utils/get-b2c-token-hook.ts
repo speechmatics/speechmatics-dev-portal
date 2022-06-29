@@ -10,26 +10,21 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const { accountStore, tokenStore } = useContext(accountStoreContext);
 
   useEffect(() => {
-    console.log('acquiring B2CToken', account);
-
     const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
       (account?.idTokenClaims as any)?.acr
     }`;
-
-    console.log('authority to use:', authority);
 
     const request = {
       scopes: [],
       account,
       authority: account ? authority : process.env.SIGNIN_POLICY,
-      extraQueryParameters: { id_token_hint: accountStore.userHint },
+      extraQueryParameters: { id_token_hint: accountStore.userHint }
     } as SilentRequest;
 
     msalInstance
       .acquireTokenSilent(request)
       .then((tokenResponse) => {
         setToken(tokenResponse);
-        console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
       })
       .catch(async (error) => {
         console.log('acquireTokenSilent error', error);
@@ -38,7 +33,6 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
           // fallback to interaction when silent call fails
           return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
             setToken(tokenResponse);
-            console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
           });
         }
       })
