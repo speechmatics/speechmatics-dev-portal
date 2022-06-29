@@ -19,7 +19,10 @@ import {
   ModalBody,
   useDisclosure,
   Link,
-  useBreakpointValue
+  useBreakpointValue,
+  Switch,
+  Collapse,
+  Portal
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useContext, useCallback, useMemo } from 'react';
@@ -47,6 +50,7 @@ export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
   const [transcriptOpen, setTranscriptOpen] = useState<boolean>(false);
   const [deleteJobInfo, setDeleteJobInfo] = useState<{ id?: string; status?: string }>({});
+  const [includeDeleted, setIncludeDeleted] = useState<boolean>(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
@@ -69,7 +73,11 @@ export const RecentJobs = observer(() => {
     onDeleteJob,
     forceGetJobs,
     errorGettingNewJob
-  } = useJobs(pageLimit, page);
+  } = useJobs(pageLimit, page, true);
+
+  const deletedListCount = useMemo(() => {
+    return jobs?.filter((item) => item.status === 'deleted').length;
+  }, [jobs]);
 
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
@@ -80,7 +88,7 @@ export const RecentJobs = observer(() => {
             jobId: job.jobId,
             accuracy: job.accuracy,
             language: job.language,
-            transcriptionText: response,
+            transcriptionJSON: response,
             fileName: job.fileName
           });
           setTranscriptOpen(true);
@@ -122,18 +130,39 @@ export const RecentJobs = observer(() => {
       {errorGettingNewJob && <ErrorBanner text="We couldn't get your recently uploaded jobs." />}
       <VStack spacing={6} pt={6} width='100%'>
         {isLoading && skeletons}
-        {!errorOnInit &&
-          !isLoading &&
-          jobs?.map((el, i) => {
-            return (
-              <RecentJobElement
-                key={el.id + i}
-                {...el}
-                onOpenTranscript={onOpenTranscript}
-                onStartDelete={onOpenDeleteDialogue}
-              />
-            );
-          })}
+        {!errorOnInit && !isLoading && jobs.length > 0 && (
+          // added a switch for showing deleted jobs
+          <HStack data-qa='switch-show-deleted-jobs' w='100%' justifyContent='end'>
+            <Text color='smBlack.300' fontFamily='RMNeue-Bold' fontSize='0.9em'>
+              Show deleted jobs:
+            </Text>
+            <Switch
+              colorScheme='teal'
+              size='md'
+              isChecked={includeDeleted}
+              onChange={() => setIncludeDeleted(!includeDeleted)}
+            />
+          </HStack>
+        )}
+        <VStack spacing={0} width='100%'>
+          {!errorOnInit &&
+            !isLoading &&
+            jobs?.map((el, i) => {
+              return (
+                // use the collapse animation feature to show and hide items
+                <Collapse
+                  key={el.key}
+                  style={{ width: '100%' }}
+                  in={(includeDeleted || el.status !== 'deleted') && el.visible}>
+                  <RecentJobElement
+                    {...el}
+                    onOpenTranscript={onOpenTranscript}
+                    onStartDelete={onOpenDeleteDialogue}
+                  />
+                </Collapse>
+              );
+            })}
+        </VStack>
         {errorGettingMore && <ErrorBanner text='Error getting more jobs' />}
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
         {jobs?.length !== 0 && !noMoreJobs && (
@@ -145,13 +174,30 @@ export const RecentJobs = observer(() => {
               setPage(page + 1);
             }}
             width='100%'>
-            {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Show More'}
+            {!isLoading && !isWaitingOnMore && !noMoreJobs && 'Load More'}
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
-        {noMoreJobs && jobs.length > pageLimit && (
+        {((noMoreJobs && jobs.length > pageLimit) || !includeDeleted) && (
+          // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
-            The page is showing the full list.
+            {noMoreJobs && jobs.length > pageLimit && 'No more jobs to load.'}
+            {!includeDeleted && !!deletedListCount && (
+              <>
+                {' '}
+                There {deletedListCount !== 1 ? 'are' : 'is'} {deletedListCount} deleted job
+                {deletedListCount !== 1 && 's'} not showing.{' '}
+                <Text
+                  data-qa='button-show-deleted-jobs'
+                  onClick={() => setIncludeDeleted(true)}
+                  as='span'
+                  color='var(--chakra-colors-smBlue-500)'
+                  cursor='pointer'
+                  _hover={{ textDecoration: 'underline' }}>
+                  Show deleted jobs.
+                </Text>
+              </>
+            )}
           </Box>
         )}
         {!errorOnInit && !isLoading && jobs?.length !== 0 && (
@@ -206,13 +252,15 @@ export const RecentJobs = observer(() => {
         isOpen={isOpen}
         onClose={onClose}
         mainTitle='Delete Job?'
-        subTitle={'Deleted jobs count towards usage.'}
+        subTitle={'A record of the deleted job will be kept to track usage.'}
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
         }}
         confirmLabel='Delete Job'
         cancelLabel='Keep Job'
+        // prevents an error where the deleted jobs tooltip lingers
+        returnFocusOnClose={false}
       />
     </>
   );
@@ -237,16 +285,26 @@ const RecentJobElement = ({
   return (
     <VStack
       id={id}
+      // used to animate on initial loading - could be replaced with a visibility timeout function instead
+      className='fadein fade-item'
+      // key={id + fileName}
       border='1px solid'
       borderColor='smBlack.200'
       borderLeft='3px solid'
       borderLeftColor={statusColour[status]}
       p={4}
+      mb={4}
       width='100%'>
       <HStack width='100%'>
         <VStack alignItems='flex-start' width='100%' flex={2}>
-          <Box fontFamily='RMNeue-bold' as='span' width='90%' paddingRight='4px' color='smNavy.400'>
-            {fileName}
+          <Box
+            fontFamily={status === 'deleted' ? null : 'RMNeue-bold'}
+            as='span'
+            data-qa={status === 'deleted' ? 'list-job-deleted' : 'list-job-file-name'}
+            width='90%'
+            paddingRight='4px'
+            color='smNavy.400'>
+            {status === 'deleted' ? 'Deleted Job' : fileName}
           </Box>
           <HStack
             fontSize='0.8em'
@@ -256,12 +314,12 @@ const RecentJobElement = ({
             justifyContent='space-between'>
             {breakVal && (
               <>
-                <Box flex={2} fontFamily='RMNeue-bold' whiteSpace='nowrap'>
+                <Box data-qa='list-job-date' flex={2} fontFamily='RMNeue-bold' whiteSpace='nowrap'>
                   <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
                     {date ? formatTimeDateFromString(date) : 'Unknown'}
                   </Tooltip>
                 </Box>
-                <Box flex={1}>
+                <Box data-qa='list-job-accuracy' flex={1}>
                   <Tooltip
                     flex={1}
                     placement='bottom'
@@ -271,17 +329,17 @@ const RecentJobElement = ({
                     {accuracy ? capitalizeFirstLetter(accuracy) : 'Unknown'}
                   </Tooltip>
                 </Box>
-                <Box flex={1}>
+                <Box data-qa='list-job-duration' flex={1}>
                   <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Media Duration'>
                     {duration || 'Unknown'}
                   </Tooltip>
                 </Box>
-                <Box flex={1}>
+                <Box data-qa='list-job-language' flex={1}>
                   <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Media Language'>
                     {language ? mapLanguages(language) : 'Unknown'}
                   </Tooltip>
                 </Box>
-                <Box flex={1}>
+                <Box data-qa='list-job-id' flex={1}>
                   <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Unique Job ID'>
                     {id ? id : 'Unknown'}
                   </Tooltip>
@@ -291,51 +349,63 @@ const RecentJobElement = ({
           </HStack>
         </VStack>
         <HStack flex={breakVal ? 1 : 0} spacing={2} marginLeft={4} justifyContent={'space-evenly'}>
-          <Tooltip
-            label={status == 'running' ? 'The media is still being transcribed.' : null}
-            hasArrow>
-            <HStack flex={2}>
-              {status == 'running' ? (
-                <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
-              ) : (
-                <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
-              )}
-              <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
-            </HStack>
-          </Tooltip>
-          {breakVal ? (
-            <IconButtons
-              onOpenTranscript={onOpenTranscript}
-              fileName={fileName}
-              language={language}
-              id={id}
-              accuracy={accuracy}
-              date={date}
-              status={status}
-              onStartDelete={onStartDelete}
-            />
-          ) : null}
+          {status !== 'deleted' && (
+            <>
+              <Tooltip
+                label={status == 'running' ? 'The media is still being transcribed.' : null}
+                hasArrow>
+                <HStack flex={2} data-qa='list-job-status'>
+                  {status === 'running' ? (
+                    <Spinner size='xs' height='9px' width='9px' color='smOrange.500' />
+                  ) : (
+                    <Box w={2} h={2} rounded='full' bgColor={statusColour[status]} />
+                  )}
+                  <Box color={statusColour[status]}>{capitalizeFirstLetter(status)}</Box>
+                </HStack>
+              </Tooltip>
+              {breakVal ? (
+                <IconButtons
+                  onOpenTranscript={onOpenTranscript}
+                  fileName={fileName}
+                  language={language}
+                  id={id}
+                  accuracy={accuracy}
+                  date={date}
+                  status={status}
+                  onStartDelete={onStartDelete}
+                />
+              ) : null}
+            </>
+          )}
         </HStack>
       </HStack>
       {!breakVal && (
         <HStack color='smNavy.350' spacing={4} width='100%' justifyContent='space-between'>
-          <Box maxW='150px' flex={1} fontFamily='RMNeue-bold' whiteSpace='nowrap' fontSize='0.8em'>
+          <Box
+            maxW='150px'
+            data-qa='list-job-date'
+            flex={1}
+            fontFamily='RMNeue-bold'
+            whiteSpace='nowrap'
+            fontSize='0.8em'>
             <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Time Submitted'>
               {date ? formatTimeDateFromString(date) : 'Unknown'}
             </Tooltip>
           </Box>
-          <HStack width='140px'>
-            <IconButtons
-              onOpenTranscript={onOpenTranscript}
-              fileName={fileName}
-              language={language}
-              id={id}
-              accuracy={accuracy}
-              date={date}
-              status={status}
-              onStartDelete={onStartDelete}
-            />
-          </HStack>
+          {status !== 'deleted' && (
+            <HStack width='140px'>
+              <IconButtons
+                onOpenTranscript={onOpenTranscript}
+                fileName={fileName}
+                language={language}
+                id={id}
+                accuracy={accuracy}
+                date={date}
+                status={status}
+                onStartDelete={onStartDelete}
+              />
+            </HStack>
+          )}
         </HStack>
       )}
     </VStack>
@@ -357,15 +427,16 @@ const IconButtons = ({
       <Menu isLazy>
         <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Download'>
           <MenuButton
-            disabled={['running', 'rejected'].includes(status)}
+            disabled={['running', 'rejected', 'deleted'].includes(status)}
             as={IconButton}
             variant='ghost'
             aria-label='view'
+            data-qa='list-job-download-menu-button'
             icon={
               <DownloadJobIcon
                 fontSize={20}
                 color={
-                  ['running', 'rejected'].includes(status)
+                  ['running', 'rejected', 'deleted'].includes(status)
                     ? 'var(--chakra-colors-smBlack-200)'
                     : 'var(--chakra-colors-smNavy-350)'
                 }
@@ -373,15 +444,18 @@ const IconButtons = ({
             }
           />
         </Tooltip>
-        <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+        <Portal>
+          <TranscriptDownloadMenu fileName={fileName} jobId={id} status={status} />
+        </Portal>
       </Menu>
     </Box>
     <Box flex={1}>
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='View'>
         <IconButton
-          disabled={['running', 'rejected'].includes(status)}
+          disabled={['running', 'rejected', 'deleted'].includes(status)}
           variant='ghost'
           aria-label='view'
+          data-qa='list-job-view-transcript-button'
           onClick={(e) =>
             onOpenTranscript(
               {
@@ -391,7 +465,7 @@ const IconButtons = ({
                 date: date,
                 fileName
               },
-              'txt'
+              'json-v2'
             )
           }
           _focus={{ boxShadow: 'none' }}
@@ -399,7 +473,7 @@ const IconButtons = ({
             <ViewTranscriptionIcon
               fontSize='22'
               color={
-                ['running', 'rejected'].includes(status)
+                ['running', 'rejected', 'deleted'].includes(status)
                   ? 'var(--chakra-colors-smBlack-200)'
                   : 'var(--chakra-colors-smNavy-350)'
               }
@@ -411,8 +485,9 @@ const IconButtons = ({
     <Box flex={1}>
       <Tooltip placement='bottom' hasArrow color='smWhite.500' label='Delete'>
         <IconButton
+          data-qa='list-job-delete-button'
           variant='ghost'
-          disabled={status === 'running'}
+          disabled={['running', 'deleted'].includes(status)}
           aria-label='stop-or-delete'
           onClick={(e) => onStartDelete(id, status)}
           flex={1}
@@ -489,6 +564,7 @@ const LoadingJobsSkeleton = (key: any, breakVal: boolean) => {
 
 const statusColour = {
   rejected: 'smRed.500',
+  deleted: 'smBlack.250',
   done: 'smGreen.500',
   completed: 'smGreen.500',
   running: 'smOrange.400'

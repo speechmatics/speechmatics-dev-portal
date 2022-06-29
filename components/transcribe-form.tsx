@@ -24,9 +24,10 @@ import { capitalizeFirstLetter } from '../utils/string-utils';
 
 type FileUploadComponentProps = {
   onFileSelect: (file: File) => void;
+  disabled: boolean;
 };
 
-export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) => {
+export const FileUploadComponent = ({ onFileSelect, disabled }: FileUploadComponentProps) => {
   const [filesDragged, setFilesDragged] = useState(false);
   const [file, setFile] = useState<File>(null);
   const [isFileTooBigError, setIsFileTooBigError] = useState(false);
@@ -80,10 +81,10 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
     <VStack>
       <Flex
         alignSelf='stretch'
-        bgColor={filesDragged ? 'smBlue.300' : 'smBlue.100'}
-        _hover={!file ? { bgColor: 'smBlue.150' } : {}}
+        bgColor={disabled ? 'smBlack.100' : filesDragged ? 'smBlue.300' : 'smBlue.100'}
+        _hover={!file && !disabled ? { bgColor: 'smBlue.150' } : {}}
         border='2px dashed'
-        borderColor='#386DFB66'
+        borderColor={disabled ? 'smBlack.180' : '#386DFB66'}
         justifyContent='center'
         alignItems='center'
         position='relative'
@@ -94,7 +95,8 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={onSelectFiles}
-          accept='audio/*'
+          disabled={disabled}
+          accept='audio/*, video/mp4, video/m4a, video/ogg, video/mpeg'
         />
 
         <Flex
@@ -105,10 +107,16 @@ export const FileUploadComponent = ({ onFileSelect }: FileUploadComponentProps) 
           justifyContent='center'>
           {!file ? (
             <>
-              <UploadFileIcon color='var(--chakra-colors-smBlue-500)' height='3em' width='3em' />
+              <UploadFileIcon
+                color={
+                  disabled ? 'var(--chakra-colors-smBlack-250)' : 'var(--chakra-colors-smBlue-500)'
+                }
+                height='3em'
+                width='3em'
+              />
               <VStack alignItems='flex-start' spacing={0}>
                 <Box
-                  color='smNavy.500'
+                  color={disabled ? 'smNavy.300' : 'smNavy.500'}
                   fontFamily='RMNeue-SemiBold'
                   fontSize='1.2em'
                   lineHeight={1.2}>
@@ -187,6 +195,7 @@ export type SelectFieldProps = {
   data: { value: string; label: string; default?: boolean }[];
   onSelect: (value: string) => void;
   'data-qa': string;
+  disabled: boolean;
 };
 
 export const SelectField = ({
@@ -194,6 +203,7 @@ export const SelectField = ({
   tooltip,
   data,
   onSelect,
+  disabled = false,
   'data-qa': dataQa
 }: SelectFieldProps) => {
   const select = useCallback((value: number) => {
@@ -227,6 +237,7 @@ export const SelectField = ({
         color='smBlack.300'
         data-qa={dataQa}
         defaultValue={defaultValue}
+        disabled={disabled}
         borderRadius='2px'
         size='lg'
         onChange={(event) => select(event.target.selectedIndex)}>

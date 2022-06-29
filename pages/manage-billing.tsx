@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState, useMemo } from 'react';
 import {
   ConfirmRemoveModal,
   DataGridComponent,
@@ -56,7 +56,6 @@ const useGetPayments = (idToken: string) => {
 export default observer(function ManageBilling({}) {
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
@@ -96,6 +95,7 @@ export default observer(function ManageBilling({}) {
           <TabPanel p='1.5em'>
             <AddReplacePaymentCard
               paymentMethod={accountStore.getPaymentMethod()}
+              accountState={accountStore.getAccountState()}
               isLoading={accountStore.isLoading}
               deleteCard={deleteCard}
             />

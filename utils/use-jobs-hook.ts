@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext, useCallback, Dispatch } from 'r
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
+import { errToast } from '../components/common';
 
-export const useJobs = (limit, page) => {
+export const useJobs = (limit, page, includeDeleted) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [noMoreJobs, setNoMoreJobs] = useState<boolean>(false);
@@ -37,6 +38,7 @@ export const useJobs = (limit, page) => {
       createdBefore,
       setCreatedBefore,
       limit,
+      includeDeleted,
       setNoMoreJobs,
       setIsPolling,
       setIsLoading,
@@ -55,6 +57,7 @@ export const useJobs = (limit, page) => {
         createdBefore,
         setCreatedBefore,
         limit,
+        includeDeleted,
         setNoMoreJobs,
         setIsPolling,
         setIsWaitingOnMore,
@@ -63,20 +66,37 @@ export const useJobs = (limit, page) => {
     }
   }, [page]);
 
-  // could/should this be memoized? Not sure
-  const onDeleteJob = (id: string, force: boolean) => {
+  // When removing a job, we want to avoid sudden jerky changes in box data/size, so we do:
+  // 1. set invisible so it is hidden with an animation
+  // 2. After timeout, reset its values to deleted and set it to visible again, 
+  //    so it reanimates into view if deleted jobs are shown
+  // this allows a smooth transition for the user
+  const onDeleteJob = useCallback((id: string, force: boolean) => {
     if (idToken) {
       callDeleteJob(idToken, id, force)
         .then((response) => {
           if (!!response) {
-            setJobs((oldJobs) => oldJobs.filter((item) => item.id !== id));
+            setJobs((oldJobs) => {
+              const index = oldJobs.findIndex(item => item.id === id)
+              oldJobs[index].visible = false;
+              return [...oldJobs]
+            });
+            setTimeout(() => {
+              setJobs((oldJobs) => {
+                const index = oldJobs.findIndex(item => item.id === id)
+                oldJobs[index].visible = true;
+                oldJobs[index].status = 'deleted';
+                oldJobs[index].fileName = '';
+                return [...oldJobs]
+              });
+            }, 500);
           }
         })
         .catch((err) => {
-          console.log(err);
+          errToast("Failed to delete job " + id)
         });
     }
-  };
+  }, [idToken, setJobs])
 
   //for outside use
   const forceGetJobs = useCallback(() => {
@@ -88,6 +108,7 @@ export const useJobs = (limit, page) => {
       null,
       (value) => {},
       limit,
+      includeDeleted,
       setNoMoreJobs,
       setIsPolling,
       (value) => {},
@@ -116,6 +137,7 @@ const getJobs = (
   createdBefore: string,
   setCreatedBefore: Dispatch<string>,
   limit: number,
+  includeDeleted: boolean,
   setNoMoreJobs: Dispatch<boolean>,
   setIsPolling: Dispatch<boolean>,
   loadingFunction: Dispatch<boolean>,
@@ -126,7 +148,8 @@ const getJobs = (
     errorFunction(false);
     loadingFunction(true);
     const queries: JobQuery = {
-      limit: limit
+      limit: limit,
+      include_deleted: includeDeleted
     };
     if (createdBefore != null) {
       queries.created_before = createdBefore;
@@ -218,7 +241,9 @@ const formatJobs = (jobsResponse: JobsResponse[]): JobElementProps[] => {
       date: item.created_at,
       duration: item.duration ? formatDuration(item.duration) : null,
       fileName: item.data_name,
-      language: item.config?.transcription_config?.language
+      language: item.config?.transcription_config?.language,
+      key: item.id,
+      visible: true
     };
     if (item?.config?.transcription_config?.operating_point != null) {
       newItem.accuracy = item.config.transcription_config.operating_point;
@@ -271,19 +296,21 @@ const createSet = (
 };
 
 export type JobElementProps = {
-  status: 'running' | 'completed' | 'done' | 'rejected';
+  status: 'running' | 'completed' | 'done' | 'rejected' | 'deleted';
   fileName: string;
   date: string;
   accuracy?: string;
   duration: string;
   language?: string;
   id: string;
+  key: string;
+  visible: boolean;
 };
 
 type JobsResponse = {
   created_at: string;
   data_name: string;
-  status: 'running' | 'completed' | 'done' | 'rejected';
+  status: 'running' | 'completed' | 'done' | 'rejected' | 'deleted';
   duration: string;
   id: string;
   config?: JobConfig;
@@ -300,4 +327,5 @@ type JobConfig = {
 type JobQuery = {
   limit?: number;
   created_before?: string;
+  include_deleted?: boolean;
 };
