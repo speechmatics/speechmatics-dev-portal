@@ -58,7 +58,7 @@ export default function Learn({ }) {
           />
           <EngagementBox
             titleIcon={PostmanLogo}
-            title="Postman Environment"
+            title="Postman Workspace"
             description="Get started in minutes using our Postman workspace."
             ctaButtonLabel="Go to Postman"
             link="https://www.postman.com/speechmatics-dev/"
