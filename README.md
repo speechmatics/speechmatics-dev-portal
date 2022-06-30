@@ -29,16 +29,16 @@ You can start editing the app by modifying modifying `pages/index.js`. Notice ho
 
 ## Running on the cloud
 
-This app is built as a static web app using azure webapp integrations. The pipeline that runs to build the static web app is defined in the .github/workflows folder. There is a plan to setup a serious of development branches allowing us to build to a set of constantly running free-tier static web apps for development, testing and demonstration purposes before submitting the work to more rigorous tests.
+This app is built as a static web app using azure webapp integrations. The pipeline that runs to build the static web app is defined in the .github/workflows folder. We use a set of dev environments to build demo versions of the app (the general dev branched) before merging changes into the pre-release testing branch (general_ui_test).
 
-The dev environments we have for the UI are:
+The full details of the dev environments we have for the UI are:
 
-|branch              |usage       |url                                                    |
+|branch              |curr. usage |DNS url                                                |
 |--------------------|------------|-------------------------------------------------------|
-|general_dev_jupiter |analytics   |https://witty-coast-02348be03.1.azurestaticapps.net/   |
-|general_dev_mars    |general     |https://salmon-sea-0ca2c8e03.1.azurestaticapps.net/    |
-|general_dev_mercury |ui tests    |https://thankful-island-01372b310.1.azurestaticapps.net|
-|general_ui_test     |tester test |https://calm-island-0a73d9810.1.azurestaticapps.net    |
+|general_dev_jupiter |analytics   |https://dev-jupiter-portal.ui-internal.speechmatics.com|
+|general_dev_mars    |general     |https://dev-mars-portal.ui-internal.speechmatics.com   |
+|general_dev_mercury |general     |https://dev-mercury-portal.ui-internal.speechmatics.com|
+|general_ui_test     |tester test |https://test-portal.ui-internal.speechmatics.com       |
 
 ## Connecting to the backend
 

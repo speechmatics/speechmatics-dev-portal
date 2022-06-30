@@ -7,22 +7,23 @@ import {
   InteractionRequiredAuthError
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
-import { errToast } from '../components/common';
 
 class AccountContext {
   _account: Account = null;
-
+  _accountState: ContractState = null;
   isLoading: boolean = true;
   userHint: string = '';
 
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
+  _testAccountState: ContractState = 'active';
 
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
+      _accountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
@@ -38,6 +39,14 @@ class AccountContext {
 
   get account(): Account {
     return this._account;
+  }
+
+  set accountState(state: ContractState) {
+    this._accountState = state;
+  }
+
+  get accountState(): ContractState {
+    return this._accountState;
   }
 
   clear() {
@@ -104,8 +113,13 @@ class AccountContext {
     if (!response) throw new Error('attempt assigning empty response');
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
+    this._accountState = this.getAccountState()
 
     if (!this._account && 'account_id' in response) this._account = response as any;
+  }
+
+  getAccountState(): ContractState {
+    return this._account?.contracts[0]?.state
   }
 
   async accountsFetchFlow(
@@ -223,6 +237,7 @@ interface Contract {
   projects: Project[];
   runtime_url: string;
   payment_method: PaymentMethod | null;
+  state: ContractState;
 }
 
 interface UsageLimit {
@@ -249,3 +264,5 @@ export interface PaymentMethod {
   expiration_month: number;
   expiration_year: number;
 }
+
+export type ContractState = 'active' | 'past_due' | 'unpaid';

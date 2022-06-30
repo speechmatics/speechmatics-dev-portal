@@ -45,7 +45,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
         borderColor='smBlack.200'
         minW='0px'
         maxW={'180px'}
-        p={2}>
+        p={2}
+        zIndex='101'>
         {status === ('done' || 'completed') && (
           <>
             <MenuItem

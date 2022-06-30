@@ -89,12 +89,20 @@ export class FileTranscriptionStore {
     return this._secretKey;
   }
 
-  _transcriptionText: string = '';
-  set transcriptionText(value: string) {
-    this._transcriptionText = value;
+  _transcription: string = '';
+  set transcription(value: string) {
+    this._transcription = value;
   }
-  get transcriptionText(): string {
-    return this._transcriptionText;
+  get transcription(): string {
+    return this._transcription;
+  }
+
+  _transcriptionJSON: any = null;
+  set transcriptionJSON(value: any) {
+    this._transcriptionJSON = value;
+  }
+  get transcriptionJSON(): any {
+    return this._transcriptionJSON;
   }
 
   _dateSubmitted: string = '';
@@ -150,7 +158,7 @@ export class FileTranscriptionStore {
     this.stage = 'form';
     this.jobStatus = '';
     this.secretKey = '';
-    this.transcriptionText = '';
+    this.transcription = '';
     this.dateSubmitted = '';
     this.error = null;
     this.uploadErrors = [];
@@ -219,7 +227,6 @@ class FileTranscribeFlow {
     const store = this.store;
     const owner = this;
     return function (resp: any) {
-      console.log('getResponseFn closure', resp, store.stage, file !== store.file);
       owner.store.removeFileFromUploading(file);
 
       if (file !== store.file) return;
@@ -230,8 +237,6 @@ class FileTranscribeFlow {
   }
 
   callRequestSuccess(resp: any) {
-    console.log('callRequestSuccess', resp, this.store.stage);
-
     //dont act on it when we're not waiting for it
     if (this.store.stage != 'pendingFile') return;
 
@@ -315,12 +320,12 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  async fetchTranscription(idToken) {
+  async fetchTranscription(idToken: string) {
     const { jobId } = this.store;
 
-    const transcr = await callGetTranscript(idToken, jobId, 'text');
+    const transcr = await callGetTranscript(idToken, jobId, 'json-v2');
 
-    this.store.transcriptionText = transcr;
+    this.store.transcriptionJSON = transcr;
   }
 
   reset() {

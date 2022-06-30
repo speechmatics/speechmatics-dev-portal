@@ -13,7 +13,9 @@ import {
   ModalOverlay,
   Spinner,
   ModalCloseButton,
-  useBreakpointValue
+  useBreakpointValue,
+  HStack,
+  Button
 } from '@chakra-ui/react';
 import {
   DescriptionLabel,
@@ -22,7 +24,7 @@ import {
   PageHeader,
   SmPanel
 } from '../components/common';
-import { SubmitAJobIcon } from '../components/icons-library';
+import { GitHubLogo, PostmanLogo, SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
@@ -46,6 +48,23 @@ export default function Learn({ }) {
           buttonLabel='Watch Video'
           setStateUp={() => setIsYtModalOpen(true)}
         />
+        <HStack spacing={6} width='100%'>
+          <EngagementBox
+            titleIcon={GitHubLogo}
+            title="GitHub Community"
+            description="Give feedback and get help from the Speechmatics community."
+            ctaButtonLabel="Get Involved"
+            link="https://github.com/speechmatics/community"
+          />
+          <EngagementBox
+            titleIcon={PostmanLogo}
+            title="Postman Workspace"
+            description="Get started in minutes using our Postman workspace."
+            ctaButtonLabel="Go to Postman"
+            link="https://www.postman.com/speechmatics-dev/"
+          />
+        </HStack>
+
         <Grid gridTemplateColumns='repeat(auto-fit, minmax(14em, 1fr))' gap='1.5em' width='100%'>
           {elems.map((el, i) => (
             <React.Fragment key={i}>
@@ -97,6 +116,34 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
     </Modal>
   );
 };
+
+
+const EngagementBox = ({
+  titleIcon,
+  title,
+  description,
+  ctaButtonLabel,
+  link }) => {
+  return <VStack bg='smWhite.500'
+    border='1px solid' borderColor='smBlack.150' flex={1}
+    p={6} alignSelf='stretch' justifyContent='space-between'
+  >
+    <VStack alignItems='flex-start' alignSelf='stretch'>
+      <HStack spacing={3}>
+        <Box>{titleIcon({ width: '1.6em', height: '1.6em' })}</Box>
+        <Box fontFamily='RMNeue-Bold' fontSize='1.5em'>{title}</Box>
+      </HStack>
+      <Box color='smBlack.300'>{description}</Box>
+    </VStack>
+    <Link href={link} target='_blank' style={{ textDecoration: 'none' }}>
+      <Button bg='smBlue.400' color='smWhite.500' rounded='sm' px={7} mt={2}
+        _hover={{ bg: 'smBlue.350' }}>
+        {ctaButtonLabel}
+      </Button>
+    </Link>
+  </VStack>
+}
+
 
 const elems = [
   {
