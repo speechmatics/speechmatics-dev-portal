@@ -102,7 +102,7 @@ export default observer(function Dashboard({ children }) {
         onModalClose={onUserCreationModalClose}
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
-      <PaymentWarningBanner accountState={accountStore.getAccountState()} />
+      <PaymentWarningBanner accountState={accountStore.accountState} />
       
       <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
         {!breakVal && <MenuContainer /> }

@@ -80,7 +80,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
           onFileSelect={(file) => flow.assignFile(file)}
         />
       </Box>
@@ -97,7 +97,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
           onSelect={(val) => (store.language = val)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
 
         <SelectField
@@ -106,7 +106,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
           onSelect={(val) => (store.separation = val as any)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
 
         <SelectField
@@ -115,10 +115,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
           onSelect={(val) => (store.accuracy = val as any)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
       </Flex>
-      {accountStore.getAccountState() === 'unpaid' && (
+      {accountStore.accountState === 'unpaid' && (
         <Flex width='100%' pt={4}>
           <WarningBanner
             content={
@@ -145,7 +145,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
             flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
           }}
           disabled={
-            !store._file || !auth.isLoggedIn || accountStore.getAccountState() === 'unpaid'
+            !store._file || !auth.isLoggedIn || accountStore.accountState === 'unpaid'
           }>
           Get Your Transcription
         </Button>
