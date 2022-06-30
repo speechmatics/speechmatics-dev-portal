@@ -129,7 +129,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
                     update your card details
                   </a>
                 </Link>{' '}
-                to transcribe more files
+                to transcribe more files.
               </>
             }
           />
