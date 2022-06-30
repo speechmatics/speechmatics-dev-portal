@@ -95,7 +95,7 @@ export default observer(function ManageBilling({}) {
           <TabPanel p='1.5em'>
             <AddReplacePaymentCard
               paymentMethod={accountStore.getPaymentMethod()}
-              accountState={accountStore.getAccountState()}
+              accountState={accountStore.accountState}
               isLoading={accountStore.isLoading}
               deleteCard={deleteCard}
             />
