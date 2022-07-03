@@ -30,7 +30,6 @@ class AccountContext {
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
-      getUsageLimit: computed,
       keyJustRemoved: observable,
       responseError: observable
     });

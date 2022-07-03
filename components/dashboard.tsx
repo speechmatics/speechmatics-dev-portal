@@ -20,7 +20,7 @@ import { msalLogout } from '../utils/msal-utils';
 import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { WarningBanner, ErrorBanner } from './common'
+import { WarningBanner, ErrorBanner, PaymentWarningBanner, AccountErrorBox } from './common'
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -82,9 +82,13 @@ export default observer(function Dashboard({ children }) {
         .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
-          onUserCreationModalClose();
         })
-        .catch(err => console.error("dashboard accountStore catch", err));
+        .catch(err => {
+          console.error("dashboard accountStore catch", err)
+        })
+        .finally(() => {
+          onUserCreationModalClose();
+        });
     }
   }, [isAuthenticated, tokenPayload?.idToken]);
 
@@ -103,12 +107,12 @@ export default observer(function Dashboard({ children }) {
       />
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <PaymentWarningBanner accountState={accountStore.accountState} />
-      
+
       <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
-        {!breakVal && <MenuContainer /> }
+        {!breakVal && <MenuContainer />}
 
         <Box className='dashboard_content'>
-          {breakVal && <MenuContainer /> }
+          {breakVal && <MenuContainer />}
           <Box className='dashboard_padding'>
             <motion.main
               variants={animationVariants} // Pass the variant object into Framer Motion
@@ -117,6 +121,7 @@ export default observer(function Dashboard({ children }) {
               exit='exit' // Exit state (used later) to variants.exit
               transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
             >
+              {accountStore.responseError && <AccountErrorBox />}
               {children}
             </motion.main>
           </Box>
@@ -164,34 +169,5 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
   );
 }
 
-function PaymentWarningBanner({ accountState }) {
 
-  return (
-    <HStack zIndex={20} position="sticky" top="62px">
-      {accountState === 'past_due' &&
-        <WarningBanner 
-          centered={true}
-          content={
-            <>
-              We’ve had trouble taking payment. Please{' '}
-              <Link href='/manage-billing/#update_card'>
-                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-              </Link> to avoid disruptions to your account.{' '}
-            </>
-          }/>
-        }
-        {accountState === 'unpaid' &&
-          <ErrorBanner
-            mt="0"
-            content={
-              <>
-                We’ve had trouble taking payment. Please{' '}
-                <Link href='/manage-billing/#update_card'>
-                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-                </Link> to transcribe more files.{' '}
-              </>
-            }/>
-          }
-    </HStack>
-  )
-};
+

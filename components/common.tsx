@@ -22,7 +22,9 @@ import {
   ModalCloseButton,
   ModalOverlay,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  ListItem,
+  OrderedList
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -108,27 +110,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-            <HStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              alignItems='center'
-              padding='1.5em 1.5em'
-              {...props}>
-              {children}
-            </HStack>
-          )
+          <HStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            alignItems='center'
+            padding='1.5em 1.5em'
+            {...props}>
+            {children}
+          </HStack>
+        )
         : ({ children }) => (
-            <VStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              padding='1.2em 0.5em'
-              spacing='1em'
-              {...props}>
-              {children}
-            </VStack>
-          ),
+          <VStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            padding='1.2em 0.5em'
+            spacing='1em'
+            {...props}>
+            {children}
+          </VStack>
+        ),
     [breakVal]
   );
 
@@ -162,7 +164,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -179,7 +181,7 @@ export const SmPanel: ComponentWithAs<'div', StackProps> = ({ children, ...props
 );
 
 export const PageHeaderLabel = ({ children }) => (
-  <Text fontFamily='RMNeue-Bold' fontSize='2.2em' mt={{ base: '0.7em', md: '2em'}} >
+  <Text fontFamily='RMNeue-Bold' fontSize='2.2em' mt={{ base: '0.7em', md: '2em' }} >
     {children}
   </Text>
 );
@@ -408,7 +410,7 @@ export const ConfirmRemoveModal = ({
   onRemoveConfirm,
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',
-  returnFocusOnClose=true
+  returnFocusOnClose = true
 }) => (
   <Modal returnFocusOnClose={returnFocusOnClose} isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -521,7 +523,7 @@ export const AttentionBar = ({ description, data_qa = 'attentionBar', centered =
 );
 
 //michal: let's not use default chakra colours
-export const ErrorBanner = ({ text = '', content = null, alignment = "center", mt="2em" }) => (
+export const ErrorBanner = ({ text = '', content = null, alignment = "center", mt = "2em" }) => (
   <Flex
     flexDir='column'
     width='100%'
@@ -547,3 +549,71 @@ export const ErrorBanner = ({ text = '', content = null, alignment = "center", m
     </Flex>
   </Flex>
 );
+
+export function PaymentWarningBanner({ accountState }) {
+  return (
+    <HStack zIndex={20} position="sticky" top="62px">
+      {accountState === 'past_due' &&
+        <WarningBanner
+          centered={true}
+          content={
+            <>
+              We’ve had trouble taking payment. Please{' '}
+              <Link href='/manage-billing/#update_card'>
+                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+              </Link> to avoid disruptions to your account.{' '}
+            </>
+          } />
+      }
+      {accountState === 'unpaid' &&
+        <ErrorBanner
+          mt="0"
+          content={
+            <>
+              We’ve had trouble taking payment. Please{' '}
+              <Link href='/manage-billing/#update_card'>
+                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
+              </Link> to transcribe more files.{' '}
+            </>
+          } />
+      }
+    </HStack>
+  )
+};
+
+
+export function AccountErrorBox() {
+  return <Flex
+    flexDir="column"
+    width={["70%", "80%", "100%"]}
+    bg="smRed.100"
+    p={["2em", "2em", "1em"]}
+    mt="2em"
+    ml={[2, 2, 0]}
+    align="center"
+    justify="center"
+    alignItems="center"
+  >
+    <VStack color="smRed.500" alignItems='flex-start'>
+      <HStack>
+        <Box>
+          <ExclamationIcon width="1.5em" height="1.5em" />
+        </Box>
+        <Text fontFamily="RMNeue-Regular" fontSize="1em" ml="1em">
+          We were unable to get your account. Many of the app features will be disabled. To fix this problem, you should try:
+        </Text>
+      </HStack>
+      <OrderedList alignItems="center" pl={12}>
+        <ListItem>Refreshing the browser</ListItem>
+        <ListItem>Logging out and logging back in</ListItem>
+        <ListItem>Visiting our <span style={{ textDecorationLine: "underline" }}>
+          <Link href="https://docs.speechmatics.com/en/cloud/troubleshooting/">troubleshooting</Link>
+        </span> page</ListItem>
+        <ListItem>Contacting <span style={{ textDecorationLine: "underline" }}>
+          <Link href="https://www.speechmatics.com/about-us/contact">support</Link>
+        </span> if all else fails
+        </ListItem>
+      </OrderedList>
+    </VStack>
+  </Flex>
+}

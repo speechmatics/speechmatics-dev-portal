@@ -209,6 +209,7 @@ export const call = async (
   return fetch(apiEndpoint, options).then(
     async (response) => {
       console.log('fetch then', response);
+
       if (response.status == 401) {
         if (apiEndpoint.includes(RUNTIME_API_URL)) {
           throw { status: 'error', error: { type: 'runtime-auth' } };
@@ -219,29 +220,37 @@ export const call = async (
           return;
         }
       }
+
       if (response.status != 200 && response.status != 201) {
         let resp = null;
+
         try {
           resp = await response.json();
         } catch (e) {}
+
         const throwObj = {
           type: 'request-error',
           status: response.status,
           response: resp
         };
+
         console.error(
           `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
         );
+
         errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
+
         throw throwObj;
       }
 
       if (response.body == null) {
         return null;
       }
+
       if (isBlob) {
         return response.blob();
       }
+
       return isPlain ? response.text() : response.json();
     },
     (error) => {
