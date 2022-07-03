@@ -199,7 +199,7 @@ export const HeaderLabel = ({ children, ...props }) => (
 );
 
 export const DescriptionLabel = ({ children, ...props }) => (
-  <Text fontFamily='RMNeue-Regular' fontSize='1em' mb='1em' color='smBlack.300' {...props}>
+  <Text as='div' fontSize='1em' mb='1em' color='smBlack.300' {...props}>
     {children}
   </Text>
 );

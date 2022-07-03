@@ -17,6 +17,7 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from 're
 import {
   ConfirmRemoveModal,
   DataGridComponent,
+  ErrorBanner,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -54,7 +55,7 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const router = useRouter();
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -104,30 +105,39 @@ export default observer(function ManageBilling({}) {
         </TabList>
         <TabPanels>
           <TabPanel p='1.5em'>
-            <AddReplacePaymentCard
-              paymentMethod={accountStore.getPaymentMethod()}
-              accountState={accountStore.accountState}
-              isLoading={accountStore.isLoading}
-              deleteCard={deleteCard}
-              highlight={highlight}
-              setHighlight={setHighlight}
-            />
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <AddReplacePaymentCard
+                paymentMethod={accountStore.getPaymentMethod()}
+                accountState={accountStore.accountState}
+                isLoading={accountStore.isLoading}
+                deleteCard={deleteCard}
+                highlight={highlight}
+                setHighlight={setHighlight}
+              />
+            }
 
             <ViewPricingBar mt='2em' />
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <>
+                <DataGridComponent
+                  data={paymentsData}
+                  DataDisplayComponent={PaymentsGrid}
+                  isLoading={isLoading}
+                />
+                <UsageInfoBanner
+                  text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
+                  mt='2em'
+                />
+              </>
+            }
 
-            <DataGridComponent
-              data={paymentsData}
-              DataDisplayComponent={PaymentsGrid}
-              isLoading={isLoading}
-            />
-
-            <UsageInfoBanner
-              text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
-              mt='2em'
-            />
           </TabPanel>
         </TabPanels>
       </Tabs>
