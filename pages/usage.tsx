@@ -6,6 +6,7 @@ import accountContext from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import {
   DescriptionLabel,
+  ErrorBanner,
   HeaderLabel,
   PageHeader,
   UsageInfoBanner,
@@ -37,21 +38,26 @@ export default observer(function Usage() {
             <HeaderLabel>Usage Limits</HeaderLabel>
             <DescriptionLabel>Hours of Audio Per Month.</DescriptionLabel>
             <Grid gridTemplateColumns='1fr 1fr' gap='1.5em'>
-              <ModelDescriptionBox
-                mainColor='smGreen'
-                icon={<RocketIcon />}
-                title='ENHANCED'
-                usageLimitType='enhanced'
-                description='Enhanced provides the highest transcription accuracy.'
-              />
-              <ModelDescriptionBox
-                mainColor='smBlue'
-                icon={<BaloonIcon />}
-                title='STANDARD'
-                usageLimitType='standard'
-                description='Standard provides faster transcription with high accuracy.'
-              />
-
+              {accountStore.responseError ?
+                <GridItem colSpan={2}>
+                  <ErrorBanner mt="0" content={`Unable to get usage limits information`} />
+                </GridItem>
+                : <>
+                  <ModelDescriptionBox
+                    mainColor='smGreen'
+                    icon={<RocketIcon />}
+                    title='ENHANCED'
+                    usageLimitType='enhanced'
+                    description='Enhanced provides the highest transcription accuracy.'
+                  />
+                  <ModelDescriptionBox
+                    mainColor='smBlue'
+                    icon={<BaloonIcon />}
+                    title='STANDARD'
+                    usageLimitType='standard'
+                    description='Standard provides faster transcription with high accuracy.'
+                  />
+                </>}
               <GridItem colSpan={2}>
                 {accountStore.isLoading ? (
                   <Box bg='smNavy.500' width='100%' />
