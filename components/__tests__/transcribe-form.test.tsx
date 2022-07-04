@@ -23,6 +23,7 @@ describe('transcribe form and flow tests', () => {
         data={data}
         onSelect={callback}
         data-qa='test-select'
+        disabled={false}
       />
     );
 

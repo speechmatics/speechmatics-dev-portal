@@ -1,11 +1,11 @@
 import { useBreakpointValue, HStack, VStack, Box, Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import { HeaderLabel, DescriptionLabel, pad } from './common';
+import { HeaderLabel, DescriptionLabel, pad, WarningBanner } from './common';
 import { CardImage, CardGreyImage, DownloadInvoice } from './icons-library';
 import { Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
-export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) => {
+export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, accountState, highlight, setHighlight }) => {
   const breakVal = useBreakpointValue({
     base: 0,
     xs: 1,
@@ -15,6 +15,28 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
     xl: 5,
     '2xl': 6
   });
+
+  const updateButtonRef = useRef(null);
+
+  const paymentMethodText = useCallback(() => {
+    if (!paymentMethod) return 'No Payment Card Added';
+    if (accountState === 'active') return 'Payment Card Active';
+    if (['past_due', 'unpaid'].includes(accountState)) return 'Payment Card Issue';
+  }, [paymentMethod, accountState]);
+
+  useEffect(() => {
+    if (highlight) {
+      setTimeout(() => {
+        updateButtonRef?.current?.focus();
+        setTimeout(() => {
+          if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+          }
+          setHighlight(false);
+        }, 1000);
+      }, 300);
+    }
+  }, [highlight]);
 
   return isLoading ? (
     <HStack width='100%' justifyContent='space-between' alignItems='flex-start'>
@@ -29,7 +51,7 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
     <HStack width='100%' justifyContent='space-between' alignItems='flex-start'>
       <VStack alignItems='flex-start'>
         <HeaderLabel>
-          {paymentMethod ? 'Payment Card Active' : 'No Payment Card Added'}
+          {paymentMethodText()}
           {breakVal < 2 && (
             <span style={{ display: 'inline-block', marginLeft: '0.5em' }}>
               {paymentMethod ? (
@@ -47,9 +69,18 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard }) 
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
             : 'Add a payment card to increase these limits.'}
         </DescriptionLabel>
+        {accountState === 'unpaid' && (
+          <Box width={{ base: '100%', lg: '90%' }} py={4}>
+            <WarningBanner text='Please update your card details to transcribe more files. If you have recently made a payment, it may take a few minutes to update your account.' />
+          </Box>
+        )}
         <Box>
           <Link href='/subscribe/'>
             <Button
+              ref={updateButtonRef}
+              _focus={{
+                bg: 'var(--chakra-colors-smOrange-500)'
+              }}
               variant='speechmatics'
               alignSelf='flex-start'
               data-qa='button-add-replace-payment'>

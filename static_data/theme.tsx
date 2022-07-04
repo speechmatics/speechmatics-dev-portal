@@ -54,6 +54,7 @@ const theme = extendTheme({
       150: '#E8F0F8',
       200: '#EAF3FF',
       300: '#BFD8FE',
+      350: '#88b5fa',
       400: '#5398FC',
       500: '#386DFB',
       600: '#1848C3',
@@ -96,6 +97,7 @@ const theme = extendTheme({
     },
     smOrange: {
       150: '#CB6C4310',
+      200: '#fcf2e8',
       400: '#E27919',
       500: '#CB6C43'
     },
