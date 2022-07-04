@@ -32,7 +32,7 @@ import {
   positiveToast,
   SmPanel,
   ErrorBanner,
-  
+
 } from '../components/common';
 import { ExclamationIcon, BinIcon, CompleteIcon } from '../components/icons-library';
 import { formatDate } from '../utils/date-utils';
@@ -41,7 +41,7 @@ import { CodeExamples } from '../components/code-examples';
 
 //accountStore.getRuntimeURL()
 
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel='Manage Access' introduction='Manage API Keys.' />
@@ -148,51 +148,54 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
           Create new keys to manage security or provide temporary access.
         </DescriptionLabel>
         {(genTokenStage == 'init' || genTokenStage == 'waiting' || genTokenStage === 'error') && (
-          <VStack width='100%' spacing={4}>
-            <HStack mt='1em' spacing='1em' width='100%'>
-              <Input
-                variant='speechmatics'
-                flex='1'
-                type='text'
-                bg={genTokenStage == 'waiting' || apiKeys?.length >= 5 ? 'smBlack.100' : null}
-                placeholder='Enter a name for your API key'
-                onChange={(ev) => setChosenTokenName(ev.target.value)}
-                style={{ border: noNameError ? '1px solid red' : '' }}
-                ref={nameInputRef}
-                p='1.55em 1em'
-                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5}
-                onKeyDown={inputOnKeyDown}
-                data-qa='input-token-name'
-                maxLength={120}></Input>
-              <Button
-                variant='speechmatics'
-                disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5 || !chosenTokenName?.length }
-                onClick={() => requestToken()}
-                data-qa='button-generate-key'
-                {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}>
-                {genTokenStage == 'waiting' && <Spinner mr='1em' />}Generate API Key
-              </Button>
-            </HStack>
+          accountStore.responseError ?
+            <ErrorBanner mt="0" content={`Unable to create api keys. Couldn't retreive account information.`} />
+            :
+            <VStack width='100%' spacing={4}>
+              <HStack mt='1em' spacing='1em' width='100%'>
+                <Input
+                  variant='speechmatics'
+                  flex='1'
+                  type='text'
+                  bg={genTokenStage == 'waiting' || apiKeys?.length >= 5 ? 'smBlack.100' : null}
+                  placeholder='Enter a name for your API key'
+                  onChange={(ev) => setChosenTokenName(ev.target.value)}
+                  style={{ border: noNameError ? '1px solid red' : '' }}
+                  ref={nameInputRef}
+                  p='1.55em 1em'
+                  disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5}
+                  onKeyDown={inputOnKeyDown}
+                  data-qa='input-token-name'
+                  maxLength={120}></Input>
+                <Button
+                  variant='speechmatics'
+                  disabled={genTokenStage == 'waiting' || apiKeys?.length >= 5 || !chosenTokenName?.length}
+                  onClick={() => requestToken()}
+                  data-qa='button-generate-key'
+                  {...(breakVal < 3 && { paddingLeft: '1em', paddingRight: '1em' })}>
+                  {genTokenStage == 'waiting' && <Spinner mr='1em' />}Generate API Key
+                </Button>
+              </HStack>
 
-            {apiKeys?.length >= 5 && (
-              <WarningBanner
-                text={
-                  tokensFullDescr ||
-                  'You are using all of your available API keys. To generate a new API key, you need to delete an existing API key.'
-                }
-              />
-            )}
+              {apiKeys?.length >= 5 && (
+                <WarningBanner
+                  text={
+                    tokensFullDescr ||
+                    'You are using all of your available API keys. To generate a new API key, you need to delete an existing API key.'
+                  }
+                />
+              )}
 
-            {genTokenStage === 'error' && (
-              <ErrorBanner
-                alignment='left'
-                text={
-                  tokensFullDescr ||
-                  'Something went wrong generating your API key. Please try again.'
-                }
-              />
-            )}
-          </VStack>
+              {genTokenStage === 'error' && (
+                <ErrorBanner
+                  alignment='left'
+                  text={
+                    tokensFullDescr ||
+                    'Something went wrong generating your API key. Please try again.'
+                  }
+                />
+              )}
+            </VStack>
         )}
 
         {genTokenStage == 'generated' && (
