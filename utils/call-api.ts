@@ -2,11 +2,23 @@ import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
 import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
 import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
+import { makeAutoObservable } from 'mobx';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
+
+class CallStore {
+  has500Error: boolean = false;
+  hasConnectionError: boolean = false;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+}
+
+export const callStore = new CallStore();
 
 export const callPostAccounts = async (accessToken: string) => {
   return call(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
@@ -240,6 +252,8 @@ export const call = async (
 
         errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
 
+        if (response.status == 500) callStore.has500Error = true;
+
         throw throwObj;
       }
 
@@ -257,8 +271,9 @@ export const call = async (
       console.log('fetch error', error);
       //only happens when something goes wrong with the function fetch not a specific response,
       // the responses should be cought in the following catch block on this promise
-      setTimeout(() => msalLogout(true), 1000);
-      errToast(`Redirecting to login page...`);
+      // setTimeout(() => msalLogout(true), 1000);
+      // errToast(`Redirecting to login page...`);
+      callStore.hasConnectionError = true;
       throw { status: 'error', error: { type: error.type } };
     }
   );

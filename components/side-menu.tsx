@@ -14,7 +14,7 @@ import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
 
 export function MenuContainer() {
-  const showMenuBurger = useBreakpointValue({ base: true, xs: true, sm: true, md: false });
+  const showMenuBurger = useBreakpointValue({ base: true, md: false });
 
   if (showMenuBurger) return <MobileMenu />;
 
@@ -55,7 +55,7 @@ function MobileMenu() {
           <Menu />
         </Box>
       </Slide>
-      <Box  top='62px'>
+      <Box top='62px'>
         <IconButton
           icon={<FiMenu />}
           aria-label={''}
@@ -72,7 +72,7 @@ function MobileMenu() {
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className='nav_menu' rowGap='0.8em' height='450px'>
+    <VStack className='nav_menu' rowGap='0.8em' height='100vh'>
       {menuData.map((item) => (
         <MenuElem
           item={item}

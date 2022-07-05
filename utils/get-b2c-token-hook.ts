@@ -7,7 +7,7 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
   const [error, setError] = useState<any>();
-  const { accountStore, tokenStore } = useContext(accountStoreContext);
+  const { accountStore } = useContext(accountStoreContext);
 
   useEffect(() => {
     const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${

@@ -17,10 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogo } from './icons-library';
+import { ExclamationIcon, ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
 import { WarningBanner, ErrorBanner, PaymentWarningBanner, AccountErrorBox } from './common'
+import { callStore } from '../utils/call-api';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -105,14 +106,22 @@ export default observer(function Dashboard({ children }) {
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
+      <ErrorModal isModalOpen={callStore.has500Error} errorTitle='A problem occured on our side.'
+        errorDescription="Sorry, it's a 500! Please, try again in few minutes."
+        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+
+      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='Looks like you’re offline.'
+        errorDescription="The service is out of reach."
+        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <PaymentWarningBanner accountState={accountStore.accountState} />
 
-      <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
-        {!breakVal && <MenuContainer />}
+      <Box className='dashboard' tabIndex={0}>
 
-        <Box className='dashboard_content'>
-          {breakVal && <MenuContainer />}
+        <Box className='dashboard_content' flexDirection={breakVal ? 'column' : 'row'}>
+          <MenuContainer />
+
           <Box className='dashboard_padding'>
             <motion.main
               variants={animationVariants} // Pass the variant object into Framer Motion
@@ -164,6 +173,33 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
             <Button variant='speechmatics'>Go to Login</Button>
           </Link>
         </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+
+function ErrorModal({ isModalOpen, errorTitle, errorDescription, buttonLabel, buttonCallback }) {
+  return (
+    <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false} size='2xl'>
+      <ModalOverlay style={{ backdropFilter: 'blur(5px)' }} bgColor='#fff5' />
+      <ModalContent borderRadius='sm' bg='smRed.500'>
+        <ModalBody color='smWhite.500' >
+          <HStack py={4} width='100%' justifyContent='space-between'>
+            <HStack spacing={4}>
+              <Box>
+                <ExclamationIconLarge color='var(--chakra-colors-smWhite-500)' />
+              </Box>
+              <VStack alignItems='flex-start' spacing={0}>
+                <Box fontSize='xl' fontWeight='bold'>{errorTitle}</Box>
+                <Box fontSize='sm'>{errorDescription}</Box>
+              </VStack>
+            </HStack>
+            <Button variant='speechmaticsWhite' onClick={buttonCallback}>
+              {buttonLabel}
+            </Button>
+          </HStack>
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

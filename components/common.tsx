@@ -45,6 +45,7 @@ import {
   PaginationNext
 } from './pagination';
 import { Limits } from './pagination/lib/hooks/usePagination';
+import { ContractState } from '../utils/account-store-context';
 
 export const UsageInfoBanner = ({ text, centered = false, ...props }) => (
   <Flex width='100%' bg='smBlue.150' p='1em' {...props} justifyContent={centered ? 'center' : ''}>
@@ -550,7 +551,11 @@ export const ErrorBanner = ({ text = '', content = null, alignment = "center", m
   </Flex>
 );
 
-export function PaymentWarningBanner({ accountState }) {
+type PaymentWarningBannerProps = {
+  accountState: ContractState
+}
+
+export function PaymentWarningBanner({ accountState }: PaymentWarningBannerProps) {
   return (
     <HStack zIndex={20} position="sticky" top="62px">
       {accountState === 'past_due' &&
