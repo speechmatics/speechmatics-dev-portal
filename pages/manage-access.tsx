@@ -18,26 +18,23 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState, useRef, useContext, useEffect } from 'react';
 import Dashboard from '../components/dashboard';
-import accountContext, { ApiKey } from '../utils/account-store-context';
-import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
+import accountContext from '../utils/account-store-context';
+import { callPostApiKey } from '../utils/call-api';
 import React from 'react';
 import {
   WarningBanner,
-  ConfirmRemoveModal,
   CopyButton,
   DescriptionLabel,
-  GridSpinner,
   HeaderLabel,
   PageHeader,
-  positiveToast,
   SmPanel,
   ErrorBanner,
 
 } from '../components/common';
-import { ExclamationIcon, BinIcon, CompleteIcon } from '../components/icons-library';
-import { formatDate } from '../utils/date-utils';
+import { CompleteIcon } from '../components/icons-library';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
+import { PreviousTokens } from '../components/previous-tokens';
 
 //accountStore.getRuntimeURL()
 
@@ -254,87 +251,3 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
   }
 );
 
-const PreviousTokens = observer(() => {
-  const [[apikeyIdToRemove, apikeyName], setApiKeyToRemove] = useState<[string, string]>(['', '']);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const apiKeys = accountStore
-    .getApiKeys()
-    ?.slice()
-    .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime());
-  const idToken = tokenStore.tokenPayload?.idToken;
-
-  const aboutToRemoveOne = (el: ApiKey) => {
-    console.log('aboutToRemoveOne', el, el.apikey_id);
-    setApiKeyToRemove([el.apikey_id, el.name]);
-    onOpen();
-  };
-
-  const onRemoveConfirm = () => {
-    console.log('aboutToRemoveOne', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
-      accountStore.fetchServerState(idToken);
-      positiveToast('API Key removed');
-    });
-    onClose();
-    accountStore.keyJustRemoved = true;
-  };
-
-  return (
-    <Box width='100%'>
-      <ConfirmRemoveModal
-        isOpen={isOpen}
-        onClose={onClose}
-        mainTitle={`Are you sure want to delete "${apikeyName}" API key?`}
-        subTitle='This operation cannot be undone and will invalidate the API key'
-        onRemoveConfirm={onRemoveConfirm}
-        confirmLabel='Confirm deletion'
-      />
-
-      <HeaderLabel>Current API Keys</HeaderLabel>
-      <DescriptionLabel>
-        You have used {apiKeys?.length}/5 of your available API keys.
-      </DescriptionLabel>
-
-      <Grid gridTemplateColumns='repeat(3, 1fr)' className='sm_grid'>
-        <GridItem className='grid_header'>API Key Name</GridItem>
-        <GridItem className='grid_header'>Created</GridItem>
-        <GridItem className='grid_header'></GridItem>
-
-        {apiKeys?.map((el, i) => (
-          <React.Fragment key={`${el.name}${el.created_at}`}>
-            <GridItem className='grid_row_divider'>{i != 0 && <hr />}</GridItem>
-            <GridItem>{el.name}</GridItem>
-            <GridItem>{formatDate(new Date(el.created_at))}</GridItem>
-            <GridItem display='flex' justifyContent='flex-end' style={{ padding: '0.4em' }}>
-              <IconButton
-                size='sm'
-                variant='ghost'
-                aria-label='remove'
-                icon={<BinIcon />}
-                onClick={() => aboutToRemoveOne(el)}
-              />
-            </GridItem>
-          </React.Fragment>
-        ))}
-        {!accountStore.isLoading && (!apiKeys || apiKeys?.length == 0) && (
-          <GridItem colSpan={3}>
-            <Flex width='100%' justifyContent='center'>
-              <ExclamationIcon />
-              <Text ml='1em'>You don’t currently have any API keys.</Text>
-            </Flex>
-          </GridItem>
-        )}
-        {accountStore.isLoading && (
-          <GridItem colSpan={3}>
-            <Flex width='100%' justifyContent='center'>
-              <GridSpinner />
-              <Text ml='1em'>One moment please...</Text>
-            </Flex>
-          </GridItem>
-        )}
-      </Grid>
-    </Box>
-  );
-});
