@@ -477,6 +477,8 @@ const toast = createStandaloneToast({
     }
   }
 });
+
+
 export const errToast = (descr: string | any) =>
   toast({
     title: '',
@@ -484,6 +486,19 @@ export const errToast = (descr: string | any) =>
     status: 'error',
     duration: 10000,
     position: 'bottom-right',
+    isClosable: true,
+    containerStyle: {
+      fontFamily: 'RMNeue-Regular'
+    }
+  });
+
+export const errTopToast = (descr: string | any) =>
+  toast({
+    title: '',
+    description: typeof descr === 'string' ? descr : JSON.stringify(descr),
+    status: 'error',
+    duration: 10000,
+    position: 'top',
     isClosable: true,
     containerStyle: {
       fontFamily: 'RMNeue-Regular'

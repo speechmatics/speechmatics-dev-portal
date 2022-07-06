@@ -3,6 +3,7 @@ import { msalLogout } from './msal-utils';
 import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
 import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
 import { makeAutoObservable } from 'mobx';
+import { RequestThrowType } from '../custom';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
@@ -240,19 +241,23 @@ export const call = async (
           resp = await response.json();
         } catch (e) {}
 
-        const throwObj = {
-          type: 'request-error',
-          status: response.status,
-          response: resp
-        };
+        console.error(`fetch error on ${apiEndpoint} occured, response ${JSON.stringify(resp)}`);
 
-        console.error(
-          `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
+        if (response.status == 500) {
+          callStore.has500Error = true;
+          return;
+        }
+
+        const toast = errToast(
+          `An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`
         );
 
-        errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
-
-        if (response.status == 500) callStore.has500Error = true;
+        const throwObj: RequestThrowType = {
+          type: 'request-error',
+          status: response.status,
+          response: resp,
+          toastId: toast
+        };
 
         throw throwObj;
       }

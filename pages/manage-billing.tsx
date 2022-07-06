@@ -8,6 +8,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  toast,
   useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
@@ -18,6 +19,8 @@ import {
   ConfirmRemoveModal,
   DataGridComponent,
   ErrorBanner,
+  errToast,
+  errTopToast,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -31,6 +34,7 @@ import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
 import { useRouter } from 'next/router';
+import { RequestThrowType } from '../custom';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -70,9 +74,24 @@ export default observer(function ManageBilling({ }) {
   }, []);
 
   const onRemoveConfirm = () => {
-    callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
-      accountStore.fetchServerState(idToken)
-    );
+    callRemoveCard(idToken, accountStore.getContractId()).then(
+      (res) =>
+        accountStore.fetchServerState(idToken)
+      ,
+      (err: RequestThrowType) => {
+        if (err.status == 403) {
+          toast.close(err.toastId);
+          errTopToast(`You can't remove your payment card at the moment. Please, check unpaid invoices first or contact support.`)
+
+        } else if (err.status == 404) {
+          toast.close(err.toastId);
+          errToast(`Something went wrong with deleting they API key. The contract (id: ${accountStore.getContractId()}) has not been found. Please, try again or contact support.`)
+
+        } else {
+          errToast(`Something went wrong with deleting they API key. Please, try again or contact support.`)
+        }
+      }
+    )
     onClose();
   };
 

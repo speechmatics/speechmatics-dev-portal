@@ -1,3 +1,5 @@
+import { ToastId } from '@chakra-ui/react';
+
 export type TranscriptResultType = 'word' | 'punctuation' | 'speaker_change' | 'entity';
 
 export type TranscriptResult = {
@@ -38,4 +40,11 @@ export type BatchTranscriptionResponse = {
     transcript: string;
   };
   results?: TranscriptResult[];
+};
+
+export type RequestThrowType = {
+  type: string;
+  status: number;
+  response: any;
+  toastId: ToastId;
 };
