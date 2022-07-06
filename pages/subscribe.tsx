@@ -87,7 +87,7 @@ function Subscribe({ }) {
           })
           .catch((error) => {
             setSubmitButtonReady(true);
-            errToast(`Something went wrong, please try again later. ${error.status}`);
+            errToast(`Something went wrong on our side. Please try again later or contact support. (${error.status})`);
           });
       },
 
