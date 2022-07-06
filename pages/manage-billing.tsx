@@ -85,10 +85,10 @@ export default observer(function ManageBilling({ }) {
 
         } else if (err.status == 404) {
           toast.close(err.toastId);
-          errToast(`Something went wrong with deleting they API key. The contract (id: ${accountStore.getContractId()}) has not been found. Please, try again or contact support.`)
+          errToast(`Something went wrong with removing your payment card. The contract (id: ${accountStore.getContractId()}) has not been found. Please, try again or contact support.`)
 
         } else {
-          errToast(`Something went wrong with deleting they API key. Please, try again or contact support.`)
+          errToast(`Something went wrong with removing your payment card. Please, try again or contact support.`)
         }
       }
     )
