@@ -220,7 +220,7 @@ export const call = async (
 
   return fetch(apiEndpoint, options).then(
     async (response) => {
-      console.log('fetch then', response);
+      console.log('fetch then', apiEndpoint, response);
 
       if (response.status == 401) {
         if (apiEndpoint.includes(RUNTIME_API_URL)) {

@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -34,13 +34,13 @@ function Subscribe({}) {
   const router = useRouter();
 
   useEffect(() => {
-    if (idToken && !!accountStore.getContractId()) {
+    if (idToken && (accountStore.getContractId() !== undefined)) {
       callGetSecrChargify(idToken, accountStore.getContractId())
         .then((tokenResp) => {
           setPaymentToken(tokenResp.payment_token);
         })
         .catch((err) => {
-          errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`);
+          errToast(`Unable to retreive the contract (id: ${accountStore.getContractId()}). Please contact support.`);
         });
     }
   }, [idToken, accountStore.getContractId()]);

@@ -1,6 +1,6 @@
 import { useDisclosure, Box, Grid, GridItem, IconButton, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callRemoveApiKey } from "../utils/call-api";
 import { formatDate } from "../utils/date-utils";
@@ -13,10 +13,12 @@ export const PreviousTokens = observer(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { accountStore, tokenStore } = useContext(accountContext);
-  const apiKeys = accountStore
-    .getApiKeys()
-    ?.slice()
-    .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime());
+
+  const apiKeys = useMemo(() => (
+    accountStore.getApiKeys()?.slice()
+      .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime())),
+    [accountStore.getApiKeys()]);
+
   const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
