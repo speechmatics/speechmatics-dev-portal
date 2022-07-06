@@ -93,7 +93,7 @@ function Subscribe({ }) {
 
       (error: any) => {
         setSubmitButtonReady(true);
-        errToast(`Error while attempting to add a card: ${error.errors}`);
+        errToast(`Error while attempting to add a card: ${error.errors}. Please, try again later or contact support.`);
       }
     );
   };
