@@ -110,7 +110,7 @@ export default observer(function Dashboard({ children }) {
         errorDescription="Sorry, it's a 500! Please, try again in few minutes."
         buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
 
-      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='Looks like you’re offline.'
+      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='A problem occured when attempting to connect.'
         errorDescription="The service is out of reach."
         buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
 
