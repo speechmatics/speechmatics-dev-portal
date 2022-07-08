@@ -160,6 +160,7 @@ class AccountContext {
 
 class TokenContext {
   tokenPayload: AuthenticationResult = null;
+  lastActive: Date = null;
 
   authorityToUse: string = '';
 
@@ -170,7 +171,8 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable
+      loginFailureError: observable,
+      lastActive: observable,
     });
   }
 
@@ -184,8 +186,9 @@ export async function acquireTokenFlow(
   account: AccountInfo
 ) {
   const request = {
-    scopes: [],
-    account
+    scopes: [process.env.DEFAULT_B2C_SCOPE],
+    account,
+    forceRefresh: false,
   } as SilentRequest;
 
   return msalInstance
