@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
+import { accountStore } from '../utils/account-store-context';
 
 export function MenuContainer() {
   const showMenuBurger = useBreakpointValue({ base: true, md: false });
@@ -90,7 +91,7 @@ function MenuElem({ item, selected, ...props }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={item.path}>
+    <Link href={accountStore.account !== undefined ? item.path : ''} >
       <Box
         className={`menu_elem ${selected ? 'selected' : ''}`}
         {...props}
