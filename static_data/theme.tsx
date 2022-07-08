@@ -38,6 +38,7 @@ const breakpoints = createBreakpoints({
 const theme = extendTheme({
   breakpoints,
   fonts: {
+    heading: 'RMNeue-Regular',
     body: 'RMNeue-Regular'
   },
   colors: {

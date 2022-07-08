@@ -2,11 +2,24 @@ import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
 import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
 import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
+import { makeAutoObservable } from 'mobx';
+import { RequestThrowType } from '../custom';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
+
+class CallStore {
+  has500Error: boolean = false;
+  hasConnectionError: boolean = false;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+}
+
+export const callStore = new CallStore();
 
 export const callPostAccounts = async (accessToken: string) => {
   return call(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
@@ -208,7 +221,8 @@ export const call = async (
 
   return fetch(apiEndpoint, options).then(
     async (response) => {
-      console.log('fetch then', response);
+      console.log('fetch then', apiEndpoint, response);
+
       if (response.status == 401) {
         if (apiEndpoint.includes(RUNTIME_API_URL)) {
           throw { status: 'error', error: { type: 'runtime-auth' } };
@@ -219,37 +233,52 @@ export const call = async (
           return;
         }
       }
+
       if (response.status != 200 && response.status != 201) {
         let resp = null;
+
         try {
           resp = await response.json();
         } catch (e) {}
-        const throwObj = {
+
+        console.error(`fetch error on ${apiEndpoint} occured, response ${JSON.stringify(resp)}`);
+
+        if (response.status == 500) {
+          callStore.has500Error = true;
+          return;
+        }
+
+        const toastId = errToast(
+          `An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`
+        );
+
+        const throwObj: RequestThrowType = {
           type: 'request-error',
           status: response.status,
-          response: resp
+          response: resp,
+          toastId: toastId
         };
-        console.error(
-          `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
-        );
-        errToast(`An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`);
+
         throw throwObj;
       }
 
       if (response.body == null) {
         return null;
       }
+
       if (isBlob) {
         return response.blob();
       }
+
       return isPlain ? response.text() : response.json();
     },
     (error) => {
       console.log('fetch error', error);
       //only happens when something goes wrong with the function fetch not a specific response,
       // the responses should be cought in the following catch block on this promise
-      setTimeout(() => msalLogout(true), 1000);
-      errToast(`Redirecting to login page...`);
+      // setTimeout(() => msalLogout(true), 1000);
+      // errToast(`Redirecting to login page...`);
+      callStore.hasConnectionError = true;
       throw { status: 'error', error: { type: error.type } };
     }
   );

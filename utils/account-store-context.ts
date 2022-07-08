@@ -14,6 +14,8 @@ class AccountContext {
   isLoading: boolean = true;
   userHint: string = '';
 
+  responseError = false;
+
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
@@ -28,8 +30,8 @@ class AccountContext {
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
-      getUsageLimit: action,
-      keyJustRemoved: observable
+      keyJustRemoved: observable,
+      responseError: observable
     });
   }
 
@@ -93,7 +95,9 @@ class AccountContext {
   }
 
   async fetchServerState(idToken: string) {
+    this.responseError = false;
     this.isLoading = true;
+
     return callGetAccounts(idToken)
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
@@ -105,6 +109,7 @@ class AccountContext {
       })
       .catch((err) => {
         console.error('fetchServerState', err);
+        this.responseError = true;
         this.isLoading = false;
       });
   }
@@ -113,13 +118,13 @@ class AccountContext {
     if (!response) throw new Error('attempt assigning empty response');
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
-    this._accountState = this.getAccountState()
+    this._accountState = this.getAccountState();
 
     if (!this._account && 'account_id' in response) this._account = response as any;
   }
 
   getAccountState(): ContractState {
-    return this._account?.contracts[0]?.state
+    return this._account?.contracts[0]?.state;
   }
 
   async accountsFetchFlow(
@@ -127,6 +132,8 @@ class AccountContext {
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
     this.requestSent = this.isLoading = true;
+    this.responseError = false;
+
     return callGetAccounts(accessToken)
       .then(async (jsonResp: any) => {
         if (
@@ -149,9 +156,11 @@ class AccountContext {
           return jsonResp;
         }
 
+        this.responseError = true;
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
+        this.responseError = true;
         this.isLoading = false;
         console.error('account store catch', err);
       });

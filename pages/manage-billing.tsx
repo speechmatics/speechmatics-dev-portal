@@ -8,6 +8,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  toast,
   useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
@@ -17,6 +18,9 @@ import React, { useCallback, useContext, useEffect, useState, useMemo } from 're
 import {
   ConfirmRemoveModal,
   DataGridComponent,
+  ErrorBanner,
+  errToast,
+  errTopToast,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -30,6 +34,7 @@ import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
 import { useRouter } from 'next/router';
+import { RequestThrowType } from '../custom';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -54,7 +59,7 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
   const router = useRouter();
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
@@ -69,9 +74,24 @@ export default observer(function ManageBilling({}) {
   }, []);
 
   const onRemoveConfirm = () => {
-    callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
-      accountStore.fetchServerState(idToken)
-    );
+    callRemoveCard(idToken, accountStore.getContractId()).then(
+      (res) =>
+        accountStore.fetchServerState(idToken)
+      ,
+      (err: RequestThrowType) => {
+        if (err.status == 403) {
+          toast.close(err.toastId);
+          errTopToast(`You can't remove your payment card at the moment. Please, check unpaid invoices first or contact support.`)
+
+        } else if (err.status == 404) {
+          toast.close(err.toastId);
+          errToast(`Something went wrong with removing your payment card. The contract (id: ${accountStore.getContractId()}) has not been found. Please, try again or contact support.`)
+
+        } else {
+          errToast(`Something went wrong with removing your payment card. Please, try again or contact support.`)
+        }
+      }
+    )
     onClose();
   };
 
@@ -104,30 +124,39 @@ export default observer(function ManageBilling({}) {
         </TabList>
         <TabPanels>
           <TabPanel p='1.5em'>
-            <AddReplacePaymentCard
-              paymentMethod={accountStore.getPaymentMethod()}
-              accountState={accountStore.accountState}
-              isLoading={accountStore.isLoading}
-              deleteCard={deleteCard}
-              highlight={highlight}
-              setHighlight={setHighlight}
-            />
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <AddReplacePaymentCard
+                paymentMethod={accountStore.getPaymentMethod()}
+                accountState={accountStore.accountState}
+                isLoading={accountStore.isLoading}
+                deleteCard={deleteCard}
+                highlight={highlight}
+                setHighlight={setHighlight}
+              />
+            }
 
             <ViewPricingBar mt='2em' />
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <>
+                <DataGridComponent
+                  data={paymentsData}
+                  DataDisplayComponent={PaymentsGrid}
+                  isLoading={isLoading}
+                />
+                <UsageInfoBanner
+                  text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
+                  mt='2em'
+                />
+              </>
+            }
 
-            <DataGridComponent
-              data={paymentsData}
-              DataDisplayComponent={PaymentsGrid}
-              isLoading={isLoading}
-            />
-
-            <UsageInfoBanner
-              text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
-              mt='2em'
-            />
           </TabPanel>
         </TabPanels>
       </Tabs>
