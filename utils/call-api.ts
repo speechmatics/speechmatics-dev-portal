@@ -248,7 +248,7 @@ export const call = async (
           return;
         }
 
-        const toast = errToast(
+        const toastId = errToast(
           `An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`
         );
 
@@ -256,7 +256,7 @@ export const call = async (
           type: 'request-error',
           status: response.status,
           response: resp,
-          toastId: toast
+          toastId: toastId
         };
 
         throw throwObj;

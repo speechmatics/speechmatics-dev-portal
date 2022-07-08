@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { ExclamationIcon, ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
+import { ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { WarningBanner, ErrorBanner, PaymentWarningBanner, AccountErrorBox } from './common'
+import { PaymentWarningBanner, AccountErrorBox } from './common'
 import { callStore } from '../utils/call-api';
 
 const animationVariants = {
