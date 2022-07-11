@@ -45,6 +45,7 @@ import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import FilesBeingUploaded from './file-transcription/files-being-uploaded';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -54,8 +55,8 @@ export const RecentJobs = observer(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const { accountStore } = useContext(accountContext);
+  const authenticated = useIsAuthenticated();
 
   const breakVal = useBreakpointValue({
     base: false,
@@ -81,8 +82,8 @@ export const RecentJobs = observer(() => {
 
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
-      if (idToken) {
-        callGetTranscript(idToken, job.jobId, format).then((response) => {
+      if (authenticated) {
+        callGetTranscript(job.jobId, format).then((response) => {
           setActiveJob({
             date: job.date,
             jobId: job.jobId,
@@ -95,7 +96,7 @@ export const RecentJobs = observer(() => {
         });
       }
     },
-    [idToken, activeJob]
+    [authenticated, activeJob]
   );
 
   const onOpenDeleteDialogue = useCallback(
@@ -108,7 +109,7 @@ export const RecentJobs = observer(() => {
 
   useEffect(() => {
     authFlow.restoreToken();
-  }, [idToken, accountStore.account]);
+  }, [authenticated, accountStore.account]);
 
   const skeletons = useMemo(
     () => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)),

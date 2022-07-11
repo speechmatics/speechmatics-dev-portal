@@ -2,14 +2,14 @@ import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { callGetTranscript, callGetDataFile } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
-  const { tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const authenticated = useIsAuthenticated();
 
   const downloadTranscript = (format) => {
-    if (idToken) {
-      callGetTranscript(idToken, jobId, format).then((response) => {
+    if (authenticated) {
+      callGetTranscript(jobId, format).then((response) => {
         const fName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
         const contentType = format === 'json-v2' ? 'application/json' : 'text/plain';
         const output = format === 'json-v2' ? JSON.stringify(response) : response;
@@ -22,8 +22,8 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
   };
 
   const downloadDataFile = () => {
-    if (idToken) {
-      callGetDataFile(idToken, jobId).then((response) => {
+    if (authenticated) {
+      callGetDataFile(jobId).then((response) => {
         if (!!response) {
           const a = document.createElement('a');
           a.href = URL.createObjectURL(response);

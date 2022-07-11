@@ -38,6 +38,7 @@ import { ExclamationIcon, BinIcon, CompleteIcon } from '../components/icons-libr
 import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 //accountStore.getRuntimeURL()
 
@@ -68,6 +69,7 @@ type GTCprops = {
 
 export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer(
   ({ codeExample = true, boxProps = null, raiseTokenStage = null, tokensFullDescr = null }) => {
+    const authenticated = useIsAuthenticated();
     const breakVal = useBreakpointValue({
       base: 0,
       xs: 1,
@@ -78,7 +80,7 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
       '2xl': 6
     });
 
-    const { accountStore, tokenStore } = useContext(accountContext);
+    const { accountStore } = useContext(accountContext);
 
     const [genTokenStage, setGenTokenStageOnState] = useState<TokenGenStages>('init');
     const [chosenTokenName, setChosenTokenName] = useState('');
@@ -86,7 +88,6 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
     const [noNameError, setNoNameError] = useState(false);
 
     const apiKeys = accountStore.getApiKeys();
-    const idToken = tokenStore.tokenPayload?.idToken;
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const generatedApikeyinputRef = useRef<HTMLInputElement>(null);
@@ -113,19 +114,19 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
       } else {
         setNoNameError(false);
         setGenTokenStage('waiting');
-        callPostApiKey(idToken, nameInputRef?.current?.value, accountStore.getProjectId())
+        callPostApiKey(nameInputRef?.current?.value, accountStore.getProjectId())
           .then((resp) => {
             setGeneratedToken(resp.key_value);
             setChosenTokenName('')
             setGenTokenStage('generated');
-            accountStore.fetchServerState(idToken);
+            accountStore.fetchServerState();
             if (nameInputRef.current) nameInputRef.current.value = '';
           })
           .catch((error) => {
             setGenTokenStage('error');
           });
       }
-    }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
+    }, [nameInputRef?.current?.value, authenticated, chosenTokenName]);
 
     const generatedApikeyonClick = useCallback(() => {
       generatedApikeyinputRef.current.select();
@@ -255,12 +256,11 @@ const PreviousTokens = observer(() => {
   const [[apikeyIdToRemove, apikeyName], setApiKeyToRemove] = useState<[string, string]>(['', '']);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { accountStore } = useContext(accountContext);
   const apiKeys = accountStore
     .getApiKeys()
     ?.slice()
     .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime());
-  const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
     console.log('aboutToRemoveOne', el, el.apikey_id);
@@ -270,8 +270,8 @@ const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('aboutToRemoveOne', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
-      accountStore.fetchServerState(idToken);
+    callRemoveApiKey(apikeyIdToRemove).then((res) => {
+      accountStore.fetchServerState();
       positiveToast('API Key removed');
     });
     onClose();

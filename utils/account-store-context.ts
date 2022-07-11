@@ -92,9 +92,9 @@ class AccountContext {
     return val / 3600;
   }
 
-  async fetchServerState(idToken: string) {
+  async fetchServerState() {
     this.isLoading = true;
-    return callGetAccounts(idToken)
+    return callGetAccounts()
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
@@ -123,11 +123,10 @@ class AccountContext {
   }
 
   async accountsFetchFlow(
-    accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
     this.requestSent = this.isLoading = true;
-    return callGetAccounts(accessToken)
+    return callGetAccounts()
       .then(async (jsonResp: any) => {
         if (
           jsonResp &&
@@ -139,7 +138,7 @@ class AccountContext {
             'no account on management platform, sending a request to create with POST /accounts'
           );
           isSettingUpAccount(true);
-          return callPostAccounts(accessToken).then((jsonPostResp) => {
+          return callPostAccounts().then((jsonPostResp) => {
             isSettingUpAccount(false);
             this.isLoading = false;
             return jsonPostResp;
@@ -188,7 +187,7 @@ export async function acquireTokenFlow(
   const request = {
     scopes: [process.env.DEFAULT_B2C_SCOPE],
     account,
-    forceRefresh: false,
+    authority: process.env.SIGNIN_POLICY,
   } as SilentRequest;
 
   return msalInstance

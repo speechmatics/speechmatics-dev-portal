@@ -1,5 +1,5 @@
 import { EventType, PublicClientApplication } from '@azure/msal-browser';
-import { makeAutoObservable, makeObservable } from 'mobx';
+import { makeObservable } from 'mobx';
 import { accountStore, tokenStore, acquireTokenFlow } from './account-store-context';
 import { runtimeAuthFlow } from './runtime-auth-flow';
 import { msalConfig } from './auth-config';
@@ -42,28 +42,21 @@ export function msalLogout(inactive: boolean = false) {
 }
 
 export async function msalRefresh(): Promise<string> {
-  const activity_timeout: number = parseInt(process.env.INACTIVITY_TIMEOUT) || 1;
-  console.log('activity_timeout')
-  // check if they've been inactive for more than 15 mins
-  const currentTime = new Date()
-  if (currentTime.getTime() - tokenStore.lastActive.getTime() > activity_timeout*60*1000) {
-    msalLogout(true);
-    return '';
-  }
-  tokenStore.lastActive = currentTime;
   const account = msalInstance.getActiveAccount();
-  return acquireTokenFlow(msalInstance, account).then(response => {
-    if (!!response) {
-      tokenStore.tokenPayload = response
-      return response.idToken
-    } else {
-      throw null
-    }
-  })
-  .catch(error => {
-    msalLogout(true)
-    return ''
-  })
+  tokenStore.lastActive = new Date();
+  return acquireTokenFlow(msalInstance, account)
+    .then((response) => {
+      if (!!response) {
+        tokenStore.tokenPayload = response;
+        return response.idToken;
+      } else {
+        throw null;
+      }
+    })
+    .catch((error) => {
+      msalLogout(true);
+      return '';
+    });
 }
 
 class MsalStore {

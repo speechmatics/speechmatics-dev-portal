@@ -8,22 +8,20 @@ const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
 
-export const callPostAccounts = async (accessToken: string) => {
-  return callRefresh(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
+export const callPostAccounts = async () => {
+  return callRefresh(`${ENDPOINT_API_URL}/accounts`, 'POST');
 };
 
-export const callGetAccounts = async (idToken: string) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/accounts`, 'GET');
+export const callGetAccounts = async () => {
+  return callRefresh(`${ENDPOINT_API_URL}/accounts`, 'GET');
 };
 
 export const callGetUsage = async (
-  idToken: string,
   contractId: number,
   projectId: number,
   dates: any
 ) => {
   return callRefresh(
-    idToken,
     `${ENDPOINT_API_URL}/usage`,
     'GET',
     {},
@@ -37,9 +35,9 @@ export const callGetUsage = async (
   );
 };
 
-export const callGetJobs = async (idToken: string, optionalQueries: any) => {
+export const callGetJobs = async (optionalQueries: any) => {
   return callRuntime(
-    idToken,
+    
     `${RUNTIME_API_URL}/jobs`,
     'GET',
     {},
@@ -49,19 +47,18 @@ export const callGetJobs = async (idToken: string, optionalQueries: any) => {
   );
 };
 
-export const callDeleteJob = async (idToken: string, jobId: string, force: boolean) => {
-  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
+export const callDeleteJob = async (jobId: string, force: boolean) => {
+  return callRuntime(`${RUNTIME_API_URL}/jobs/${jobId}`, 'DELETE', null, {
     force
   });
 };
 
 export const callGetTranscript = async (
-  idToken: string,
   jobId: string,
   format: TranscriptFormat
 ) => {
   return callRuntime(
-    idToken,
+    
     `${RUNTIME_API_URL}/jobs/${jobId}/transcript`,
     'GET',
     {},
@@ -70,9 +67,9 @@ export const callGetTranscript = async (
   );
 };
 
-export const callGetDataFile = async (idToken: string, jobId: string) => {
+export const callGetDataFile = async (jobId: string) => {
   return callRuntime(
-    idToken,
+    
     `${RUNTIME_API_URL}/jobs/${jobId}/data`,
     'GET',
     null,
@@ -82,47 +79,45 @@ export const callGetDataFile = async (idToken: string, jobId: string) => {
   );
 };
 
-export const callRemoveApiKey = async (idToken: string, apiKeyId: string) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
+export const callRemoveApiKey = async (apiKeyId: string) => {
+  return callRefresh(`${ENDPOINT_API_URL}/api_keys/${apiKeyId}`, 'DELETE');
 };
 
-export const callGetSecrChargify = async (idToken: string, contractId: number) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/payment_token`, 'GET');
+export const callGetSecrChargify = async (contractId: number) => {
+  return callRefresh(`${ENDPOINT_API_URL}/contracts/${contractId}/payment_token`, 'GET');
 };
 
 export const callPostRequestTokenChargify = async (
-  idToken: string,
   contractId: number,
   chargifyToken: string
 ) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'POST', {
+  return callRefresh(`${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'POST', {
     card_request_token: chargifyToken
   });
 };
 
-export const callPostApiKey = async (idToken: string, name: string, projectId: number) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
+export const callPostApiKey = async (name: string, projectId: number) => {
+  return callRefresh(`${ENDPOINT_API_URL}/api_keys`, 'POST', {
     project_id: projectId,
     name
   });
 };
 
-export const callGetPayments = async (idToken: string) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/payments`, 'GET');
+export const callGetPayments = async () => {
+  return callRefresh(`${ENDPOINT_API_URL}/payments`, 'GET');
 };
 
-export const callRemoveCard = async (idToken: string, contractId: number) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
+export const callRemoveCard = async (contractId: number) => {
+  return callRefresh(`${ENDPOINT_API_URL}/contracts/${contractId}/cards`, 'DELETE');
 };
 
-export const callGetRuntimeSecret = async (idToken: string, ttl: number) => {
-  return callRefresh(idToken, `${ENDPOINT_API_URL}/api_keys`, 'POST', {
+export const callGetRuntimeSecret = async (ttl: number) => {
+  return callRefresh(`${ENDPOINT_API_URL}/api_keys`, 'POST', {
     ttl
   });
 };
 
 export const callRequestFileTranscription = async (
-  idToken: string,
   file: File,
   language: string,
   accuracy: Accuracy,
@@ -142,7 +137,6 @@ export const callRequestFileTranscription = async (
   formData.append('config', JSON.stringify(config));
 
   return callRuntime(
-    idToken,
     `${RUNTIME_API_URL}/jobs`,
     'POST',
     formData,
@@ -151,12 +145,11 @@ export const callRequestFileTranscription = async (
   );
 };
 
-export const callRequestJobStatus = async (idToken: string, jobId: string) => {
-  return callRuntime(idToken, `${RUNTIME_API_URL}/jobs/${jobId}`, 'GET');
+export const callRequestJobStatus = async (jobId: string) => {
+  return callRuntime(`${RUNTIME_API_URL}/jobs/${jobId}`, 'GET');
 };
 
 export const callRefresh = async (
-  aToken: string,
   apiEndpoint: string,
   method: 'GET' | 'POST' | 'DELETE',
   body: any = null,
@@ -164,8 +157,7 @@ export const callRefresh = async (
   contentType: string = null,
   isBlob: boolean = false
 ) => {
-  const authToken: string = await msalRefresh()
-  console.log(authToken)
+  const authToken: string = await msalRefresh();
   return call(
     authToken,
     apiEndpoint,
@@ -182,7 +174,6 @@ export const callRefresh = async (
 // Use the secret key from the store to make the request
 // If something goes wrong updating the token, the store should update to tell the component something is wrong
 export const callRuntime = async (
-  aToken: string,
   apiEndpoint: string,
   method: 'GET' | 'POST' | 'DELETE',
   body: any = null,
@@ -191,8 +182,7 @@ export const callRuntime = async (
   isBlob: boolean = false
 ) => {
   try {
-    const authToken: string = await msalRefresh();
-    await runtime.refreshToken(authToken);
+    await runtime.refreshToken();
     return call(runtime.store.secretKey, apiEndpoint, method, body, query, contentType, isBlob);
   } catch (error) {
     throw error;

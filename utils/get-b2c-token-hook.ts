@@ -3,13 +3,14 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthenticationResult, InteractionRequiredAuthError } from '@azure/msal-common';
 import accountStoreContext from './account-store-context';
 import { msalLogout } from './msal-utils';
+import { InteractionStatus } from "@azure/msal-browser";
+import { useMsal } from "@azure/msal-react";
 
 export function useB2CToken(msalInstance: IPublicClientApplication) {
   const account = msalInstance.getActiveAccount();
   const [token, setToken] = useState<AuthenticationResult>();
   const [error, setError] = useState<any>();
   const { accountStore, tokenStore } = useContext(accountStoreContext);
-  const activity_timeout: number = parseInt(process.env.INACTIVITY_TIMEOUT) || 1;
 
   useEffect(() => {
     const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
@@ -24,12 +25,6 @@ export function useB2CToken(msalInstance: IPublicClientApplication) {
       forceRefresh: false,
     } as SilentRequest;
 
-    const currentTime = new Date()
-    if (currentTime.getTime() - tokenStore?.lastActive?.getTime() > activity_timeout*60*1000) {
-      msalLogout(true)
-      return
-    }
-    tokenStore.lastActive = currentTime
     msalInstance
       .acquireTokenSilent(request)
       .then((tokenResponse) => {

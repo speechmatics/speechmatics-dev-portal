@@ -21,6 +21,7 @@ import { SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
 import { WarningBanner, ErrorBanner } from './common'
+import useInactiveLogout from '../utils/inactive-hook'
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -45,6 +46,8 @@ export default observer(function Dashboard({ children }) {
 
   const breakVal = useBreakpointValue({ base: true, md: false })
 
+  useInactiveLogout()
+
   useEffect(() => {
     let st: number;
     if (!isAuthenticated) {
@@ -55,7 +58,7 @@ export default observer(function Dashboard({ children }) {
 
   const { accountStore, tokenStore } = useContext(accountContext);
 
-  const { token: tokenPayload, error: b2cError } = useB2CToken(instance);
+  const { error: b2cError } = useB2CToken(instance);
 
   useEffect(() => {
     let st: number;
@@ -74,19 +77,18 @@ export default observer(function Dashboard({ children }) {
     if (
       !accountStore.requestSent &&
       !accountStore.account &&
-      isAuthenticated &&
-      tokenPayload?.idToken
+      isAuthenticated
     ) {
-      tokenStore.setTokenPayload(tokenPayload);
+      tokenStore.lastActive = new Date();
       accountStore
-        .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
+        .accountsFetchFlow(isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
           onUserCreationModalClose();
         })
         .catch(err => console.error("dashboard accountStore catch", err));
     }
-  }, [isAuthenticated, tokenPayload?.idToken]);
+  }, [isAuthenticated]);
 
   const account = instance.getActiveAccount();
 
