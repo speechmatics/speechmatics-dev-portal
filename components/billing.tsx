@@ -1,13 +1,11 @@
-import { useBreakpointValue, HStack, VStack, Box, Button, background } from '@chakra-ui/react';
+import { useBreakpointValue, HStack, VStack, Box, Button } from '@chakra-ui/react';
 import Link from 'next/link';
 import { HeaderLabel, DescriptionLabel, pad, WarningBanner } from './common';
 import { CardImage, CardGreyImage, DownloadInvoice } from './icons-library';
 import { Text } from '@chakra-ui/react';
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useRouter } from 'next/router'
 
-export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, accountState }) => {
-  const router = useRouter()
+export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, accountState, highlight, setHighlight }) => {
   const breakVal = useBreakpointValue({
     base: 0,
     xs: 1,
@@ -18,38 +16,27 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
     '2xl': 6
   });
 
-  const updateButtonRef = useRef(null)
-  const [highlight, setHighlight] = useState<boolean>(false)
-  const [bgColour, setBgColour] = useState<string>(null)
+  const updateButtonRef = useRef(null);
 
   const paymentMethodText = useCallback(() => {
-    if (!paymentMethod)
-      return 'No Payment Card Added'
-    if (accountState === 'active')
-      return 'Payment Card Active'
-    if (['past_due', 'unpaid'].includes(accountState))
-      return 'Payment Card Issue'
-  }, [paymentMethod, accountState])
-
-  useEffect(() => {
-    if (router.asPath.includes('#update_card')) {
-      setHighlight(true)
-    }
-  }, [router])
+    if (!paymentMethod) return 'No Payment Card Added';
+    if (accountState === 'active') return 'Payment Card Active';
+    if (['past_due', 'unpaid'].includes(accountState)) return 'Payment Card Issue';
+  }, [paymentMethod, accountState]);
 
   useEffect(() => {
     if (highlight) {
       setTimeout(() => {
-        updateButtonRef?.current?.focus()
+        updateButtonRef?.current?.focus();
         setTimeout(() => {
           if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur();
           }
           setHighlight(false);
-        }, 1000)
-      }, 300)
+        }, 1000);
+      }, 300);
     }
-  }, [highlight])
+  }, [highlight]);
 
   return isLoading ? (
     <HStack width='100%' justifyContent='space-between' alignItems='flex-start'>
@@ -82,23 +69,18 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
       ${pad(paymentMethod?.expiration_month)}/${paymentMethod.expiration_year}`
             : 'Add a payment card to increase these limits.'}
         </DescriptionLabel>
-          {
-            accountState === 'unpaid' && (
-              <Box width={{ base: "100%", lg: "90%" }} py={4}>
-                <WarningBanner text="Please update your card details to transcribe more files. If you have recently made a payment, it may take a few minutes to update your account." />
-              </Box>
-            )
-          }
+        {accountState === 'unpaid' && (
+          <Box width={{ base: '100%', lg: '90%' }} py={4}>
+            <WarningBanner text='Please update your card details to transcribe more files. If you have recently made a payment, it may take a few minutes to update your account.' />
+          </Box>
+        )}
         <Box>
           <Link href='/subscribe/'>
             <Button
               ref={updateButtonRef}
               _focus={{
-                // boxShadow:
-                //   '0 0 1px 4px var(--chakra-colors-smOrange-400), 0 1px 1px rgba(0, 0, 0, .15)',
-                bg:  "var(--chakra-colors-smOrange-500)",
+                bg: 'var(--chakra-colors-smOrange-500)'
               }}
-              bg={bgColour}
               variant='speechmatics'
               alignSelf='flex-start'
               data-qa='button-add-replace-payment'>

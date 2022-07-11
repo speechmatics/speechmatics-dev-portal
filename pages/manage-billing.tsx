@@ -29,16 +29,19 @@ import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
+import { useRouter } from 'next/router';
+import { useIsAuthenticated } from '@azure/msal-react';
 
-const useGetPayments = (idToken: string) => {
+const useGetPayments = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const authenticated = useIsAuthenticated();
 
   useEffect(() => {
-    if (idToken) {
+    if (authenticated) {
       setIsLoading(true);
-      callGetPayments(idToken)
+      callGetPayments()
         .then((resp) => {
           setData(resp.payments.reverse());
           setIsLoading(false);
@@ -48,28 +51,37 @@ const useGetPayments = (idToken: string) => {
           setIsLoading(false);
         });
     }
-  }, [idToken]);
+  }, [authenticated]);
 
   return { data, isLoading, error };
 };
 
 export default observer(function ManageBilling({}) {
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore?.tokenPayload?.idToken;
+  const router = useRouter();
+  const { accountStore } = useContext(accountContext);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [highlight, setHighlight] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
+  const { data: paymentsData, isLoading, error } = useGetPayments();
 
   const deleteCard = useCallback(() => {
     onOpen();
   }, []);
 
   const onRemoveConfirm = () => {
-    callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
-      accountStore.fetchServerState(idToken)
+    callRemoveCard(accountStore.getContractId()).then((res) =>
+      accountStore.fetchServerState()
     );
     onClose();
   };
+
+  useEffect(() => {
+    if (router.asPath.includes('#update_card')) {
+      setHighlight(true);
+      setTabIndex(0)
+    }
+  }, [router]);
 
   return (
     <Dashboard>
@@ -86,7 +98,7 @@ export default observer(function ManageBilling({}) {
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
+      <Tabs index={tabIndex} onChange={index => setTabIndex(index)} size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
         <TabList marginBottom='-1px'>
           <Tab data-qa='tab-settings'>Settings</Tab>
           <Tab data-qa='tab-payments'>Payments</Tab>
@@ -95,9 +107,11 @@ export default observer(function ManageBilling({}) {
           <TabPanel p='1.5em'>
             <AddReplacePaymentCard
               paymentMethod={accountStore.getPaymentMethod()}
-              accountState={accountStore.getAccountState()}
+              accountState={accountStore.accountState}
               isLoading={accountStore.isLoading}
               deleteCard={deleteCard}
+              highlight={highlight}
+              setHighlight={setHighlight}
             />
 
             <ViewPricingBar mt='2em' />

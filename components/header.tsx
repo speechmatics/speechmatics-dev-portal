@@ -1,8 +1,6 @@
-import { Box, HStack, Divider, Tooltip, useBreakpointValue, Flex, Select } from '@chakra-ui/react';
+import { Box, HStack, Divider, Tooltip, useBreakpointValue, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
 import { SpeechmaticsLogoHorizontalWhite, LogoutIcon } from './icons-library';
-import accountContext, { ContractState } from '../utils/account-store-context';
-import { useContext, useState } from 'react';
 
 export function HeaderBar({ logout, accountEmail }) {
   const breakValue = useBreakpointValue({
@@ -29,31 +27,9 @@ export function HeaderBar({ logout, accountEmail }) {
 }
 
 export function RightSidePanel({ logout, accountEmail, breakValue }) {
-  const { accountStore } = useContext(accountContext);
-  const [state, setState] = useState<ContractState>('active');
 
   return (
     <HStack pr='1em' spacing={breakValue < 3 ? '1em' : '2em'}>
-      <Select
-        variant='filled'
-        color='white'
-        value={accountStore.getAccountState()}
-        onChange={(e) => {
-          const val: ContractState =
-            'active' === e.target.value ||
-            'unpaid' === e.target.value ||
-            'past_due' === e.target.value
-              ? e.target.value
-              : null;
-          accountStore.setAccountState(val);
-          setState(val);
-        }}>
-        <option typeof='ContractState' value='active'>
-          active
-        </option>
-        <option value='past_due'>past_due</option>
-        <option value='unpaid'>unpaid</option>
-      </Select>
       {breakValue > 1 && (
         <>
           <Link href='https://docs.speechmatics.com'>
@@ -89,16 +65,4 @@ export function RightSidePanel({ logout, accountEmail, breakValue }) {
       </Tooltip>
     </HStack>
   );
-}
-
-{
-  /* <Link href="/account/" passHref>
-        <Link>
-          <Tooltip label="Account" placement="bottom"> */
-}
-
-{
-  /* </Tooltip>
-        </Link>
-      </Link> */
 }

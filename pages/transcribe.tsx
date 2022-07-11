@@ -27,11 +27,12 @@ import { TranscriptionViewer } from '../components/transcription-viewer';
 import accountStoreContext from '../utils/account-store-context';
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { humanFileSize } from '../utils/string-utils';
-import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
+import { languagesData, separation, accuracyModels } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
@@ -65,12 +66,13 @@ type TranscribeFormProps = {
 };
 
 export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
-  const { tokenStore, accountStore } = useContext(accountStoreContext);
+  const { accountStore } = useContext(accountStoreContext);
+  const authenticated = useIsAuthenticated();
 
   useEffect(() => {
     authFlow.restoreToken();
-    if (tokenStore.tokenPayload?.idToken) authFlow.refreshToken(tokenStore.tokenPayload.idToken);
-  }, [tokenStore.tokenPayload?.idToken]);
+    if (authenticated) authFlow.refreshToken();
+  }, [authenticated]);
 
   return (
     <>
@@ -80,7 +82,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
           onFileSelect={(file) => flow.assignFile(file)}
         />
       </Box>
@@ -97,7 +99,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
           onSelect={(val) => (store.language = val)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
 
         <SelectField
@@ -106,7 +108,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
           onSelect={(val) => (store.separation = val as any)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
 
         <SelectField
@@ -115,10 +117,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
           onSelect={(val) => (store.accuracy = val as any)}
-          disabled={accountStore.getAccountState() === 'unpaid'}
+          disabled={accountStore.accountState === 'unpaid'}
         />
       </Flex>
-      {accountStore.getAccountState() === 'unpaid' && (
+      {accountStore.accountState === 'unpaid' && (
         <Flex width='100%' pt={4}>
           <WarningBanner
             content={
@@ -129,7 +131,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
                     update your card details
                   </a>
                 </Link>{' '}
-                to transcribe more files
+                to transcribe more files.
               </>
             }
           />
@@ -142,10 +144,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           fontSize='18'
           width='100%'
           onClick={() => {
-            flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
+            flow.attemptSendFile();
           }}
           disabled={
-            !store._file || !auth.isLoggedIn || accountStore.getAccountState() === 'unpaid'
+            !store._file || !auth.isLoggedIn || accountStore.accountState === 'unpaid'
           }>
           Get Your Transcription
         </Button>

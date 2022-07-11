@@ -10,7 +10,7 @@ import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
 
 class AccountContext {
   _account: Account = null;
-
+  _accountState: ContractState = null;
   isLoading: boolean = true;
   userHint: string = '';
 
@@ -23,13 +23,12 @@ class AccountContext {
     makeObservable(this, {
       clear: action,
       _account: observable,
-      _testAccountState: observable,
+      _accountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
-      getAccountState: action,
       keyJustRemoved: observable
     });
   }
@@ -40,6 +39,14 @@ class AccountContext {
 
   get account(): Account {
     return this._account;
+  }
+
+  set accountState(state: ContractState) {
+    this._accountState = state;
+  }
+
+  get accountState(): ContractState {
+    return this._accountState;
   }
 
   clear() {
@@ -70,16 +77,6 @@ class AccountContext {
     return this._account?.contracts.filter((con) => !!con)?.[0]?.payment_method;
   }
 
-  getAccountState(): ContractState {
-    return this._testAccountState
-    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
-  }
-
-  setAccountState(state: ContractState) {
-    this._testAccountState = state;
-    // this._account?.contracts.filter((con) => !!con)?.[0]?.state;
-  }
-
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
     const dict = {
       standard: 'LIM_DUR_CUR_MON_STANDARD_SEC',
@@ -95,9 +92,9 @@ class AccountContext {
     return val / 3600;
   }
 
-  async fetchServerState(idToken: string) {
+  async fetchServerState() {
     this.isLoading = true;
-    return callGetAccounts(idToken)
+    return callGetAccounts()
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
@@ -116,16 +113,20 @@ class AccountContext {
     if (!response) throw new Error('attempt assigning empty response');
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
+    this._accountState = this.getAccountState()
 
     if (!this._account && 'account_id' in response) this._account = response as any;
   }
 
+  getAccountState(): ContractState {
+    return this._account?.contracts[0]?.state
+  }
+
   async accountsFetchFlow(
-    accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
     this.requestSent = this.isLoading = true;
-    return callGetAccounts(accessToken)
+    return callGetAccounts()
       .then(async (jsonResp: any) => {
         if (
           jsonResp &&
@@ -137,7 +138,7 @@ class AccountContext {
             'no account on management platform, sending a request to create with POST /accounts'
           );
           isSettingUpAccount(true);
-          return callPostAccounts(accessToken).then((jsonPostResp) => {
+          return callPostAccounts().then((jsonPostResp) => {
             isSettingUpAccount(false);
             this.isLoading = false;
             return jsonPostResp;
@@ -158,6 +159,7 @@ class AccountContext {
 
 class TokenContext {
   tokenPayload: AuthenticationResult = null;
+  lastActive: Date = null;
 
   authorityToUse: string = '';
 
@@ -168,7 +170,8 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable
+      loginFailureError: observable,
+      lastActive: observable,
     });
   }
 
@@ -182,8 +185,9 @@ export async function acquireTokenFlow(
   account: AccountInfo
 ) {
   const request = {
-    scopes: [],
-    account
+    scopes: [process.env.DEFAULT_B2C_SCOPE],
+    account,
+    authority: process.env.SIGNIN_POLICY,
   } as SilentRequest;
 
   return msalInstance

@@ -33,12 +33,12 @@ This app is built as a static web app using azure webapp integrations. The pipel
 
 The full details of the dev environments we have for the UI are:
 
-|branch              |usage       |static app url                                         |DNS url                                                |
-|--------------------|------------|-------------------------------------------------------|-------------------------------------------------------|
-|general_dev_jupiter |analytics   |https://witty-coast-02348be03.1.azurestaticapps.net/   |https://dev-jupiter-portal.ui-internal.speechmatics.com|
-|general_dev_mars    |general     |https://salmon-sea-0ca2c8e03.1.azurestaticapps.net/    |https://dev-mars-portal.ui-internal.speechmatics.com   |
-|general_dev_mercury |ui tests    |https://thankful-island-01372b310.1.azurestaticapps.net|https://dev-mercury-portal.ui-internal.speechmatics.com|
-|general_ui_test     |tester test |https://calm-island-0a73d9810.1.azurestaticapps.net    |https://test-portal.ui-internal.speechmatics.com       |
+|branch              |curr. usage |DNS url                                                |
+|--------------------|------------|-------------------------------------------------------|
+|general_dev_jupiter |analytics   |https://dev-jupiter-portal.ui-internal.speechmatics.com|
+|general_dev_mars    |general     |https://dev-mars-portal.ui-internal.speechmatics.com   |
+|general_dev_mercury |general     |https://dev-mercury-portal.ui-internal.speechmatics.com|
+|general_ui_test     |tester test |https://test-portal.ui-internal.speechmatics.com       |
 
 ## Connecting to the backend
 

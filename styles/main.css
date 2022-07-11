@@ -29,13 +29,8 @@ a {
   color: var(--chakra-colors-smBlue-500);
 }
 
-a:hover,
 *[data-hover] {
-  text-decoration: none;
-}
-
-button:hover {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 #__next {
