@@ -13,9 +13,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
 import { trackEvent } from '../utils/analytics';
+import { accountStore } from '../utils/account-store-context';
 
 export function MenuContainer() {
-  const showMenuBurger = useBreakpointValue({ base: true, xs: true, sm: true, md: false });
+  const showMenuBurger = useBreakpointValue({ base: true, md: false });
 
   if (showMenuBurger) return <MobileMenu />;
 
@@ -43,11 +44,12 @@ function MobileMenu() {
   });
 
   return (
-    <>
-      <Slide direction='left' in={isOpen} style={{ zIndex: 1000 }}>
+    <Box ml={0}>
+      <Slide direction='left' in={isOpen} style={{ zIndex: 20 }}>
         <Box
+          position="relative"
           className='dashboard_sidenav'
-          position={'absolute'}
+          width="250px"
           top='62px'
           ref={ref}
           borderBottom='1px solid var(--chakra-colors-smBlack-180)'
@@ -55,7 +57,7 @@ function MobileMenu() {
           <Menu />
         </Box>
       </Slide>
-      <Box position='absolute' top='62px'>
+      <Box top='62px'>
         <IconButton
           icon={<FiMenu />}
           aria-label={''}
@@ -65,14 +67,14 @@ function MobileMenu() {
           onClick={onToggle}
         />
       </Box>
-    </>
+    </Box>
   );
 }
 
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className='nav_menu' rowGap='0.8em' height='450px'>
+    <VStack className='nav_menu' rowGap='0.8em' height='100vh'>
       {menuData.map((item) => (
         <MenuElem
           item={item}
@@ -90,7 +92,7 @@ function MenuElem({ item, selected, ...props }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={item.path}>
+    <Link href={accountStore.account !== undefined ? item.path : ''} >
       <Box
         className={`menu_elem ${selected ? 'selected' : ''}`}
         {...props}

@@ -4,6 +4,7 @@ import '../styles/main.css';
 import '../styles/login.css';
 import '../styles/dashboard.css';
 import '../styles/components-styles.css';
+import '../styles/animate.css'
 import { Router, useRouter } from 'next/router';
 import { MsalProvider } from '@azure/msal-react';
 import { CustomNavigationClient } from '../utils/navigation-client';

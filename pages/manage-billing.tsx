@@ -8,15 +8,19 @@ import {
   TabPanels,
   Tabs,
   Text,
+  toast,
   useBreakpointValue,
   useDisclosure
 } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState, useMemo } from 'react';
 import {
   ConfirmRemoveModal,
   DataGridComponent,
+  ErrorBanner,
+  errToast,
+  errTopToast,
   GridSpinner,
   HeaderLabel,
   PageHeader,
@@ -30,6 +34,8 @@ import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
 import { trackEvent } from '../utils/analytics';
+import { useRouter } from 'next/router';
+import { RequestThrowType } from '../custom';
 
 const useGetPayments = (idToken: string) => {
   const [data, setData] = useState();
@@ -54,10 +60,12 @@ const useGetPayments = (idToken: string) => {
   return { data, isLoading, error };
 };
 
-export default observer(function ManageBilling({}) {
+export default observer(function ManageBilling({ }) {
+  const router = useRouter();
   const { accountStore, tokenStore } = useContext(accountContext);
   const idToken = tokenStore?.tokenPayload?.idToken;
-
+  const [tabIndex, setTabIndex] = useState(0);
+  const [highlight, setHighlight] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: paymentsData, isLoading, error } = useGetPayments(idToken);
@@ -67,17 +75,39 @@ export default observer(function ManageBilling({}) {
     trackEvent('billing_remove_card_click', 'Action');
   }, []);
 
-  const onRemoveConfirm = useCallback(() => {
-    callRemoveCard(idToken, accountStore.getContractId()).then((res) =>
-      accountStore.fetchServerState(idToken)
-    );
+  const onRemoveConfirm = () => {
+    callRemoveCard(idToken, accountStore.getContractId()).then(
+      (res) =>
+        accountStore.fetchServerState(idToken)
+      ,
+      (err: RequestThrowType) => {
+        if (err.status == 403) {
+          toast.close(err.toastId);
+          errTopToast(`You can't remove your payment card at the moment. Please, check unpaid invoices first or contact support.`)
+
+        } else if (err.status == 404) {
+          toast.close(err.toastId);
+          errToast(`Something went wrong with removing your payment card. The contract (id: ${accountStore.getContractId()}) has not been found. Please, try again or contact support.`)
+
+        } else {
+          errToast(`Something went wrong with removing your payment card. Please, try again or contact support.`)
+        }
+      }
+    )
     onClose();
     trackEvent('billing_remove_card_confirm', 'Action');
-  }, [idToken]);
+  };
 
   const tabsOnChange = useCallback((index) => {
     trackEvent(`billing_tab_${['settings', 'payments'][index]}`, 'Navigation');
   }, []);
+
+  useEffect(() => {
+    if (router.asPath.includes('#update_card')) {
+      setHighlight(true);
+      setTabIndex(0)
+    }
+  }, [router]);
 
   return (
     <Dashboard>
@@ -94,35 +124,46 @@ export default observer(function ManageBilling({}) {
         onRemoveConfirm={onRemoveConfirm}
         confirmLabel='Confirm'
       />
-      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
+      <Tabs index={tabIndex} onChange={index => setTabIndex(index)} size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
         <TabList marginBottom='-1px'>
           <Tab data-qa='tab-settings'>Settings</Tab>
           <Tab data-qa='tab-payments'>Payments</Tab>
         </TabList>
         <TabPanels>
           <TabPanel p='1.5em'>
-            <AddReplacePaymentCard
-              paymentMethod={accountStore.getPaymentMethod()}
-              isLoading={accountStore.isLoading}
-              deleteCard={deleteCard}
-            />
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <AddReplacePaymentCard
+                paymentMethod={accountStore.getPaymentMethod()}
+                accountState={accountStore.accountState}
+                isLoading={accountStore.isLoading}
+                deleteCard={deleteCard}
+                highlight={highlight}
+                setHighlight={setHighlight}
+              />
+            }
 
             <ViewPricingBar mt='2em' />
           </TabPanel>
           <TabPanel>
             <HeaderLabel>Payments</HeaderLabel>
+            {accountStore.responseError ?
+              <ErrorBanner mt="0" content={`Unable to retreive payment information`} />
+              :
+              <>
+                <DataGridComponent
+                  data={paymentsData}
+                  DataDisplayComponent={PaymentsGrid}
+                  isLoading={isLoading}
+                />
+                <UsageInfoBanner
+                  text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
+                  mt='2em'
+                />
+              </>
+            }
 
-            <DataGridComponent
-              data={paymentsData}
-              DataDisplayComponent={PaymentsGrid}
-              isLoading={isLoading}
-              onTrackUse={() => trackEvent('billing_payments_pagination', 'Navigation')}
-            />
-
-            <UsageInfoBanner
-              text='All usage is reported on a UTC calendar-day basis and excludes the current day.'
-              mt='2em'
-            />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -9,7 +9,7 @@ import accountContext from '../utils/account-store-context';
 import { CodeExamples } from '../components/code-examples';
 import { trackEvent } from '../utils/analytics';
 
-export default observer(function GettingStarted({}) {
+export default observer(function GettingStarted({ }) {
   const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
 
   const { accountStore } = useContext(accountContext);
@@ -51,14 +51,15 @@ export default observer(function GettingStarted({}) {
               raiseTokenStage={tokenGenerationStage}
               tokensFullDescr={
                 <>
-                  You've already created 5 API Keys. Before generating a new API key, you need to{' '}
+                  You are using all of your available API keys. To generate a new API Key, you need
+                  to delete an existing API key{' '}
                   <Link href='/manage-access/'>
                     <a
                       style={{ cursor: 'pointer', textDecoration: 'underline' }}
                       onClick={() => {
                         trackEvent('link_to_manage_access', 'Navigation', 'link_in_start_in_api');
                       }}>
-                      remove an existing key
+                      here
                     </a>
                   </Link>
                   {'.'}

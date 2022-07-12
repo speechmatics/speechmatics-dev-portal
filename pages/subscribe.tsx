@@ -15,7 +15,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -35,13 +35,13 @@ function Subscribe({}) {
   const router = useRouter();
 
   useEffect(() => {
-    if (idToken && !!accountStore.getContractId()) {
+    if (idToken && (accountStore.getContractId() !== undefined)) {
       callGetSecrChargify(idToken, accountStore.getContractId())
         .then((tokenResp) => {
           setPaymentToken(tokenResp.payment_token);
         })
         .catch((err) => {
-          errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`);
+          errToast(`Unable to retreive the contract (id: ${accountStore.getContractId()}). Please contact support.`);
         });
     }
   }, [idToken, accountStore.getContractId()]);
@@ -88,16 +88,20 @@ function Subscribe({}) {
           })
           .catch((error) => {
             setSubmitButtonReady(true);
+<<<<<<< HEAD
             errToast(`Something went wrong, please try again later. ${error.status}`);
             trackEvent('billing_chargify_failed', 'Event', '', {
               error: error.status
             });
+=======
+            errToast(`Something went wrong on our side. Please try again later or contact support. (${error.status})`);
+>>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
           });
       },
 
       (error: any) => {
         setSubmitButtonReady(true);
-        errToast(`Error while attempting to add a card: ${error.errors}`);
+        errToast(`Error while attempting to add a card: ${error.errors}. Please, try again later or contact support.`);
       }
     );
   };

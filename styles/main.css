@@ -20,6 +20,11 @@ body {
   height: 100%;
 }
 
+div,
+span {
+  font-family: 'RMNeue-Regular';
+}
+
 button {
   border: 0;
 }
@@ -29,13 +34,8 @@ a {
   color: var(--chakra-colors-smBlue-500);
 }
 
-a:hover,
 *[data-hover] {
-  text-decoration: none;
-}
-
-button:hover {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 #__next {

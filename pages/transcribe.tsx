@@ -3,7 +3,13 @@ import { Box, Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
+import {
+  DescriptionLabel,
+  HeaderLabel,
+  PageHeader,
+  SmPanel,
+  WarningBanner
+} from '../components/common';
 import Dashboard from '../components/dashboard';
 import {
   ClockIcon,
@@ -28,7 +34,7 @@ import {
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
 
-export default observer(function Transcribe({}) {
+export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
 
   useEffect(() => {
@@ -60,7 +66,7 @@ type TranscribeFormProps = {
 };
 
 export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
-  const { tokenStore } = useContext(accountStoreContext);
+  const { tokenStore, accountStore } = useContext(accountStoreContext);
 
   useEffect(() => {
     authFlow.restoreToken();
@@ -75,10 +81,15 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent
+<<<<<<< HEAD
           onFileSelect={(file) => {
             trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
             flow.assignFile(file);
           }}
+=======
+          disabled={accountStore.accountState === 'unpaid'}
+          onFileSelect={(file) => flow.assignFile(file)}
+>>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
       </Box>
 
@@ -93,10 +104,15 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Language'
           tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
+<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('language_select', 'Action', 'Changed the language', { value: val });
             store.language = val;
           }}
+=======
+          onSelect={(val) => (store.language = val)}
+          disabled={accountStore.accountState === 'unpaid'}
+>>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
 
         <SelectField
@@ -104,10 +120,15 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Separation'
           tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
+<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('separation_select', 'Action', 'Changed the separation', { value: val });
             store.separation = val as any;
           }}
+=======
+          onSelect={(val) => (store.separation = val as any)}
+          disabled={accountStore.accountState === 'unpaid'}
+>>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
 
         <SelectField
@@ -115,12 +136,34 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Accuracy'
           tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
+<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('accuracy_select', 'Action', 'Changed the Accuracy', { value: val });
             store.accuracy = val as any;
           }}
+=======
+          onSelect={(val) => (store.accuracy = val as any)}
+          disabled={accountStore.accountState === 'unpaid'}
+>>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
       </Flex>
+      {accountStore.accountState === 'unpaid' && (
+        <Flex width='100%' pt={4}>
+          <WarningBanner
+            content={
+              <>
+                Please{' '}
+                <Link href='/manage-billing/'>
+                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+                    update your card details
+                  </a>
+                </Link>{' '}
+                to transcribe more files.
+              </>
+            }
+          />
+        </Flex>
+      )}
       <Flex width='100%' justifyContent='center' py={3}>
         <Button
           data-qa='button-get-transcription'
@@ -131,7 +174,9 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
             flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
             trackEvent('get_transcripion_click', 'Action', 'Submitted transcription');
           }}
-          disabled={!store._file || !auth.isLoggedIn}>
+          disabled={
+            !store._file || !auth.isLoggedIn || accountStore.accountState === 'unpaid'
+          }>
           Get Your Transcription
         </Button>
       </Flex>
@@ -239,7 +284,7 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       )}
 
       {stageDelayed == 'complete' && (
-        <Box w={['50%', '100%']}>
+        <Box width='100%'>
           <TranscriptionViewer
             my={4}
             fileName={fileName}
@@ -247,8 +292,9 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
             jobId={store.jobId}
             accuracy={store.accuracy}
             language={store.language}
-            transcriptionText={store.transcriptionText}
+            transcriptionJSON={store.transcriptionJSON}
             className='fadeIn'
+            transcMaxHeight='15em'
           />
         </Box>
       )}

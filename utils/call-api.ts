@@ -2,11 +2,24 @@ import { errToast } from '../components/common';
 import { msalLogout } from './msal-utils';
 import { Accuracy, Separation, TranscriptFormat } from './transcribe-elements';
 import { runtimeAuthFlow as runtime } from './runtime-auth-flow';
+import { makeAutoObservable } from 'mobx';
+import { RequestThrowType } from '../custom';
 
 const ENDPOINT_API_URL = process.env.ENDPOINT_API_URL;
 const RUNTIME_API_URL = process.env.RUNTIME_API_URL;
 
 //callRemoveCard;
+
+class CallStore {
+  has500Error: boolean = false;
+  hasConnectionError: boolean = false;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+}
+
+export const callStore = new CallStore();
 
 export const callPostAccounts = async (accessToken: string) => {
   return call(accessToken, `${ENDPOINT_API_URL}/accounts`, 'POST');
@@ -208,37 +221,64 @@ export const call = async (
 
   return fetch(apiEndpoint, options).then(
     async (response) => {
-      console.log('response from', apiEndpoint, options, await responseCopy(response, isPlain));
-      if (response.status == 401 && !apiEndpoint.includes(RUNTIME_API_URL)) {
-        msalLogout(true);
-      } else if (response.status == 401) {
-        throw { status: 'error', error: { type: 'runtime-auth' } };
+      console.log('fetch then', apiEndpoint, response);
+
+      if (response.status == 401) {
+        if (apiEndpoint.includes(RUNTIME_API_URL)) {
+          throw { status: 'error', error: { type: 'runtime-auth' } };
+        } else {
+          console.log('error status 401, will logout');
+          setTimeout(() => msalLogout(true), 1000);
+          errToast(`Session expired, redirecting to login page...`);
+          return;
+        }
       }
+
       if (response.status != 200 && response.status != 201) {
-        const throwObj = {
-          status: 'error',
-          error: { type: 'request-error', status: response.status },
-          response: await response.json()
-        };
-        console.error(
-          `fetch error on ${apiEndpoint} occured, response ${JSON.stringify(throwObj.response)}`
+        let resp = null;
+
+        try {
+          resp = await response.json();
+        } catch (e) {}
+
+        console.error(`fetch error on ${apiEndpoint} occured, response ${JSON.stringify(resp)}`);
+
+        if (response.status == 500) {
+          callStore.has500Error = true;
+          return;
+        }
+
+        const toastId = errToast(
+          `An error occurred at the request to ${apiEndpoint}. (Status ${response.status})`
         );
+
+        const throwObj: RequestThrowType = {
+          type: 'request-error',
+          status: response.status,
+          response: resp,
+          toastId: toastId
+        };
+
         throw throwObj;
       }
 
       if (response.body == null) {
         return null;
       }
+
       if (isBlob) {
         return response.blob();
       }
+
       return isPlain ? response.text() : response.json();
     },
     (error) => {
       console.log('fetch error', error);
       //only happens when something goes wrong with the function fetch not a specific response,
       // the responses should be cought in the following catch block on this promise
-      errToast(`fetch error on ${apiEndpoint} occured`);
+      // setTimeout(() => msalLogout(true), 1000);
+      // errToast(`Redirecting to login page...`);
+      callStore.hasConnectionError = true;
       throw { status: 'error', error: { type: error.type } };
     }
   );
@@ -249,12 +289,4 @@ function getParams(paramsObj: { [key: string]: string | number }) {
     (prev, curr, i) => `${prev}${i != 0 ? '&' : ''}${curr}=${paramsObj[curr]}`,
     ''
   );
-}
-
-async function responseCopy(response: Response, isPlain: boolean) {
-  try {
-    return response.clone()[isPlain ? 'text' : 'json']().catch(console.error);
-  } catch (e) {
-    return '';
-  }
 }
