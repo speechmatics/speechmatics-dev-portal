@@ -3,6 +3,7 @@ import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import accountContext from '../utils/account-store-context';
 import { errToast } from '../components/common';
+import { toast } from '@chakra-ui/react';
 
 export const useJobs = (limit, page, includeDeleted) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
@@ -68,35 +69,42 @@ export const useJobs = (limit, page, includeDeleted) => {
 
   // When removing a job, we want to avoid sudden jerky changes in box data/size, so we do:
   // 1. set invisible so it is hidden with an animation
-  // 2. After timeout, reset its values to deleted and set it to visible again, 
+  // 2. After timeout, reset its values to deleted and set it to visible again,
   //    so it reanimates into view if deleted jobs are shown
   // this allows a smooth transition for the user
-  const onDeleteJob = useCallback((id: string, force: boolean) => {
-    if (idToken) {
-      callDeleteJob(idToken, id, force)
-        .then((response) => {
-          if (!!response) {
-            setJobs((oldJobs) => {
-              const index = oldJobs.findIndex(item => item.id === id)
-              oldJobs[index].visible = false;
-              return [...oldJobs]
-            });
-            setTimeout(() => {
+  const onDeleteJob = useCallback(
+    (id: string, force: boolean) => {
+      if (idToken) {
+        callDeleteJob(idToken, id, force)
+          .then((response) => {
+            if (!!response) {
               setJobs((oldJobs) => {
-                const index = oldJobs.findIndex(item => item.id === id)
-                oldJobs[index].visible = true;
-                oldJobs[index].status = 'deleted';
-                oldJobs[index].fileName = '';
-                return [...oldJobs]
+                const index = oldJobs.findIndex((item) => item.id === id);
+                oldJobs[index].visible = false;
+                return [...oldJobs];
               });
-            }, 500);
-          }
-        })
-        .catch((err) => {
-          errToast("Failed to delete job " + id)
-        });
-    }
-  }, [idToken, setJobs])
+              setTimeout(() => {
+                setJobs((oldJobs) => {
+                  const index = oldJobs.findIndex((item) => item.id === id);
+                  oldJobs[index].visible = true;
+                  oldJobs[index].status = 'deleted';
+                  oldJobs[index].fileName = '';
+                  return [...oldJobs];
+                });
+              }, 500);
+            }
+          })
+          .catch((err) => {
+            if (err.toastId) toast.close(err.toastId);
+            errToast(
+              `Failed to delete job (id: ${id}, error ${err.status}). The job was probably removed earlier. The list of jobs will refresh.`
+            );
+            forceGetJobs();
+          });
+      }
+    },
+    [idToken, setJobs]
+  );
 
   //for outside use
   const forceGetJobs = useCallback(() => {

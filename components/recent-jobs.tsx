@@ -163,8 +163,11 @@ export const RecentJobs = observer(() => {
               );
             })}
         </VStack>
+
         {errorGettingMore && <ErrorBanner text='Error getting more jobs' />}
+
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
+
         {jobs?.length !== 0 && !noMoreJobs && (
           <Button
             hidden={errorOnInit}
@@ -178,6 +181,7 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
+
         {!isLoading && ((noMoreJobs && jobs.length > pageLimit) || (!includeDeleted && !!deletedListCount)) && (
           // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
@@ -200,9 +204,11 @@ export const RecentJobs = observer(() => {
             )}
           </Box>
         )}
+
         {!errorOnInit && !isLoading && jobs?.length !== 0 && (
           <UsageInfoBanner text='All times are reported in UTC.' mt='2em' />
         )}
+
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
           <VStack pb={6} spacing={6}>
             <NoSomethingBanner>No jobs found.</NoSomethingBanner>
