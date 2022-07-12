@@ -81,15 +81,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent
-<<<<<<< HEAD
           onFileSelect={(file) => {
             trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
             flow.assignFile(file);
           }}
-=======
           disabled={accountStore.accountState === 'unpaid'}
-          onFileSelect={(file) => flow.assignFile(file)}
->>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
       </Box>
 
@@ -104,15 +100,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Language'
           tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
-<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('language_select', 'Action', 'Changed the language', { value: val });
             store.language = val;
           }}
-=======
-          onSelect={(val) => (store.language = val)}
           disabled={accountStore.accountState === 'unpaid'}
->>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
 
         <SelectField
@@ -120,15 +112,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Separation'
           tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
-<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('separation_select', 'Action', 'Changed the separation', { value: val });
             store.separation = val as any;
           }}
-=======
-          onSelect={(val) => (store.separation = val as any)}
           disabled={accountStore.accountState === 'unpaid'}
->>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
 
         <SelectField
@@ -136,15 +124,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Accuracy'
           tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
-<<<<<<< HEAD
           onSelect={(val) => {
             trackEvent('accuracy_select', 'Action', 'Changed the Accuracy', { value: val });
             store.accuracy = val as any;
           }}
-=======
-          onSelect={(val) => (store.accuracy = val as any)}
           disabled={accountStore.accountState === 'unpaid'}
->>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
         />
       </Flex>
       {accountStore.accountState === 'unpaid' && (
