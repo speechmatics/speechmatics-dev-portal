@@ -91,7 +91,7 @@ function MenuElem({ item, selected, ...props }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={accountStore.account !== undefined ? item.path : ''} >
+    <Link href={accountStore.isLoading !== true ? item.path : ''} >
       <Box
         className={`menu_elem ${selected ? 'selected' : ''}`}
         {...props}
