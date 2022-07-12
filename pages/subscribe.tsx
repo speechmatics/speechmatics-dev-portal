@@ -88,14 +88,10 @@ function Subscribe({ }) {
           })
           .catch((error) => {
             setSubmitButtonReady(true);
-<<<<<<< HEAD
-            errToast(`Something went wrong, please try again later. ${error.status}`);
             trackEvent('billing_chargify_failed', 'Event', '', {
               error: error.status
             });
-=======
             errToast(`Something went wrong on our side. Please try again later or contact support. (${error.status})`);
->>>>>>> 24b9376fb09f38570ffc077c8b85752f335c86b7
           });
       },
 
