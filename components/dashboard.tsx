@@ -182,7 +182,7 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
 function ErrorModal({ isModalOpen, errorTitle, errorDescription, buttonLabel, buttonCallback }) {
   return (
     <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false} size='2xl'>
-      <ModalOverlay style={{ backdropFilter: 'blur(5px)' }} bgColor='#fff5' />
+      <ModalOverlay className='blurOverlay' bgColor='#fff5' />
       <ModalContent borderRadius='sm' bg='smRed.500'>
         <ModalBody color='smWhite.500' >
           <HStack py={4} width='100%' justifyContent='space-between'>
