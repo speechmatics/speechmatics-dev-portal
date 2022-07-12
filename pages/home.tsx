@@ -51,6 +51,7 @@ export default function Home({ }) {
             title='Manage Access'
             description='You need to create an API key to make API requests.'
             buttonLabel='Create API Key'
+            disabled={accountStore.isLoading}
             hrefUrl='/manage-access/'
           />
           <HomeWhiteBox
@@ -58,6 +59,7 @@ export default function Home({ }) {
             title='Track Your Usage'
             description='Usage is measured in hours of audio processed.'
             buttonLabel='View Usage'
+            disabled={accountStore.isLoading}
             hrefUrl='/usage/'
           />
           <HomeWhiteBox
@@ -65,6 +67,7 @@ export default function Home({ }) {
             title='Learning Resources'
             description='Explore our documentation and learning resources.'
             buttonLabel='Learn'
+            disabled={accountStore.isLoading}
             hrefUrl='/learn/'
           />
         </Grid>
