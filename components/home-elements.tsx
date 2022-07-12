@@ -32,3 +32,30 @@ export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel
     </VStack>
   );
 };
+
+
+export const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl, disabled = false }) => {
+  return (
+    <VStack className='sm_panel' width='100%' alignItems='center' justifyContent='space-between'>
+      <VStack>
+        <Box>{icon}</Box>
+        <Text as='div' fontFamily='RMNeue-Bold' fontSize='1.1em' textAlign='center'>
+          {title}
+        </Text>
+        <Text
+          as='div'
+          fontFamily='RMNeue-Regular'
+          fontSize='0.8em'
+          color='smBlack.400'
+          textAlign='center'>
+          {description}
+        </Text>
+      </VStack>
+      <Link href={disabled ? '' : hrefUrl}>
+        <Button variant='speechmaticsOutline' width='100%' disabled={disabled}>
+          {buttonLabel}
+        </Button>
+      </Link>
+    </VStack>
+  );
+};
