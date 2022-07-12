@@ -10,8 +10,9 @@ import {
   TranscribeAudioIcon,
   TranscribeIcon
 } from '../components/icons-library';
+import { accountStore } from '../utils/account-store-context';
 
-export default function Home({}) {
+export default function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel='Home' introduction='Welcome to the Speechmatics SaaS Portal.' />
@@ -27,6 +28,7 @@ export default function Home({}) {
             iconPadding='22px'
             text='Upload and Transcribe a Media File'
             buttonLabel='Transcribe Now'
+            disabled={accountStore.isLoading}
             hrefUrl='/transcribe/'
           />
           <HomeBox
@@ -35,6 +37,7 @@ export default function Home({}) {
             text='Start Using API'
             buttonLabel='Get Started'
             hrefUrl='/getting-started/'
+            disabled={accountStore.isLoading}
             iconPadding='1.5em 0em 0em 0.8em'
           />
         </Grid>

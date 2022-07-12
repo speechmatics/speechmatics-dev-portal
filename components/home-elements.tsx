@@ -1,7 +1,7 @@
 import { VStack, Box, Button, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl }) => {
+export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel, hrefUrl, disabled = false }) => {
   return (
     <VStack
       width='100%'
@@ -24,8 +24,8 @@ export const HomeBox = ({ bgColor, icon, iconPadding = '24px', text, buttonLabel
           {text}
         </Box>
       </VStack>
-      <Link href={hrefUrl}>
-        <Button variant='speechmaticsWhite' color={bgColor}>
+      <Link href={disabled ? '' : hrefUrl}>
+        <Button variant='speechmaticsWhite' color={bgColor} disabled={disabled}>
           {buttonLabel}
         </Button>
       </Link>
