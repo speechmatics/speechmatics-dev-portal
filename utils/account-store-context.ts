@@ -121,6 +121,7 @@ class AccountContext {
     this._accountState = this.getAccountState();
 
     if (!this._account && 'account_id' in response) this._account = response as any;
+    this.isLoading = false;
   }
 
   getAccountState(): ContractState {
