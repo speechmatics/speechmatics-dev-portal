@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
+import { trackEvent } from '../utils/analytics';
 import { accountStore } from '../utils/account-store-context';
 
 export function MenuContainer() {
@@ -96,7 +97,10 @@ function MenuElem({ item, selected, ...props }) {
         className={`menu_elem ${selected ? 'selected' : ''}`}
         {...props}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}>
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => {
+          trackEvent('main_nav_click', 'Navigation', item.title);
+        }}>
         <Box>
           {item.icon({
             mono: Boolean(selected) || isHovered,

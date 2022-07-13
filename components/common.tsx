@@ -100,6 +100,7 @@ export const InfoBarbox = ({
   buttonLabel,
   hrefUrl = null,
   setStateUp = null,
+  buttonOnClick = null,
   ...props
 }) => {
   const breakVal = useBreakpointValue({
@@ -111,27 +112,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-          <HStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            alignItems='center'
-            padding='1.5em 1.5em'
-            {...props}>
-            {children}
-          </HStack>
-        )
+            <HStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              alignItems='center'
+              padding='1.5em 1.5em'
+              {...props}>
+              {children}
+            </HStack>
+          )
         : ({ children }) => (
-          <VStack
-            width='100%'
-            bg={bgColor}
-            justifyContent='space-between'
-            padding='1.2em 0.5em'
-            spacing='1em'
-            {...props}>
-            {children}
-          </VStack>
-        ),
+            <VStack
+              width='100%'
+              bg={bgColor}
+              justifyContent='space-between'
+              padding='1.2em 0.5em'
+              spacing='1em'
+              {...props}>
+              {children}
+            </VStack>
+          ),
     [breakVal]
   );
 
@@ -151,7 +152,8 @@ export const InfoBarbox = ({
           <Button
             variant='speechmaticsWhite'
             mt='0px'
-            data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}>
+            data-qa={`button-${buttonLabel.toLowerCase().replace(' ', '-')}`}
+            onClick={() => buttonOnClick?.()}>
             {buttonLabel}
           </Button>
         </Link>
@@ -165,7 +167,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({ }) => (
+export const ViewUsageBox = ({}) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -222,7 +224,19 @@ export const PageHeader = ({ headerLabel, introduction }) => {
   );
 };
 
-export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) => {
+interface CopyButtonProps {
+  copyContent: string;
+  position: string;
+  top: string;
+  additionalOnClick?: () => void;
+}
+
+export const CopyButton = ({
+  copyContent,
+  position = 'initial',
+  top = '9px',
+  additionalOnClick = null
+}: CopyButtonProps) => {
   const [isTTOpen, setIsTTOpen] = useState(false);
 
   useEffect(() => {
@@ -268,7 +282,13 @@ export const CopyButton = ({ copyContent, position = 'initial', top = '9px' }) =
   );
 };
 
-export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, itemsPerPage = 5 }) => {
+export const DataGridComponent = ({
+  data,
+  DataDisplayComponent,
+  isLoading,
+  itemsPerPage = 5,
+  onTrackUse = null
+}) => {
   const [page, setPage] = useState(0);
 
   const pagesCount = Math.ceil(data?.length / itemsPerPage);
@@ -276,6 +296,7 @@ export const DataGridComponent = ({ data, DataDisplayComponent, isLoading, items
   let onSelectPage = useCallback(
     (_page: number) => {
       setPage(_page - 1);
+      onTrackUse?.();
     },
     [data]
   );

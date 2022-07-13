@@ -1,7 +1,7 @@
 import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { InfoBarbox, PageHeader } from '../components/common';
+import { PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { HomeBox, HomeWhiteBox } from '../components/home-elements';
 import {

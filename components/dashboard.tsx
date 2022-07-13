@@ -22,6 +22,8 @@ import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
 import { PaymentWarningBanner, AccountErrorBox } from './common'
 import { callStore } from '../utils/call-api';
+import CookieConsent, { Cookies, getCookieConsentValue, resetCookieConsentValue } from "react-cookie-consent";
+import { dataDogRum } from '../utils/analytics';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -34,6 +36,7 @@ export default observer(function Dashboard({ children }) {
 
   const redirectUrl = router.route;
 
+
   const {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
@@ -45,6 +48,11 @@ export default observer(function Dashboard({ children }) {
   const isAuthenticated = useIsAuthenticated();
 
   const breakVal = useBreakpointValue({ base: true, md: false })
+
+
+  useEffect(() => {
+    if (getCookieConsentValue() === 'true') dataDogRum.dataDogInit();
+  }, [getCookieConsentValue()])
 
   useEffect(() => {
     let st: number;
@@ -101,6 +109,8 @@ export default observer(function Dashboard({ children }) {
 
   return (
     <Box className='dashboard_container'>
+      <SmCookiesConsent />
+
       <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} returnUrl={redirectUrl} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
@@ -207,3 +217,23 @@ function ErrorModal({ isModalOpen, errorTitle, errorDescription, buttonLabel, bu
 
 
 
+function SmCookiesConsent({ }) {
+  return <CookieConsent
+    style={{
+      backgroundColor: "#fffb",
+      backdropFilter: 'blur(5px)', color: 'var(--chakra-colors-smNavy-500)', padding: '1em'
+    }}
+    buttonText='I understand and accept'
+    buttonStyle={{ backgroundColor: 'var(--chakra-colors-smBlue-500)', color: 'var(--chakra-colors-smNavy-100)', padding: '0.5em 1.5em' }}
+    declineButtonStyle={{
+      backgroundColor: 'var(--chakra-colors-smWhite-500)',
+      border: '1px solid', borderColor: 'var(--chakra-colors-smRed-500)',
+      color: 'var(--chakra-colors-smRed-500)', padding: '0.5em 1.5em'
+    }}
+    enableDeclineButton
+    expires={30}
+
+  >
+    This website uses cookies to enhance the user experience.
+  </CookieConsent>
+}

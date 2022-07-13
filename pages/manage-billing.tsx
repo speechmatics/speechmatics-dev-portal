@@ -33,6 +33,7 @@ import accountContext from '../utils/account-store-context';
 import { callGetPayments, callRemoveCard } from '../utils/call-api';
 import { formatDate } from '../utils/date-utils';
 import { AddReplacePaymentCard, DownloadInvoiceHoverable } from '../components/billing';
+import { trackEvent } from '../utils/analytics';
 import { useRouter } from 'next/router';
 import { RequestThrowType } from '../custom';
 
@@ -71,6 +72,7 @@ export default observer(function ManageBilling({ }) {
 
   const deleteCard = useCallback(() => {
     onOpen();
+    trackEvent('billing_remove_card_click', 'Action');
   }, []);
 
   const onRemoveConfirm = () => {
@@ -93,7 +95,12 @@ export default observer(function ManageBilling({ }) {
       }
     )
     onClose();
+    trackEvent('billing_remove_card_confirm', 'Action');
   };
+
+  const tabsOnChange = useCallback((index) => {
+    trackEvent(`billing_tab_${['settings', 'payments'][index]}`, 'Navigation');
+  }, []);
 
   useEffect(() => {
     if (router.asPath.includes('#update_card')) {
@@ -214,7 +221,10 @@ const PaymentsGrid = ({ data, isLoading }) => {
           <GridItem data-qa={`payments-download-invoice-${i}`}>
             {el.url && (
               <Link href={el.url}>
-                <a target='_blank' download>
+                <a
+                  target='_blank'
+                  download
+                  onClick={() => trackEvent('billing_payments_download_invoice', 'Action')}>
                   <DownloadInvoiceHoverable />
                 </a>
               </Link>

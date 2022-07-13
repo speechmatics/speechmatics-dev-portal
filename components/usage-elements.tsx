@@ -18,6 +18,7 @@ import { observer } from 'mobx-react-lite';
 import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './common';
 import { ExclamationIcon } from './icons-library';
 import { formatDate } from '../utils/date-utils';
+import { trackEvent } from '../utils/analytics';
 
 export const UsageSummary = observer(function Usage() {
   const [usageSummaryJson, setUsageSummaryJson] = useState<UsageRespJson>({});
@@ -188,6 +189,7 @@ export const UsageBreakdown = observer(function Usage() {
           data={breakdown}
           DataDisplayComponent={UsageBreakdownGrid}
           isLoading={isLoading}
+          onTrackUse={() => trackEvent('usage_details_pagination', 'Navigation')}
         />
       )}
       {usageError && (

@@ -43,6 +43,7 @@ import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
+import { trackEvent } from '../utils/analytics';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import FilesBeingUploaded from './file-transcription/files-being-uploaded';
 
@@ -245,6 +246,7 @@ export const RecentJobs = observer(() => {
             bg={breakVal ? 'smWhite.500' : null}
             border={breakVal ? '2px solid' : null}
             borderColor='smBlack.300'
+            onClick={() => trackEvent('close_transcription_viewer', 'Action')}
             color={breakVal ? 'smBlack.300' : null}
             top={breakVal ? -4 : null}
             right={breakVal ? -4 : null}
@@ -262,6 +264,7 @@ export const RecentJobs = observer(() => {
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
+          trackEvent('delete_job_confirm', 'Action');
         }}
         confirmLabel='Delete Job'
         cancelLabel='Keep Job'

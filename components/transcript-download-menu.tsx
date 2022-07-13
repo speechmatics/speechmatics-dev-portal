@@ -2,6 +2,7 @@ import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { callGetTranscript, callGetDataFile } from '../utils/call-api';
 import accountContext from '../utils/account-store-context';
+import { trackEvent } from '../utils/analytics';
 
 export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
   const { tokenStore } = useContext(accountContext);
@@ -52,6 +53,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('txt');
+                trackEvent('download_transcription_txt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as text
@@ -64,6 +66,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('json-v2');
+                trackEvent('download_transcription_json', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as JSON
@@ -76,6 +79,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('srt');
+                trackEvent('download_transcription_srt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as SRT
