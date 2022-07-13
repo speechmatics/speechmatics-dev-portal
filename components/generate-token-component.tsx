@@ -65,19 +65,19 @@ export const GenerateTokenComponent: ChakraComponent<'div', GTCprops> = observer
       } else {
         setNoNameError(false);
         setGenTokenStage('waiting');
-        callPostApiKey(idToken, nameInputRef?.current?.value, accountStore.getProjectId())
+        callPostApiKey(nameInputRef?.current?.value, accountStore.getProjectId())
           .then((resp) => {
             setGeneratedToken(resp.key_value);
             setChosenTokenName('')
             setGenTokenStage('generated');
-            accountStore.fetchServerState(idToken);
+            accountStore.fetchServerState();
             if (nameInputRef.current) nameInputRef.current.value = '';
           })
           .catch((error) => {
             setGenTokenStage('error');
           });
       }
-    }, [nameInputRef?.current?.value, idToken, chosenTokenName]);
+    }, [nameInputRef?.current?.value, chosenTokenName]);
 
     const generatedApikeyonClick = useCallback(() => {
       generatedApikeyinputRef.current.select();
