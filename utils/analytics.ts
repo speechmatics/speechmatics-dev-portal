@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { Cookies, getCookieConsentValue } from 'react-cookie-consent';
+import { getCookieConsentValue } from 'react-cookie-consent';
 
 export const GA_TRACKING_ID = process.env.GTAG || 'G-WSYQJ34RYV';
 
@@ -22,6 +22,8 @@ export const trackEvent = (
   label: string = '',
   value: any = {}
 ) => {
+  if (getCookieConsentValue() !== 'true') return;
+
   try {
     window.gtag('event', action, {
       event_category: category,
