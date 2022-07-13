@@ -791,14 +791,14 @@ export const ExclamationIconLarge = (props) => (
   <svg width={64} height={64} fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
     <path
       d='M61.333 31.496A29.765 29.765 0 0 1 32 61.333 28.897 28.897 0 0 1 2.666 32.512 29.765 29.765 0 0 1 32 2.667a28.902 28.902 0 0 1 29.333 28.829ZM32 34.667v-16'
-      stroke='#D82C2C'
+      stroke={props.color || '#D82C2C'}
       strokeWidth={2}
       strokeLinecap='round'
       strokeLinejoin='round'
     />
     <path
       d='M31.977 42.68a.654.654 0 0 0-.643.68.678.678 0 0 0 .675.653v0a.657.657 0 0 0 .643-.68.675.675 0 0 0-.65-.653h-.014'
-      stroke='#D82C2C'
+      stroke={props.color || '#D82C2C'}
       strokeWidth={2}
       strokeLinecap='round'
       strokeLinejoin='round'

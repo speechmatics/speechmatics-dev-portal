@@ -3,6 +3,7 @@ import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
 import { errToast } from '../components/common';
 import { useIsAuthenticated } from '@azure/msal-react';
+import { toast } from '@chakra-ui/react';
 
 export const useJobs = (limit, page, includeDeleted) => {
   const [jobs, setJobs] = useState<JobElementProps[]>([]);
@@ -94,7 +95,11 @@ export const useJobs = (limit, page, includeDeleted) => {
             }
           })
           .catch((err) => {
-            errToast('Failed to delete job ' + id);
+            if (err.toastId) toast.close(err.toastId);
+            errToast(
+              `Failed to delete job (id: ${id}, error ${err.status}). The job was probably removed earlier. The list of jobs will refresh.`
+            );
+            forceGetJobs();
           });
       }
     },

@@ -38,6 +38,7 @@ const breakpoints = createBreakpoints({
 const theme = extendTheme({
   breakpoints,
   fonts: {
+    heading: 'RMNeue-Regular',
     body: 'RMNeue-Regular'
   },
   colors: {
@@ -233,6 +234,13 @@ const theme = extendTheme({
             border: '1px solid var(--chakra-colors-smBlack-180)',
             boxShadow: '4px 4px 7px #5A5D5F15'
           } as CSSObject
+        }
+      }
+    },
+    Link: {
+      baseStyle: {
+        _hover: {
+          textDecoration: 'none'
         }
       }
     }
