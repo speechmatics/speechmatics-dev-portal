@@ -496,7 +496,7 @@ export function removeListenersOnDropZone(
 }
 
 export const handleErrors = (error, detail) => {
-  console.log(error, FlowError.BeyondAllowedQuota);
+  console.log('handleErrors', error, FlowError.BeyondAllowedQuota);
   if (error == FlowError.BeyondFreeQuota)
     return (
       <>

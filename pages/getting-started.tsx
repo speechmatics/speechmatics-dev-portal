@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { GenerateTokenComponent, TokenGenStages as TokenGenStage } from './manage-access';
 import accountContext from '../utils/account-store-context';
 import { CodeExamples } from '../components/code-examples';
+import { GenerateTokenComponent, TokenGenStages } from '../components/generate-token-component';
 
-export default observer(function GettingStarted({}) {
+export default observer(function GettingStarted({ }) {
   const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
 
   const { accountStore } = useContext(accountContext);
 
-  const tokenGenerationStage = (stage: TokenGenStage) => {
+  const tokenGenerationStage = (stage: TokenGenStages) => {
     setShowDefaultCodeExample(stage != 'generated');
   };
 

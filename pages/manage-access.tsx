@@ -1,35 +1,7 @@
-import {
-  Box,
-  Button,
-  HStack,
-  IconButton,
-  Spinner,
-  VStack,
-  Text,
-  useDisclosure,
-  Input,
-  Grid,
-  GridItem,
-  ChakraComponent,
-  Flex,
-  BoxProps,
-  useBreakpointValue
-} from '@chakra-ui/react';
-import { observer } from 'mobx-react-lite';
-import { useCallback, useState, useRef, useContext, useEffect } from 'react';
 import Dashboard from '../components/dashboard';
-import accountContext, { ApiKey } from '../utils/account-store-context';
-import { callPostApiKey, callRemoveApiKey } from '../utils/call-api';
 import React from 'react';
 import {
-  WarningBanner,
-  ConfirmRemoveModal,
-  CopyButton,
-  DescriptionLabel,
-  GridSpinner,
-  HeaderLabel,
   PageHeader,
-  positiveToast,
   SmPanel,
   ErrorBanner,
   
@@ -39,10 +11,10 @@ import { formatDate } from '../utils/date-utils';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import { CodeExamples } from '../components/code-examples';
 import { useIsAuthenticated } from '@azure/msal-react';
+import { PreviousTokens } from '../components/previous-tokens';
+import { GenerateTokenComponent } from '../components/generate-token-component';
 
-//accountStore.getRuntimeURL()
-
-export default function GetAccessToken({}) {
+export default function GetAccessToken({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel='Manage Access' introduction='Manage API Keys.' />

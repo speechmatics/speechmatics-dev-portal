@@ -17,11 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogo } from './icons-library';
+import { ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { WarningBanner, ErrorBanner } from './common'
 import useInactiveLogout from '../utils/inactive-hook'
+import { PaymentWarningBanner, AccountErrorBox } from './common'
+import { callStore } from '../utils/call-api';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -84,9 +85,13 @@ export default observer(function Dashboard({ children }) {
         .accountsFetchFlow(isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
-          onUserCreationModalClose();
         })
-        .catch(err => console.error("dashboard accountStore catch", err));
+        .catch(err => {
+          console.error("dashboard accountStore catch", err)
+        })
+        .finally(() => {
+          onUserCreationModalClose();
+        });
     }
   }, [isAuthenticated]);
 
@@ -103,14 +108,22 @@ export default observer(function Dashboard({ children }) {
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
+      <ErrorModal isModalOpen={callStore.has500Error} errorTitle='A problem occured on our side.'
+        errorDescription="Sorry, it's a 500! Please, try again in few minutes."
+        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+
+      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='A problem occured when attempting to connect.'
+        errorDescription="The service is out of reach."
+        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <PaymentWarningBanner accountState={accountStore.accountState} />
-      
-      <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
-        {!breakVal && <MenuContainer /> }
 
-        <Box className='dashboard_content'>
-          {breakVal && <MenuContainer /> }
+      <Box className='dashboard' tabIndex={0}>
+
+        <Box className='dashboard_content' flexDirection={breakVal ? 'column' : 'row'}>
+          <MenuContainer />
+
           <Box className='dashboard_padding'>
             <motion.main
               variants={animationVariants} // Pass the variant object into Framer Motion
@@ -119,6 +132,7 @@ export default observer(function Dashboard({ children }) {
               exit='exit' // Exit state (used later) to variants.exit
               transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
             >
+              {accountStore.responseError && <AccountErrorBox />}
               {children}
             </motion.main>
           </Box>
@@ -166,34 +180,32 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
   );
 }
 
-function PaymentWarningBanner({ accountState }) {
 
+function ErrorModal({ isModalOpen, errorTitle, errorDescription, buttonLabel, buttonCallback }) {
   return (
-    <HStack zIndex={20} position="sticky" top="62px">
-      {accountState === 'past_due' &&
-        <WarningBanner 
-          centered={true}
-          content={
-            <>
-              We’ve had trouble taking payment. Please{' '}
-              <Link href='/manage-billing/#update_card'>
-                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-              </Link> to avoid disruptions to your account.{' '}
-            </>
-          }/>
-        }
-        {accountState === 'unpaid' &&
-          <ErrorBanner
-            mt="0"
-            content={
-              <>
-                We’ve had trouble taking payment. Please{' '}
-                <Link href='/manage-billing/#update_card'>
-                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-                </Link> to transcribe more files.{' '}
-              </>
-            }/>
-          }
-    </HStack>
-  )
-};
+    <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false} size='2xl'>
+      <ModalOverlay className='blurOverlay' bgColor='#fff5' />
+      <ModalContent borderRadius='sm' bg='smRed.500'>
+        <ModalBody color='smWhite.500' >
+          <HStack py={4} width='100%' justifyContent='space-between'>
+            <HStack spacing={4}>
+              <Box>
+                <ExclamationIconLarge color='var(--chakra-colors-smWhite-500)' />
+              </Box>
+              <VStack alignItems='flex-start' spacing={0}>
+                <Box fontSize='xl' fontWeight='bold'>{errorTitle}</Box>
+                <Box fontSize='sm'>{errorDescription}</Box>
+              </VStack>
+            </HStack>
+            <Button variant='speechmaticsWhite' onClick={buttonCallback}>
+              {buttonLabel}
+            </Button>
+          </HStack>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+
+
