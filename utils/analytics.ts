@@ -1,8 +1,11 @@
 import { datadogRum } from '@datadog/browser-rum';
+import { Cookies, getCookieConsentValue } from 'react-cookie-consent';
 
 export const GA_TRACKING_ID = process.env.GTAG || 'G-WSYQJ34RYV';
 
 export const trackPageview = (url: string) => {
+  if (getCookieConsentValue() !== 'true') return;
+
   console.log('trackPageview', url);
   try {
     window.gtag('config', GA_TRACKING_ID, {
@@ -30,20 +33,30 @@ export const trackEvent = (
   }
 };
 
-export function dataDogInit() {
-  datadogRum.init({
-    applicationId: 'b70b2550-dd21-4969-8be8-69debf8c7f58',
-    clientToken: 'pubdc67de53d9467f199978f5bc86362a83',
-    site: 'datadoghq.eu',
-    service: 'speechmatics-self-service-portal',
+class DataDogRum {
+  initialised = false;
 
-    version: process.env.npm_package_version,
-    sampleRate: 100,
-    premiumSampleRate: 100,
-    trackInteractions: true,
-    defaultPrivacyLevel: 'mask-user-input',
-    env: process.env.NODE_ENV === 'production' ? 'production' : 'development'
-  });
+  dataDogInit() {
+    if (this.initialised) return;
 
-  datadogRum.startSessionReplayRecording();
+    datadogRum.init({
+      applicationId: 'b70b2550-dd21-4969-8be8-69debf8c7f58',
+      clientToken: 'pubdc67de53d9467f199978f5bc86362a83',
+      site: 'datadoghq.eu',
+      service: 'speechmatics-self-service-portal',
+
+      version: process.env.npm_package_version,
+      sampleRate: 100,
+      premiumSampleRate: 100,
+      trackInteractions: true,
+      defaultPrivacyLevel: 'mask-user-input',
+      env: process.env.NODE_ENV === 'production' ? 'production' : 'development'
+    });
+
+    this.initialised = true;
+
+    datadogRum.startSessionReplayRecording();
+  }
 }
+
+export const dataDogRum = new DataDogRum();
