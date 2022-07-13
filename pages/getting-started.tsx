@@ -51,8 +51,7 @@ export default observer(function GettingStarted({ }) {
               raiseTokenStage={tokenGenerationStage}
               tokensFullDescr={
                 <>
-                  You are using all of your available API keys. To generate a new API Key, you need
-                  to delete an existing API key{' '}
+                  You are using all of your available API keys. To generate a new API Key, delete an existing API key{' '}
                   <Link href='/manage-access/'>
                     <a
                       style={{ cursor: 'pointer', textDecoration: 'underline' }}
