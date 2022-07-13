@@ -12,14 +12,12 @@ export const PreviousTokens = observer(() => {
   const [[apikeyIdToRemove, apikeyName], setApiKeyToRemove] = useState<[string, string]>(['', '']);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { accountStore } = useContext(accountContext);
 
   const apiKeys = useMemo(() => (
     accountStore.getApiKeys()?.slice()
       .sort((elA, elB) => new Date(elB.created_at).getTime() - new Date(elA.created_at).getTime())),
     [accountStore.getApiKeys()]);
-
-  const idToken = tokenStore.tokenPayload?.idToken;
 
   const aboutToRemoveOne = (el: ApiKey) => {
     console.log('aboutToRemoveOne', el, el.apikey_id);
@@ -29,11 +27,11 @@ export const PreviousTokens = observer(() => {
 
   const onRemoveConfirm = () => {
     console.log('onRemoveConfirm', apikeyIdToRemove);
-    callRemoveApiKey(idToken, apikeyIdToRemove).then((res) => {
-      accountStore.fetchServerState(idToken);
+    callRemoveApiKey(apikeyIdToRemove).then((res) => {
+      accountStore.fetchServerState();
       positiveToast('API Key removed');
     }).catch(error => {
-      accountStore.fetchServerState(idToken);
+      accountStore.fetchServerState();
       errToast('The API key does not exist, refreshing account info...')
     });
     onClose();
