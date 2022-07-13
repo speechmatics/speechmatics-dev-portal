@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, useCallback, Dispatch } from 'react';
+import React, { useState, useEffect, useCallback, Dispatch } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
-import accountContext from '../utils/account-store-context';
 import { errToast } from '../components/common';
+import { useIsAuthenticated } from '@azure/msal-react';
 import { toast } from '@chakra-ui/react';
 
 export const useJobs = (limit, page, includeDeleted) => {
@@ -15,14 +15,14 @@ export const useJobs = (limit, page, includeDeleted) => {
   const [errorGettingNewJob, setErrorGettingNewJob] = useState<boolean>(false);
   const [createdBefore, setCreatedBefore] = useState<string>(null);
   const [isPolling, setIsPolling] = useState<boolean>(false);
+  const authenticated = useIsAuthenticated();
 
   const maxlimit = 100;
-  const { tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
 
   const pollingCallback = useCallback(() => {
-    pollJobStatuses(idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit);
-  }, [idToken, jobs, setJobs, isPolling, setIsPolling, maxlimit]);
+    if (authenticated)
+      pollJobStatuses(jobs, setJobs, isPolling, setIsPolling, maxlimit);
+  }, [authenticated, jobs, setJobs, isPolling, setIsPolling, maxlimit]);
 
   useInterval(pollingCallback, 20000, isPolling);
 
@@ -32,27 +32,27 @@ export const useJobs = (limit, page, includeDeleted) => {
       throw new Error('Limit cannot be more than ' + maxlimit);
     }
     // return useEffect cleanup function from get Jobs
-    return getJobs(
-      idToken,
-      jobs,
-      setJobs,
-      createdBefore,
-      setCreatedBefore,
-      limit,
-      includeDeleted,
-      setNoMoreJobs,
-      setIsPolling,
-      setIsLoading,
-      setErrorOnInit
-    );
-  }, [idToken]);
+    if (authenticated) {
+      return getJobs(
+        jobs,
+        setJobs,
+        createdBefore,
+        setCreatedBefore,
+        limit,
+        includeDeleted,
+        setNoMoreJobs,
+        setIsPolling,
+        setIsLoading,
+        setErrorOnInit
+      );
+    }
+  }, [authenticated]);
 
   useEffect(() => {
     // only use this hook after the initial load
-    if (!isLoading && page > 0) {
+    if (!isLoading && page > 0 && authenticated) {
       // return useEffect cleanup function from get Jobs
       return getJobs(
-        idToken,
         jobs,
         setJobs,
         createdBefore,
@@ -65,7 +65,7 @@ export const useJobs = (limit, page, includeDeleted) => {
         setErrorGettingMore
       );
     }
-  }, [page]);
+  }, [authenticated, page]);
 
   // When removing a job, we want to avoid sudden jerky changes in box data/size, so we do:
   // 1. set invisible so it is hidden with an animation
@@ -74,8 +74,8 @@ export const useJobs = (limit, page, includeDeleted) => {
   // this allows a smooth transition for the user
   const onDeleteJob = useCallback(
     (id: string, force: boolean) => {
-      if (idToken) {
-        callDeleteJob(idToken, id, force)
+      if (authenticated) {
+        callDeleteJob(id, force)
           .then((response) => {
             if (!!response) {
               setJobs((oldJobs) => {
@@ -103,14 +103,13 @@ export const useJobs = (limit, page, includeDeleted) => {
           });
       }
     },
-    [idToken, setJobs]
+    [authenticated, setJobs]
   );
 
   //for outside use
   const forceGetJobs = useCallback(() => {
     console.log('forceGetJobs', createdBefore, limit);
     getJobs(
-      idToken,
       jobs,
       setJobs,
       null,
@@ -122,7 +121,7 @@ export const useJobs = (limit, page, includeDeleted) => {
       (value) => {},
       setErrorGettingNewJob
     );
-  }, [idToken, jobs]);
+  }, [authenticated, jobs]);
 
   return {
     jobs,
@@ -139,7 +138,6 @@ export const useJobs = (limit, page, includeDeleted) => {
 };
 
 const getJobs = (
-  idToken: string,
   jobs: JobElementProps[],
   setJobs: Dispatch<JobElementProps[]>,
   createdBefore: string,
@@ -152,52 +150,49 @@ const getJobs = (
   errorFunction: Dispatch<boolean>
 ) => {
   let isActive = true;
-  if (idToken) {
-    errorFunction(false);
-    loadingFunction(true);
-    const queries: JobQuery = {
-      limit: limit,
-      include_deleted: includeDeleted
-    };
-    if (createdBefore != null) {
-      queries.created_before = createdBefore;
-    }
-    callGetJobs(idToken, queries)
-      .then((respJson) => {
-        if (!respJson || !('jobs' in respJson) || respJson.jobs == null) {
-          throw 'error geting jobs';
-        }
-        if (isActive) {
-          if (respJson?.jobs?.length < limit) {
-            setNoMoreJobs(true);
-          }
-          if (respJson.jobs.length !== 0) {
-            const formatted: JobElementProps[] = formatJobs(respJson.jobs);
-            const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
-            setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
-            setJobs([...combinedArrays]);
-            if (combinedArrays.some((item) => item.status === 'running')) {
-              setIsPolling(true);
-            } else {
-              setIsPolling(false);
-            }
-          }
-          loadingFunction(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        errorFunction(true);
-        loadingFunction(false);
-      });
+  errorFunction(false);
+  loadingFunction(true);
+  const queries: JobQuery = {
+    limit: limit,
+    include_deleted: includeDeleted
+  };
+  if (createdBefore != null) {
+    queries.created_before = createdBefore;
   }
+  callGetJobs(queries)
+    .then((respJson) => {
+      if (!respJson || !('jobs' in respJson) || respJson.jobs == null) {
+        throw 'error geting jobs';
+      }
+      if (isActive) {
+        if (respJson?.jobs?.length < limit) {
+          setNoMoreJobs(true);
+        }
+        if (respJson.jobs.length !== 0) {
+          const formatted: JobElementProps[] = formatJobs(respJson.jobs);
+          const combinedArrays: JobElementProps[] = createSet(jobs, formatted, true);
+          setCreatedBefore(respJson.jobs[respJson.jobs.length - 1].created_at);
+          setJobs([...combinedArrays]);
+          if (combinedArrays.some((item) => item.status === 'running')) {
+            setIsPolling(true);
+          } else {
+            setIsPolling(false);
+          }
+        }
+        loadingFunction(false);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      errorFunction(true);
+      loadingFunction(false);
+    });
   return () => {
     isActive = false;
   };
 };
 
 const pollJobStatuses = (
-  idToken: string,
   jobs: JobElementProps[],
   setJobs: Dispatch<JobElementProps[]>,
   isPolling: boolean,
@@ -205,7 +200,7 @@ const pollJobStatuses = (
   maxlimit: number
 ) => {
   let isActive = true;
-  if (idToken && isPolling) {
+  if (isPolling) {
     let newJobs = [];
     const requests = [];
     const requestNo = Math.ceil(jobs.length / maxlimit);
@@ -213,12 +208,12 @@ const pollJobStatuses = (
       for (let i = 0; i < requestNo; i++) {
         let createdBeforeTime = jobs[maxlimit * i]?.date;
         let query = { limit: maxlimit, created_before: createdBeforeTime };
-        requests.push(callGetJobs(idToken, query));
+        requests.push(callGetJobs(query));
       }
     } else {
       let createdBeforeTime = jobs[0]?.date;
       let query = { limit: jobs.length, created_before: createdBeforeTime };
-      requests.push(callGetJobs(idToken, query));
+      requests.push(callGetJobs(query));
     }
     Promise.all(requests).then((result) => {
       if (isActive && isPolling) {

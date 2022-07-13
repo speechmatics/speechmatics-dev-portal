@@ -94,11 +94,11 @@ class AccountContext {
     return val / 3600;
   }
 
-  async fetchServerState(idToken: string) {
+  async fetchServerState() {
     this.responseError = false;
     this.isLoading = true;
 
-    return callGetAccounts(idToken)
+    return callGetAccounts()
       .then((jsonResp) => {
         if (checkIfAccountResponseLegit(jsonResp)) {
           this.assignServerState(jsonResp);
@@ -129,13 +129,12 @@ class AccountContext {
   }
 
   async accountsFetchFlow(
-    accessToken: string,
     isSettingUpAccount: (val: boolean) => void
   ): Promise<any> {
     this.requestSent = this.isLoading = true;
     this.responseError = false;
 
-    return callGetAccounts(accessToken)
+    return callGetAccounts()
       .then(async (jsonResp: any) => {
         if (
           jsonResp &&
@@ -147,7 +146,7 @@ class AccountContext {
             'no account on management platform, sending a request to create with POST /accounts'
           );
           isSettingUpAccount(true);
-          return callPostAccounts(accessToken).then((jsonPostResp) => {
+          return callPostAccounts().then((jsonPostResp) => {
             isSettingUpAccount(false);
             this.isLoading = false;
             return jsonPostResp;
@@ -170,6 +169,7 @@ class AccountContext {
 
 class TokenContext {
   tokenPayload: AuthenticationResult = null;
+  lastActive: Date = null;
 
   authorityToUse: string = '';
 
@@ -180,7 +180,8 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable
+      loginFailureError: observable,
+      lastActive: observable,
     });
   }
 
@@ -194,8 +195,9 @@ export async function acquireTokenFlow(
   account: AccountInfo
 ) {
   const request = {
-    scopes: [],
-    account
+    scopes: [process.env.DEFAULT_B2C_SCOPE],
+    account,
+    authority: process.env.SIGNIN_POLICY,
   } as SilentRequest;
 
   return msalInstance

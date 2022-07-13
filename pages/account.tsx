@@ -9,7 +9,7 @@ export default function Account({}) {
   const resetPassword = () => {
     instance
       .loginRedirect({
-        scopes: [],
+        scopes: [process.env.DEFAULT_B2C_SCOPE],
         authority: process.env.RESET_PASSWORD_POLICY,
         redirectUri: process.env.REDIRECT_URI
       })

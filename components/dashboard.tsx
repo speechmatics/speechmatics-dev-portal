@@ -20,6 +20,7 @@ import { msalLogout } from '../utils/msal-utils';
 import { ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
+import useInactiveLogout from '../utils/inactive-hook'
 import { PaymentWarningBanner, AccountErrorBox } from './common'
 import { callStore } from '../utils/call-api';
 import CookieConsent, { Cookies, getCookieConsentValue, resetCookieConsentValue } from "react-cookie-consent";
@@ -49,6 +50,7 @@ export default observer(function Dashboard({ children }) {
 
   const breakVal = useBreakpointValue({ base: true, md: false })
 
+  useInactiveLogout()
 
   useEffect(() => {
     if (getCookieConsentValue() === 'true') dataDogRum.dataDogInit();
@@ -64,7 +66,7 @@ export default observer(function Dashboard({ children }) {
 
   const { accountStore, tokenStore } = useContext(accountContext);
 
-  const { token: tokenPayload, error: b2cError } = useB2CToken(instance);
+  const { error: b2cError } = useB2CToken(instance);
 
   useEffect(() => {
     let st: number;
@@ -83,12 +85,11 @@ export default observer(function Dashboard({ children }) {
     if (
       !accountStore.requestSent &&
       !accountStore.account &&
-      isAuthenticated &&
-      tokenPayload?.idToken
+      isAuthenticated
     ) {
-      tokenStore.setTokenPayload(tokenPayload);
+      tokenStore.lastActive = new Date();
       accountStore
-        .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
+        .accountsFetchFlow(isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
         })
@@ -99,7 +100,7 @@ export default observer(function Dashboard({ children }) {
           onUserCreationModalClose();
         });
     }
-  }, [isAuthenticated, tokenPayload?.idToken]);
+  }, [isAuthenticated]);
 
   const account = instance.getActiveAccount();
 

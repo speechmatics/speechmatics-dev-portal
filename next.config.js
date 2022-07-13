@@ -24,6 +24,7 @@ module.exports = {
     REDIRECT_URI_INVITATION: process.env.REDIRECT_URI_INVITATION,
     RESET_PASSWORD_POLICY: process.env.RESET_PASSWORD_POLICY,
     RUNTIME_AUTH_TTL: process.env.RUNTIME_AUTH_TTL,
+    INACTIVITY_TIMEOUT: process.env.INACTIVITY_TIMEOUT,
     GTAG: process.env.GTAG
   },
   exportPathMap: async function () {

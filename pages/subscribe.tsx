@@ -3,10 +3,11 @@ import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
 import { callGetSecrChargify, callPostRequestTokenChargify } from '../utils/call-api';
 
-import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { errToast, HeaderLabel, PageHeader, positiveToast, SmPanel } from '../components/common';
+import { useIsAuthenticated } from '@azure/msal-react';
 import { trackEvent } from '../utils/analytics';
 
 declare global {
@@ -28,15 +29,15 @@ function Subscribe({ }) {
   const [submitButtonReady, setSubmitButtonReady] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
   const [paymentToken, setPaymentToken] = useState('');
+  const authenticated = useIsAuthenticated();
 
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const { accountStore } = useContext(accountContext);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (idToken && (accountStore.getContractId() !== undefined)) {
-      callGetSecrChargify(idToken, accountStore.getContractId())
+    if (authenticated && (accountStore.getContractId() !== undefined)) {
+      callGetSecrChargify(accountStore.getContractId())
         .then((tokenResp) => {
           setPaymentToken(tokenResp.payment_token);
         })
@@ -44,7 +45,7 @@ function Subscribe({ }) {
           errToast(`Unable to retreive the contract (id: ${accountStore.getContractId()}). Please contact support.`);
         });
     }
-  }, [idToken, accountStore.getContractId()]);
+  }, [authenticated, accountStore.getContractId()]);
 
   useEffect(() => {
     if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
@@ -75,14 +76,14 @@ function Subscribe({ }) {
       (charfigyToken: string) => {
         setToken(charfigyToken);
 
-        callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
+        callPostRequestTokenChargify(accountStore.getContractId(), charfigyToken)
           .then(async () => {
             positiveToast(
               !!accountStore.getPaymentMethod()
                 ? 'Card updated successfully!'
                 : 'Card added successfully!'
             );
-            await accountStore.fetchServerState(idToken);
+            await accountStore.fetchServerState();
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
             trackEvent('billing_chargify_successful', 'Event');
           })

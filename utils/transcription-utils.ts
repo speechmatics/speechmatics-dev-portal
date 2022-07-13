@@ -36,8 +36,8 @@ export function getDiarizedTranscription(input: string | BatchTranscriptionRespo
     }
 
     if (diarization == 'channel' && prevChannel != curr.channel) {
-      channel = capitalizeFirstLetter(curr.channel?.replace('_', ''));
-      channelWTags = `<span class='channelLabel'>${channel}</span>`;
+      channel = capitalizeFirstLetter(curr.channel?.replace('_', ' '));
+      channelWTags = `<span class='channelLabel'>${channel}:</span>`;
       channel = `\n${channel}\n`;
       prevChannel = curr.channel;
     }

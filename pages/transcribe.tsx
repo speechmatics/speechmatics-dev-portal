@@ -28,11 +28,12 @@ import accountStoreContext from '../utils/account-store-context';
 import { trackEvent } from '../utils/analytics';
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { humanFileSize } from '../utils/string-utils';
-import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
+import { languagesData, separation, accuracyModels } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
@@ -66,12 +67,13 @@ type TranscribeFormProps = {
 };
 
 export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
-  const { tokenStore, accountStore } = useContext(accountStoreContext);
+  const { accountStore } = useContext(accountStoreContext);
+  const authenticated = useIsAuthenticated();
 
   useEffect(() => {
     authFlow.restoreToken();
-    if (tokenStore.tokenPayload?.idToken) authFlow.refreshToken(tokenStore.tokenPayload.idToken);
-  }, [tokenStore.tokenPayload?.idToken]);
+    if (authenticated) authFlow.refreshToken();
+  }, [authenticated]);
 
   return (
     <>
@@ -155,7 +157,7 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           fontSize='18'
           width='100%'
           onClick={() => {
-            flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
+            flow.attemptSendFile();
             trackEvent('get_transcripion_click', 'Action', 'Submitted transcription');
           }}
           disabled={

@@ -19,7 +19,7 @@ export default function Login() {
   tokenStore.authorityToUse = authority;
 
   const loginRequest = {
-    scopes: [],
+    scopes: [process.env.DEFAULT_B2C_SCOPE],
     authority,
   } as RedirectRequest;
 
