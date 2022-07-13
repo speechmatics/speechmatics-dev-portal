@@ -51,6 +51,7 @@ function MobileMenu() {
           className='dashboard_sidenav'
           width="250px"
           top='62px'
+          height='100%'
           ref={ref}
           borderBottom='1px solid var(--chakra-colors-smBlack-180)'
           borderTop='1px solid var(--chakra-colors-smBlack-180)'>
@@ -74,7 +75,7 @@ function MobileMenu() {
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className='nav_menu' rowGap='0.8em' height='100vh'>
+    <VStack className='nav_menu' rowGap='0.8em'>
       {menuData.map((item) => (
         <MenuElem
           item={item}
