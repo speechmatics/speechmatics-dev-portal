@@ -236,6 +236,13 @@ const theme = extendTheme({
           } as CSSObject
         }
       }
+    },
+    Link: {
+      baseStyle: {
+        _hover: {
+          textDecoration: 'none'
+        }
+      }
     }
   }
 });

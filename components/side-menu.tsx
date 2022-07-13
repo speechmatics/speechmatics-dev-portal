@@ -108,7 +108,9 @@ function MenuElem({ item, selected, ...props }) {
             height: '1.65em'
           })}
         </Box>
-        <Box data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`} pl='0.5em'>
+        <Box data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`}
+          fontFamily='RMNeue-Regular'
+          pl='0.5em'>
           {item.title}
         </Box>
       </Box>
