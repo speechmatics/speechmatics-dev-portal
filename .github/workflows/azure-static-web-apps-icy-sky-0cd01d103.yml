@@ -26,7 +26,7 @@ jobs:
       AUTH_CLIENT_ID: '21d50769-1b5b-414d-be58-cc27ea9dc1fa'
       ENDPOINT_API_URL: 'https://mp.speechmatics.com/v1'
       RUNTIME_API_URL: 'https://asr.api.speechmatics.com/v2'
-      DEFAULT_B2C_SCOPE: 'https://identity.speechmatics.com/21d50769-1b5b-414d-be58-cc27ea9dc1fa/User.Read'
+      DEFAULT_B2C_SCOPE: 'https://speechmaticsproduction.onmicrosoft.com/21d50769-1b5b-414d-be58-cc27ea9dc1fa/User.Read'
       CHARGIFY_PUBLIC_KEY: 'chjs_wg5zstr67hwfkdzzxg9m8ckc'
       CHARGIFY_SERVER_HOST: 'https://speechmatics-production.chargify.com'
     steps:
