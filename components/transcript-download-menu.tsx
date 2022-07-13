@@ -1,8 +1,7 @@
 import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
-import { useContext } from 'react';
 import { callGetTranscript, callGetDataFile } from '../utils/call-api';
-import accountContext from '../utils/account-store-context';
 import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
   const authenticated = useIsAuthenticated();
@@ -17,19 +16,6 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
         a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
         a.download = fName;
         a.click();
-      });
-    }
-  };
-
-  const downloadDataFile = () => {
-    if (authenticated) {
-      callGetDataFile(jobId).then((response) => {
-        if (!!response) {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(response);
-          a.download = fileName;
-          a.click();
-        }
       });
     }
   };
@@ -52,6 +38,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('txt');
+                trackEvent('download_transcription_txt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as text
@@ -64,6 +51,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('json-v2');
+                trackEvent('download_transcription_json', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as JSON
@@ -76,6 +64,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('srt');
+                trackEvent('download_transcription_srt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as SRT
