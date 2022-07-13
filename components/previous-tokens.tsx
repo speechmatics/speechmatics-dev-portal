@@ -65,7 +65,7 @@ export const PreviousTokens = observer(() => {
           <React.Fragment key={`${el.name}${el.created_at}`}>
             <GridItem className='grid_row_divider'>{i != 0 && <hr />}</GridItem>
             <GridItem>{el.name}</GridItem>
-            <GridItem>{formatDate(new Date(el.created_at))}</GridItem>
+            <GridItem fontFamily='RMNeue-Light'>{formatDate(new Date(el.created_at))}</GridItem>
             <GridItem display='flex' justifyContent='flex-end' style={{ padding: '0.4em' }}>
               <IconButton
                 size='sm'

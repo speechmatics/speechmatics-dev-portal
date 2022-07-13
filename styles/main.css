@@ -20,11 +20,6 @@ body {
   height: 100%;
 }
 
-div,
-span {
-  font-family: 'RMNeue-Regular';
-}
-
 button {
   border: 0;
 }
