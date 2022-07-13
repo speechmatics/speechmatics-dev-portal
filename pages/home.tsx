@@ -46,7 +46,7 @@ export default observer(function Home({ }) {
           gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))'
           gridAutoFlow='dense'
           width='100%'
-          gap='1em'>
+          gap='2em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
             title='Manage Access'
