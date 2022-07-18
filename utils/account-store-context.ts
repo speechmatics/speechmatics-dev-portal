@@ -4,31 +4,32 @@ import { callGetAccounts, callPostAccounts, callRemoveApiKey } from './call-api'
 import {
   AccountInfo,
   AuthenticationResult,
-  InteractionRequiredAuthError,
+  InteractionRequiredAuthError
 } from '@azure/msal-common';
 import { IPublicClientApplication, SilentRequest } from '@azure/msal-browser';
-import { errToast } from '../components/common';
 
 class AccountContext {
   _account: Account = null;
-
+  _accountState: ContractState = null;
   isLoading: boolean = true;
   userHint: string = '';
 
   requestSent: boolean = false;
 
   keyJustRemoved: boolean = false;
+  _testAccountState: ContractState = 'active';
 
   constructor() {
     makeObservable(this, {
       clear: action,
       _account: observable,
+      _accountState: observable,
       assignServerState: action,
       isLoading: observable,
       userHint: observable,
       fetchServerState: action,
       getUsageLimit: action,
-      keyJustRemoved: observable,
+      keyJustRemoved: observable
     });
   }
 
@@ -38,6 +39,14 @@ class AccountContext {
 
   get account(): Account {
     return this._account;
+  }
+
+  set accountState(state: ContractState) {
+    this._accountState = state;
+  }
+
+  get accountState(): ContractState {
+    return this._accountState;
   }
 
   clear() {
@@ -71,7 +80,7 @@ class AccountContext {
   getUsageLimit(type: 'standard' | 'enhanced'): number | undefined {
     const dict = {
       standard: 'LIM_DUR_CUR_MON_STANDARD_SEC',
-      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC',
+      enhanced: 'LIM_DUR_CUR_MON_ENHANCED_SEC'
     };
 
     const val = this._account?.contracts
@@ -104,8 +113,13 @@ class AccountContext {
     if (!response) throw new Error('attempt assigning empty response');
 
     this._account = response.accounts?.filter((acc) => !!acc)?.[0];
+    this._accountState = this.getAccountState()
 
     if (!this._account && 'account_id' in response) this._account = response as any;
+  }
+
+  getAccountState(): ContractState {
+    return this._account?.contracts[0]?.state
   }
 
   async accountsFetchFlow(
@@ -138,10 +152,8 @@ class AccountContext {
         throw new Error(`response from /accounts: ${jsonResp}`);
       })
       .catch((err) => {
-        console.log(err);
-        errToast(`while fetching account: ${JSON.stringify(err)}`);
         this.isLoading = false;
-        console.error(err);
+        console.error('account store catch', err);
       });
   }
 }
@@ -158,7 +170,7 @@ class TokenContext {
       tokenPayload: observable,
       setTokenPayload: action,
       authorityToUse: observable,
-      loginFailureError: observable,
+      loginFailureError: observable
     });
   }
 
@@ -173,20 +185,18 @@ export async function acquireTokenFlow(
 ) {
   const request = {
     scopes: [],
-    account,
+    account
   } as SilentRequest;
 
   return msalInstance
     .acquireTokenSilent(request)
     .then((tokenResponse) => {
-      console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
       return tokenResponse;
     })
     .catch(async (error) => {
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
         return msalInstance.acquireTokenPopup(request).then((tokenResponse) => {
-          console.log('useB2CToken', { idToken: tokenResponse?.idToken, account });
           return tokenResponse;
         });
       }
@@ -227,6 +237,7 @@ interface Contract {
   projects: Project[];
   runtime_url: string;
   payment_method: PaymentMethod | null;
+  state: ContractState;
 }
 
 interface UsageLimit {
@@ -253,3 +264,5 @@ export interface PaymentMethod {
   expiration_month: number;
   expiration_year: number;
 }
+
+export type ContractState = 'active' | 'past_due' | 'unpaid';

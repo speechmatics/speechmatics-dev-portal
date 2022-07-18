@@ -1,6 +1,5 @@
 import { CSSObject, extendTheme, theme as baseTheme } from '@chakra-ui/react';
-import { createBreakpoints } from "@chakra-ui/theme-tools"
-
+import { createBreakpoints } from '@chakra-ui/theme-tools';
 
 const smTabStyle = {
   bg: 'smBlue.100',
@@ -20,21 +19,21 @@ const smTabStyle = {
     borderTop: '2px solid #5398FC',
     borderLeft: '1px solid var(--chakra-colors-smBlack-180)',
     borderRight: '1px solid var(--chakra-colors-smBlack-180)',
-    borderBottom: '1px solid #0000',
+    borderBottom: '1px solid #0000'
   },
   _focus: {
-    boxShadow: 'none',
-  },
+    boxShadow: 'none'
+  }
 } as CSSObject;
 
 const breakpoints = createBreakpoints({
-  xs: "22em", // 352px
-  sm: "30em", // 480
-  md: "48em", // 768
-  lg: "62em", // 992
-  xl: "80em", // 1280
-  "2xl": "96em", // 1536
-})
+  xs: '22em', // 352px
+  sm: '30em', // 480
+  md: '48em', // 768
+  lg: '62em', // 992
+  xl: '80em', // 1280
+  '2xl': '96em' // 1536
+});
 
 const theme = extendTheme({
   breakpoints,
@@ -47,7 +46,7 @@ const theme = extendTheme({
       200: '#EAF3F2',
       300: '#A7D0CD',
       400: '#4FA9A2',
-      500: '#2A827A',
+      500: '#2A827A'
     },
     smBlue: {
       100: '#F5F9FF',
@@ -55,10 +54,11 @@ const theme = extendTheme({
       150: '#E8F0F8',
       200: '#EAF3FF',
       300: '#BFD8FE',
+      350: '#88b5fa',
       400: '#5398FC',
       500: '#386DFB',
       600: '#1848C3',
-      700: '#103490',
+      700: '#103490'
     },
     smNavy: {
       100: '#F9FBFD', //dashboard background
@@ -69,7 +69,7 @@ const theme = extendTheme({
       300: '#AEB2B8',
       350: '#878C95',
       400: '#5E6673',
-      500: '#263243',
+      500: '#263243'
     },
     smBlack: {
       100: '#F4F6F9',
@@ -83,27 +83,28 @@ const theme = extendTheme({
       300: '#78808B',
       400: '#5A5D5F',
       420: '#5E6673',
-      500: '#000000',
+      500: '#000000'
     },
     smRed: {
       100: '#FAEFEF',
-      500: '#D72F3F',
+      500: '#D72F3F'
     },
     smPurple: {
-      500: '#A64B82',
+      500: '#A64B82'
     },
     smYellow: {
-      500: '#F8CF38',
+      500: '#F8CF38'
     },
     smOrange: {
       150: '#CB6C4310',
+      200: '#fcf2e8',
       400: '#E27919',
       500: '#CB6C43'
     },
     smWhite: {
       150: '#ffffff26',
-      500: '#FFFFFF',
-    },
+      500: '#FFFFFF'
+    }
   },
   components: {
     Button: {
@@ -118,18 +119,18 @@ const theme = extendTheme({
           _hover: {
             bg: 'smBlue.400',
             _disabled: {
-              bg: 'smBlack.200',
-            },
+              bg: 'smBlack.200'
+            }
           },
           _focus: {
-            boxShadow: 'none',
+            boxShadow: 'none'
           },
           _active: {
-            bg: 'smBlue.300',
+            bg: 'smBlue.300'
           },
           _disabled: {
-            bg: 'smBlack.250',
-          },
+            bg: 'smBlack.250'
+          }
         } as CSSObject,
 
         speechmaticsGreen: {
@@ -142,18 +143,18 @@ const theme = extendTheme({
           _hover: {
             bg: 'smGreen.400',
             _disabled: {
-              bg: 'smBlack.200',
-            },
+              bg: 'smBlack.200'
+            }
           },
           _focus: {
-            boxShadow: 'none',
+            boxShadow: 'none'
           },
           _active: {
-            bg: 'smGreen.300',
+            bg: 'smGreen.300'
           },
           _disabled: {
-            bg: 'smBlack.300',
-          },
+            bg: 'smBlack.300'
+          }
         } as CSSObject,
 
         speechmaticsWhite: {
@@ -164,14 +165,14 @@ const theme = extendTheme({
           px: '2.5em',
           fontSize: '0.9em',
           _hover: {
-            bg: 'smBlue.100',
+            bg: 'smBlue.100'
           },
           _focus: {
-            boxShadow: 'none',
+            boxShadow: 'none'
           },
           _active: {
-            bg: 'smBlue.300',
-          },
+            bg: 'smBlue.300'
+          }
         } as CSSObject,
 
         speechmaticsOutline: {
@@ -185,16 +186,16 @@ const theme = extendTheme({
           px: '2.5em',
           fontSize: '0.9em',
           _hover: {
-            bg: 'smBlue.100',
+            bg: 'smBlue.100'
           },
           _focus: {
-            boxShadow: 'none',
+            boxShadow: 'none'
           },
           _active: {
-            bg: 'smBlue.300',
-          },
-        },
-      },
+            bg: 'smBlue.300'
+          }
+        }
+      }
     },
     Input: {
       variants: {
@@ -203,10 +204,10 @@ const theme = extendTheme({
           field: {
             py: '1.8em',
             borderRadius: '2px',
-            border: '1px solid #cacad0',
-          },
-        },
-      },
+            border: '1px solid #cacad0'
+          }
+        }
+      }
     },
 
     Tabs: {
@@ -215,30 +216,27 @@ const theme = extendTheme({
           tab: smTabStyle,
           tabpanel: {
             bg: 'smWhite.500',
-            padding: '1.5em',
+            padding: '1.5em'
           } as CSSObject,
           tabpanels: {
             border: '1px solid var(--chakra-colors-smBlack-180)',
-            boxShadow: '4px 4px 7px #5A5D5F15',
-          } as CSSObject,
+            boxShadow: '4px 4px 7px #5A5D5F15'
+          } as CSSObject
         },
         speechmaticsCode: {
           tab: smTabStyle,
           tabpanel: {
             bg: 'smWhite.500',
-            padding: '0em',
+            padding: '0em'
           } as CSSObject,
           tabpanels: {
             border: '1px solid var(--chakra-colors-smBlack-180)',
-            boxShadow: '4px 4px 7px #5A5D5F15',
-          } as CSSObject,
-        },
-      },
-    },
-  },
+            boxShadow: '4px 4px 7px #5A5D5F15'
+          } as CSSObject
+        }
+      }
+    }
+  }
 });
 
 export default theme;
-
-
-

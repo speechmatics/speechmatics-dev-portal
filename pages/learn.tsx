@@ -14,15 +14,17 @@ import {
   Spinner,
   ModalCloseButton,
   useBreakpointValue,
+  HStack,
+  Button
 } from '@chakra-ui/react';
 import {
   DescriptionLabel,
   HeaderLabel,
   InfoBarbox,
   PageHeader,
-  SmPanel,
+  SmPanel
 } from '../components/common';
-import { SubmitAJobIcon } from '../components/icons-library';
+import { GitHubLogo, PostmanLogo, SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
@@ -35,27 +37,44 @@ export default function Learn({ }) {
 
   return (
     <Dashboard>
-      <PageHeader headerLabel="Learn" introduction="Explore our API Documentation and Resources." />
+      <PageHeader headerLabel='Learn' introduction='Explore our API Documentation and Resources.' />
       <YtEmbedPopup isModalOpen={isYtModalOpen} onModalClose={onYtModalClose} />
-      <VStack spacing="1.5em" alignItems="flex-start" width="100%" maxWidth='900px'>
+      <VStack spacing='1.5em' alignItems='flex-start' width='100%' maxWidth='900px'>
         <InfoBarbox
-          bgColor="smNavy.500"
+          bgColor='smNavy.500'
           icon={<SubmitAJobIcon width='4em' height='4em' />}
-          title="How to Submit a Job"
-          description="Watch our demo on how to submit a transcription job."
-          buttonLabel="Watch Video"
+          title='How to Submit a Job'
+          description='Watch our demo on how to submit a transcription job.'
+          buttonLabel='Watch Video'
           setStateUp={() => setIsYtModalOpen(true)}
         />
-        <Grid gridTemplateColumns="repeat(auto-fit, minmax(14em, 1fr))" gap="1.5em" width='100%'>
+        <HStack spacing={6} width='100%'>
+          <EngagementBox
+            titleIcon={GitHubLogo}
+            title="GitHub Community"
+            description="Give feedback and get help from the Speechmatics community."
+            ctaButtonLabel="Get Involved"
+            link="https://github.com/speechmatics/community"
+          />
+          <EngagementBox
+            titleIcon={PostmanLogo}
+            title="Postman Workspace"
+            description="Get started in minutes using our Postman workspace."
+            ctaButtonLabel="Go to Postman"
+            link="https://www.postman.com/speechmatics-dev/"
+          />
+        </HStack>
+
+        <Grid gridTemplateColumns='repeat(auto-fit, minmax(14em, 1fr))' gap='1.5em' width='100%'>
           {elems.map((el, i) => (
             <React.Fragment key={i}>
-              <SmPanel justifyContent="space-between" p="1.5em" height="100%">
+              <SmPanel justifyContent='space-between' p='1.5em'>
                 <Box>
                   <HeaderLabel>{el.title}</HeaderLabel>
                   <DescriptionLabel>{el.descr}</DescriptionLabel>
                 </Box>
                 <Link href={el.link} target='_blank'>
-                  <Box fontFamily="RMNeue-Regular" color="smBlue.500">
+                  <Box fontFamily='RMNeue-Regular' color='smBlue.500'>
                     <a>Read Article &gt;</a>
                   </Box>
                 </Link>
@@ -69,26 +88,25 @@ export default function Learn({ }) {
 }
 
 const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
-
   const vidWidth = useBreakpointValue({
-    xs: "20em",
-    sm: "25em",
-    md: "40em",
-    lg: "50em",
-    xl: "60em",
-    "2xl": "70em",
+    xs: '20em',
+    sm: '25em',
+    md: '40em',
+    lg: '50em',
+    xl: '60em',
+    '2xl': '70em'
   });
 
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} closeOnOverlayClick={true}>
       <ModalOverlay />
-      <ModalContent borderRadius="2px" maxWidth={`calc(${vidWidth} + 2em)`}>
+      <ModalContent borderRadius='2px' maxWidth={`calc(${vidWidth} + 2em)`}>
         <ModalHeader>
           <ModalCloseButton _focus={{ boxShadow: 'none' }} />
         </ModalHeader>
-        <ModalBody p="1em">
+        <ModalBody p='1em'>
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=vbK0u-aMuPQ"
+            url='https://www.youtube.com/watch?v=vbK0u-aMuPQ'
             width={vidWidth}
             height={`calc(${vidWidth} * 0.6)`}
             controls={true}
@@ -98,6 +116,34 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
     </Modal>
   );
 };
+
+
+const EngagementBox = ({
+  titleIcon,
+  title,
+  description,
+  ctaButtonLabel,
+  link }) => {
+  return <VStack bg='smWhite.500'
+    border='1px solid' borderColor='smBlack.150' flex={1}
+    p={6} alignSelf='stretch' justifyContent='space-between'
+  >
+    <VStack alignItems='flex-start' alignSelf='stretch'>
+      <HStack spacing={3}>
+        <Box>{titleIcon({ width: '1.6em', height: '1.6em' })}</Box>
+        <Box fontFamily='RMNeue-Bold' fontSize='1.5em'>{title}</Box>
+      </HStack>
+      <Box color='smBlack.300'>{description}</Box>
+    </VStack>
+    <Link href={link} target='_blank' style={{ textDecoration: 'none' }}>
+      <Button bg='smBlue.400' color='smWhite.500' rounded='sm' px={7} mt={2}
+        _hover={{ bg: 'smBlue.350' }}>
+        {ctaButtonLabel}
+      </Button>
+    </Link>
+  </VStack>
+}
+
 
 const elems = [
   {
@@ -109,10 +155,10 @@ const elems = [
     title: 'API How-To Guide',
     descr: 'Examples and guidance on using the Speechmatics SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/howto/'
-
   },
   {
-    title: 'Entities', descr: 'What entities are, and how they are formatted.',
+    title: 'Entities',
+    descr: 'What entities are, and how they are formatted.',
     link: 'https://docs.speechmatics.com/en/cloud/entities/'
   },
   {
@@ -126,16 +172,18 @@ const elems = [
     link: 'https://docs.speechmatics.com/en/cloud/understanding-saas-usage/'
   },
   {
-    title: 'Troubleshooting', descr: 'Resolving errors with the SaaS.',
+    title: 'Troubleshooting',
+    descr: 'Resolving errors with the SaaS.',
     link: 'https://docs.speechmatics.com/en/cloud/troubleshooting/'
   },
   {
-    title: 'API Reference', descr: 'Reference guide for the ASR REST API.',
+    title: 'API Reference',
+    descr: 'Reference guide for the ASR REST API.',
     link: 'https://docs.speechmatics.com/en/cloud/saasv2api/'
   },
   {
     title: 'Release Notes',
     descr: "What's new in our SaaS.",
     link: 'https://docs.speechmatics.com/en/cloud/release-notes/'
-  },
+  }
 ];

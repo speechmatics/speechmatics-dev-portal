@@ -5,9 +5,9 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang='en'>
         <Head>
-          <script src="https://js.chargify.com/latest/chargify.js"></script>
+          <script src='https://js.chargify.com/latest/chargify.js'></script>
         </Head>
         <body>
           <Main />
