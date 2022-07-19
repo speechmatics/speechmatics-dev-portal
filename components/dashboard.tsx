@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { Box, useDisclosure, Spinner, Button, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -53,9 +53,7 @@ export default observer(function Dashboard({ children }) {
 
   useInactiveLogout()
 
-  useEffect(() => {
-    if (getCookieConsentValue() === 'true') dataDogRum.dataDogInit();
-  }, [getCookieConsentValue()])
+
 
   useEffect(() => {
     let st: number;
@@ -105,13 +103,22 @@ export default observer(function Dashboard({ children }) {
 
   const account = instance.getActiveAccount();
 
-  const logout = () => {
+  const logout = useCallback(() => {
     msalLogout();
-  };
+  }, []);
+
+  useEffect(() => {
+    if (getCookieConsentValue() === 'true') dataDogRum.dataDogInit();
+  }, [getCookieConsentValue()])
+
+  const onAcceptCookies = useCallback(() => {
+    dataDogRum.dataDogInit();
+  }, [])
+
 
   return (
     <Box className='dashboard_container'>
-      <SmCookiesConsent />
+      <SmCookiesConsent onAccept={onAcceptCookies} />
 
       <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} returnUrl={redirectUrl} />
       <UserCreationModal

@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import CookieConsent, { Cookies, getCookieConsentValue, resetCookieConsentValue } from "react-cookie-consent";
 
-export function SmCookiesConsent({ }) {
+export function SmCookiesConsent({ onAccept }) {
   return <CookieConsent
+    onAccept={onAccept}
     style={{
       backgroundColor: "#fffb",
       backdropFilter: 'blur(5px)', padding: '1em',
