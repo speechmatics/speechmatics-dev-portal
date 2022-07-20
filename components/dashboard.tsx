@@ -37,7 +37,6 @@ export default observer(function Dashboard({ children }) {
 
   const redirectUrl = router.route;
 
-
   const {
     isOpen: isUserCreationModalOpen,
     onOpen: onUserCreationModalOpen,
