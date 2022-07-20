@@ -8,7 +8,7 @@ import { msalLogout } from './msal-utils';
 
 export default function useInactiveLogout() {
   const { tokenStore } = useContext(accountContext);
-  const activity_timeout: number = parseInt(process.env.INACTIVITY_TIMEOUT) || 0.1;
+  const activity_timeout: number = parseInt(process.env.INACTIVITY_TIMEOUT) || 15;
   const { inProgress } = useMsal();
   
   const logoutInactive = useCallback(() => {
