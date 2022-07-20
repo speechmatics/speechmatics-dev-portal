@@ -1,10 +1,10 @@
-import { useDisclosure, Box, Grid, GridItem, IconButton, Flex, Text } from "@chakra-ui/react";
+import { useDisclosure, Box, Grid, GridItem, IconButton, Flex, Text, toast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useMemo } from "react";
 import accountContext, { ApiKey } from '../utils/account-store-context';
 import { callRemoveApiKey } from "../utils/call-api";
 import { formatDate } from "../utils/date-utils";
-import { positiveToast, ConfirmRemoveModal, HeaderLabel, DescriptionLabel, GridSpinner, errToast } from "./common";
+import { positiveToast, ConfirmRemoveModal, HeaderLabel, DescriptionLabel, GridSpinner, errToast, infoToast } from "./common";
 import { BinIcon, ExclamationIcon } from "./icons-library";
 
 
@@ -32,7 +32,8 @@ export const PreviousTokens = observer(() => {
       positiveToast('API Key removed');
     }).catch(error => {
       accountStore.fetchServerState();
-      errToast('The API key does not exist, refreshing account info...')
+      toast.close(error.toastId);
+      infoToast('API Key already removed')
     });
     onClose();
     accountStore.keyJustRemoved = true;

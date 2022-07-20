@@ -124,13 +124,13 @@ export default observer(function Dashboard({ children }) {
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
-      <ErrorModal isModalOpen={callStore.has500Error} errorTitle='A problem occured on our side.'
-        errorDescription="Sorry, it's a 500! Please, try again in few minutes."
-        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+      <ErrorModal isModalOpen={callStore.has500Error} errorTitle='Something went wrong.'
+        errorDescription="Please, try again in few minutes."
+        buttonLabel='Try again' buttonCallback={() => { window.location.reload() }} />
 
-      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='A problem occured when attempting to connect.'
-        errorDescription="The service is out of reach."
-        buttonLabel='Try Again' buttonCallback={() => { window.location.reload() }} />
+      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='Connection problem.'
+        errorDescription="Please check your internet connection."
+        buttonLabel='Try again' buttonCallback={() => { window.location.reload() }} />
 
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <PaymentWarningBanner accountState={accountStore.accountState} />

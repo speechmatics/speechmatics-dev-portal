@@ -112,27 +112,27 @@ export const InfoBarbox = ({
     () =>
       breakVal
         ? ({ children }) => (
-            <HStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              alignItems='center'
-              padding='1.5em 1.5em'
-              {...props}>
-              {children}
-            </HStack>
-          )
+          <HStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            alignItems='center'
+            padding='1.5em 1.5em'
+            {...props}>
+            {children}
+          </HStack>
+        )
         : ({ children }) => (
-            <VStack
-              width='100%'
-              bg={bgColor}
-              justifyContent='space-between'
-              padding='1.2em 0.5em'
-              spacing='1em'
-              {...props}>
-              {children}
-            </VStack>
-          ),
+          <VStack
+            width='100%'
+            bg={bgColor}
+            justifyContent='space-between'
+            padding='1.2em 0.5em'
+            spacing='1em'
+            {...props}>
+            {children}
+          </VStack>
+        ),
     [breakVal]
   );
 
@@ -167,7 +167,7 @@ export const InfoBarbox = ({
   );
 };
 
-export const ViewUsageBox = ({}) => (
+export const ViewUsageBox = ({ }) => (
   <InfoBarbox
     icon={<img src='/assets/temp_trackIcon.png' />}
     title='Track your usage'
@@ -494,6 +494,9 @@ const toast = createStandaloneToast({
       },
       green: {
         500: 'var(--chakra-colors-smGreen-500)'
+      },
+      blue: {
+        500: 'var(--chakra-colors-smBlue-500)'
       }
     }
   }
@@ -530,6 +533,19 @@ export const positiveToast = (descr: string) =>
   toast({
     description: descr,
     status: 'success',
+    duration: 10000,
+    position: 'bottom-right',
+    isClosable: true,
+    containerStyle: {
+      fontFamily: 'RMNeue-Regular'
+    }
+  });
+
+export const infoToast = (descr: string | any) =>
+  toast({
+    title: '',
+    description: typeof descr === 'string' ? descr : JSON.stringify(descr),
+    status: 'info',
     duration: 10000,
     position: 'bottom-right',
     isClosable: true,

@@ -84,7 +84,7 @@ export default observer(function ManageBilling({ }) {
       (err: RequestThrowType) => {
         if (err.status == 403) {
           toast.close(err.toastId);
-          errTopToast(`You can't remove your payment card at the moment. Please, check unpaid invoices first or contact support.`)
+          errTopToast(`Check for unpaid invoices before removing your payment card.`)
 
         } else if (err.status == 404) {
           toast.close(err.toastId);

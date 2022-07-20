@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, Dispatch } from 'react';
 import { callGetJobs, callDeleteJob } from './call-api';
 import { useInterval } from './hooks';
-import { errToast } from '../components/common';
+import { errToast, infoToast } from '../components/common';
 import { useIsAuthenticated } from '@azure/msal-react';
 import { toast } from '@chakra-ui/react';
 
@@ -20,8 +20,7 @@ export const useJobs = (limit, page, includeDeleted) => {
   const maxlimit = 100;
 
   const pollingCallback = useCallback(() => {
-    if (authenticated)
-      pollJobStatuses(jobs, setJobs, isPolling, setIsPolling, maxlimit);
+    if (authenticated) pollJobStatuses(jobs, setJobs, isPolling, setIsPolling, maxlimit);
   }, [authenticated, jobs, setJobs, isPolling, setIsPolling, maxlimit]);
 
   useInterval(pollingCallback, 20000, isPolling);
@@ -95,10 +94,9 @@ export const useJobs = (limit, page, includeDeleted) => {
             }
           })
           .catch((err) => {
+            console.error(err);
             if (err.toastId) toast.close(err.toastId);
-            errToast(
-              `Failed to delete job (id: ${id}, error ${err.status}). The job was probably removed earlier. The list of jobs will refresh.`
-            );
+            infoToast(`Job already removed.`);
             forceGetJobs();
           });
       }
