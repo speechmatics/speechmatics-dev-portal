@@ -43,7 +43,6 @@ export function msalLogout(inactive: boolean = false) {
 
 export async function msalRefresh(): Promise<string> {
   const account = msalInstance.getActiveAccount();
-  tokenStore.lastActive = new Date();
   return acquireTokenFlow(msalInstance, account)
     .then((response) => {
       if (!!response) {

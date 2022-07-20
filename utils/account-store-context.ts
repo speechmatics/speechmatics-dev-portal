@@ -182,11 +182,16 @@ class TokenContext {
       authorityToUse: observable,
       loginFailureError: observable,
       lastActive: observable,
+      setLastActive: action,
     });
   }
 
   setTokenPayload(tokenPayload: AuthenticationResult) {
     this.tokenPayload = tokenPayload;
+  }
+
+  setLastActive(time: Date) {
+    this.lastActive = time;
   }
 }
 
