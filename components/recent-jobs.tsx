@@ -43,8 +43,10 @@ import { TranscriptFormat } from '../utils/transcribe-elements';
 import { JobElementProps, useJobs } from '../utils/use-jobs-hook';
 import { runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { languagesData } from '../utils/transcribe-elements';
+import { trackEvent } from '../utils/analytics';
 import { formatTimeDateFromString } from '../utils/date-utils';
 import FilesBeingUploaded from './file-transcription/files-being-uploaded';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export const RecentJobs = observer(() => {
   const [activeJob, setActiveJob] = useState<TranscriptionViewerProps & { fileName: string }>(null);
@@ -54,8 +56,8 @@ export const RecentJobs = observer(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState<number>(0);
   const pageLimit = 20;
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const { accountStore } = useContext(accountContext);
+  const authenticated = useIsAuthenticated();
 
   const breakVal = useBreakpointValue({
     base: false,
@@ -81,8 +83,8 @@ export const RecentJobs = observer(() => {
 
   const onOpenTranscript = useCallback(
     (job, format: TranscriptFormat) => {
-      if (idToken) {
-        callGetTranscript(idToken, job.jobId, format).then((response) => {
+      if (authenticated) {
+        callGetTranscript(job.jobId, format).then((response) => {
           setActiveJob({
             date: job.date,
             jobId: job.jobId,
@@ -95,7 +97,7 @@ export const RecentJobs = observer(() => {
         });
       }
     },
-    [idToken, activeJob]
+    [authenticated, activeJob]
   );
 
   const onOpenDeleteDialogue = useCallback(
@@ -108,7 +110,7 @@ export const RecentJobs = observer(() => {
 
   useEffect(() => {
     authFlow.restoreToken();
-  }, [idToken, accountStore.account]);
+  }, [authenticated, accountStore.account]);
 
   const skeletons = useMemo(
     () => Array.from({ length: 4 }).map((_, i) => LoadingJobsSkeleton(i, breakVal)),
@@ -163,8 +165,11 @@ export const RecentJobs = observer(() => {
               );
             })}
         </VStack>
+
         {errorGettingMore && <ErrorBanner text='Error getting more jobs' />}
+
         {errorOnInit && <ErrorBanner text="We couldn't get your jobs" />}
+
         {jobs?.length !== 0 && !noMoreJobs && (
           <Button
             hidden={errorOnInit}
@@ -178,6 +183,7 @@ export const RecentJobs = observer(() => {
             {isLoading || (isWaitingOnMore && <Spinner />)}
           </Button>
         )}
+
         {!isLoading && ((noMoreJobs && jobs.length > pageLimit) || (!includeDeleted && !!deletedListCount)) && (
           // added extra text to explain how many of the jobs are deleted and not visible
           <Box width='100%' textAlign='center' fontSize='.8em' color='smBlack.250'>
@@ -200,9 +206,11 @@ export const RecentJobs = observer(() => {
             )}
           </Box>
         )}
+
         {!errorOnInit && !isLoading && jobs?.length !== 0 && (
           <UsageInfoBanner text='All times are reported in UTC.' mt='2em' />
         )}
+
         {!isLoading && !errorOnInit && jobs?.length === 0 && noMoreJobs && (
           <VStack pb={6} spacing={6}>
             <NoSomethingBanner>No jobs found.</NoSomethingBanner>
@@ -239,6 +247,7 @@ export const RecentJobs = observer(() => {
             bg={breakVal ? 'smWhite.500' : null}
             border={breakVal ? '2px solid' : null}
             borderColor='smBlack.300'
+            onClick={() => trackEvent('close_transcription_viewer', 'Action')}
             color={breakVal ? 'smBlack.300' : null}
             top={breakVal ? -4 : null}
             right={breakVal ? -4 : null}
@@ -256,6 +265,7 @@ export const RecentJobs = observer(() => {
         onRemoveConfirm={() => {
           onDeleteJob(deleteJobInfo.id, true);
           onClose();
+          trackEvent('delete_job_confirm', 'Action');
         }}
         confirmLabel='Delete Job'
         cancelLabel='Keep Job'

@@ -4,16 +4,17 @@ import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { DescriptionLabel, HeaderLabel, PageHeader, SmPanel } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { GenerateTokenComponent, TokenGenStages as TokenGenStage } from './manage-access';
 import accountContext from '../utils/account-store-context';
 import { CodeExamples } from '../components/code-examples';
+import { trackEvent } from '../utils/analytics';
+import { GenerateTokenComponent, TokenGenStages } from '../components/generate-token-component';
 
-export default observer(function GettingStarted({}) {
+export default observer(function GettingStarted({ }) {
   const [showDefaultCodeExample, setShowDefaultCodeExample] = useState(true);
 
   const { accountStore } = useContext(accountContext);
 
-  const tokenGenerationStage = (stage: TokenGenStage) => {
+  const tokenGenerationStage = (stage: TokenGenStages) => {
     setShowDefaultCodeExample(stage != 'generated');
   };
 
@@ -29,7 +30,13 @@ export default observer(function GettingStarted({}) {
           <HeaderLabel>Download an Example Audio File</HeaderLabel>
           <DescriptionLabel>
             Download our{' '}
-            <a href='/example.wav' download='example.wav' title='Download an example file'>
+            <a
+              href='/example.wav'
+              download='example.wav'
+              title='Download an example file'
+              onClick={() => {
+                trackEvent('download_example', 'Actions', 'example.wav');
+              }}>
               <Text color='smBlue.500' as='span'>
                 sample audio file
               </Text>
@@ -44,10 +51,15 @@ export default observer(function GettingStarted({}) {
               raiseTokenStage={tokenGenerationStage}
               tokensFullDescr={
                 <>
-                  You are using all of your available API keys. To generate a new API Key, you need
-                  to delete an existing API key{' '}
+                  You are using all of your available API keys. To generate a new API Key, delete an existing API key{' '}
                   <Link href='/manage-access/'>
-                    <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>here</a>
+                    <a
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                      onClick={() => {
+                        trackEvent('link_to_manage_access', 'Navigation', 'link_in_start_in_api');
+                      }}>
+                      here
+                    </a>
                   </Link>
                   {'.'}
                 </>

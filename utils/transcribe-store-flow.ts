@@ -210,14 +210,13 @@ class FileTranscribeFlow {
     }
   }
 
-  attemptSendFile(idToken: string) {
+  attemptSendFile() {
     const { _file, language, accuracy, separation } = this.store;
     this.store.stage = 'pendingFile';
-    this.savedIdToken = idToken;
 
     this.store.addFileToUploading(_file);
 
-    callRequestFileTranscription(idToken, _file, language, accuracy, separation).then(
+    callRequestFileTranscription(_file, language, accuracy, separation).then(
       this.getResponseFn(_file),
       this.getErrorFn(_file)
     );
@@ -243,7 +242,7 @@ class FileTranscribeFlow {
     if (resp && 'id' in resp) {
       this.store.jobId = resp.id;
       this.store.stage = 'pendingTranscription';
-      this.runStatusPolling(this.savedIdToken);
+      this.runStatusPolling();
     } else {
       //todo gotten unexpected response
     }
@@ -297,16 +296,16 @@ class FileTranscribeFlow {
 
   interv = 0;
 
-  runStatusPolling(idToken) {
+  runStatusPolling() {
     const { jobId } = this.store;
 
     this.interv = window.setInterval(async () => {
-      const resp = await callRequestJobStatus(idToken, jobId);
+      const resp = await callRequestJobStatus(jobId);
       const status = (this.store.jobStatus = resp.job.status);
       if (status === 'done') {
         this.store.dateSubmitted = resp.job.created_at;
         this.store.stage = 'complete';
-        this.fetchTranscription(idToken);
+        this.fetchTranscription();
       }
       if (status === 'rejected') {
         this.store.stage = 'failed';
@@ -320,10 +319,10 @@ class FileTranscribeFlow {
     window.clearInterval(this.interv);
   }
 
-  async fetchTranscription(idToken: string) {
+  async fetchTranscription() {
     const { jobId } = this.store;
 
-    const transcr = await callGetTranscript(idToken, jobId, 'json-v2');
+    const transcr = await callGetTranscript(jobId, 'json-v2');
 
     this.store.transcriptionJSON = transcr;
   }

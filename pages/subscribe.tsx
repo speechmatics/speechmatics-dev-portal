@@ -3,10 +3,12 @@ import Dashboard from '../components/dashboard';
 import accountContext from '../utils/account-store-context';
 import { callGetSecrChargify, callPostRequestTokenChargify } from '../utils/call-api';
 
-import { Box, Button, createStandaloneToast, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { errToast, HeaderLabel, PageHeader, positiveToast, SmPanel } from '../components/common';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 declare global {
   interface Window {
@@ -14,7 +16,7 @@ declare global {
   }
 }
 
-function Subscribe({}) {
+function Subscribe({ }) {
   const chargifyForm = useRef();
 
   let chargify = null;
@@ -27,23 +29,23 @@ function Subscribe({}) {
   const [submitButtonReady, setSubmitButtonReady] = useState(true);
   const [chargifyLoaded, setChargifyLoaded] = useState(false);
   const [paymentToken, setPaymentToken] = useState('');
+  const authenticated = useIsAuthenticated();
 
-  const { accountStore, tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const { accountStore } = useContext(accountContext);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (idToken && !!accountStore.getContractId()) {
-      callGetSecrChargify(idToken, accountStore.getContractId())
+    if (authenticated && (accountStore.getContractId() !== undefined)) {
+      callGetSecrChargify(accountStore.getContractId())
         .then((tokenResp) => {
           setPaymentToken(tokenResp.payment_token);
         })
         .catch((err) => {
-          errToast(`callGetSecrChargify error: ${JSON.stringify(err)}`);
+          errToast(`Unable to retreive the contract (id: ${accountStore.getContractId()}). Please contact support.`);
         });
     }
-  }, [idToken, accountStore.getContractId()]);
+  }, [authenticated, accountStore.getContractId()]);
 
   useEffect(() => {
     if (paymentToken && !chargifyLoaded && chargify && chargify.current) {
@@ -66,34 +68,37 @@ function Subscribe({}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setSubmitButtonReady(false);
-
+    trackEvent('billing_chargify_submit', 'Action');
     chargify?.current.token(
       chargifyForm.current,
 
       (charfigyToken: string) => {
         setToken(charfigyToken);
 
-        callPostRequestTokenChargify(idToken, accountStore.getContractId(), charfigyToken)
+        callPostRequestTokenChargify(accountStore.getContractId(), charfigyToken)
           .then(async () => {
             positiveToast(
               !!accountStore.getPaymentMethod()
                 ? 'Card updated successfully!'
                 : 'Card added successfully!'
             );
-            await accountStore.fetchServerState(idToken);
+            await accountStore.fetchServerState();
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
+            trackEvent('billing_chargify_successful', 'Event');
           })
           .catch((error) => {
             setSubmitButtonReady(true);
-            errToast(`Something went wrong, please try again later. ${error.status}`);
+            trackEvent('billing_chargify_failed', 'Event', '', {
+              error: error.status
+            });
+            errToast(`Something went wrong on our side. Please try again later or contact support. (${error.status})`);
           });
       },
 
       (error: any) => {
         setSubmitButtonReady(true);
-        errToast(`Error while attempting to add a card: ${error.errors}`);
+        errToast(`Error while attempting to add a card: ${error.errors}. Please, try again later or contact support.`);
       }
     );
   };

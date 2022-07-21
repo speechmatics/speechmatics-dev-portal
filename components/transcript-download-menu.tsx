@@ -1,15 +1,14 @@
 import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
-import { useContext } from 'react';
 import { callGetTranscript, callGetDataFile } from '../utils/call-api';
-import accountContext from '../utils/account-store-context';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
-  const { tokenStore } = useContext(accountContext);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const authenticated = useIsAuthenticated();
 
   const downloadTranscript = (format) => {
-    if (idToken) {
-      callGetTranscript(idToken, jobId, format).then((response) => {
+    if (authenticated) {
+      callGetTranscript(jobId, format).then((response) => {
         const fName = `${jobId}.transcript.${format === 'json-v2' ? 'json' : format}`;
         const contentType = format === 'json-v2' ? 'application/json' : 'text/plain';
         const output = format === 'json-v2' ? JSON.stringify(response) : response;
@@ -17,19 +16,6 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
         a.href = window.URL.createObjectURL(new Blob([output], { type: contentType }));
         a.download = fName;
         a.click();
-      });
-    }
-  };
-
-  const downloadDataFile = () => {
-    if (idToken) {
-      callGetDataFile(idToken, jobId).then((response) => {
-        if (!!response) {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(response);
-          a.download = fileName;
-          a.click();
-        }
       });
     }
   };
@@ -52,6 +38,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('txt');
+                trackEvent('download_transcription_txt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as text
@@ -64,6 +51,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('json-v2');
+                trackEvent('download_transcription_json', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as JSON
@@ -76,6 +64,7 @@ export const TranscriptDownloadMenu = ({ jobId, status, fileName }) => {
             <MenuItem
               onClick={(e) => {
                 downloadTranscript('srt');
+                trackEvent('download_transcription_srt', 'Action');
               }}
               _focus={{ color: 'smBlue.500' }}>
               Download as SRT

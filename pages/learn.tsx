@@ -27,6 +27,7 @@ import {
 import { GitHubLogo, PostmanLogo, SubmitAJobIcon } from '../components/icons-library';
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
+import { trackEvent } from '../utils/analytics';
 
 export default function Learn({ }) {
   const [isYtModalOpen, setIsYtModalOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function Learn({ }) {
           description='Watch our demo on how to submit a transcription job.'
           buttonLabel='Watch Video'
           setStateUp={() => setIsYtModalOpen(true)}
+          buttonOnClick={() => trackEvent('learn_click_see_video', 'Action', 'Opened the video')}
         />
         <HStack spacing={6} width='100%'>
           <EngagementBox
@@ -74,7 +76,11 @@ export default function Learn({ }) {
                   <DescriptionLabel>{el.descr}</DescriptionLabel>
                 </Box>
                 <Link href={el.link} target='_blank'>
-                  <Box fontFamily='RMNeue-Regular' color='smBlue.500'>
+                  <Box
+                    color='smBlue.500'
+                    onClick={() =>
+                      trackEvent('learn_article_click', 'LinkOut', '', { title: el.title })
+                    }>
                     <a>Read Article &gt;</a>
                   </Box>
                 </Link>
@@ -102,7 +108,10 @@ const YtEmbedPopup = ({ isModalOpen, onModalClose }) => {
       <ModalOverlay />
       <ModalContent borderRadius='2px' maxWidth={`calc(${vidWidth} + 2em)`}>
         <ModalHeader>
-          <ModalCloseButton _focus={{ boxShadow: 'none' }} />
+          <ModalCloseButton
+            _focus={{ boxShadow: 'none' }}
+            onClick={() => trackEvent('learn_close_video', 'Action', '')}
+          />
         </ModalHeader>
         <ModalBody p='1em'>
           <ReactPlayer

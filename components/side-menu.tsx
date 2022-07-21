@@ -12,9 +12,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import menuData from '../static_data/menu-data';
+import { trackEvent } from '../utils/analytics';
+import { accountStore } from '../utils/account-store-context';
 
 export function MenuContainer() {
-  const showMenuBurger = useBreakpointValue({ base: true, xs: true, sm: true, md: false });
+  const showMenuBurger = useBreakpointValue({ base: true, md: false });
 
   if (showMenuBurger) return <MobileMenu />;
 
@@ -49,13 +51,14 @@ function MobileMenu() {
           className='dashboard_sidenav'
           width="250px"
           top='62px'
+          height='100%'
           ref={ref}
           borderBottom='1px solid var(--chakra-colors-smBlack-180)'
           borderTop='1px solid var(--chakra-colors-smBlack-180)'>
           <Menu />
         </Box>
       </Slide>
-      <Box  top='62px'>
+      <Box top='62px'>
         <IconButton
           icon={<FiMenu />}
           aria-label={''}
@@ -72,7 +75,7 @@ function MobileMenu() {
 function Menu() {
   const router = useRouter();
   return (
-    <VStack className='nav_menu' rowGap='0.8em' height='450px'>
+    <VStack className='nav_menu' rowGap='0.8em'>
       {menuData.map((item) => (
         <MenuElem
           item={item}
@@ -90,12 +93,15 @@ function MenuElem({ item, selected, ...props }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={item.path}>
+    <Link href={accountStore.isLoading !== true ? item.path : ''} >
       <Box
         className={`menu_elem ${selected ? 'selected' : ''}`}
         {...props}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}>
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => {
+          trackEvent('main_nav_click', 'Navigation', item.title);
+        }}>
         <Box>
           {item.icon({
             mono: Boolean(selected) || isHovered,
@@ -103,7 +109,9 @@ function MenuElem({ item, selected, ...props }) {
             height: '1.65em'
           })}
         </Box>
-        <Box data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`} pl='0.5em'>
+        <Box data-qa={`menu-${item.title.replace(/\ /g, '-').toLowerCase()}`}
+          fontFamily='RMNeue-Regular'
+          pl='0.5em'>
           {item.title}
         </Box>
       </Box>

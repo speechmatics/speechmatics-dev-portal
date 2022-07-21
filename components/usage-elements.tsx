@@ -18,13 +18,16 @@ import { observer } from 'mobx-react-lite';
 import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './common';
 import { ExclamationIcon } from './icons-library';
 import { formatDate } from '../utils/date-utils';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 export const UsageSummary = observer(function Usage() {
   const [usageSummaryJson, setUsageSummaryJson] = useState<UsageRespJson>({});
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { accountStore } = useContext(accountContext);
   const [usageError, setUsageError] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const authenticated = useIsAuthenticated();
+
   const getMonthSpan: any = () => {
     const date: Date = new Date();
     const year = date.getFullYear();
@@ -36,11 +39,11 @@ export const UsageSummary = observer(function Usage() {
 
   useEffect(() => {
     let isActive = true;
-    if (idToken && accountStore.account) {
+    if (authenticated && accountStore.account) {
       setUsageError(false);
       setIsLoading(true);
       const month_span: any = getMonthSpan();
-      callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId(), month_span)
+      callGetUsage(accountStore.getContractId(), accountStore.getProjectId(), month_span)
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageSummaryJson({
@@ -58,7 +61,7 @@ export const UsageSummary = observer(function Usage() {
     return () => {
       isActive = false;
     };
-  }, [idToken, accountStore.account]);
+  }, [authenticated, accountStore.account]);
 
   const { aggregate } = usageSummaryJson;
 
@@ -149,17 +152,17 @@ export const UsageSummary = observer(function Usage() {
 
 export const UsageBreakdown = observer(function Usage() {
   const [usageDetailsJson, setUsageDetailsJson] = useState<UsageRespJson>({});
-  const { accountStore, tokenStore } = useContext(accountContext);
+  const { accountStore } = useContext(accountContext);
   const [usageError, setUsageError] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const idToken = tokenStore.tokenPayload?.idToken;
+  const authenticated = useIsAuthenticated();
 
   useEffect(() => {
     let isActive = true;
-    if (idToken && accountStore.account) {
+    if (authenticated && accountStore.account) {
       setUsageError(false);
       setIsLoading(true);
-      callGetUsage(idToken, accountStore.getContractId(), accountStore.getProjectId(), {})
+      callGetUsage(accountStore.getContractId(), accountStore.getProjectId(), {})
         .then((respJson) => {
           if (isActive && !!respJson && 'aggregate' in respJson) {
             setUsageDetailsJson({
@@ -177,7 +180,7 @@ export const UsageBreakdown = observer(function Usage() {
     return () => {
       isActive = false;
     };
-  }, [idToken, accountStore.account]);
+  }, [authenticated, accountStore.account]);
 
   const { breakdown } = usageDetailsJson;
 
@@ -188,6 +191,7 @@ export const UsageBreakdown = observer(function Usage() {
           data={breakdown}
           DataDisplayComponent={UsageBreakdownGrid}
           isLoading={isLoading}
+          onTrackUse={() => trackEvent('usage_details_pagination', 'Navigation')}
         />
       )}
       {usageError && (

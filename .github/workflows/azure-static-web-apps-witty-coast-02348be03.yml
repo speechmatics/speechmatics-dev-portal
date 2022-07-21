@@ -3,11 +3,11 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - general_ui_test
+      - general_dev_jupiter
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - general_ui_test
+      - general_dev_jupiter
 
 jobs:
   build_and_deploy_job:
@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     env:
-      REDIRECT_URI: 'https://test-portal.ui-internal.speechmatics.com/login/'
-      POST_LOGOUT_REDIRECT_URI: 'https://test-portal.ui-internal.speechmatics.com/login/'
-      REDIRECT_URI_INVITATION: 'https://test-portal.ui-internal.speechmatics.com/signup/'
+      REDIRECT_URI: 'https://dev-jupiter-portal.ui-internal.speechmatics.com/login/'
+      POST_LOGOUT_REDIRECT_URI: 'https://dev-jupiter-portal.ui-internal.speechmatics.com/login/'
+      REDIRECT_URI_INVITATION: 'https://dev-jupiter-portal.ui-internal.speechmatics.com/signup/'
       SIGNIN_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNIN_ONLY'
       INVITATION_SIGNUP_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_SIGNUP_INVITATION'
       RESET_PASSWORD_POLICY: 'https://staging-identity.speechmatics.com/staging-identity.speechmatics.com/B2C_1A_PASSWORDRESET'
@@ -26,9 +26,9 @@ jobs:
       AUTH_CLIENT_ID: '75a2952e-954e-4975-8a14-ef862a8e5a39'
       ENDPOINT_API_URL: 'https://staging-mp.speechmatics.com/v1'
       RUNTIME_API_URL: 'https://selfservice-asr.api.speechmatics.com/v2'
-      DEFAULT_B2C_SCOPE: 'https://speechmaticsb2c.onmicrosoft.com/michaltestapi/User.Read'
+      DEFAULT_B2C_SCOPE: 'https://staging-identity.speechmatics.com/michaltestapi/User.Read'
       CHARGIFY_PUBLIC_KEY: 'chjs_dv9b2hv745b3dc5knfkddy64'
-      CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com' 
+      CHARGIFY_SERVER_HOST: 'https://speechmatics-staging.chargify.com'
     steps:
       - uses: actions/checkout@v2
         with:
@@ -37,7 +37,7 @@ jobs:
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_ISLAND_0A73D9810 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WITTY_COAST_02348BE03 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
@@ -56,7 +56,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_ISLAND_0A73D9810 }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WITTY_COAST_02348BE03 }}
           action: "close"
-          
-          

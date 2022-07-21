@@ -1,8 +1,9 @@
 import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { InfoBarbox, PageHeader } from '../components/common';
+import { PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
-import { HomeBox } from '../components/home-elements';
+import { HomeBox, HomeWhiteBox } from '../components/home-elements';
 import {
   MenuLearnIcon,
   MenuPadlockIcon,
@@ -10,8 +11,9 @@ import {
   TranscribeAudioIcon,
   TranscribeIcon
 } from '../components/icons-library';
+import { accountStore } from '../utils/account-store-context';
 
-export default function Home({}) {
+export default observer(function Home({ }) {
   return (
     <Dashboard>
       <PageHeader headerLabel='Home' introduction='Welcome to the Speechmatics SaaS Portal.' />
@@ -27,6 +29,7 @@ export default function Home({}) {
             iconPadding='22px'
             text='Upload and Transcribe a Media File'
             buttonLabel='Transcribe Now'
+            disabled={accountStore.isLoading}
             hrefUrl='/transcribe/'
           />
           <HomeBox
@@ -35,6 +38,7 @@ export default function Home({}) {
             text='Start Using API'
             buttonLabel='Get Started'
             hrefUrl='/getting-started/'
+            disabled={accountStore.isLoading}
             iconPadding='1.5em 0em 0em 0.8em'
           />
         </Grid>
@@ -42,12 +46,13 @@ export default function Home({}) {
           gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))'
           gridAutoFlow='dense'
           width='100%'
-          gap='1em'>
+          gap='2em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
             title='Manage Access'
             description='You need to create an API key to make API requests.'
             buttonLabel='Create API Key'
+            disabled={accountStore.isLoading}
             hrefUrl='/manage-access/'
           />
           <HomeWhiteBox
@@ -55,6 +60,7 @@ export default function Home({}) {
             title='Track Your Usage'
             description='Usage is measured in hours of audio processed.'
             buttonLabel='View Usage'
+            disabled={accountStore.isLoading}
             hrefUrl='/usage/'
           />
           <HomeWhiteBox
@@ -62,36 +68,13 @@ export default function Home({}) {
             title='Learning Resources'
             description='Explore our documentation and learning resources.'
             buttonLabel='Learn'
+            disabled={accountStore.isLoading}
             hrefUrl='/learn/'
           />
         </Grid>
       </VStack>
     </Dashboard>
   );
-}
+})
 
-const HomeWhiteBox = ({ icon, title, description, buttonLabel, hrefUrl }) => {
-  return (
-    <VStack className='sm_panel' width='100%' alignItems='center' justifyContent='space-between'>
-      <VStack>
-        <Box>{icon}</Box>
-        <Text as='div' fontFamily='RMNeue-Bold' fontSize='1.1em' textAlign='center'>
-          {title}
-        </Text>
-        <Text
-          as='div'
-          fontFamily='RMNeue-Regular'
-          fontSize='0.8em'
-          color='smBlack.400'
-          textAlign='center'>
-          {description}
-        </Text>
-      </VStack>
-      <Link href={hrefUrl}>
-        <Button variant='speechmaticsOutline' width='100%'>
-          {buttonLabel}
-        </Button>
-      </Link>
-    </VStack>
-  );
-};
+

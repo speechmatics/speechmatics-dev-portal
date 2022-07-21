@@ -25,13 +25,15 @@ import {
 } from '../components/transcribe-form';
 import { TranscriptionViewer } from '../components/transcription-viewer';
 import accountStoreContext from '../utils/account-store-context';
+import { trackEvent } from '../utils/analytics';
 import { RuntimeAuthStore, runtimeAuthFlow as authFlow } from '../utils/runtime-auth-flow';
 import { humanFileSize } from '../utils/string-utils';
-import { languagesData, separation, accuracyModels, FlowError } from '../utils/transcribe-elements';
+import { languagesData, separation, accuracyModels } from '../utils/transcribe-elements';
 import {
   fileTranscriptionFlow as flow,
   FileTranscriptionStore
 } from '../utils/transcribe-store-flow';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export default observer(function Transcribe({ }) {
   const { stage } = flow.store;
@@ -65,12 +67,13 @@ type TranscribeFormProps = {
 };
 
 export const TranscribeForm = observer(function ({ store, auth }: TranscribeFormProps) {
-  const { tokenStore, accountStore } = useContext(accountStoreContext);
+  const { accountStore } = useContext(accountStoreContext);
+  const authenticated = useIsAuthenticated();
 
   useEffect(() => {
     authFlow.restoreToken();
-    if (tokenStore.tokenPayload?.idToken) authFlow.refreshToken(tokenStore.tokenPayload.idToken);
-  }, [tokenStore.tokenPayload?.idToken]);
+    if (authenticated) authFlow.refreshToken();
+  }, [authenticated]);
 
   return (
     <>
@@ -80,8 +83,11 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
       </DescriptionLabel>
       <Box alignSelf='stretch' pt={4}>
         <FileUploadComponent
+          onFileSelect={(file) => {
+            trackEvent('file_added_to_transcription', 'Action', 'Dropped or selected a file');
+            flow.assignFile(file);
+          }}
           disabled={accountStore.accountState === 'unpaid'}
-          onFileSelect={(file) => flow.assignFile(file)}
         />
       </Box>
 
@@ -96,7 +102,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Language'
           tooltip='Select the language of your audio file‘s spoken content to get the best transcription accuracy'
           data={languagesData}
-          onSelect={(val) => (store.language = val)}
+          onSelect={(val) => {
+            trackEvent('language_select', 'Action', 'Changed the language', { value: val });
+            store.language = val;
+          }}
           disabled={accountStore.accountState === 'unpaid'}
         />
 
@@ -105,7 +114,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Separation'
           tooltip='Speaker - detects and labels individual speakers within a single audio channel. Channel - labels each audio channel and aggregates into a single transcription output.'
           data={separation}
-          onSelect={(val) => (store.separation = val as any)}
+          onSelect={(val) => {
+            trackEvent('separation_select', 'Action', 'Changed the separation', { value: val });
+            store.separation = val as any;
+          }}
           disabled={accountStore.accountState === 'unpaid'}
         />
 
@@ -114,7 +126,10 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           label='Accuracy'
           tooltip='Enhanced - highest transcription accuracy. Standard - faster transcription with high accuracy.'
           data={accuracyModels}
-          onSelect={(val) => (store.accuracy = val as any)}
+          onSelect={(val) => {
+            trackEvent('accuracy_select', 'Action', 'Changed the Accuracy', { value: val });
+            store.accuracy = val as any;
+          }}
           disabled={accountStore.accountState === 'unpaid'}
         />
       </Flex>
@@ -142,7 +157,8 @@ export const TranscribeForm = observer(function ({ store, auth }: TranscribeForm
           fontSize='18'
           width='100%'
           onClick={() => {
-            flow.attemptSendFile(tokenStore.tokenPayload?.idToken);
+            flow.attemptSendFile();
+            trackEvent('get_transcripion_click', 'Action', 'Submitted transcription');
           }}
           disabled={
             !store._file || !auth.isLoggedIn || accountStore.accountState === 'unpaid'
@@ -174,6 +190,12 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       flow.stopPolling();
     };
   }, []);
+
+  useEffect(() => {
+    if (stageDelayed == 'complete') {
+      trackEvent('transcription_complete', 'Event', 'transcription has been shown');
+    }
+  }, [stageDelayed]);
 
   return (
     <Flex alignSelf='stretch' alignItems='center' direction='column' pt={4} className='fadeIn'>
@@ -266,7 +288,11 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       <Box width='100%' textAlign='center' fontSize='1.2em' color='smNavy.400' my={4}>
         Go to the{' '}
         <Link data-qa='link-recent-jobs' href='/view-jobs/'>
-          <a className='text_link'>View Jobs</a>
+          <a
+            className='text_link'
+            onClick={() => trackEvent('view_jobs_click', 'Navigation', '', { stage })}>
+            View Jobs
+          </a>
         </Link>{' '}
         page to view all your recent transcriptions.
       </Box>
@@ -274,7 +300,10 @@ export const ProcessingTranscription = observer(function ({ store }: ProcessingT
       <Button
         data-qa='button-transcribe-another-file'
         variant='speechmaticsOutline'
-        onClick={() => flow.reset()}>
+        onClick={() => {
+          flow.reset();
+          trackEvent('transcribe_another_file_click', 'Navigation', '', { stage });
+        }}>
         Transcribe Another File
       </Button>
     </Flex>

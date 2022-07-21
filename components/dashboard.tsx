@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { Box, useDisclosure, Spinner, Button, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { useB2CToken } from '../utils/get-b2c-token-hook';
@@ -17,10 +17,15 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { msalLogout } from '../utils/msal-utils';
-import { SpeechmaticsLogo } from './icons-library';
+import { ExclamationIconLarge, SpeechmaticsLogo } from './icons-library';
 import { HeaderBar } from './header';
 import { MenuContainer } from './side-menu';
-import { WarningBanner, ErrorBanner } from './common'
+import useInactiveLogout from '../utils/inactive-hook'
+import { PaymentWarningBanner, AccountErrorBox } from './common'
+import { callStore } from '../utils/call-api';
+import { getCookieConsentValue } from "react-cookie-consent";
+import { dataDogRum } from '../utils/analytics';
+import { SmCookiesConsent } from './cookies-consent';
 
 const animationVariants = {
   hidden: { opacity: 0, x: -40, y: 0 },
@@ -45,6 +50,10 @@ export default observer(function Dashboard({ children }) {
 
   const breakVal = useBreakpointValue({ base: true, md: false })
 
+  useInactiveLogout()
+
+
+
   useEffect(() => {
     let st: number;
     if (!isAuthenticated) {
@@ -55,7 +64,7 @@ export default observer(function Dashboard({ children }) {
 
   const { accountStore, tokenStore } = useContext(accountContext);
 
-  const { token: tokenPayload, error: b2cError } = useB2CToken(instance);
+  const { error: b2cError } = useB2CToken(instance);
 
   useEffect(() => {
     let st: number;
@@ -74,41 +83,63 @@ export default observer(function Dashboard({ children }) {
     if (
       !accountStore.requestSent &&
       !accountStore.account &&
-      isAuthenticated &&
-      tokenPayload?.idToken
+      isAuthenticated
     ) {
-      tokenStore.setTokenPayload(tokenPayload);
+      tokenStore.lastActive = new Date();
       accountStore
-        .accountsFetchFlow(tokenPayload.idToken, isSettingUpAccount)
+        .accountsFetchFlow(isSettingUpAccount)
         .then((resp) => {
           accountStore.assignServerState(resp);
-          onUserCreationModalClose();
         })
-        .catch(err => console.error("dashboard accountStore catch", err));
+        .catch(err => {
+          console.error("dashboard accountStore catch", err)
+        })
+        .finally(() => {
+          onUserCreationModalClose();
+        });
     }
-  }, [isAuthenticated, tokenPayload?.idToken]);
+  }, [isAuthenticated]);
 
   const account = instance.getActiveAccount();
 
-  const logout = () => {
+  const logout = useCallback(() => {
     msalLogout();
-  };
+  }, []);
+
+  useEffect(() => {
+    if (getCookieConsentValue() === 'true') dataDogRum.dataDogInit();
+  }, [getCookieConsentValue()])
+
+  const onAcceptCookies = useCallback(() => {
+    dataDogRum.dataDogInit();
+  }, [])
+
 
   return (
     <Box className='dashboard_container'>
+      <SmCookiesConsent onAccept={onAcceptCookies} />
+
       <UserNotAuthModal isModalOpen={!isAuthenticated && inProgress != 'logout'} returnUrl={redirectUrl} />
       <UserCreationModal
         isModalOpen={isUserCreationModalOpen}
         onModalClose={onUserCreationModalClose}
       />
+      <ErrorModal isModalOpen={callStore.has500Error} errorTitle='Something went wrong.'
+        errorDescription="Please, try again in few minutes."
+        buttonLabel='Try again' buttonCallback={() => { window.location.reload() }} />
+
+      <ErrorModal isModalOpen={callStore.hasConnectionError} errorTitle='Connection problem.'
+        errorDescription="Please check your internet connection."
+        buttonLabel='Try again' buttonCallback={() => { window.location.reload() }} />
+
       <HeaderBar logout={logout} accountEmail={(account?.idTokenClaims as any)?.email} />
       <PaymentWarningBanner accountState={accountStore.accountState} />
-      
-      <Box className='dashboard' flexDirection={breakVal ? 'column' : 'row'} tabIndex={0}>
-        {!breakVal && <MenuContainer /> }
 
-        <Box className='dashboard_content'>
-          {breakVal && <MenuContainer /> }
+      <Box className='dashboard' tabIndex={0}>
+
+        <Box className='dashboard_content' flexDirection={breakVal ? 'column' : 'row'}>
+          <MenuContainer />
+
           <Box className='dashboard_padding'>
             <motion.main
               variants={animationVariants} // Pass the variant object into Framer Motion
@@ -117,6 +148,7 @@ export default observer(function Dashboard({ children }) {
               exit='exit' // Exit state (used later) to variants.exit
               transition={{ type: 'tween', ease: 'easeOut', duration: 0.2 }} // Set the transition to linear
             >
+              {accountStore.responseError && <AccountErrorBox />}
               {children}
             </motion.main>
           </Box>
@@ -164,34 +196,33 @@ function UserNotAuthModal({ isModalOpen, returnUrl }) {
   );
 }
 
-function PaymentWarningBanner({ accountState }) {
 
+function ErrorModal({ isModalOpen, errorTitle, errorDescription, buttonLabel, buttonCallback }) {
   return (
-    <HStack zIndex={20} position="sticky" top="62px">
-      {accountState === 'past_due' &&
-        <WarningBanner 
-          centered={true}
-          content={
-            <>
-              We’ve had trouble taking payment. Please{' '}
-              <Link href='/manage-billing/#update_card'>
-                <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-              </Link> to avoid disruptions to your account.{' '}
-            </>
-          }/>
-        }
-        {accountState === 'unpaid' &&
-          <ErrorBanner
-            mt="0"
-            content={
-              <>
-                We’ve had trouble taking payment. Please{' '}
-                <Link href='/manage-billing/#update_card'>
-                  <a style={{ cursor: 'pointer', textDecoration: 'underline' }}>update your card details</a>
-                </Link> to transcribe more files.{' '}
-              </>
-            }/>
-          }
-    </HStack>
-  )
-};
+    <Modal isOpen={isModalOpen} onClose={() => { }} closeOnOverlayClick={false} size='2xl'>
+      <ModalOverlay className='blurOverlay' bgColor='#fff5' />
+      <ModalContent borderRadius='sm' bg='smRed.500'>
+        <ModalBody color='smWhite.500' >
+          <HStack py={4} width='100%' justifyContent='space-between'>
+            <HStack spacing={4}>
+              <Box>
+                <ExclamationIconLarge color='var(--chakra-colors-smWhite-500)' />
+              </Box>
+              <VStack alignItems='flex-start' spacing={0}>
+                <Box fontSize='xl' fontWeight='bold'>{errorTitle}</Box>
+                <Box fontSize='sm'>{errorDescription}</Box>
+              </VStack>
+            </HStack>
+            <Button variant='speechmaticsWhite' onClick={buttonCallback}>
+              {buttonLabel}
+            </Button>
+          </HStack>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+
+
+

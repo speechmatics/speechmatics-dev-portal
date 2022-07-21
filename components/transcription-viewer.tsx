@@ -17,6 +17,7 @@ import { getFullLanguageName } from '../utils/transcribe-elements';
 import { getDiarizedTranscription } from '../utils/transcription-utils';
 import { CopyIcon, DownloadIcon } from './icons-library';
 import { TranscriptDownloadMenu } from './transcript-download-menu';
+import { trackEvent } from '../utils/analytics';
 
 export type TranscriptionViewerProps = {
   transcription?: string;
@@ -76,7 +77,10 @@ export const TranscriptionViewer = ({
           flex='1'
           leftIcon={<CopyIcon />}
           fontSize='1em'
-          onClick={() => navigator?.clipboard?.writeText(copyText)}>
+          onClick={() => {
+            trackEvent('copy_transcription', 'Action');
+            navigator?.clipboard?.writeText(copyText)
+          }}>
           Copy Transcription
         </Button>
         <Menu>
@@ -85,7 +89,8 @@ export const TranscriptionViewer = ({
             flex='1'
             variant='speechmaticsGreen'
             leftIcon={<DownloadIcon />}
-            fontSize='1em'>
+            fontSize='1em'
+            onClick={() => trackEvent('download_transcription_click', 'Action')}>
             Download Transcription
           </MenuButton>
           <TranscriptDownloadMenu fileName={fileName} jobId={jobId} status={'done'} />

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Dashboard from '../components/dashboard';
 import { Box, Grid, GridItem, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
@@ -6,6 +6,7 @@ import accountContext from '../utils/account-store-context';
 import { observer } from 'mobx-react-lite';
 import {
   DescriptionLabel,
+  ErrorBanner,
   HeaderLabel,
   PageHeader,
   UsageInfoBanner,
@@ -18,15 +19,20 @@ import {
   UsageSummary
 } from '../components/usage-elements';
 import { BaloonIcon, CallSupportIcon, RocketIcon } from '../components/icons-library';
+import { trackEvent } from '../utils/analytics';
 
 export default observer(function Usage() {
   const { accountStore } = useContext(accountContext);
   const paymentMethodAdded = !!accountStore.getPaymentMethod();
 
+  const tabsOnChange = useCallback((index) => {
+    trackEvent(`usage_tab_${['limits', 'summary', 'details'][index]}`, 'Navigation');
+  }, []);
+
   return (
     <Dashboard>
       <PageHeader headerLabel='Track Usage' introduction='Review Usage of the API.' />
-      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px'>
+      <Tabs size='lg' variant='speechmatics' width='100%' maxWidth='900px' onChange={tabsOnChange}>
         <TabList marginBottom='-1px'>
           <Tab data-qa='tab-limits'>Limits</Tab>
           <Tab data-qa='tab-summary'>Summary</Tab>
@@ -37,21 +43,26 @@ export default observer(function Usage() {
             <HeaderLabel>Usage Limits</HeaderLabel>
             <DescriptionLabel>Hours of Audio Per Month.</DescriptionLabel>
             <Grid gridTemplateColumns='1fr 1fr' gap='1.5em'>
-              <ModelDescriptionBox
-                mainColor='smGreen'
-                icon={<RocketIcon />}
-                title='ENHANCED'
-                usageLimitType='enhanced'
-                description='Enhanced provides the highest transcription accuracy.'
-              />
-              <ModelDescriptionBox
-                mainColor='smBlue'
-                icon={<BaloonIcon />}
-                title='STANDARD'
-                usageLimitType='standard'
-                description='Standard provides faster transcription with high accuracy.'
-              />
-
+              {accountStore.responseError ?
+                <GridItem colSpan={2}>
+                  <ErrorBanner mt="0" content={`Unable to get usage limits information`} />
+                </GridItem>
+                : <>
+                  <ModelDescriptionBox
+                    mainColor='smGreen'
+                    icon={<RocketIcon />}
+                    title='ENHANCED'
+                    usageLimitType='enhanced'
+                    description='Enhanced provides the highest transcription accuracy.'
+                  />
+                  <ModelDescriptionBox
+                    mainColor='smBlue'
+                    icon={<BaloonIcon />}
+                    title='STANDARD'
+                    usageLimitType='standard'
+                    description='Standard provides faster transcription with high accuracy.'
+                  />
+                </>}
               <GridItem colSpan={2}>
                 {accountStore.isLoading ? (
                   <Box bg='smNavy.500' width='100%' />
