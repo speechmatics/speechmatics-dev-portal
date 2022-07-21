@@ -1,7 +1,7 @@
 import { VStack, Text, HStack, Box, Button, Grid } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
-import { InfoBarbox, PageHeader } from '../components/common';
+import { PageHeader } from '../components/common';
 import Dashboard from '../components/dashboard';
 import { HomeBox, HomeWhiteBox } from '../components/home-elements';
 import {
@@ -46,7 +46,7 @@ export default observer(function Home({ }) {
           gridTemplateColumns='repeat(auto-fit, minmax(16em, 1fr))'
           gridAutoFlow='dense'
           width='100%'
-          gap='1em'>
+          gap='2em'>
           <HomeWhiteBox
             icon={<MenuPadlockIcon width='6em' height='4em' />}
             title='Manage Access'

@@ -19,6 +19,7 @@ import { DataGridComponent, GridSpinner, HeaderLabel, UsageInfoBanner } from './
 import { ExclamationIcon } from './icons-library';
 import { formatDate } from '../utils/date-utils';
 import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 export const UsageSummary = observer(function Usage() {
   const [usageSummaryJson, setUsageSummaryJson] = useState<UsageRespJson>({});
@@ -190,6 +191,7 @@ export const UsageBreakdown = observer(function Usage() {
           data={breakdown}
           DataDisplayComponent={UsageBreakdownGrid}
           isLoading={isLoading}
+          onTrackUse={() => trackEvent('usage_details_pagination', 'Navigation')}
         />
       )}
       {usageError && (

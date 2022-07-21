@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { HeaderLabel, DescriptionLabel, pad, WarningBanner } from './common';
 import { CardImage, CardGreyImage, DownloadInvoice } from './icons-library';
 import { Text } from '@chakra-ui/react';
+import { trackEvent } from '../utils/analytics';
 import { useState, useCallback, useRef, useEffect } from 'react';
 
 export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, accountState, highlight, setHighlight }) => {
@@ -83,7 +84,10 @@ export const AddReplacePaymentCard = ({ paymentMethod, isLoading, deleteCard, ac
               }}
               variant='speechmatics'
               alignSelf='flex-start'
-              data-qa='button-add-replace-payment'>
+              data-qa='button-add-replace-payment'
+              onClick={() =>
+                trackEvent(`billing_${paymentMethod ? 'replace' : 'add'}_card_click`, 'Action')
+              }>
               {paymentMethod ? 'Replace Your Existing Payment Card' : 'Add a Payment Card'}
             </Button>
           </Link>

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { errToast, HeaderLabel, PageHeader, positiveToast, SmPanel } from '../components/common';
 import { useIsAuthenticated } from '@azure/msal-react';
+import { trackEvent } from '../utils/analytics';
 
 declare global {
   interface Window {
@@ -67,9 +68,8 @@ function Subscribe({ }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setSubmitButtonReady(false);
-
+    trackEvent('billing_chargify_submit', 'Action');
     chargify?.current.token(
       chargifyForm.current,
 
@@ -85,9 +85,13 @@ function Subscribe({ }) {
             );
             await accountStore.fetchServerState();
             window.setTimeout(() => router.push('/manage-billing/'), 1000);
+            trackEvent('billing_chargify_successful', 'Event');
           })
           .catch((error) => {
             setSubmitButtonReady(true);
+            trackEvent('billing_chargify_failed', 'Event', '', {
+              error: error.status
+            });
             errToast(`Something went wrong on our side. Please try again later or contact support. (${error.status})`);
           });
       },
