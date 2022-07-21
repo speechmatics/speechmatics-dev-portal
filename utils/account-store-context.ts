@@ -199,15 +199,10 @@ export async function acquireTokenFlow(
   msalInstance: IPublicClientApplication,
   account: AccountInfo
 ) {
-
-  const authority = `https://${process.env.AUTHORITY_DOMAIN}/${process.env.POLICY_DOMAIN}/${
-    (account?.idTokenClaims as any)?.acr
-  }`;
-
   const request = {
     scopes: [process.env.DEFAULT_B2C_SCOPE],
     account,
-    authority: authority,
+    authority: process.env.SIGNIN_POLICY,
   } as SilentRequest;
 
   return msalInstance
