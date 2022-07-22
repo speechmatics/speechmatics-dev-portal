@@ -4,7 +4,7 @@ import { capitalizeFirstLetter } from './string-utils';
 export function getDiarizedTranscription(input: string | BatchTranscriptionResponse) {
   let json: BatchTranscriptionResponse;
 
-  if ('results' in (input as BatchTranscriptionResponse)) {
+  if (typeof input !== 'string' && 'results' in (input as BatchTranscriptionResponse)) {
     json = input as BatchTranscriptionResponse;
   } else {
     try {
