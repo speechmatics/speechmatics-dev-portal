@@ -29,6 +29,7 @@ jobs:
       DEFAULT_B2C_SCOPE: 'https://speechmaticsproduction.onmicrosoft.com/21d50769-1b5b-414d-be58-cc27ea9dc1fa/User.Read'
       CHARGIFY_PUBLIC_KEY: 'chjs_wg5zstr67hwfkdzzxg9m8ckc'
       CHARGIFY_SERVER_HOST: 'https://speechmatics-production.chargify.com'
+      GTAG: 'G-BK79JR68PZ'
     steps:
       - uses: actions/checkout@v2
         with:
